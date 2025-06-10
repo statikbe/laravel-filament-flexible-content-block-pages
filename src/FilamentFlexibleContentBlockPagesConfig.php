@@ -30,6 +30,6 @@ class FilamentFlexibleContentBlockPagesConfig
 
     private function getConfig(string $configKey, $default = null): mixed
     {
-        return config('filament-flexible-content-block-pages.' . $configKey);
+        return config('filament-flexible-content-block-pages.'.$configKey);
     }
 }

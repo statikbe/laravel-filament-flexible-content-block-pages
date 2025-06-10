@@ -29,23 +29,21 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
-class Page extends Model
-    implements HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes,
-    HasOverviewAttributes, HasPageAttributes, HasSEOAttributes, Linkable, HasCode, HasParent
+class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, Linkable
 {
     use HasAuthorAttributeTrait;
+    use HasAuthorAttributeTrait;
+    use HasCodeTrait;
     use HasDefaultContentBlocksTrait;
     use HasFactory;
-    use HasTranslatedHeroImageAttributesTrait;
+    use HasParentTrait;
     use HasTranslatedContentBlocksTrait;
+    use HasTranslatedHeroImageAttributesTrait;
     use HasTranslatedIntroAttributeTrait;
     use HasTranslatedOverviewAttributesTrait;
     use HasTranslatedPageAttributesTrait;
     use HasTranslatedSEOAttributesTrait;
     use HasTranslatedSlugAttributeTrait;
-    use HasCodeTrait;
-    use HasParentTrait;
-    use HasAuthorAttributeTrait;
 
     public function getTable()
     {
@@ -54,7 +52,7 @@ class Page extends Model
 
     public function getViewUrl(?string $locale = null): string
     {
-        //toggle the locale to make sure the slug gets translated:
+        // toggle the locale to make sure the slug gets translated:
         /*$currentLocale = app()->getLocale();
         $locale = $locale ?? $currentLocale;
 
@@ -71,7 +69,8 @@ class Page extends Model
         return $this->getViewUrl($locale);
     }
 
-    public static function getUrl(string $code, ?string $locale = null): ?string {
+    public static function getUrl(string $code, ?string $locale = null): ?string
+    {
         return static::code($code)
             ->first()
             ?->getViewUrl($locale);
