@@ -18,6 +18,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
             ->name('laravel-filament-flexible-content-block-pages')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_pages_table');
+            ->hasMigration('create_pages_table')
+            ->hasTranslations();
     }
 }

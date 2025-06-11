@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\LaravelFilamentFlexibleContentBlockPages\Database\Factories;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

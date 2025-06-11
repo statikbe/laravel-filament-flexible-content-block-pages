@@ -4,7 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Statikbe\LaravelFilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 
 class TestCase extends Orchestra
 {

@@ -37,7 +37,10 @@
         "psr-4": {
             "Statikbe\\FilamentFlexibleContentBlockPages\\": "src/",
             "Statikbe\\FilamentFlexibleContentBlockPages\\Database\\Factories\\": "database/factories/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

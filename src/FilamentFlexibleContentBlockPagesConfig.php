@@ -10,7 +10,7 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function __construct()
     {
-        $this->pageModel = $this->getConfig('models.page', Page::class);
+        $this->pageModel = $this->packageConfig('models.page', Page::class);
     }
 
     public function getPageModel(): Page
@@ -20,15 +20,28 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function getAuthorsTable(): string
     {
-        return $this->getConfig('table_names.authors', 'users');
+        return $this->packageConfig('table_names.authors', 'users');
     }
 
     public function getPagesTable(): string
     {
-        return $this->getConfig('table_names.pages', 'pages');
+        return $this->packageConfig('table_names.pages', 'pages');
     }
 
-    private function getConfig(string $configKey, $default = null): mixed
+    /**
+     * @return array<class-string<resource>>
+     */
+    public function getResources(): array
+    {
+        return $this->packageConfig('resources');
+    }
+
+    public function getPanelPath(): string
+    {
+        return $this->packageConfig('panel.path', 'content');
+    }
+
+    private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.' . $configKey);
     }
