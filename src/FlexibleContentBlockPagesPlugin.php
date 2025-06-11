@@ -48,7 +48,7 @@ class FlexibleContentBlockPagesPlugin implements Plugin
         $instance = filament(app(static::class)->getId());
 
         // Check if the instance is of the expected type for phpstan:
-        if (!$instance instanceof FlexibleContentBlockPagesPlugin) {
+        if (! $instance instanceof FlexibleContentBlockPagesPlugin) {
             throw new \Exception('Expected a FlexibleContentBlocksPagesPlugin instance');
         }
 
