@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 
 /**
  * TODO observer
+ *
  * @see RedirectObserver for clearing the cache.
  */
 class Redirect extends Model
@@ -21,19 +22,20 @@ class Redirect extends Model
     /**
      * Returns a list of old and new urls with the status code if set compatible with spatie/laravel-missing-page-redirector,
      * that merges the redirects set in the database over the redirects set in the config.
-     * @return array
      */
-    public static function getDirectionMap(): array {
+    public static function getDirectionMap(): array
+    {
         // Get from the database and remember forever
         // we clear this on new model or updated model
         $dbRedirects = Cache::rememberForever(static::CACHE_REDIRECTS_KEY, function () {
             return Redirect::all()->flatMap(function (Redirect $redirect) {
-                if($redirect->status_code){
+                if ($redirect->status_code) {
                     return [
-                        $redirect->old_url => [$redirect->new_url, $redirect->status_code]
+                        $redirect->old_url => [$redirect->new_url, $redirect->status_code],
                     ];
+                } else {
+                    return [$redirect->old_url => $redirect->new_url];
                 }
-                else return [$redirect->old_url => $redirect->new_url];
             })->toArray();
         });
 
