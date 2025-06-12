@@ -14,7 +14,7 @@ return [
         ],
         'table' => [
             'created_at_col' => 'Aangemaakt op',
-        ]
+        ],
     ],
 
 ];
