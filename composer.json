@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
         "artesaos/seotools": "^1.3",
         "illuminate/contracts": "^10.0||^11.0||^12.0",
         "mcamara/laravel-localization": "^2.3",
