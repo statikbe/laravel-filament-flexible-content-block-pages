@@ -8,7 +8,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 return new class extends Migration {
     public function up()
     {
-        Schema::create(FilamentFlexibleContentBlockPages::config()->getRedirectTable(), function (Blueprint $table) {
+        Schema::create(FilamentFlexibleContentBlockPages::config()->getRedirectsTable(), function (Blueprint $table) {
             $table->id();
             $table->string('old_url');
             $table->string('new_url');
