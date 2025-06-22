@@ -4,7 +4,10 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\SpatieLaravelTranslatablePlugin;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class FlexibleContentBlockPagesPanel extends PanelProvider
 {
@@ -13,6 +16,8 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
         return $panel
             ->id('filament-flexible-content-block-pages')
             ->path(FilamentFlexibleContentBlockPages::config()->getPanelPath())
-            ->plugin(FlexibleContentBlockPagesPlugin::make());
+            ->plugin(FlexibleContentBlockPagesPlugin::make())
+            ->plugin(SpatieLaravelTranslatablePlugin::make()
+                ->defaultLocales(FilamentFlexibleContentBlocks::getLocales()));
     }
 }
