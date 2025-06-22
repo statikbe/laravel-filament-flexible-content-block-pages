@@ -7,7 +7,6 @@ use Filament\PanelProvider;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
-use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class FlexibleContentBlockPagesPanel extends PanelProvider
 {
