@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasMediaAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedMediaTrait;
@@ -43,6 +44,11 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     const CONVERSION_DEFAULT_SEO = 'default_seo';
 
     const CONVERSION_THUMB = 'thumbnail';
+
+    public function getTable()
+    {
+        return FilamentFlexibleContentBlockPages::config()->getSettingsTable();
+    }
 
     public static function getSettings(): ?self
     {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\RedirectObserver;
 
 /**
@@ -23,6 +24,11 @@ class Redirect extends Model
     const CACHE_REDIRECTS_KEY = 'filament-flexible-content-block-pages:redirects';
 
     protected $guarded = ['id'];
+
+    public function getTable()
+    {
+        return FilamentFlexibleContentBlockPages::config()->getRedirectsTable();
+    }
 
     /**
      * Returns a list of old and new urls with the status code if set compatible with spatie/laravel-missing-page-redirector,
