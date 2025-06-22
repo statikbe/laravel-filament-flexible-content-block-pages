@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Resources\Resource;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
 class FlexibleContentBlockPagesPlugin implements Plugin

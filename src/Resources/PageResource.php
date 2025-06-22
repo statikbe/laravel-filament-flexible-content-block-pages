@@ -2,16 +2,16 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use App\Models\Page;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages;
@@ -38,11 +38,14 @@ class PageResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $model = Page::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $recordRouteKeyName = 'id';
+
+    public static function getModel(): string
+    {
+        return FilamentFlexibleContentBlockPages::config()->getPageModel()::class;
+    }
 
     public static function getLabel(): ?string
     {

@@ -4,7 +4,9 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 
 use Filament\Actions\DeleteAction;
 use Filament\Actions\LocaleSwitcher;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
+use Filament\Resources\Pages\EditRecord;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Resource\Pages\Actions\CopyContentBlocksToLocalesAction;
 
@@ -12,7 +14,10 @@ class EditPage extends EditRecord
 {
     use TranslatableWithMedia;
 
-    protected static string $resource = PageResource::class;
+    public static function getResource(): string
+    {
+        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+    }
 
     protected function getActions(): array
     {
@@ -21,5 +26,10 @@ class EditPage extends EditRecord
             LocaleSwitcher::make(),
             DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
