@@ -48,7 +48,7 @@ return [
         ],
         'auth_middleware' => [
             Authenticate::class,
-        ]
+        ],
     ],
 
     'seo' => [
