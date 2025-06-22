@@ -87,6 +87,16 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('panel.path', 'content');
     }
 
+    public function getPanelMiddleware(): array
+    {
+        return $this->packageConfig('panel.middleware', []);
+    }
+
+    public function getPanelAuthMiddleware(): array
+    {
+        return $this->packageConfig('panel.auth_middleware', []);
+    }
+
     public function getSEODefaultCanonicalLocale(): string
     {
         return $this->packageConfig('seo.default_canonical_locale', 'en');
