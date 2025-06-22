@@ -27,7 +27,6 @@ class Redirect extends Model
     /**
      * Returns a list of old and new urls with the status code if set compatible with spatie/laravel-missing-page-redirector,
      * that merges the redirects set in the database over the redirects set in the config.
-     * @return array
      */
     public static function getDirectionMap(): array
     {
