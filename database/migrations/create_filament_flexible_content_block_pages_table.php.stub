@@ -54,9 +54,6 @@ return new class extends Migration
                 ->on(FilamentFlexibleContentBlockPages::config()->getAuthorsTable())
                 ->onDelete('set null');
 
-            // Unique code:
-            $table->string('code')->nullable()->unique();
-
             // Parent-child:
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')

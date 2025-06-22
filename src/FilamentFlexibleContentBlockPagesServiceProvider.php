@@ -19,9 +19,9 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
             ->hasConfigFile()
             ->hasViews()
             ->hasMigrations([
+                'create_filament_flexible_content_block_pages_table',
                 'create_filament_flexible_content_block_pages_redirects_table',
                 'create_filament_flexible_content_block_pages_settings_table',
-                'create_filament_flexible_content_block_pages_table',
             ])
             ->hasTranslations();
     }
