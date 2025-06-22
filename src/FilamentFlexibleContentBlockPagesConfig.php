@@ -34,7 +34,7 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getSupportedLocales(): array
     {
         return config(
-            FilamentFlexibleContentBlocksServiceProvider::$name . '.supported_locales',
+            FilamentFlexibleContentBlocksServiceProvider::$name.'.supported_locales',
             config('app.supported_locales', ['en'])
         );
     }
