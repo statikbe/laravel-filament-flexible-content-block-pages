@@ -36,7 +36,7 @@ class RedirectResource extends Resource
 
     public static function getNavigationGroup(): string
     {
-        return flexiblePagesTrans('pages.pages_nav_group');
+        return flexiblePagesTrans('pages.nav_group');
     }
 
     public static function form(Form $form): Form
