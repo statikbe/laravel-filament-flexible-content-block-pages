@@ -23,17 +23,19 @@ You can install the package via composer:
 composer require statikbe/laravel-filament-flexible-content-block-pages
 ```
 
+Publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="filament-flexible-content-block-pages-config"
+```
+
+If you want to alter the names of the database tables, do so in the config file, before running the migrations.
+
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-filament-flexible-content-block-pages-migrations"
+php artisan vendor:publish --tag="filament-flexible-content-block-pages-migrations"
 php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="laravel-filament-flexible-content-block-pages-config"
 ```
 
 This is the contents of the published config file:
@@ -46,14 +48,14 @@ return [
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag="laravel-filament-flexible-content-block-pages-views"
+php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
 ```
 
 ## Usage
 
 ```php
-$laravelFilamentFlexibleContentBlockPages = new Statikbe\LaravelFilamentFlexibleContentBlockPages();
-echo $laravelFilamentFlexibleContentBlockPages->echoPhrase('Hello, Statikbe!');
+$filamentFlexibleContentBlockPages = new Statikbe\FilamentFlexibleContentBlockPages();
+echo $filamentFlexibleContentBlockPages->echoPhrase('Hello, Statikbe!');
 ```
 
 ## Testing
