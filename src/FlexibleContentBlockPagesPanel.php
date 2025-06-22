@@ -18,6 +18,6 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
             ->path(FilamentFlexibleContentBlockPages::config()->getPanelPath())
             ->plugin(FlexibleContentBlockPagesPlugin::make())
             ->plugin(SpatieLaravelTranslatablePlugin::make()
-                ->defaultLocales(FilamentFlexibleContentBlocks::getLocales()));
+                ->defaultLocales(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()));
     }
 }

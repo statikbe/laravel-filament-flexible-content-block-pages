@@ -6,6 +6,7 @@ use Filament\Resources\Resource;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
 
 class FilamentFlexibleContentBlockPagesConfig
 {
@@ -28,6 +29,14 @@ class FilamentFlexibleContentBlockPagesConfig
         $this->pageModel = $this->packageConfig('models.page', Page::class);
         $this->redirectModel = $this->packageConfig('models.redirect', \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class);
         $this->settingsModel = $this->packageConfig('models.settings', \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::class);
+    }
+
+    public function getSupportedLocales(): array
+    {
+        return config(
+            FilamentFlexibleContentBlocksServiceProvider::$name . '.supported_locales',
+            config('app.supported_locales', ['en'])
+        );
     }
 
     public function getPageModel(): Page
