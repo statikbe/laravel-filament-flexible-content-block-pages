@@ -2,9 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers;
 
-use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\SEOMeta;
-use Carbon\Carbon;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -22,7 +21,9 @@ class PageController extends Controller
     use ValidatesRequests;
 
     const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
+
     const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
+
     const TEMPLATE_PATH = 'filament-flexible-content-block-pages::pages.';
 
     // TODO make an abstract model with the table name to use as class to resolve in the route param
@@ -98,7 +99,7 @@ class PageController extends Controller
 
     protected function setSEOImage(Page $page)
     {
-        //TODO copy getSEOMedia in HasSEOAttributesTrait
+        // TODO copy getSEOMedia in HasSEOAttributesTrait
         $seoMedia = $page->getFallbackImageMedia($page->SEOImage()->first(), $page->getSEOImageCollection());
         $seoUrl = null;
         $imageDimensions = null;
@@ -143,7 +144,7 @@ class PageController extends Controller
 
         return Cache::remember($cacheKey,
             self::CACHE_SEO_IMAGE_TTL,
-            function() use ($seoMedia, $conversion) {
+            function () use ($seoMedia, $conversion) {
                 $conversionCollection = ConversionCollection::createForMedia($seoMedia);
                 $conversion = $conversionCollection->getByName($conversion);
 
