@@ -33,5 +33,7 @@ return [
         'settings_tab_seo' => 'SEO',
         'settings_default_seo_image' => 'Standaard SEO-afbeelding',
         'settings_default_seo_image_hint' => 'Indien er geen SEO-afbeelding voor een pagina is ingesteld, wordt deze afbeelding gebruikt.',
+        'translatable_field_hint' => 'Dit veld kan vertaald worden. De huidige taal kan je rechtsbovenaan bekijken/aanpassen.',
+        'settings_footer_copyright' => 'Copyrightboodschap in footer',
     ],
 ];

@@ -28,10 +28,12 @@ return [
         'settings_plural_lbl' => 'Settings',
         'navigation_group' => 'Settings',
         'settings_tab_site_general' => 'General',
-        'site_title' => 'Website title',
+        'settings_site_title' => 'Website title',
         'settings_contact_info' => 'Contact information',
         'settings_tab_seo' => 'SEO',
         'settings_default_seo_image' => 'Default SEO image',
         'settings_default_seo_image_hint' => 'If no SEO image is set for a page, this image will be used.',
+        'translatable_field_hint' => 'This field can be translated. You can view/change the current language in the top right.',
+        'settings_footer_copyright' => 'Copyright message in footer',
     ],
 ];

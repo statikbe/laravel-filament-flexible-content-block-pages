@@ -12,6 +12,7 @@ use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use phpDocumentor\Reflection\Types\ClassString;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages;
@@ -20,6 +21,9 @@ class SettingsResource extends Resource
 {
     use Translatable;
 
+    /**
+     * @return class-string
+     */
     public static function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getSettingsModel()::class;
@@ -96,7 +100,9 @@ class SettingsResource extends Resource
     public static function getNavigationUrl(): string
     {
         // do not show the table, since we will only have one record:
-        if ($settings = static::getModel()::first()) {
+        /** @var Settings|null $settings */
+        $settings = static::getModel()::first();
+        if ($settings) {
             return static::getUrl('edit', ['record' => $settings]);
         } else {
             return static::getUrl('create');
@@ -110,12 +116,12 @@ class SettingsResource extends Resource
                 ->label(flexiblePagesTrans('settings.settings_site_title'))
                 ->required(),
             TextInput::make(Settings::SETTING_FOOTER_COPYRIGHT)
-                ->label(flexiblePagesTrans('settings.settings_footer_copyright'))
+                ->label(flexiblePagesTrans('settings.footer_copyright'))
                 ->hint(flexiblePagesTrans('settings.translatable_field_hint'))
                 ->hintIcon('heroicon-m-language')
                 ->required(),
             RichEditor::make(Settings::SETTING_CONTACT_INFO)
-                ->label(flexiblePagesTrans('settings.settings_contact_info'))
+                ->label(flexiblePagesTrans('settings.contact_info'))
                 ->disableToolbarButtons([
                     'attachFiles',
                 ]),

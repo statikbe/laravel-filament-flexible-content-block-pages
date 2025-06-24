@@ -3,7 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers;
 
 use Artesaos\SEOTools\Facades\SEOTools;
-use Artesaos\SEOTools\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Response;
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\MediaLibrary\Conversions\ConversionCollection;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
@@ -20,6 +21,8 @@ class PageController extends Controller
 {
     use ValidatesRequests;
 
+    const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
+    const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
     const TEMPLATE_PATH = 'filament-flexible-content-block-pages::pages.';
 
     // TODO make an abstract model with the table name to use as class to resolve in the route param
@@ -95,12 +98,24 @@ class PageController extends Controller
 
     protected function setSEOImage(Page $page)
     {
-        if ($seoImage = $page->getSEOImageUrl()) {
-            SEOTools::opengraph()->addImage($seoImage, $this->getSEOImageDimensions($seoImage, true));
-            SEOTools::twitter()->addValue('image', $seoImage);
-        } else {
+        //TODO copy getSEOMedia in HasSEOAttributesTrait
+        $seoMedia = $page->getFallbackImageMedia($page->SEOImage()->first(), $page->getSEOImageCollection());
+        $seoUrl = null;
+        $imageDimensions = null;
+
+        /*if ($seoMedia) {
+            $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
+            $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
+        } else if()
+            $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
+        $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
             $this->setSEODefaultImage($page);
         }
+
+        if($seoUrl && $imageDimensions) {
+            SEOTools::opengraph()->addImage($seoUrl, $imageDimensions);
+            SEOTools::twitter()->addValue('image', $seoUrl);
+        }*/
     }
 
     protected function setSEODefaultImage(Page $page)
@@ -122,34 +137,20 @@ class PageController extends Controller
      *
      * @return array|mixed
      */
-    protected function getSEOImageDimensions($path, bool $isUrl = false)
+    protected function getSEOImageDimensions(Media $seoMedia, string $conversion)
     {
-        // TODO optimize loading of image: avoiding url download.
-        $seoParams = [];
-        if ($path) {
-            $cacheKey = sprintf(self::CACHE_SEO_IMAGE_DIMENSIONS, $path);
-            if (Cache::has($cacheKey)) {
-                $seoParams = Cache::get($cacheKey, []);
-            } else {
-                try {
-                    if (! $isUrl) {
-                        $path = Storage::disk('public')->path($path);
-                    }
-                    $dimensions = getimagesize($path);
-                    if (count($dimensions) > 1) {
-                        $seoParams = ['width' => $dimensions[0], 'height' => $dimensions[1]];
-                    }
-                } catch (\League\Glide\Filesystem\FileNotFoundException $ex) {
-                    // do nothing we will just pass the empty seo params
-                } catch (ErrorException $ex) {
-                    // do nothing we will just pass the empty seo params
-                }
+        $cacheKey = sprintf(self::CACHE_SEO_IMAGE_DIMENSIONS, $seoMedia->uuid);
 
-                Cache::put($cacheKey, $seoParams, Carbon::now()->addMinutes(self::CACHE_SEO_IMAGE_TTL));
+        return Cache::remember($cacheKey,
+            self::CACHE_SEO_IMAGE_TTL,
+            function() use ($seoMedia, $conversion) {
+                $conversionCollection = ConversionCollection::createForMedia($seoMedia);
+                $conversion = $conversionCollection->getByName($conversion);
 
-            }
-        }
-
-        return $seoParams;
+                return [
+                    'width' => $conversion->getWidth(),
+                    'height' => $conversion->getHeight(),
+                ];
+            });
     }
 }
