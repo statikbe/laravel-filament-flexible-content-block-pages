@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -24,12 +25,6 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     use HasTranslations;
     use InteractsWithMedia;
 
-    protected $translatable = [
-        self::SETTING_FOOTER_COPYRIGHT,
-    ];
-
-    protected $guarded = [];
-
     const CACHE_SETTINGS = 'settings';
 
     const SETTING_SITE_TITLE = 'site_title';
@@ -45,6 +40,13 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
     const CONVERSION_THUMB = 'thumbnail';
 
+    protected $translatable = [
+        self::SETTING_FOOTER_COPYRIGHT,
+        self::SETTING_CONTACT_INFO,
+    ];
+
+    protected $guarded = [];
+
     public function getTable()
     {
         return FilamentFlexibleContentBlockPages::config()->getSettingsTable();
@@ -58,11 +60,11 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     public function registerMediaCollections(): void
     {
         // default seo:
-        $this->addMediaCollection(self::COLLECTION_DEFAULT_SEO)
+        $this->addMediaCollection(static::COLLECTION_DEFAULT_SEO)
             ->registerMediaConversions(function (Media $media) {
-                $this->addMediaConversion(self::CONVERSION_THUMB)
+                $this->addMediaConversion(static::CONVERSION_THUMB)
                     ->fit(Fit::Contain, 400, 400);
-                $this->addMediaConversion(self::CONVERSION_DEFAULT_SEO)
+                $this->addMediaConversion(static::CONVERSION_DEFAULT_SEO)
                     ->format(ImageFormat::WEBP->value)
                     ->fit(Fit::Crop, 1200, 630);
             });
@@ -74,7 +76,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             $locale = app()->getLocale();
         }
 
-        $settingValue = Cache::tags([self::CACHE_SETTINGS])->rememberForever("settings::setting__{$settingField}_{$locale}", function () use ($settingField) {
+        $settingValue = Cache::tags([static::CACHE_SETTINGS])->rememberForever("settings::setting__{$settingField}_{$locale}", function () use ($settingField) {
             $setting = static::getSettings()->getAttribute($settingField);
 
             // replace text params in settings if it is a text field (based on $translatable fields):
@@ -98,7 +100,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     {
         $locale = app()->getLocale();
         /* @var Media|null $imageMedia */
-        $imageMedia = Cache::tags([self::CACHE_SETTINGS])->rememberForever(
+        $imageMedia = Cache::tags([static::CACHE_SETTINGS])->rememberForever(
             "filament-flexible-content-block-pages::settings::image_media__{$imageCollection}__{$locale}",
             function () use ($imageCollection): ?Media {
                 return static::getSettings()->getImageMedia($imageCollection);
@@ -143,5 +145,12 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
         }
 
         return $media;
+    }
+
+    public function defaultSeoImage(): MorphMany
+    {
+        return $this->media()
+            ->where('collection_name', static::COLLECTION_DEFAULT_SEO)
+            ->where('custom_properties->locale', app()->getLocale());
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), function (Blueprint $table) {
             $table->id();
             $table->string(Settings::SETTING_SITE_TITLE);
-            $table->text(Settings::SETTING_CONTACT_INFO)->nullable();
+            $table->json(Settings::SETTING_CONTACT_INFO)->nullable();
             $table->json(Settings::SETTING_FOOTER_COPYRIGHT)->nullable();
             $table->timestamps();
         });

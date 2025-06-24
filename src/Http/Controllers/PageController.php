@@ -2,17 +2,16 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers;
 
-use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\SEOMeta;
-use Carbon\Carbon;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\MediaLibrary\Conversions\ConversionCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
@@ -22,10 +21,11 @@ class PageController extends Controller
     use ValidatesRequests;
 
     const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
-    const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
-    const TEMPLATE_PATH = 'filament-flexible-content-block-pages::pages.';
 
-    // TODO make an abstract model with the table name to use as class to resolve in the route param
+    const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
+
+    const TEMPLATE_PATH = 'filament-flexible-content-block-pages::pages.index';
+
     public function index(Page $page)
     {
         // check if page is published:
@@ -41,9 +41,39 @@ class PageController extends Controller
         $this->setSEOLocalisationAndCanonicalUrl();
         $this->setSEOImage($page);
 
-        return view(self::TEMPLATE_PATH.'index', [
+        return view(self::TEMPLATE_PATH, [
             'page' => $page,
         ]);
+    }
+
+    public function homeIndex()
+    {
+        $page = Page::code(Page::HOME_PAGE)
+            ->firstOrFail();
+
+        return $this->index($page);
+    }
+
+    public function childIndex(Page $parent, Page $page)
+    {
+        // check if the page is a child of the parent
+        if (! $parent->isParentOf($page)) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        // render the page with the regular page index function of the controller, or invoke the correct controller here:
+        return $this->index($page);
+    }
+
+    public function grandchildIndex(Page $grandparent, Page $parent, Page $page)
+    {
+        // check if the page is a child of the parent
+        if (! $parent->isParentOf($page) || ! $grandparent->isParentOf($parent)) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        // render the page with the regular page index function of the controller, or invoke the correct controller here:
+        return $this->index($page);
     }
 
     protected function getSEOTitlePostfix()
@@ -98,37 +128,35 @@ class PageController extends Controller
 
     protected function setSEOImage(Page $page)
     {
-        //TODO copy getSEOMedia in HasSEOAttributesTrait
         $seoMedia = $page->getFallbackImageMedia($page->SEOImage()->first(), $page->getSEOImageCollection());
         $seoUrl = null;
         $imageDimensions = null;
 
-        /*if ($seoMedia) {
+        // 1. try SEO image of the page
+        if ($seoMedia) {
             $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
             $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
-        } else if()
-            $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
-        $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
-            $this->setSEODefaultImage($page);
+        } else {
+            // 2. try the hero image of the page
+            $seoMedia = $page->getFallbackImageMedia($page->heroImage()->first(), $page->getHeroImageCollection());
+            if ($seoMedia) {
+                $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
+                $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
+            }
+
+            // 3. try the default SEO image in the settings
+            if (! $seoMedia || ! $seoUrl) {
+                /** @var Settings $settings */
+                $settings = FilamentFlexibleContentBlockPages::config()->getSettingsModel()::getSettings();
+                $seoMedia = $settings->getFallbackImageMedia($settings->defaultSeoImage()->first(), $settings::COLLECTION_DEFAULT_SEO);
+                $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
+                $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
+            }
         }
 
-        if($seoUrl && $imageDimensions) {
+        if ($seoUrl && $imageDimensions) {
             SEOTools::opengraph()->addImage($seoUrl, $imageDimensions);
             SEOTools::twitter()->addValue('image', $seoUrl);
-        }*/
-    }
-
-    protected function setSEODefaultImage(Page $page)
-    {
-        $defaultSeoImage = flexiblePagesSettingImageUrl(Settings::COLLECTION_DEFAULT_SEO, Settings::CONVERSION_DEFAULT_SEO);
-        // $test = Storage::get($defaultSeoImage);
-        if ($defaultSeoImage && trim($defaultSeoImage) != '') {
-            $seoParams = $this->getSEOImageDimensions($defaultSeoImage, true);
-            $this->setSEOImage($defaultSeoImage, $seoParams);
-        } else {
-            $imageUrl = $page->getHeroImageUrl($page->getSEOImageConversionName());
-            $seoParams = $this->getSEOImageDimensions($imageUrl, true);
-            $this->setSEOImage($imageUrl, $seoParams);
         }
     }
 
@@ -143,7 +171,7 @@ class PageController extends Controller
 
         return Cache::remember($cacheKey,
             self::CACHE_SEO_IMAGE_TTL,
-            function() use ($seoMedia, $conversion) {
+            function () use ($seoMedia, $conversion) {
                 $conversionCollection = ConversionCollection::createForMedia($seoMedia);
                 $conversion = $conversionCollection->getByName($conversion);
 

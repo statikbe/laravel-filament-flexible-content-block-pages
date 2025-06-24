@@ -45,6 +45,8 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     use HasTranslatedSEOAttributesTrait;
     use HasTranslatedSlugAttributeTrait;
 
+    const HOME_PAGE = 'HOME';
+
     public function getTable()
     {
         return FilamentFlexibleContentBlockPages::config()->getPagesTable();

@@ -5,15 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-filament-flexible-content-block-pages.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-filament-flexible-content-block-pages)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+TODO This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Installation
 
@@ -29,7 +21,7 @@ Publish the config file with:
 php artisan vendor:publish --tag="filament-flexible-content-block-pages-config"
 ```
 
-If you want to alter the names of the database tables, do so in the config file, before running the migrations.
+If you want to alter the names of the database tables, do so in the config file, **before running the migrations**.
 
 You can publish and run the migrations with:
 
@@ -38,12 +30,7 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-migratio
 php artisan migrate
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
+Check [the configuration documentation}(#configuration) for more explanations on how to tweak the package.
 
 Optionally, you can publish the views using
 
@@ -51,18 +38,33 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
 ```
 
-## Usage
+## Setup in your project
+
+### Routes
+
+Register the routes in your route file, probably `web.php`:
 
 ```php
-$filamentFlexibleContentBlockPages = new Statikbe\FilamentFlexibleContentBlockPages();
-echo $filamentFlexibleContentBlockPages->echoPhrase('Hello, Statikbe!');
+\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
 ```
 
-## Testing
+### Filament panel
 
-```bash
-composer test
+The package contains a pre-configured panel. You can register the panel in the `app.php` configuration file.
+
+```php
+'providers' => [
+    // ...
+    \Statikbe\FilamentFlexibleContentBlockPages\FlexibleContentBlockPagesPanel::class,
+    // ...
+],
 ```
+
+If you want you can build your own panel from the provided resources.
+
+## Configuration
+
+TODO
 
 ## Changelog
 
