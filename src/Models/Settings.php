@@ -76,7 +76,8 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             $locale = app()->getLocale();
         }
 
-        $settingValue = Cache::tags([static::CACHE_SETTINGS])->rememberForever("settings::setting__{$settingField}_{$locale}", function () use ($settingField) {
+        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
+        $settingValue = Cache::rememberForever("settings::setting__{$settingField}_{$locale}", function () use ($settingField) {
             $setting = static::getSettings()->getAttribute($settingField);
 
             // replace text params in settings if it is a text field (based on $translatable fields):
@@ -100,7 +101,8 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     {
         $locale = app()->getLocale();
         /* @var Media|null $imageMedia */
-        $imageMedia = Cache::tags([static::CACHE_SETTINGS])->rememberForever(
+        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
+        $imageMedia = Cache::rememberForever(
             "filament-flexible-content-block-pages::settings::image_media__{$imageCollection}__{$locale}",
             function () use ($imageCollection): ?Media {
                 return static::getSettings()->getImageMedia($imageCollection);
@@ -125,7 +127,8 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
     public static function imageUrl(string $imageCollection, ?string $imageConversion = null): ?string
     {
-        return Cache::tags([self::CACHE_SETTINGS])->rememberForever(
+        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
+        return Cache::rememberForever(
             "filament-flexible-content-block-pages::settings::image_url__{$imageCollection}__{$imageConversion}",
             function () use ($imageCollection, $imageConversion) {
                 return static::getSettings()->getImageUrl($imageCollection, $imageConversion);
