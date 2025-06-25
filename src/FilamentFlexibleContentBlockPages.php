@@ -22,7 +22,7 @@ class FilamentFlexibleContentBlockPages
         return $this->config()->getRouteHelper()::getUrl($page, $locale);
     }
 
-    public function getSettings(): Settings
+    public function settings(): Settings
     {
         return $this->config()->getSettingsModel()::getSettings();
     }
