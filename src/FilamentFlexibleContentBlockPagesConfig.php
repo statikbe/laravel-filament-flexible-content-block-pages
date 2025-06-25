@@ -108,7 +108,7 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function getRouteHelper(): HandlesPageRoutes
     {
-        if (! $this->routeHelper) {
+        if (! isset($this->routeHelper)) {
             $this->routeHelper = app($this->packageConfig('route_helper', LocalisedPageRouteHelper::class));
         }
 
