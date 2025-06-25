@@ -1,10 +1,10 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders;
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class FilamentFlexibleContentBlockPagesDatabaseSeeder extends Seeder
 {
     public function run(): void
     {
