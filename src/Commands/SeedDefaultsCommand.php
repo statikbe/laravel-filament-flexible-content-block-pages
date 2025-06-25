@@ -28,10 +28,10 @@ class SeedDefaultsCommand extends Command
     {
         $this->info('Seeding default home page and settings...');
 
-        $homeSeeder = new HomePageSeeder();
+        $homeSeeder = new HomePageSeeder;
         $homeSeeder->run();
 
-        $settingsSeeder = new SettingsSeeder();
+        $settingsSeeder = new SettingsSeeder;
         $settingsSeeder->run();
 
         $this->info('Default home page and settings seeded successfully!');
