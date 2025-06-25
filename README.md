@@ -1,11 +1,28 @@
-# A simple content page management system with a flexible content block builder based on the Filament flexible content blocks package.
+# Filament Flexible Content Block Pages
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 
-TODO This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A simple content page management system with a flexible content block builder based on the [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks).
+
+This package aims to provide a basic, batteries-included CMS for Filament by providing page creation in Filament and 
+renders web pages that can be easily extended and styled.
+
+Other features that will be provided:
+- Pages with hero, slugs, content blocks, publication options and SEO fields.
+- Website: routing, blade views, CSS themes included.
+- Extendable settings model and Filament resource to store CMS settings and images.
+- Redirect support for when slugs are renamed
+- Sitemap generation
+- A ready-to-use Filament panel with all CMS features implemented.
+- Extendable models, resources and database tables.
+- A simple asset manager (TODO)
+- Re-usable content blocks (TODO)
+- Contact form (TODO)
+
+This package combines several existing packages and is therefore quite opinionated. 
 
 ## Installation
 
