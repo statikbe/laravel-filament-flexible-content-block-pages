@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;

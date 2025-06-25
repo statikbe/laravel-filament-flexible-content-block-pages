@@ -30,6 +30,12 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-migratio
 php artisan migrate
 ```
 
+You can now seed the home page and default settings by running:
+
+```bash
+php artisan db:seed Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders\DatabaseSeeder
+```
+
 Further configure the third-party packages that are used. Check the installation documentation of these packages:
 
 - [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation): 
