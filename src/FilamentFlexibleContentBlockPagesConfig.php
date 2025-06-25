@@ -6,6 +6,8 @@ use Filament\Resources\Resource;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
+use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
+use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
 
 class FilamentFlexibleContentBlockPagesConfig
@@ -24,11 +26,13 @@ class FilamentFlexibleContentBlockPagesConfig
 
     private string $settingsModel;
 
+    private HandlesPageRoutes $routeHelper;
+
     public function __construct()
     {
         $this->pageModel = $this->packageConfig('models.page', Page::class);
-        $this->redirectModel = $this->packageConfig('models.redirect', \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class);
-        $this->settingsModel = $this->packageConfig('models.settings', \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::class);
+        $this->redirectModel = $this->packageConfig('models.redirect', Redirect::class);
+        $this->settingsModel = $this->packageConfig('models.settings', Settings::class);
     }
 
     public function getSupportedLocales(): array
@@ -100,6 +104,15 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getSEODefaultCanonicalLocale(): string
     {
         return $this->packageConfig('seo.default_canonical_locale', 'en');
+    }
+
+    public function getRouteHelper(): HandlesPageRoutes
+    {
+        if (! $this->routeHelper) {
+            $this->routeHelper = app($this->packageConfig('route_helper', LocalisedPageRouteHelper::class));
+        }
+
+        return $this->routeHelper;
     }
 
     private function packageConfig(string $configKey, $default = null): mixed

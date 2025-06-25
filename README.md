@@ -30,6 +30,12 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-migratio
 php artisan migrate
 ```
 
+Further configure the third-party packages that are used. Check the installation documentation of these packages:
+
+- [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation): 
+  Make sure the middlewares are properly setup if you want to use localised routes.
+
+
 Check [the configuration documentation}(#configuration) for more explanations on how to tweak the package.
 
 Optionally, you can publish the views using
@@ -40,12 +46,19 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
 
 ## Setup in your project
 
+### Translations
+
+If you want translated content and routes, go through the following steps: 
+
+1. Configure the supported locales in the Filament Flexible Content Blocks configuration
+2. Configure the `route_helper` in [`filament-flexible-content-block-pages.php`](./config/filament-flexible-content-block-pages.php)
+
 ### Routes
 
 Register the routes in your route file, probably `web.php`:
 
 ```php
-\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
+\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::defineRoutes();
 ```
 
 ### Filament panel

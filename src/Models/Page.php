@@ -4,7 +4,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasAuthorAttributeTrait;
@@ -54,16 +53,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
 
     public function getViewUrl(?string $locale = null): string
     {
-        // toggle the locale to make sure the slug gets translated:
-        /*$currentLocale = app()->getLocale();
-        $locale = $locale ?? $currentLocale;
-
-        $url = LaravelLocalization::getLocalizedUrl($locale, route('home_index')) . '/' . $this->translate('slug', $locale);
-
-        return $url;*/
-
-        // TODO
-        return 'https://www.google.com';
+        return FilamentFlexibleContentBlockPages::getUrl($this, $locale);
     }
 
     public function getPreviewUrl(?string $locale = null): string

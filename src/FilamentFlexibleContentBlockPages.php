@@ -2,8 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
-use Illuminate\Support\Facades\Route;
-use Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers\PageController;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 
 class FilamentFlexibleContentBlockPages
 {
@@ -14,13 +14,16 @@ class FilamentFlexibleContentBlockPages
 
     public function routes(): void
     {
-        Route::get('{grandparent}/{parent}/{page}', [PageController::class, 'grandchildIndex'])
-            ->name('filament-flexible-content-block-pages::child_page_index');
-        Route::get('{parent}/{page}', [PageController::class, 'childIndex'])
-            ->name('filament-flexible-content-block-pages::child_page_index');
-        Route::get('{page}', [PageController::class, 'index'])
-            ->name('filament-flexible-content-block-pages::page_index');
-        Route::get('/', [PageController::class, 'homeIndex'])
-            ->name('home');
+        $this->config()->getRouteHelper()::defineRoutes();
+    }
+
+    public function getUrl(Page $page, ?string $locale = null): string
+    {
+        return $this->config()->getRouteHelper()::getUrl($page, $locale);
+    }
+
+    public function getSettings(): Settings
+    {
+        return $this->config()->getSettingsModel()::getSettings();
     }
 }

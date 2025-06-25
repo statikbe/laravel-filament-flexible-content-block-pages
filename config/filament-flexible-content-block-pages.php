@@ -55,4 +55,5 @@ return [
         'default_canonical_locale' => 'nl',
     ],
 
+    'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
 ];
