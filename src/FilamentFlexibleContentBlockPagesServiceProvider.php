@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
 {
@@ -23,6 +24,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 'create_filament_flexible_content_block_pages_redirects_table',
                 'create_filament_flexible_content_block_pages_settings_table',
             ])
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasCommand(SeedDefaultsCommand::class);
     }
 }
