@@ -14,12 +14,12 @@ class FilamentFlexibleContentBlockPages
 
     public function routes(): void
     {
-        $this->config()->getRouteHelper()::defineRoutes();
+        $this->config()->getRouteHelper()->defineRoutes();
     }
 
     public function getUrl(Page $page, ?string $locale = null): string
     {
-        return $this->config()->getRouteHelper()::getUrl($page, $locale);
+        return $this->config()->getRouteHelper()->getUrl($page, $locale);
     }
 
     public function settings(): Settings
