@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
@@ -29,7 +30,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
             ->hasCommand(SeedDefaultsCommand::class)
             ->hasViewComponents('flexible-pages',
                 LanguageSwitch::class,
-                'filament-flexible-content-block-pages::layouts.base',
+                BaseLayout::class,
             );
     }
 }
