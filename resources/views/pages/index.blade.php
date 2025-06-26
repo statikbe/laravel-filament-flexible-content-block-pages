@@ -5,7 +5,7 @@
     /* @var Page $page */
 @endphp
 
-<x-layouts.base title="{{ $page->title }}" wide="true">
+<x-flexible-pages-layouts.base title="{{ $page->title }}" wide="true">
     <header>
         <x-flexible-pages-language-switch/>
     </header>
@@ -21,4 +21,4 @@
     <footer>
         <div>{{flexiblePagesSetting(Settings::SETTING_FOOTER_COPYRIGHT)}}</div>
     </footer>
-</x-layouts.base>
+</x-flexible-pages-layouts.base>
