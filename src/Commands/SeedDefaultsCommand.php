@@ -38,25 +38,29 @@ class SeedDefaultsCommand extends Command
 
     public function seedHomePage(): void
     {
-        $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
         $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
+        if(!$pageModel::code(Page::HOME_PAGE)->exists()) {
+            $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
 
-        $homePage = new $pageModel;
-        $homePage->code = Page::HOME_PAGE;
-        $this->setTranslatedField($homePage, 'title', 'Home', $locales);
-        $homePage->save();
+            $homePage = new $pageModel;
+            $homePage->code = Page::HOME_PAGE;
+            $this->setTranslatedField($homePage, 'title', 'Home', $locales);
+            $homePage->save();
+        }
     }
 
     public function seedSettings(): void
     {
-        $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
         $settingsModel = FilamentFlexibleContentBlockPages::config()->getSettingsModel();
-        $settings = new $settingsModel;
+        if($settingsModel::query()->count() === 0) {
+            $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
+            $settings = new $settingsModel;
 
-        $settings->site_title = config('app.name');
-        $this->setTranslatedField($settings, 'footer_copyright', 'Made with love by Statik', $locales);
+            $settings->site_title = config('app.name');
+            $this->setTranslatedField($settings, 'footer_copyright', 'Made with love by Statik', $locales);
 
-        $settings->save();
+            $settings->save();
+        }
     }
 
     private function setTranslatedField(Model $model, string $field, string $value, array $locales)
