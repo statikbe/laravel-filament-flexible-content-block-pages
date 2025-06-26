@@ -3,8 +3,8 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
 use Illuminate\Console\Command;
-use Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders\HomePageSeeder;
-use Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders\SettingsSeeder;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 class SeedDefaultsCommand extends Command
 {
@@ -29,13 +29,39 @@ class SeedDefaultsCommand extends Command
     {
         $this->info('Seeding default home page and settings...');
 
-        $homeSeeder = new HomePageSeeder;
-        $homeSeeder->run();
-
-        $settingsSeeder = new SettingsSeeder;
-        $settingsSeeder->run();
+        $this->seedHomePage();
+        $this->seedSettings();
 
         $this->info('Default home page and settings seeded successfully!');
+    }
 
+    public function seedHomePage(): void
+    {
+        $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
+        $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
+
+        $homePage = new $pageModel;
+        $homePage->code = Page::HOME_PAGE;
+        $this->setTranslatedField($homePage, 'title', 'Home', $locales);
+        $homePage->save();
+    }
+
+    public function seedSettings(): void
+    {
+        $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
+        $settingsModel = FilamentFlexibleContentBlockPages::config()->getSettingsModel();
+        $settings = new $settingsModel;
+
+        $settings->site_title = config('app.name');
+        $this->setTranslatedField($settings, 'footer_copyright', 'Made with love by Statik', $locales);
+
+        $settings->save();
+    }
+
+    private function setTranslatedField(Page $homePage, string $field, string $value, array $locales)
+    {
+        foreach ($locales as $locale) {
+            $homePage->setTranslation($field, $locale, $value);
+        }
     }
 }
