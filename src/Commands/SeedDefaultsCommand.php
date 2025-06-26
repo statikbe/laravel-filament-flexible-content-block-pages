@@ -3,8 +3,10 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Spatie\Translatable\HasTranslations;
 
 class SeedDefaultsCommand extends Command
 {
@@ -58,10 +60,12 @@ class SeedDefaultsCommand extends Command
         $settings->save();
     }
 
-    private function setTranslatedField(Page $homePage, string $field, string $value, array $locales)
+    private function setTranslatedField(Model $model, string $field, string $value, array $locales)
     {
+        /** @var HasTranslations $locale */
+
         foreach ($locales as $locale) {
-            $homePage->setTranslation($field, $locale, $value);
+            $model->setTranslation($field, $locale, $value);
         }
     }
 }
