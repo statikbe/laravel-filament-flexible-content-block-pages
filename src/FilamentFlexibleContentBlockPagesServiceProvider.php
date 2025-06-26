@@ -29,7 +29,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
             ->hasCommand(SeedDefaultsCommand::class)
             ->hasViewComponents('flexible-pages',
                 LanguageSwitch::class,
-                'layouts.base',
+                'filament-flexible-content-block-pages::layouts.base',
             );
     }
 }
