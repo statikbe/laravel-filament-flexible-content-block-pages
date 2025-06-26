@@ -7,7 +7,7 @@
 
 <x-layouts.base title="{{ $page->title }}" wide="true">
     <header>
-        <x-language-switch/>
+        <x-flexible-pages-language-switch/>
     </header>
 
     <main class="prose-headings:font-base">

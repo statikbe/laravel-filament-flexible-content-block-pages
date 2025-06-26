@@ -39,7 +39,7 @@ class SeedDefaultsCommand extends Command
     public function seedHomePage(): void
     {
         $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
-        if(!$pageModel::code(Page::HOME_PAGE)->exists()) {
+        if (! $pageModel::code(Page::HOME_PAGE)->exists()) {
             $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
 
             $homePage = new $pageModel;
@@ -52,7 +52,7 @@ class SeedDefaultsCommand extends Command
     public function seedSettings(): void
     {
         $settingsModel = FilamentFlexibleContentBlockPages::config()->getSettingsModel();
-        if($settingsModel::query()->count() === 0) {
+        if ($settingsModel::query()->count() === 0) {
             $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
             $settings = new $settingsModel;
 
