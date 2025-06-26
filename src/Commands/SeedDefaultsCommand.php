@@ -4,9 +4,9 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
-use Spatie\Translatable\HasTranslations;
 
 class SeedDefaultsCommand extends Command
 {
@@ -62,8 +62,6 @@ class SeedDefaultsCommand extends Command
 
     private function setTranslatedField(Model $model, string $field, string $value, array $locales)
     {
-        /** @var HasTranslations $locale */
-
         foreach ($locales as $locale) {
             $model->setTranslation($field, $locale, $value);
         }
