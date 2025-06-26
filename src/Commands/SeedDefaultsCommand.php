@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
+use Illuminate\Console\Command;
 use Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders\HomePageSeeder;
 use Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders\SettingsSeeder;
 
