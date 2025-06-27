@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ \Artesaos\SEOTools\SEOTools::getTitle() ?? flexiblePagesSetting(\Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::SETTING_SITE_TITLE, app()->getLocale(), config('app.name') }}</title>
+    <title>{{ $title }}</title>
 
     {!! \Artesaos\SEOTools\SEOTools::generate() !!}
 

@@ -9,6 +9,8 @@ use function Statikbe\FilamentFlexibleContentBlockPages\View\Components\count;
 
 class LanguageSwitch extends Component
 {
+    public function __construct(public string $title){}
+
     public function render()
     {
         return view('filament-flexible-content-block-pages::components.language-switch');
@@ -16,6 +18,6 @@ class LanguageSwitch extends Component
 
     public function shouldRender(): bool
     {
-        return count(LaravelLocalization::getSupportedLocales()) > 1;
+        return !empty(LaravelLocalization::getSupportedLocales());
     }
 }

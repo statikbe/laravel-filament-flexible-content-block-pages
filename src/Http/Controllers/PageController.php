@@ -41,8 +41,13 @@ class PageController extends Controller
         $this->setSEOLocalisationAndCanonicalUrl();
         $this->setSEOImage($page);
 
+        $title = $page->title ??
+            SEOTools::getTitle() ??
+            $this->getSettingsTitle();
+
         return view(self::TEMPLATE_PATH, [
             'page' => $page,
+            'title' => $title,
         ]);
     }
 
@@ -121,8 +126,8 @@ class PageController extends Controller
 
     protected function setBasicSEO(Page $page)
     {
-        SEOTools::setTitle(($page->seo_title ? $page->seo_title : $page->title).$this->getSEOTitlePostfix());
-        SEOTools::setDescription(($page->seo_description ? $page->seo_description : strip_tags($page->intro)));
+        SEOTools::setTitle(($page->seo_title ?? $page->title ?? $this->getSettingsTitle()).$this->getSEOTitlePostfix());
+        SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
     }
 
@@ -180,5 +185,10 @@ class PageController extends Controller
                     'height' => $conversion->getHeight(),
                 ];
             });
+    }
+
+    private function getSettingsTitle(): string
+    {
+        return flexiblePagesSetting(Settings::SETTING_SITE_TITLE, app()->getLocale(), config('app.name'));
     }
 }
