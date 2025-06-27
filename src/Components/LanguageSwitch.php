@@ -5,8 +5,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 use Illuminate\View\Component;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-use function Statikbe\FilamentFlexibleContentBlockPages\View\Components\count;
-
 class LanguageSwitch extends Component
 {
     public function render()
@@ -16,6 +14,6 @@ class LanguageSwitch extends Component
 
     public function shouldRender(): bool
     {
-        return !empty(LaravelLocalization::getSupportedLocales());
+        return ! empty(LaravelLocalization::getSupportedLocales());
     }
 }
