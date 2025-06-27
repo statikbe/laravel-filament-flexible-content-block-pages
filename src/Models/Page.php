@@ -67,4 +67,9 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
             ->first()
             ?->getViewUrl($locale);
     }
+
+    public function isHomePage(): bool
+    {
+        return $this->code === static::HOME_PAGE;
+    }
 }

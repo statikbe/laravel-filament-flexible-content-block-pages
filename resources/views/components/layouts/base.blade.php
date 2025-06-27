@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title }}</title>
-
-    {!! \Artesaos\SEOTools\SEOTools::generate() !!}
+    {!! \Artesaos\SEOTools\Facades\SEOTools::generate() !!}
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

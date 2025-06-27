@@ -11,7 +11,7 @@ class PageRouteHelper extends AbstractPageRouteHelper
 {
     public function getUrl(Page $page, ?string $locale = null): string
     {
-        if ($page->code === Page::HOME_PAGE) {
+        if ($page->isHomePage()) {
             return route(static::ROUTE_HOME);
         }
 

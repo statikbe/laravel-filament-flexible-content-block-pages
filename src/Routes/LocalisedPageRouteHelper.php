@@ -23,7 +23,7 @@ class LocalisedPageRouteHelper extends AbstractPageRouteHelper
 
     public function getUrl(Page $page, ?string $locale = null): string
     {
-        if ($page->code === Page::HOME_PAGE) {
+        if ($page->isHomePage()) {
             return LaravelLocalization::getLocalizedUrl($locale, static::ROUTE_HOME);
         }
 

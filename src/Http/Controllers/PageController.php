@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Image\Image;
 use Spatie\MediaLibrary\Conversions\ConversionCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -41,13 +42,8 @@ class PageController extends Controller
         $this->setSEOLocalisationAndCanonicalUrl();
         $this->setSEOImage($page);
 
-        $title = $page->title ??
-            SEOTools::getTitle() ??
-            $this->getSettingsTitle();
-
         return view(self::TEMPLATE_PATH, [
             'page' => $page,
-            'title' => $title,
         ]);
     }
 
@@ -81,8 +77,12 @@ class PageController extends Controller
         return $this->index($page);
     }
 
-    protected function getSEOTitlePostfix()
+    protected function getSEOTitlePostfix(Page $page): string
     {
+        if($page->isHomePage()) {
+            return '';
+        }
+
         return sprintf(' | %s', flexiblePagesSetting(Settings::SETTING_SITE_TITLE));
     }
 
@@ -126,7 +126,8 @@ class PageController extends Controller
 
     protected function setBasicSEO(Page $page)
     {
-        SEOTools::setTitle(($page->seo_title ?? $page->title ?? $this->getSettingsTitle()).$this->getSEOTitlePostfix());
+        $title = $page->seo_title ?? $page->title ?? $this->getSettingsTitle();
+        SEOTools::setTitle($title . $this->getSEOTitlePostfix($page), false);
         SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
     }
@@ -177,12 +178,12 @@ class PageController extends Controller
         return Cache::remember($cacheKey,
             self::CACHE_SEO_IMAGE_TTL,
             function () use ($seoMedia, $conversion) {
-                $conversionCollection = ConversionCollection::createForMedia($seoMedia);
-                $conversion = $conversionCollection->getByName($conversion);
+                $filePath = $seoMedia->getPath($conversion);
+                $image = Image::load($filePath);
 
                 return [
-                    'width' => $conversion->getWidth(),
-                    'height' => $conversion->getHeight(),
+                    'width' => $image->getWidth(),
+                    'height' => $image->getHeight(),
                 ];
             });
     }
