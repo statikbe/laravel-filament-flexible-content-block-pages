@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Image\Image;
-use Spatie\MediaLibrary\Conversions\ConversionCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -79,7 +78,7 @@ class PageController extends Controller
 
     protected function getSEOTitlePostfix(Page $page): string
     {
-        if($page->isHomePage()) {
+        if ($page->isHomePage()) {
             return '';
         }
 
@@ -127,7 +126,7 @@ class PageController extends Controller
     protected function setBasicSEO(Page $page)
     {
         $title = $page->seo_title ?? $page->title ?? $this->getSettingsTitle();
-        SEOTools::setTitle($title . $this->getSEOTitlePostfix($page), false);
+        SEOTools::setTitle($title.$this->getSEOTitlePostfix($page), false);
         SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
     }
