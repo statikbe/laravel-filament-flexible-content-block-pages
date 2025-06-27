@@ -9,8 +9,6 @@ use function Statikbe\FilamentFlexibleContentBlockPages\View\Components\count;
 
 class LanguageSwitch extends Component
 {
-    public function __construct(public string $title){}
-
     public function render()
     {
         return view('filament-flexible-content-block-pages::components.language-switch');
