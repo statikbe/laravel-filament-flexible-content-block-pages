@@ -36,4 +36,20 @@ return [
         'translatable_field_hint' => 'This field can be translated. You can view/change the current language in the top right.',
         'settings_footer_copyright' => 'Copyright message in footer',
     ],
+    'form_component' => [
+        'name_lbl' => 'Name',
+        'colour_lbl' => 'Color',
+        'seo_description_lbl' => 'SEO description',
+    ],
+    'tag_types' => [
+        'navigation_group' => 'Tags',
+        'tag_type_plural_lbl' => 'Tag types',
+        'tag_type_lbl' => 'Tag type',
+        'tag_type_is_default_type_lbl' => 'Is default tag type',
+    ],
+    'tags' => [
+        'navigation_group' => 'Tags',
+        'tag_type_plural_lbl' => 'Tags',
+        'tag_type_lbl' => 'Tag',
+    ],
 ];
