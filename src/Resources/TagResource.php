@@ -44,6 +44,11 @@ class TagResource extends Resource
         return flexiblePagesTrans('tags.tag_plural_lbl');
     }
 
+    public static function getLabel(): ?string
+    {
+        return flexiblePagesTrans('tags.tag_lbl');
+    }
+
     public static function getModelLabel(): string
     {
         return flexiblePagesTrans('tags.tag_lbl');

@@ -49,6 +49,11 @@ class TagTypeResource extends Resource
         return flexiblePagesTrans('tag_types.tag_type_plural_lbl');
     }
 
+    public static function getLabel(): ?string
+    {
+        return flexiblePagesTrans('tag_types.tag_type_lbl');
+    }
+
     public static function getModelLabel(): string
     {
         return flexiblePagesTrans('tag_types.tag_type_lbl');
@@ -61,7 +66,7 @@ class TagTypeResource extends Resource
 
     public static function getNavigationParentItem(): ?string
     {
-        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_TAG]::getNavigationParentItem();
+        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_TAG]::getLabel();
     }
 
     public static function getNavigationSort(): ?int
