@@ -81,7 +81,7 @@ class SeedDefaultsCommand extends Command
             $seoType = new $tagTypeModel;
             $seoType->code = TagType::TYPE_DEFAULT;
             $this->setTranslatedField($seoType, 'name', 'Standaard', $locales);
-            $seoType->color = '#4FC3F7';
+            $seoType->colour = '#4FC3F7';
             $seoType->icon = 'heroicon-s-tag';
             $seoType->is_default_type = true;
             $seoType->has_seo_pages = false;
@@ -92,7 +92,7 @@ class SeedDefaultsCommand extends Command
             $seoType = new $tagTypeModel;
             $seoType->code = TagType::TYPE_SEO;
             $this->setTranslatedField($seoType, 'name', "Alleen voor SEO-pagina's", $locales);
-            $seoType->color = '#FFC107';
+            $seoType->colour = '#FFC107';
             $seoType->icon = 'heroicon-s-alt-globe';
             $seoType->is_default_type = false;
             $seoType->has_seo_pages = true;
