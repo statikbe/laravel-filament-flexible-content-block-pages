@@ -5,6 +5,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -55,6 +56,12 @@ return [
         ],
         'auth_middleware' => [
             Authenticate::class,
+        ],
+        'navigation_items' => [
+            NavigationItem::make(fn () => flexiblePagesTrans('panel.navigation_items.go_to_website_lbl'))
+                ->url('/')->openUrlInNewTab()
+                ->icon('heroicon-o-globe-alt')
+                ->sort(-100),
         ],
     ],
 

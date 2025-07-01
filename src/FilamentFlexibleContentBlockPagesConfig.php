@@ -155,6 +155,11 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->routeHelper;
     }
 
+    public function getPanelNavigationItems(): array
+    {
+        return $this->packageConfig('panel.navigation_items', []);
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey);

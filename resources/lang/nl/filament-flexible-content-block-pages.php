@@ -55,4 +55,9 @@ return [
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'Je kunt een type toewijzen om deze tag alleen op bepaalde paginatypes te gebruiken.',
     ],
+    'panel' => [
+        'navigation_items' => [
+            'go_to_website_lbl' => 'Bekijk de website',
+        ]
+    ],
 ];

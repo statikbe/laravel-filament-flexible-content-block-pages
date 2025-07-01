@@ -55,4 +55,9 @@ return [
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'You can assign a type to use this tag only on certain page types.',
     ],
+    'panel' => [
+        'navigation_items' => [
+            'go_to_website_lbl' => 'View the website',
+        ]
+    ],
 ];
