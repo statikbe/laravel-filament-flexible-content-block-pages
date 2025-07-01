@@ -31,14 +31,17 @@ return new class extends Migration
         Schema::create($tagTable, function (Blueprint $table) {
             $table->id();
             $table->json('name');
-            $table->json('seo_description')->nullable();
+            $table->json('seo_description')
+                ->nullable();
             $table->json('slug');
-            $table->string('type')->nullable();
+            $table->string('type')
+                ->nullable();
             $table->foreign('type')
                 ->references('code')
                 ->on(FilamentFlexibleContentBlockPages::config()->getTagTypesTable())
                 ->cascadeOnDelete();
-            $table->integer('order_column')->nullable();
+            $table->integer('order_column')
+                ->nullable();
             $table->timestamps();
         });
 

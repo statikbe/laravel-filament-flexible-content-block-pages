@@ -14,55 +14,72 @@ return new class extends Migration
         Schema::create($pageTable, function (Blueprint $table) use ($pageTable) {
             $table->id();
 
-            $table->json('title')->default('{}'); //Default only works on JSON on MySQL 8 or newer
+            $table->json('title');
 
             //Intro:
-            $table->json('intro')->default('{}');
+            $table->json('intro')
+                ->nullable();
 
             //Hero image:
-            $table->json('hero_image_copyright')->default('{}');
-            $table->json('hero_image_title')->default('{}');
+            $table->json('hero_image_copyright')
+                ->nullable();
+            $table->json('hero_image_title')
+                ->nullable();
 
             //Publishing:
-            $table->timestamp('publishing_begins_at')->nullable();
-            $table->timestamp('publishing_ends_at')->nullable();
+            $table->timestamp('publishing_begins_at')
+                ->nullable();
+            $table->timestamp('publishing_ends_at')
+                ->nullable();
             $table->index('publishing_begins_at');
             $table->index('publishing_ends_at');
 
             //SEO:
-            $table->json('seo_title')->nullable();
-            $table->json('seo_description')->nullable();
-            $table->json('seo_keywords')->nullable();
+            $table->json('seo_title')
+                ->nullable();
+            $table->json('seo_description')
+                ->nullable();
+            $table->json('seo_keywords')
+                ->nullable();
 
             //Overview:
-            $table->json('overview_title')->nullable();
-            $table->json('overview_description')->nullable();
+            $table->json('overview_title')
+                ->nullable();
+            $table->json('overview_description')
+                ->nullable();
 
             //Content blocks:
-            $table->json('content_blocks')->default('[]'); //Default only works on JSON on MySQL 8 or newer
+            $table->json('content_blocks')
+                ->default('[]'); //Default only works on JSON on MySQL 8 or newer
 
             //Slug:
-            $table->json('slug')->default('{}');
+            $table->json('slug')
+                ->nullable();
 
             //Unique code:
-            $table->string('code')->nullable()->unique();
+            $table->string('code')
+                ->nullable()
+                ->unique();
 
             //Author:
-            $table->unsignedBigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('author_id')
+                ->nullable();
             $table->foreign('author_id')
                 ->references('id')
                 ->on(FilamentFlexibleContentBlockPages::config()->getAuthorsTable())
                 ->onDelete('set null');
 
             // Parent-child:
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('parent_id')
+                ->nullable();
             $table->foreign('parent_id')
                 ->references('id')
                 ->on($pageTable)
                 ->onDelete('set null');
 
             // Deletable:
-            $table->boolean('is_undeletable')->default(false);
+            $table->boolean('is_undeletable')
+                ->default(false);
 
             $table->timestamps();
         });
