@@ -50,7 +50,7 @@ return new class extends Migration
 
             //Content blocks:
             $table->json('content_blocks')
-                ->default('[]'); //Default only works on JSON on MySQL 8 or newer
+                ->nullable();
 
             //Slug:
             $table->json('slug')
