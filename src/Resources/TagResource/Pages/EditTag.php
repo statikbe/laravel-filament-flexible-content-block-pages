@@ -14,7 +14,7 @@ class EditTag extends EditRecord
 
     public static function getResource(): string
     {
-        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE];
+        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_TAG];
     }
 
     protected function getActions(): array
