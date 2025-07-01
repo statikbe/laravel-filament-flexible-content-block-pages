@@ -73,7 +73,7 @@ class TagResource extends Resource
                         ->required()
                         ->default(function (Select $component) {
                             return $component->getRelationship()?->getModel()->query()
-                                ->where('is_default_status', true)->first()->id ?? null;
+                                ->where('is_default_type', true)->first()->id ?? null;
                         }),
                 ]),
             ]);
