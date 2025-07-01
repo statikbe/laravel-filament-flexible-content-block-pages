@@ -97,7 +97,7 @@ class TagTypeResource extends Resource
                     ->label(flexiblePagesTrans('form_component.name_lbl')),
                 ColorColumn::make('colour')
                     ->label(flexiblePagesTrans('form_component.colour_lbl')),
-                ToggleColumn::make('is_initial_status')
+                ToggleColumn::make('is_default_type')
                     ->label(flexiblePagesTrans('tag_types.tag_type_is_default_type_lbl')),
                 IconColumn::make('icon')
                     ->label(flexiblePagesTrans('form_component.icon_lbl')),
