@@ -17,6 +17,7 @@ class SlugChangedListener
         // add redirect:
         if ($event->recordWasPublished) {
             foreach ($event->changedSlugs as $changedSlug) {
+                /** @var array{ locale: string, oldSlug: ?string, newSlug: ?string } $changedSlug */
                 $oldUrl = null;
                 $newUrl = null;
 
@@ -32,11 +33,11 @@ class SlugChangedListener
                     $oldUrlPath = parse_url($oldUrl, PHP_URL_PATH);
                     $newUrlPath = parse_url($newUrl, PHP_URL_PATH);
 
-                    $redirectDoesNotExist = Redirect::where('old_url', $oldUrlPath)
+                    $redirectExists = Redirect::where('old_url', $oldUrlPath)
                         ->where('new_url', $newUrlPath)
-                        ->notExists();
+                        ->exists();
 
-                    if ($redirectDoesNotExist) {
+                    if (! $redirectExists) {
                         $redirect = new Redirect;
                         $redirect->old_url = $oldUrlPath;
                         $redirect->new_url = $newUrlPath;

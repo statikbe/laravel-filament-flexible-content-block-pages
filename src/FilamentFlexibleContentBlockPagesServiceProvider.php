@@ -25,6 +25,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 'create_filament_flexible_content_block_pages_table',
                 'create_filament_flexible_content_block_pages_redirects_table',
                 'create_filament_flexible_content_block_pages_settings_table',
+                'create_filament_flexible_content_block_tags_table',
             ])
             ->hasTranslations()
             ->hasCommand(SeedDefaultsCommand::class)

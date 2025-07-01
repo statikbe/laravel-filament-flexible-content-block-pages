@@ -2,30 +2,40 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
+use Statikbe\FilamentFlexibleContentBlockPages\Cache\TaggableCache;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasMediaAttributes;
+use Statikbe\FilamentFlexibleContentBlockPages\Observers\SettingsObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasMediaAttributesTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedMediaTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasTranslatableMedia;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Enums\ImageFormat;
 
+/**
+ * @property string $site_title
+ * @property string $contact_info
+ * @property string $footer_copyright
+ * @property Media|null $defaultSeoImage
+ */
+#[ObservedBy(SettingsObserver::class)]
 class Settings extends Model implements HasMedia, HasTranslatableMedia
 {
-    use HasMediaAttributes;
     use HasTranslatedMediaTrait;
     use HasTranslations;
     use InteractsWithMedia;
+    use HasMediaAttributesTrait;
 
-    const CACHE_SETTINGS = 'settings';
+    const CACHE_TAG_SETTINGS = 'filament-flexible-content-block-pages::settings';
 
     const SETTING_SITE_TITLE = 'site_title';
 
@@ -76,21 +86,24 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             $locale = app()->getLocale();
         }
 
-        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
-        $settingValue = Cache::rememberForever("settings::setting__{$settingField}_{$locale}", function () use ($settingField) {
-            $setting = static::getSettings()->getAttribute($settingField);
+        $cacheKey = "filament-flexible-content-block-pages::settings::setting__{$settingField}_{$locale}";
+        $settingValue = TaggableCache::rememberForeverWithTag(
+            static::CACHE_TAG_SETTINGS,
+            $cacheKey,
+            function () use ($settingField) {
+                $setting = static::getSettings()->getAttribute($settingField);
 
-            // replace text params in settings if it is a text field (based on $translatable fields):
-            if (in_array($settingField, (new Settings)->translatable)) {
-                $setting = FilamentFlexibleContentBlocks::replaceParameters($setting);
-            }
+                // replace text params in settings if it is a text field (based on $translatable fields):
+                if (in_array($settingField, (new Settings)->translatable)) {
+                    $setting = FilamentFlexibleContentBlocks::replaceParameters($setting);
+                }
 
-            return $setting;
-        });
+                return $setting;
+            });
 
         // get translated value if exists:
         if (is_array($settingValue)) {
-            // if no translation is available return the first value:
+            // if no translation is available, return the first value:
             return $settingValue[app()->getLocale()] ?? reset($settingValue);
         }
 
@@ -101,8 +114,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
     {
         $locale = app()->getLocale();
         /* @var Media|null $imageMedia */
-        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
-        $imageMedia = Cache::rememberForever(
+
+        $imageMedia = TaggableCache::rememberForeverWithTag(
+            static::CACHE_TAG_SETTINGS,
             "filament-flexible-content-block-pages::settings::image_media__{$imageCollection}__{$locale}",
             function () use ($imageCollection): ?Media {
                 return static::getSettings()->getImageMedia($imageCollection);
@@ -127,8 +141,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
     public static function imageUrl(string $imageCollection, ?string $imageConversion = null): ?string
     {
-        // TODO fix cache tags: Cache::tags([static::CACHE_SETTINGS])
-        return Cache::rememberForever(
+
+        return TaggableCache::rememberForeverWithTag(
+            static::CACHE_TAG_SETTINGS,
             "filament-flexible-content-block-pages::settings::image_url__{$imageCollection}__{$imageConversion}",
             function () use ($imageCollection, $imageConversion) {
                 return static::getSettings()->getImageUrl($imageCollection, $imageConversion);
@@ -140,6 +155,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
         return $this->getFirstMediaUrl($collection, $conversion);
     }
 
+    /**
+     * Returns the first media for the given collection. First, we check if there is a locale specific version.
+     */
     public function getImageMedia(string $collection): ?Media
     {
         $media = $this->getFirstMedia($collection, ['locale' => app()->getLocale()]);

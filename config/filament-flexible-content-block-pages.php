@@ -15,9 +15,11 @@ use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPages
 
 return [
     'models' => [
-        'page' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
-        'redirect' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class,
-        'settings' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => \Statikbe\FilamentFlexibleContentBlockPages\Models\Tag::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => \Statikbe\FilamentFlexibleContentBlockPages\Models\TagType::class,
     ],
 
     'table_names' => [
@@ -25,12 +27,17 @@ return [
         FilamentFlexibleContentBlockPagesConfig::TYPE_AUTHOR => 'users',
         FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => 'settings',
         FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => 'redirects',
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => 'tags',
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAGGABLE => 'taggables',
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => 'tag_types',
     ],
 
     'resources' => [
         FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
         FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource::class,
         FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => \Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => \Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => \Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource::class,
     ],
 
     'panel' => [

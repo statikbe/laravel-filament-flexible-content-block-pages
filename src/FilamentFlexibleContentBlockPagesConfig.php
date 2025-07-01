@@ -6,6 +6,8 @@ use Filament\Resources\Resource;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
@@ -20,19 +22,32 @@ class FilamentFlexibleContentBlockPagesConfig
 
     const TYPE_AUTHOR = 'authors';
 
+    const TYPE_TAG = 'tags';
+
+    const TYPE_TAG_TYPE = 'tag_types';
+
+    const TYPE_TAGGABLE = 'taggables';
+
     private string $pageModel;
 
     private string $redirectModel;
 
     private string $settingsModel;
 
+    private string $tagModel;
+
+    private string $tagTypeModel;
+
     private HandlesPageRoutes $routeHelper;
 
     public function __construct()
     {
-        $this->pageModel = $this->packageConfig('models.page', Page::class);
-        $this->redirectModel = $this->packageConfig('models.redirect', Redirect::class);
-        $this->settingsModel = $this->packageConfig('models.settings', Settings::class);
+        $this->pageModel = $this->packageConfig('models.'.static::TYPE_PAGE, Page::class);
+        $this->redirectModel = $this->packageConfig('models.'.static::TYPE_REDIRECT, Redirect::class);
+        $this->settingsModel = $this->packageConfig('models.'.static::TYPE_SETTINGS, Settings::class);
+        $this->tagModel = $this->packageConfig('models.'.static::TYPE_TAG, Tag::class);
+        $this->tagTypeModel = $this->packageConfig('models.'.static::TYPE_TAG_TYPE, TagType::class);
+
     }
 
     public function getSupportedLocales(): array
@@ -58,24 +73,49 @@ class FilamentFlexibleContentBlockPagesConfig
         return app($this->settingsModel);
     }
 
+    public function getTagModel(): Tag
+    {
+        return app($this->tagModel);
+    }
+
+    public function getTagTypeModel(): TagType
+    {
+        return app($this->tagTypeModel);
+    }
+
     public function getAuthorsTable(): string
     {
-        return $this->packageConfig('table_names.authors', 'users');
+        return $this->packageConfig('table_names.'.static::TYPE_AUTHOR, 'users');
     }
 
     public function getPagesTable(): string
     {
-        return $this->packageConfig('table_names.pages', 'pages');
+        return $this->packageConfig('table_names.'.static::TYPE_PAGE, 'pages');
     }
 
     public function getRedirectsTable(): string
     {
-        return $this->packageConfig('table_names.redirects', 'redirects');
+        return $this->packageConfig('table_names.'.static::TYPE_REDIRECT, 'redirects');
     }
 
     public function getSettingsTable(): string
     {
-        return $this->packageConfig('table_names.settings', 'settings');
+        return $this->packageConfig('table_names.'.static::TYPE_SETTINGS, 'settings');
+    }
+
+    public function getTagsTable(): string
+    {
+        return $this->packageConfig('table_names.'.static::TYPE_TAG, 'tags');
+    }
+
+    public function getTagTypesTable(): string
+    {
+        return $this->packageConfig('table_names.'.static::TYPE_TAG_TYPE, 'tag_types');
+    }
+
+    public function getTaggablesTable(): string
+    {
+        return $this->packageConfig('table_names.'.static::TYPE_TAGGABLE, 'taggables');
     }
 
     /**

@@ -133,7 +133,9 @@ class PageController extends Controller
 
     protected function setSEOImage(Page $page)
     {
-        $seoMedia = $page->getFallbackImageMedia($page->SEOImage()->first(), $page->getSEOImageCollection());
+        /** @var Media|null $firstSeoMedia */
+        $firstSeoMedia = $page->seoImage()->first();
+        $seoMedia = $page->getFallbackImageMedia($firstSeoMedia, $page->getSEOImageCollection());
         $seoUrl = null;
         $imageDimensions = null;
 
@@ -143,7 +145,9 @@ class PageController extends Controller
             $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
         } else {
             // 2. try the hero image of the page
-            $seoMedia = $page->getFallbackImageMedia($page->heroImage()->first(), $page->getHeroImageCollection());
+            /** @var Media|null $firstHeroMedia */
+            $firstHeroMedia = $page->heroImage()->first();
+            $seoMedia = $page->getFallbackImageMedia($firstHeroMedia, $page->getHeroImageCollection());
             if ($seoMedia) {
                 $seoUrl = $seoMedia->getUrl($page->getSEOImageConversionName());
                 $imageDimensions = $this->getSEOImageDimensions($seoMedia, $page->getSEOImageConversionName());
@@ -153,7 +157,10 @@ class PageController extends Controller
             if (! $seoMedia || ! $seoUrl) {
                 /** @var Settings $settings */
                 $settings = FilamentFlexibleContentBlockPages::config()->getSettingsModel()::getSettings();
-                $seoMedia = $settings->getFallbackImageMedia($settings->defaultSeoImage()->first(), $settings::COLLECTION_DEFAULT_SEO);
+
+                /** @var Media|null $firstSettingsMedia */
+                $firstSettingsMedia = $settings->defaultSeoImage()->first();
+                $seoMedia = $settings->getFallbackImageMedia($firstSettingsMedia, $settings::COLLECTION_DEFAULT_SEO);
                 $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
                 $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
             }
@@ -202,6 +209,6 @@ class PageController extends Controller
             return null;
         }
 
-        return $title ? trim($title) : null;
+        return trim($title);
     }
 }

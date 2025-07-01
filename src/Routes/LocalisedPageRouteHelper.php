@@ -31,11 +31,15 @@ class LocalisedPageRouteHelper extends AbstractPageRouteHelper
         $locale = $locale ?? app()->getLocale();
 
         if ($page->parent?->parent) {
-            $ancestorSlugs[] = $page->parent->parent->translate('slug', $locale);
+            /** @var Page $grandparent */
+            $grandparent = $page->parent->parent;
+            $ancestorSlugs[] = $grandparent->translate('slug', $locale);
         }
 
         if ($page->parent) {
-            $ancestorSlugs[] = $page->parent->translate('slug', $locale);
+            /** @var Page $parent */
+            $parent = $page->parent;
+            $ancestorSlugs[] = $parent->translate('slug', $locale);
         }
 
         $ancestorSlugs[] = $page->translate('slug', $locale);

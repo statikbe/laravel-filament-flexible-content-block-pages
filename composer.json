@@ -18,11 +18,13 @@
     "require": {
         "php": "^8.2",
         "artesaos/seotools": "^1.3",
+        "filament/spatie-laravel-tags-plugin": "^3.2",
+        "guava/filament-icon-picker": "^2.0",
         "illuminate/contracts": "^10.0||^11.0||^12.0",
         "mcamara/laravel-localization": "^2.3",
         "spatie/laravel-missing-page-redirector": "^2.11",
         "spatie/laravel-package-tools": "^1.16",
-        "statikbe/laravel-filament-flexible-content-blocks": "^2.4"
+        "statikbe/laravel-filament-flexible-content-blocks": "dev-main"
     },
     "require-dev": {
         "laravel/pint": "^1.14",

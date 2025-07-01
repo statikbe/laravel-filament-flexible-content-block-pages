@@ -36,4 +36,20 @@ return [
         'translatable_field_hint' => 'Dit veld kan vertaald worden. De huidige taal kan je rechtsbovenaan bekijken/aanpassen.',
         'settings_footer_copyright' => 'Copyrightboodschap in footer',
     ],
+    'form_component' => [
+        'name_lbl' => 'Naam',
+        'colour_lbl' => 'Kleur',
+        'seo_description_lbl' => 'SEO-beschrijving',
+    ],
+    'tag_types' => [
+        'navigation_group' => 'Tags',
+        'tag_type_plural_lbl' => 'Tagtypes',
+        'tag_type_lbl' => 'Tagtype',
+        'tag_type_is_default_type_lbl' => 'Is standaard tagtype',
+    ],
+    'tags' => [
+        'navigation_group' => 'Tags',
+        'tag_type_plural_lbl' => 'Tags',
+        'tag_type_lbl' => 'Tag',
+    ],
 ];
