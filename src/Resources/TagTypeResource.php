@@ -75,7 +75,7 @@ class TagTypeResource extends Resource
             ->schema([
                 Section::make([
                     NameField::create(true),
-                    CodeField::create(),
+                    CodeField::create(true),
                     Toggle::make('is_default_type')
                         ->label(flexiblePagesTrans('tag_types.tag_type_is_default_type_lbl'))
                         ->default(false),

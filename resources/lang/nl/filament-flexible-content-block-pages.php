@@ -40,6 +40,7 @@ return [
         'name_lbl' => 'Naam',
         'colour_lbl' => 'Kleur',
         'seo_description_lbl' => 'SEO-beschrijving',
+        'icon_lbl' => 'Icoon',
     ],
     'tag_types' => [
         'navigation_group' => 'Tags',

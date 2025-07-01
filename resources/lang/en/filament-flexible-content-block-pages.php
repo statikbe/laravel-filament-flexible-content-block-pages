@@ -40,6 +40,7 @@ return [
         'name_lbl' => 'Name',
         'colour_lbl' => 'Color',
         'seo_description_lbl' => 'SEO description',
+        'icon_lbl' => 'Icon',
     ],
     'tag_types' => [
         'navigation_group' => 'Tags',
