@@ -50,7 +50,7 @@ php artisan migrate
 You can now seed the home page and default settings by running:
 
 ```bash
-php artisan db:seed FilamentFlexibleContentBlockPagesDatabaseSeeder
+php artisan flexible-content-block-pages:seed
 ```
 
 Further configure the third-party packages that are used. Check the installation documentation of these packages:

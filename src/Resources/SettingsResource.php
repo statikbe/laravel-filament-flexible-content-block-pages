@@ -115,12 +115,12 @@ class SettingsResource extends Resource
                 ->label(flexiblePagesTrans('settings.settings_site_title'))
                 ->required(),
             TextInput::make(Settings::SETTING_FOOTER_COPYRIGHT)
-                ->label(flexiblePagesTrans('settings.footer_copyright'))
+                ->label(flexiblePagesTrans('settings.settings_footer_copyright'))
                 ->hint(flexiblePagesTrans('settings.translatable_field_hint'))
                 ->hintIcon('heroicon-m-language')
                 ->required(),
             RichEditor::make(Settings::SETTING_CONTACT_INFO)
-                ->label(flexiblePagesTrans('settings.contact_info'))
+                ->label(flexiblePagesTrans('settings.settings_contact_info'))
                 ->disableToolbarButtons([
                     'attachFiles',
                 ]),

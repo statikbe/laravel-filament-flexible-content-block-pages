@@ -28,7 +28,7 @@ return [
         'settings_plural_lbl' => 'instellingen',
         'navigation_group' => 'Instellingen',
         'settings_tab_site_general' => 'Algemeen',
-        'site_title' => 'Titel van de website',
+        'settings_site_title' => 'Titel van de website',
         'settings_contact_info' => 'Contactgegevens',
         'settings_tab_seo' => 'SEO',
         'settings_default_seo_image' => 'Standaard SEO-afbeelding',
