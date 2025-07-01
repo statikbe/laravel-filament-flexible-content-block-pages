@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\NameField;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\CreateTagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\EditTagType;
@@ -56,6 +57,11 @@ class TagTypeResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return flexiblePagesTrans('tag_types.tag_type_plural_lbl');
+    }
+
+    public static function getNavigationParentItem(): ?string
+    {
+        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_TAG]::getNavigationParentItem();
     }
 
     public static function getNavigationSort(): ?int

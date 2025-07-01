@@ -40,17 +40,17 @@ class TagResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return flexiblePagesTrans('tag_types.tag_plural_lbl');
+        return flexiblePagesTrans('tags.tag_plural_lbl');
     }
 
     public static function getModelLabel(): string
     {
-        return flexiblePagesTrans('tag_types.tag_lbl');
+        return flexiblePagesTrans('tags.tag_lbl');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return flexiblePagesTrans('tag_types.tag_plural_lbl');
+        return flexiblePagesTrans('tags.tag_plural_lbl');
     }
 
     public static function getNavigationSort(): ?int
