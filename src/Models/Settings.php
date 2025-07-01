@@ -13,7 +13,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Cache\TaggableCache;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasMediaAttributes;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\SettingsObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasMediaAttributesTrait;
@@ -30,10 +29,10 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Enums\ImageFormat;
 #[ObservedBy(SettingsObserver::class)]
 class Settings extends Model implements HasMedia, HasTranslatableMedia
 {
+    use HasMediaAttributesTrait;
     use HasTranslatedMediaTrait;
     use HasTranslations;
     use InteractsWithMedia;
-    use HasMediaAttributesTrait;
 
     const CACHE_TAG_SETTINGS = 'filament-flexible-content-block-pages::settings';
 
