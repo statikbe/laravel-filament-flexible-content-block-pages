@@ -49,7 +49,7 @@ return [
     ],
     'tags' => [
         'navigation_group' => 'Tags',
-        'tag_type_plural_lbl' => 'Tags',
-        'tag_type_lbl' => 'Tag',
+        'tag_plural_lbl' => 'Tags',
+        'tag_lbl' => 'Tag',
     ],
 ];
