@@ -161,8 +161,10 @@ class PageController extends Controller
                 /** @var Media|null $firstSettingsMedia */
                 $firstSettingsMedia = $settings->defaultSeoImage()->first();
                 $seoMedia = $settings->getFallbackImageMedia($firstSettingsMedia, $settings::COLLECTION_DEFAULT_SEO);
-                $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
-                $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
+                if($seoMedia) {
+                    $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
+                    $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
+                }
             }
         }
 
