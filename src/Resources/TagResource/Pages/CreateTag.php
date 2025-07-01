@@ -26,7 +26,6 @@ class CreateTag extends CreateRecord
     {
         return [
             LocaleSwitcher::make(),
-            DeleteAction::make(),
         ];
     }
 }
