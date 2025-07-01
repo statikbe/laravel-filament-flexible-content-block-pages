@@ -43,13 +43,13 @@ return [
         'icon_lbl' => 'Icon',
     ],
     'tag_types' => [
-        'navigation_group' => 'Tags',
+        'navigation_group' => 'Settings',
         'tag_type_plural_lbl' => 'Tag types',
         'tag_type_lbl' => 'Tag type',
         'tag_type_is_default_type_lbl' => 'Is default tag type',
     ],
     'tags' => [
-        'navigation_group' => 'Tags',
+        'navigation_group' => 'Settings',
         'tag_plural_lbl' => 'Tags',
         'tag_lbl' => 'Tag',
     ],

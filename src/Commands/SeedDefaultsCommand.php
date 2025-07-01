@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 
 class SeedDefaultsCommand extends Command
 {
@@ -32,6 +33,7 @@ class SeedDefaultsCommand extends Command
 
         $this->seedHomePage();
         $this->seedSettings();
+        $this->seedTagTypes();
 
         $this->info('Default home page and settings seeded successfully!');
     }
@@ -67,6 +69,34 @@ class SeedDefaultsCommand extends Command
     {
         foreach ($locales as $locale) {
             $model->setTranslation($field, $locale, $value);
+        }
+    }
+
+    private function seedTagTypes()
+    {
+        $locales = FilamentFlexibleContentBlockPages::config()->getSupportedLocales();
+        $tagTypeModel = FilamentFlexibleContentBlockPages::config()->getTagTypeModel();
+
+        if (! $tagTypeModel::code(TagType::TYPE_DEFAULT)->exists()) {
+            $seoType = new $tagTypeModel;
+            $seoType->code = TagType::TYPE_DEFAULT;
+            $this->setTranslatedField($seoType, 'name', 'Standaard', $locales);
+            $seoType->color = '#4FC3F7';
+            $seoType->icon = 'heroicon-s-tag';
+            $seoType->is_default_type = true;
+            $seoType->has_seo_pages = false;
+            $seoType->save();
+        }
+
+        if (! $tagTypeModel::code(TagType::TYPE_SEO)->exists()) {
+            $seoType = new $tagTypeModel;
+            $seoType->code = TagType::TYPE_SEO;
+            $this->setTranslatedField($seoType, 'name', "Alleen voor SEO-pagina's", $locales);
+            $seoType->color = '#FFC107';
+            $seoType->icon = 'heroicon-s-alt-globe';
+            $seoType->is_default_type = false;
+            $seoType->has_seo_pages = true;
+            $seoType->save();
         }
     }
 }
