@@ -24,6 +24,7 @@ class TagResource extends Resource
     use Translatable;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+
     protected static ?string $recordRouteKeyName = 'id';
 
     /**
