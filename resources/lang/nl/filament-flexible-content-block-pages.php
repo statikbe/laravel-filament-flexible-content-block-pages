@@ -2,8 +2,8 @@
 
 return [
     'pages' => [
-        'lbl' => 'Pagina',
-        'plural_lbl' => 'Pagina\'s',
+        'lbl' => 'pagina',
+        'plural_lbl' => 'pagina\'s',
         'nav_group' => 'Website',
         'tabs' => [
             'lbl' => 'Pagina',
@@ -17,15 +17,15 @@ return [
         ],
     ],
     'redirects' => [
-        'redirects_lbl' => 'Redirect',
-        'redirects_plural_lbl' => 'Redirects',
+        'redirects_lbl' => 'redirect',
+        'redirects_plural_lbl' => 'redirects',
         'redirect_old_url' => 'Oude URL',
         'redirect_new_url' => 'Nieuwe URL',
         'redirect_status_code' => 'Status code',
     ],
     'settings' => [
-        'settings_lbl' => 'Instelling',
-        'settings_plural_lbl' => 'Instellingen',
+        'settings_lbl' => 'instelling',
+        'settings_plural_lbl' => 'instellingen',
         'navigation_group' => 'Instellingen',
         'settings_tab_site_general' => 'Algemeen',
         'site_title' => 'Titel van de website',
@@ -44,14 +44,14 @@ return [
     ],
     'tag_types' => [
         'navigation_group' => 'Instellingen',
-        'tag_type_plural_lbl' => 'Tagtypes',
-        'tag_type_lbl' => 'Tagtype',
+        'tag_type_plural_lbl' => 'tagtypes',
+        'tag_type_lbl' => 'tagtype',
         'tag_type_is_default_type_lbl' => 'Is standaard tagtype',
     ],
     'tags' => [
         'navigation_group' => 'Instellingen',
-        'tag_plural_lbl' => 'Tags',
-        'tag_lbl' => 'Tag',
+        'tag_plural_lbl' => 'tags',
+        'tag_lbl' => 'tag',
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'Je kunt een type toewijzen om deze tag alleen op bepaalde paginatypes te gebruiken.',
     ],

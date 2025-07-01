@@ -85,12 +85,9 @@ class TagResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(flexiblePagesTrans('form_component.name_lbl')),
-                TextColumn::make('type')
+                TextColumn::make('tagType.name')
                     ->label(flexiblePagesTrans('tags.tag_type_lbl'))
-                    ->badge()
-                    ->formatStateUsing(function ($state): string {
-                        return $state['name'];
-                    }),
+                    ->badge(),
             ])
             ->filters([
                 //

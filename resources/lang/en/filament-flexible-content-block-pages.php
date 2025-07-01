@@ -2,8 +2,8 @@
 
 return [
     'pages' => [
-        'lbl' => 'Page',
-        'plural_lbl' => 'Pages',
+        'lbl' => 'page',
+        'plural_lbl' => 'pages',
         'nav_group' => 'Website',
         'tabs' => [
             'lbl' => 'Page',
@@ -17,15 +17,15 @@ return [
         ],
     ],
     'redirects' => [
-        'redirects_lbl' => 'Redirect',
-        'redirects_plural_lbl' => 'Redirects',
+        'redirects_lbl' => 'redirect',
+        'redirects_plural_lbl' => 'redirects',
         'redirect_old_url' => 'Old URL',
         'redirect_new_url' => 'New URL',
         'redirect_status_code' => 'Status code',
     ],
     'settings' => [
-        'settings_lbl' => 'Setting',
-        'settings_plural_lbl' => 'Settings',
+        'settings_lbl' => 'setting',
+        'settings_plural_lbl' => 'settings',
         'navigation_group' => 'Settings',
         'settings_tab_site_general' => 'General',
         'settings_site_title' => 'Website title',
@@ -44,14 +44,14 @@ return [
     ],
     'tag_types' => [
         'navigation_group' => 'Settings',
-        'tag_type_plural_lbl' => 'Tag types',
-        'tag_type_lbl' => 'Tag type',
+        'tag_type_plural_lbl' => 'tag types',
+        'tag_type_lbl' => 'tag type',
         'tag_type_is_default_type_lbl' => 'Is default tag type',
     ],
     'tags' => [
         'navigation_group' => 'Settings',
-        'tag_plural_lbl' => 'Tags',
-        'tag_lbl' => 'Tag',
+        'tag_plural_lbl' => 'tags',
+        'tag_lbl' => 'tag',
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'You can assign a type to use this tag only on certain page types.',
     ],
