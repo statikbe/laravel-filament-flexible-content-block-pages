@@ -40,11 +40,6 @@ class TagResource extends Resource
         return flexiblePagesTrans('tags.navigation_group');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return flexiblePagesTrans('tags.tag_plural_lbl');
-    }
-
     public static function getLabel(): ?string
     {
         return flexiblePagesTrans('tags.tag_lbl');
