@@ -59,7 +59,10 @@ return new class extends Migration
             $table->foreign('parent_id')
                 ->references('id')
                 ->on($pageTable)
-                ->onDelete('set null');;
+                ->onDelete('set null');
+
+            // Deletable:
+            $table->boolean('is_undeletable')->default(false);
 
             $table->timestamps();
         });

@@ -28,6 +28,9 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
+/**
+ * @property bool $is_undeletable
+ */
 class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, Linkable
 {
     use HasAuthorAttributeTrait;
@@ -45,6 +48,8 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     use HasTranslatedSlugAttributeTrait;
 
     const HOME_PAGE = 'HOME';
+
+    protected $fillable = ['is_undeletable'];
 
     public function getTable()
     {
@@ -71,5 +76,11 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     public function isHomePage(): bool
     {
         return $this->code === static::HOME_PAGE;
+    }
+
+    public function isDeletable(): bool
+    {
+        // TODO improve once the authorisation is implemented:
+        return ! $this->is_undeletable;
     }
 }

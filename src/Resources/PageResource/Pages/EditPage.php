@@ -7,6 +7,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Resource\Pages\Actions\CopyContentBlocksToLocalesAction;
 
@@ -24,7 +25,8 @@ class EditPage extends EditRecord
         return [
             CopyContentBlocksToLocalesAction::make(),
             LocaleSwitcher::make(),
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->visible(fn (Page $record) => $record->isDeletable()),
         ];
     }
 
