@@ -93,7 +93,7 @@ class SeedDefaultsCommand extends Command
             $seoType->code = TagType::TYPE_SEO;
             $this->setTranslatedField($seoType, 'name', "Alleen voor SEO-pagina's", $locales);
             $seoType->colour = '#FFC107';
-            $seoType->icon = 'heroicon-s-alt-globe';
+            $seoType->icon = 'heroicon-o-globe-alt';
             $seoType->is_default_type = false;
             $seoType->has_seo_pages = true;
             $seoType->save();

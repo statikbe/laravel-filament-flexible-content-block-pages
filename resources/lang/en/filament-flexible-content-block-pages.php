@@ -52,5 +52,7 @@ return [
         'navigation_group' => 'Settings',
         'tag_plural_lbl' => 'Tags',
         'tag_lbl' => 'Tag',
+        'tag_type_lbl' => 'Tag type',
+        'tag_type_hint' => 'You can assign a type to use this tag only on certain page types.',
     ],
 ];

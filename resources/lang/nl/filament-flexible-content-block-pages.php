@@ -52,5 +52,7 @@ return [
         'navigation_group' => 'Instellingen',
         'tag_plural_lbl' => 'Tags',
         'tag_lbl' => 'Tag',
+        'tag_type_lbl' => 'Tag type',
+        'tag_type_hint' => 'Je kunt een type toewijzen om deze tag alleen op bepaalde paginatypes te gebruiken.',
     ],
 ];
