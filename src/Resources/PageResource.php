@@ -62,6 +62,16 @@ class PageResource extends Resource
         return flexiblePagesTrans('pages.nav_group');
     }
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery()
+            ->with([
+                'parent',
+            ]);
+
+        return $query;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -105,6 +115,7 @@ class PageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->mo
             ->columns([
                 TitleColumn::create(),
                 TextColumn::make('created_at')
