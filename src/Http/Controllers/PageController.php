@@ -41,7 +41,7 @@ class PageController extends Controller
         $this->setSEOLocalisationAndCanonicalUrl();
         $this->setSEOImage($page);
 
-        return view(self::TEMPLATE_PATH, [
+        return view($this->getTemplatePath($page), [
             'page' => $page,
         ]);
     }
@@ -212,5 +212,14 @@ class PageController extends Controller
         }
 
         return trim($title);
+    }
+
+    private function getTemplatePath(Page $page)
+    {
+        if(!$page->code){
+            return self::TEMPLATE_PATH;
+        }
+
+        return FilamentFlexibleContentBlockPages::config()->getCustomPageTemplate($page->code) ?? self::TEMPLATE_PATH;
     }
 }

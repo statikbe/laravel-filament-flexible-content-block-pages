@@ -160,6 +160,16 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('panel.navigation_items', []);
     }
 
+    public function getCustomPageTemplates(): array
+    {
+        return $this->packageConfig('page_templates', []);
+    }
+
+    public function getCustomPageTemplate(string $code): ?string
+    {
+        return $this->getCustomPageTemplates()[$code] ?? null;
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

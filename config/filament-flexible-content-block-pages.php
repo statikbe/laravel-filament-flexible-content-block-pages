@@ -13,6 +13,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 return [
     'models' => [
@@ -71,4 +72,8 @@ return [
     ],
 
     'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
+
+    'page_templates' => [
+        //Page::HOME_PAGE => 'pages.home',
+    ],
 ];
