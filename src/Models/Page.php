@@ -34,7 +34,6 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, Linkable
 {
     use HasAuthorAttributeTrait;
-    use HasAuthorAttributeTrait;
     use HasCodeTrait;
     use HasDefaultContentBlocksTrait;
     use HasFactory;
