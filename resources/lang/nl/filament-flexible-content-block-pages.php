@@ -58,6 +58,6 @@ return [
     'panel' => [
         'navigation_items' => [
             'go_to_website_lbl' => 'Bekijk de website',
-        ]
+        ],
     ],
 ];
