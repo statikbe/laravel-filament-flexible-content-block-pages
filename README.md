@@ -16,7 +16,7 @@ Other features that will be provided:
 - Extendable settings model and Filament resource to store CMS settings and images.
 - Redirect support for when slugs are renamed
 - Sitemap generation
-- A ready-to-use Filament panel with all CMS features implemented.
+- A ready-to-use, extendable Filament panel with all CMS features implemented.
 - Extendable models, resources and database tables.
 - A simple asset manager (TODO)
 - Re-usable content blocks (TODO)
