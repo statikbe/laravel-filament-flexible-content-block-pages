@@ -173,4 +173,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             ->where('collection_name', static::COLLECTION_DEFAULT_SEO)
             ->where('custom_properties->locale', app()->getLocale());
     }
+
+    public function getMorphClass()
+    {
+        return 'filament-flexible-content-block-pages::settings';
+    }
 }

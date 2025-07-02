@@ -56,4 +56,9 @@ class Redirect extends Model
         // Merge both values
         return array_merge($configRedirects, $dbRedirects);
     }
+
+    public function getMorphClass()
+    {
+        return 'filament-flexible-content-block-pages::redirect';
+    }
 }

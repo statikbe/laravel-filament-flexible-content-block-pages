@@ -115,7 +115,6 @@ class PageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->mo
             ->columns([
                 TitleColumn::create(),
                 TextColumn::make('created_at')

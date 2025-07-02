@@ -105,4 +105,9 @@ class TagType extends Model
     {
         return $this->icon && Str::contains(trim($this->icon), ['<svg', '<SVG']);
     }
+
+    public function getMorphClass()
+    {
+        return 'filament-flexible-content-block-pages::tag_type';
+    }
 }

@@ -83,4 +83,9 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
         // TODO improve once the authorisation is implemented:
         return ! $this->is_undeletable;
     }
+
+    public function getMorphClass()
+    {
+        return 'filament-flexible-content-block-pages::page';
+    }
 }

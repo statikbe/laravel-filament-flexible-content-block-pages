@@ -170,6 +170,17 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->getCustomPageTemplates()[$code] ?? null;
     }
 
+    public function getMorphMap(): array
+    {
+        return [
+            $this->getPageModel()->getMorphClass() => $this->getPageModel()::class,
+            $this->getSettingsModel()->getMorphClass() => $this->getSettingsModel()::class,
+            $this->getTagModel()->getMorphClass() => $this->getTagModel()::class,
+            $this->getTagTypeModel()->getMorphClass() => $this->getTagTypeModel()::class,
+            $this->getRedirectModel()->getMorphClass() => $this->getRedirectModel()::class,
+        ];
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

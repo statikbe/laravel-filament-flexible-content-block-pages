@@ -2,8 +2,10 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Statik\LaravelLeisure\LaravelLeisure;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
@@ -33,5 +35,11 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 LanguageSwitch::class,
                 BaseLayout::class,
             );
+    }
+
+    public function packageBooted()
+    {
+        // add morph map
+        Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());;
     }
 }
