@@ -30,6 +30,6 @@ class PageRouteHelper extends AbstractPageRouteHelper
             ]);
         }
 
-        return route('page_index', ['page' => $page]);
+        return route(static::ROUTE_PAGE, ['page' => $page]);
     }
 }
