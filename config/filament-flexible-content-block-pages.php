@@ -59,7 +59,8 @@ return [
         ],
         'navigation_items' => [
             NavigationItem::make(fn () => flexiblePagesTrans('panel.navigation_items.go_to_website_lbl'))
-                ->url('/')->openUrlInNewTab()
+                ->url('/')
+                ->openUrlInNewTab()
                 ->icon('heroicon-o-globe-alt')
                 ->sort(-100),
         ],

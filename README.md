@@ -81,7 +81,7 @@ If you want translated content and routes, go through the following steps:
 Register the routes in your route file, probably `web.php`:
 
 ```php
-\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::defineRoutes();
+\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
 ```
 
 ### Filament panel

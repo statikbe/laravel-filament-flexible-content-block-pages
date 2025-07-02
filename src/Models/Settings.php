@@ -61,9 +61,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
         return FilamentFlexibleContentBlockPages::config()->getSettingsTable();
     }
 
-    public static function getSettings(): ?self
+    public static function getSettings(): ?static
     {
-        return Settings::first();
+        return static::first();
     }
 
     public function registerMediaCollections(): void
@@ -93,7 +93,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
                 $setting = static::getSettings()->getAttribute($settingField);
 
                 // replace text params in settings if it is a text field (based on $translatable fields):
-                if (in_array($settingField, (new Settings)->translatable)) {
+                if (in_array($settingField, (new static)->translatable)) {
                     $setting = FilamentFlexibleContentBlocks::replaceParameters($setting);
                 }
 
