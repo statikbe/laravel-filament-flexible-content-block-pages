@@ -216,7 +216,7 @@ class PageController extends Controller
 
     private function getTemplatePath(Page $page)
     {
-        if(!$page->code){
+        if (! $page->code) {
             return self::TEMPLATE_PATH;
         }
 
