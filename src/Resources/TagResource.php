@@ -72,7 +72,6 @@ class TagResource extends Resource
                         ->hint(flexiblePagesTrans('tags.tag_type_hint'))
                         ->relationship('tagType', 'name')
                         ->preload()
-                        ->required()
                         ->default(function (Select $component) {
                             return $component->getRelationship()?->getModel()->query()
                                 ->where('is_default_type', true)->first()->id ?? null;

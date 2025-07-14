@@ -22,9 +22,9 @@ class TagType extends Model
 {
     use HasTranslations;
 
-    const TYPE_DEFAULT = 'default';
+    public const TYPE_DEFAULT = 'default';
 
-    const TYPE_SEO = 'seo';
+    public const TYPE_SEO = 'seo';
 
     protected $primaryKey = 'code';
 
@@ -38,6 +38,8 @@ class TagType extends Model
     ];
 
     protected $translatable = ['name'];
+
+    public $guarded = [];
 
     protected static function booted(): void
     {

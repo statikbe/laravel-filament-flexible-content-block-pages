@@ -22,11 +22,6 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
 {
     public array $translatable = ['name', 'slug', 'seo_description'];
 
-    // set type to default if not filled in:
-    protected $attributes = [
-        'type' => TagType::TYPE_DEFAULT,
-    ];
-
     public function getTable()
     {
         return FilamentFlexibleContentBlockPages::config()->getTagsTable();
