@@ -15,6 +15,8 @@ class PageRouteHelper extends AbstractPageRouteHelper
             return route(static::ROUTE_HOME);
         }
 
+        $page->load('parent.parent');
+
         if ($page->parent && $page->parent->parent) {
             return route(static::ROUTE_GRANDCHILD_PAGE, [
                 'grandparent' => $page->parent->parent,
