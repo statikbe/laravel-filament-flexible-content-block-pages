@@ -59,11 +59,16 @@ return [
             Authenticate::class,
         ],
         'navigation_items' => [
-            NavigationItem::make(fn () => flexiblePagesTrans('panel.navigation_items.go_to_website_lbl'))
-                ->url('/')
-                ->openUrlInNewTab()
-                ->icon('heroicon-o-globe-alt')
-                ->sort(-100),
+            // WARNING: Do not place redirect NavigationItems first in the array.
+            // Filament automatically redirects to the first navigation item on panel load.
+            // If that item is an external redirect (like the home route), users will be 
+            // bounced out of the panel, creating the appearance of authentication failure.
+            //
+            // NavigationItem::make(fn () => flexiblePagesTrans('panel.navigation_items.go_to_website_lbl'))
+            //     ->url('/')
+            //     ->openUrlInNewTab()
+            //     ->icon('heroicon-o-globe-alt')
+            //     ->sort(-100),
         ],
     ],
 
