@@ -55,9 +55,18 @@ php artisan flexible-content-block-pages:seed
 
 Further configure the third-party packages that are used. Check the installation documentation of these packages:
 
-- [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation): 
-  Make sure the middlewares are properly setup if you want to use localised routes.
+### [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation):
 
+Make sure the middlewares are properly setup if you want to use localised routes.
+
+### [Laravel Tags](https://spatie.be/docs/laravel-tags/v4/installation-and-setup):
+
+Publish the config and change the tag model to the package model:
+```php 
+[
+    'tag_model' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Tag::class,
+]
+```
 
 Check [the configuration documentation}(#configuration) for more explanations on how to tweak the package.
 
@@ -101,6 +110,16 @@ If you want you can build your own panel from the provided resources.
 ## Configuration
 
 TODO
+
+## TODO's
+
+- policies:
+  - note: undeletable pages
+- undeletable page toggle only for permission holder
+- redirect controller
+- tag controller
+- sitemap implementation
+- asset manager install in panel
 
 ## Changelog
 
