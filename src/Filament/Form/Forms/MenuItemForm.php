@@ -85,10 +85,11 @@ class MenuItemForm
     {
         return TextInput::make(static::FIELD_LABEL)
             ->label(flexiblePagesTrans('menu_items.form.label_lbl'))
-            ->required(fn (Get $get): bool => !$get(static::FIELD_USE_MODEL_TITLE))
-            ->visible(fn (Get $get): bool => !$get(static::FIELD_USE_MODEL_TITLE))
+            ->required(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
+            ->visible(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->maxLength(255)
-            ->helperText(flexiblePagesTrans('menu_items.form.label_help'));
+            ->helperText(flexiblePagesTrans('menu_items.form.label_help'))
+            ->live();
     }
 
     protected static function getUseModelTitleField(): Toggle
@@ -96,7 +97,8 @@ class MenuItemForm
         return Toggle::make(static::FIELD_USE_MODEL_TITLE)
             ->label(flexiblePagesTrans('menu_items.form.use_model_title_lbl'))
             ->helperText(flexiblePagesTrans('menu_items.form.use_model_title_help'))
-            ->visible(fn (Get $get): bool => static::isModelType($get(static::FIELD_LINK_TYPE)));
+            ->visible(fn (Get $get): bool => static::isModelType($get(static::FIELD_LINK_TYPE)))
+            ->live();
     }
 
     protected static function getLinkableField(): Select
