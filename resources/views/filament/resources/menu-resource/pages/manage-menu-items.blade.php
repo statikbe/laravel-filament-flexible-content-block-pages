@@ -61,6 +61,26 @@
 
                 init() {
                     this.initSortable();
+                    this.setupEventListeners();
+                },
+
+                setupEventListeners() {
+                    // Listen for Livewire events to refresh menu items
+                    this.$wire.on('menu-items-updated', () => {
+                        this.refreshMenuItems();
+                    });
+                },
+
+                refreshMenuItems() {
+                    this.loading = true;
+                    this.$wire.call('getMenuItems').then((items) => {
+                        this.items = items;
+                        this.loading = false;
+                        // Re-initialize sortable after items are updated
+                        this.$nextTick(() => {
+                            this.initSortable();
+                        });
+                    });
                 },
 
                 initSortable() {
@@ -114,16 +134,16 @@
                                     <!-- Actions -->
                                     <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         ${canHaveChildren ? `
-                                            <button onclick="$wire.addMenuItem(${item.id})" 
+                                            <button onclick="$wire.mountAction('addMenuItem', { parent_id: ${item.id} })" 
                                                     class="inline-flex items-center px-2 py-1 border border-gray-300 rounded text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                                 {{ flexiblePagesTrans('menu_items.tree.add_child') }}
                                             </button>
                                         ` : ''}
-                                        <button onclick="$wire.editMenuItem(${item.id})" 
+                                        <button onclick="$wire.mountAction('editMenuItem', { itemId: ${item.id} })" 
                                                 class="inline-flex items-center px-2 py-1 border border-primary-300 rounded text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                             {{ flexiblePagesTrans('menu_items.tree.edit') }}
                                         </button>
-                                        <button onclick="$wire.deleteMenuItem(${item.id})" 
+                                        <button onclick="$wire.mountAction('deleteMenuItem', { itemId: ${item.id} })" 
                                                 class="inline-flex items-center px-2 py-1 border border-red-300 rounded text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                             {{ flexiblePagesTrans('menu_items.tree.delete') }}
                                         </button>

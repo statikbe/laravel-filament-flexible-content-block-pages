@@ -85,7 +85,8 @@ class MenuItemForm
     {
         return TextInput::make(static::FIELD_LABEL)
             ->label(flexiblePagesTrans('menu_items.form.label_lbl'))
-            ->required()
+            ->required(fn (Get $get): bool => !$get(static::FIELD_USE_MODEL_TITLE))
+            ->visible(fn (Get $get): bool => !$get(static::FIELD_USE_MODEL_TITLE))
             ->maxLength(255)
             ->helperText(flexiblePagesTrans('menu_items.form.label_help'));
     }

@@ -17,8 +17,12 @@ return new class extends Migration
             // Translatable label
             $table->json('label');
             
+            // Link type (url, route, or model alias)
+            $table->string('link_type');
+            
             // Link options
             $table->string('url')->nullable();
+            $table->string('route')->nullable();
             $table->string('linkable_type')->nullable();
             $table->unsignedBigInteger('linkable_id')->nullable();
             

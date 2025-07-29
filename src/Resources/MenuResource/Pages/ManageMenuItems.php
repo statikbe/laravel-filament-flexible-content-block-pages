@@ -85,43 +85,58 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->icon('heroicon-o-plus')
                 ->color('primary')
                 ->form($this->getMenuItemFormSchema())
-                ->action(function (array $data): void {
+                ->fillForm(function (array $arguments): array {
+                    $parentId = $arguments['parent_id'] ?? null;
+                    return [
+                        'parent_id' => $parentId,
+                        'is_visible' => true,
+                        'target' => '_self'
+                    ];
+                })
+                ->action(function (array $data, array $arguments): void {
+                    // Merge parent_id from arguments into data
+                    $parentId = $arguments['parent_id'] ?? null;
+                    if ($parentId) {
+                        $data['parent_id'] = $parentId;
+                    }
                     $this->createMenuItem($data);
                 })
-                ->modalHeading(flexiblePagesTrans('menu_items.tree.add_item'))
+                ->modalHeading(function (array $arguments): string {
+                    $parentId = $arguments['parent_id'] ?? null;
+                    return $parentId 
+                        ? flexiblePagesTrans('menu_items.tree.add_child')
+                        : flexiblePagesTrans('menu_items.tree.add_item');
+                })
                 ->modalSubmitActionLabel(__('Create'))
                 ->modalWidth('2xl')
                 ->slideOver(),
         ];
     }
 
-    public function addMenuItem(?int $parentId = null): void
+    protected function getActions(): array
     {
-        $this->mountAction('addMenuItem', ['parent_id' => $parentId]);
+        return [
+            $this->editMenuItemAction(),
+            $this->deleteMenuItemAction(),
+        ];
     }
 
-    public function editMenuItem(int $itemId): void
-    {
-        $item = $this->getMenuItemSecurely($itemId);
 
-        if (! $item) {
-            Notification::make()
-                ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
-                ->danger()
-                ->send();
-
-            return;
-        }
-
-        $this->mountAction('editMenuItem', ['item' => $item]);
-    }
 
     public function editMenuItemAction(): Action
     {
         return Action::make('editMenuItem')
             ->form($this->getMenuItemFormSchema())
             ->fillForm(function (array $arguments): array {
-                $item = $arguments['item'];
+                $itemId = $arguments['itemId'] ?? null;
+                if (!$itemId) {
+                    return [];
+                }
+                
+                $item = $this->getMenuItemSecurely($itemId);
+                if (!$item) {
+                    return [];
+                }
 
                 return [
                     'link_type' => $item->link_type,
@@ -136,13 +151,31 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ];
             })
             ->action(function (array $data, array $arguments): void {
-                $item = $arguments['item'];
-                $this->updateMenuItem($item->id, $data);
+                $itemId = $arguments['itemId'] ?? null;
+                if ($itemId) {
+                    $this->updateMenuItem($itemId, $data);
+                }
             })
             ->modalHeading(flexiblePagesTrans('menu_items.tree.edit'))
             ->modalSubmitActionLabel(__('Update'))
             ->modalWidth('2xl')
             ->slideOver();
+    }
+
+    public function deleteMenuItemAction(): Action
+    {
+        return Action::make('deleteMenuItem')
+            ->requiresConfirmation()
+            ->modalHeading(flexiblePagesTrans('menu_items.tree.delete_confirm_title'))
+            ->modalDescription(flexiblePagesTrans('menu_items.tree.delete_confirm_text'))
+            ->modalSubmitActionLabel(flexiblePagesTrans('menu_items.tree.delete'))
+            ->color('danger')
+            ->action(function (array $arguments): void {
+                $itemId = $arguments['itemId'] ?? null;
+                if ($itemId) {
+                    $this->deleteMenuItem($itemId);
+                }
+            });
     }
 
     protected function getMenuItemFormSchema(): array
@@ -718,7 +751,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
     protected function validateMenuItemData(array $data): void
     {
-        if (empty($data['label'])) {
+        // Label is only required if use_model_title is false
+        if (empty($data['label']) && !($data['use_model_title'] ?? false)) {
             throw new Exception(flexiblePagesTrans('menu_items.form.label_lbl').' is required');
         }
 
