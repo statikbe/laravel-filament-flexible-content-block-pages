@@ -11,8 +11,8 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 
 class Menu extends Model implements HasCode
 {
-    use HasFactory;
     use HasCodeTrait;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -47,14 +47,13 @@ class Menu extends Model implements HasCode
     public function getEffectiveStyle(): string
     {
         // Return the menu's style if set, otherwise fall back to config default
-        if (!empty($this->style)) {
+        if (! empty($this->style)) {
             $availableStyles = FilamentFlexibleContentBlockPages::config()->getMenuStyles();
             if (in_array($this->style, $availableStyles)) {
                 return $this->style;
             }
         }
-        
+
         return FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle();
     }
-
 }

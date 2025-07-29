@@ -47,7 +47,7 @@ class ManageMenuItems extends Page
         foreach ($items as $item) {
             if ($item['parent_id'] == $parentId) {
                 $children = $this->buildTree($items, $item['id']);
-                if (!empty($children)) {
+                if (! empty($children)) {
                     $item['children'] = $children;
                 }
                 $tree[] = $item;
@@ -61,17 +61,19 @@ class ManageMenuItems extends Page
     {
         try {
             // Validate parent if provided
-            if ($parentId && !$this->validateMenuDepth(null, $parentId)) {
+            if ($parentId && ! $this->validateMenuDepth(null, $parentId)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded')
+                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded'),
                 ]);
+
                 return;
             }
 
-            if ($parentId && !$this->validateParentExists($parentId)) {
+            if ($parentId && ! $this->validateParentExists($parentId)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.parent_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.parent_not_found'),
                 ]);
+
                 return;
             }
 
@@ -85,8 +87,8 @@ class ManageMenuItems extends Page
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.general_error', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -95,10 +97,11 @@ class ManageMenuItems extends Page
     {
         try {
             // Validate that the item exists and belongs to this menu
-            if (!$this->validateMenuItemExists($itemId)) {
+            if (! $this->validateMenuItemExists($itemId)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
+
                 return;
             }
 
@@ -112,8 +115,8 @@ class ManageMenuItems extends Page
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.general_error', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -123,10 +126,11 @@ class ManageMenuItems extends Page
         try {
             $item = $this->getMenuItemSecurely($itemId);
 
-            if (!$item) {
+            if (! $item) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
+
                 return;
             }
 
@@ -134,8 +138,9 @@ class ManageMenuItems extends Page
             if ($item->children()->count() > 0) {
                 $this->dispatch('confirm-delete-with-children', [
                     'itemId' => $itemId,
-                    'childCount' => $item->children()->count()
+                    'childCount' => $item->children()->count(),
                 ]);
+
                 return;
             }
 
@@ -144,14 +149,14 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_deleted')
+                'message' => flexiblePagesTrans('menu_items.messages.item_deleted'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -167,19 +172,19 @@ class ManageMenuItems extends Page
 
                 $this->dispatch('menu-items-updated');
                 $this->dispatch('show-success', [
-                    'message' => flexiblePagesTrans('menu_items.messages.item_and_children_deleted')
+                    'message' => flexiblePagesTrans('menu_items.messages.item_and_children_deleted'),
                 ]);
             } else {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
             }
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -192,8 +197,9 @@ class ManageMenuItems extends Page
 
             if (empty($orderedItems)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.no_items_to_reorder')
+                    'message' => flexiblePagesTrans('menu_items.errors.no_items_to_reorder'),
                 ]);
+
                 return;
             }
 
@@ -205,8 +211,9 @@ class ManageMenuItems extends Page
 
             if ($validItems !== count($itemIds)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder')
+                    'message' => flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder'),
                 ]);
+
                 return;
             }
 
@@ -215,29 +222,29 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.items_reordered')
+                'message' => flexiblePagesTrans('menu_items.messages.items_reordered'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.reorder_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
 
     public function validateMenuDepth(?int $itemId, ?int $parentId = null): bool
     {
-        if (!$parentId) {
+        if (! $parentId) {
             return true; // Root level is always valid
         }
 
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $parent = $menuItemModel::find($parentId);
-        if (!$parent || $parent->menu_id !== $this->record->id) {
+        if (! $parent || $parent->menu_id !== $this->record->id) {
             return false;
         }
 
@@ -251,8 +258,9 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $parent = $menuItemModel::find($parentId);
+
         return $parent && $parent->menu_id === $this->record->id;
     }
 
@@ -260,8 +268,9 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $item = $menuItemModel::find($itemId);
+
         return $item && $item->menu_id === $this->record->id;
     }
 
@@ -269,13 +278,13 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $item = $menuItemModel::find($itemId);
-        
-        if (!$item || $item->menu_id !== $this->record->id) {
+
+        if (! $item || $item->menu_id !== $this->record->id) {
             return null;
         }
-        
+
         return $item;
     }
 
@@ -285,12 +294,12 @@ class ManageMenuItems extends Page
         $itemsByParent = [];
         foreach ($orderedItems as $position => $item) {
             $parentId = $item['parent_id'] ?? null;
-            if (!isset($itemsByParent[$parentId])) {
+            if (! isset($itemsByParent[$parentId])) {
                 $itemsByParent[$parentId] = [];
             }
             $itemsByParent[$parentId][] = [
                 'id' => $item['id'],
-                'position' => $position
+                'position' => $position,
             ];
         }
 
@@ -311,7 +320,7 @@ class ManageMenuItems extends Page
                             $menuItem->appendToNode($parent)->save();
                         }
                     }
-                    
+
                     // Then reorder within the parent
                     $this->reorderSiblings($children, $parent);
                 }
@@ -322,15 +331,17 @@ class ManageMenuItems extends Page
     protected function reorderSiblings(array $siblings, $parent = null): void
     {
         // Sort siblings by their intended position
-        usort($siblings, function($a, $b) {
+        usort($siblings, function ($a, $b) {
             return $a['position'] <=> $b['position'];
         });
 
         $previousSibling = null;
-        
+
         foreach ($siblings as $sibling) {
             $menuItem = $this->getMenuItemSecurely($sibling['id']);
-            if (!$menuItem) continue;
+            if (! $menuItem) {
+                continue;
+            }
 
             if ($parent) {
                 // Moving within a parent node
@@ -347,7 +358,7 @@ class ManageMenuItems extends Page
                     $menuItem->makeRoot()->save();
                 }
             }
-            
+
             $previousSibling = $menuItem;
         }
     }
@@ -356,27 +367,30 @@ class ManageMenuItems extends Page
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
-            if (!$item) {
+            if (! $item) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
+
                 return;
             }
 
             // Validate depth constraints
-            if (!$this->validateMenuDepth($itemId, $newParentId)) {
+            if (! $this->validateMenuDepth($itemId, $newParentId)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded')
+                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded'),
                 ]);
+
                 return;
             }
 
             if ($newParentId) {
                 $parent = $this->getMenuItemSecurely($newParentId);
-                if (!$parent) {
+                if (! $parent) {
                     $this->dispatch('show-error', [
-                        'message' => flexiblePagesTrans('menu_items.errors.parent_not_found')
+                        'message' => flexiblePagesTrans('menu_items.errors.parent_not_found'),
                     ]);
+
                     return;
                 }
 
@@ -406,14 +420,14 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_moved')
+                'message' => flexiblePagesTrans('menu_items.messages.item_moved'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.move_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }

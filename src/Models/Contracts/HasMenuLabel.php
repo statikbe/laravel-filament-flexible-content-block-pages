@@ -14,9 +14,9 @@ interface HasMenuLabel extends Linkable
 
     /**
      * Scope to search for models that can be used in menu items.
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $search The search term
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search  The search term
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSearchForMenuItems($query, string $search);

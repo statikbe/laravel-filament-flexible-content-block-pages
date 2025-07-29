@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Components;
 
 use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Component;
 use Filament\Support\Concerns\HasExtraAlpineAttributes;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
@@ -43,13 +42,13 @@ class MenuTreeBuilder extends Field
 
     public function getMenuItems(): array
     {
-        if (!$this->menuId) {
+        if (! $this->menuId) {
             return [];
         }
 
         $menu = FilamentFlexibleContentBlockPages::config()->getMenuModel()::find($this->menuId);
 
-        if (!$menu) {
+        if (! $menu) {
             return [];
         }
 
@@ -68,7 +67,7 @@ class MenuTreeBuilder extends Field
         foreach ($items as $item) {
             if ($item['parent_id'] == $parentId) {
                 $children = $this->buildTree($items, $item['id']);
-                if (!empty($children)) {
+                if (! empty($children)) {
                     $item['children'] = $children;
                 }
                 $tree[] = $item;

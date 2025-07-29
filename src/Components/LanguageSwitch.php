@@ -12,12 +12,12 @@ class LanguageSwitch extends Component
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getMenuTheme();
         $template = "filament-flexible-content-block-pages::components.{$theme}.language-switch";
-        
+
         // Check if the themed template exists, otherwise fallback to tailwind theme
         if (view()->exists($template)) {
             return view($template);
         }
-        
+
         // Final fallback to tailwind theme
         return view('filament-flexible-content-block-pages::components.tailwind.language-switch');
     }
