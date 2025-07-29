@@ -13,6 +13,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\Linkab
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class MenuItemForm
 {
@@ -166,7 +167,7 @@ class MenuItemForm
     {
         return Select::make(static::FIELD_ROUTE)
             ->label(flexiblePagesTrans('menu_items.form.route_lbl'))
-            ->options(static::getRouteOptions())
+            ->options(FilamentFlexibleBlocksConfig::getLinkRoutes())
             ->searchable()
             ->required()
             ->visible(fn (Get $get): bool => static::isRouteType($get(static::FIELD_LINK_TYPE)))
@@ -283,10 +284,4 @@ class MenuItemForm
         return $type ? $type->isRouteType() : false;
     }
 
-    protected static function getRouteOptions(): array
-    {
-        $routeType = new RouteMenuItemType;
-
-        return $routeType->getRouteOptions();
-    }
 }

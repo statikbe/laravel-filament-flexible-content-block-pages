@@ -20,8 +20,10 @@ class MenuItem extends Model
 
     protected $fillable = [
         'menu_id',
+        'link_type',
         'label',
         'url',
+        'route',
         'linkable_type',
         'linkable_id',
         'target',
