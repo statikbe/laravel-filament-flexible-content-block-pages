@@ -84,7 +84,8 @@ class MenuItemForm
 
     protected static function getLabelField(): TextInput
     {
-        $field = new class extends TextInput {
+        $field = new class extends TextInput
+        {
             use HasTranslatableHint;
         };
 

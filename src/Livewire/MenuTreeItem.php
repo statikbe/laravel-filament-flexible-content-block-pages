@@ -36,7 +36,7 @@ class MenuTreeItem extends Component implements HasActions, HasForms
         } else {
             $this->item = $item;
         }
-        
+
         $this->depth = $depth;
         $this->maxDepth = $maxDepth;
         $this->showActions = $showActions;
@@ -66,15 +66,15 @@ class MenuTreeItem extends Component implements HasActions, HasForms
     public function getItemTypeLabel(): string
     {
         if ($this->item->linkable_type && $this->item->linkable) {
-            return flexiblePagesTrans('menu_items.tree.linked_to') . ' ' . class_basename($this->item->linkable_type);
+            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($this->item->linkable_type);
         }
 
         if ($this->item->url) {
-            return flexiblePagesTrans('menu_items.tree.external_url') . ': ' . $this->item->url;
+            return flexiblePagesTrans('menu_items.tree.external_url').': '.$this->item->url;
         }
 
         if ($this->item->route) {
-            return flexiblePagesTrans('menu_items.tree.route') . ': ' . $this->item->route;
+            return flexiblePagesTrans('menu_items.tree.route').': '.$this->item->route;
         }
 
         return flexiblePagesTrans('menu_items.tree.no_link');
