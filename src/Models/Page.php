@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasTitleMenuLabelTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasAuthorAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasDefaultContentBlocksTrait;
@@ -38,6 +39,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     use HasDefaultContentBlocksTrait;
     use HasFactory;
     use HasParentTrait;
+    use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;
     use HasTranslatedIntroAttributeTrait;
@@ -88,19 +90,4 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
         return 'filament-flexible-content-block-pages::page';
     }
 
-    public function getMenuLabel(?string $locale = null): string
-    {
-        $locale = $locale ?: app()->getLocale();
-
-        return $this->getTranslation('title', $locale) ?: $this->getTranslation('title', config('app.fallback_locale', 'en'));
-    }
-
-    public function scopeSearchForMenuItems($query, string $search)
-    {
-        return $query->where(function ($query) use ($search) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('intro', 'like', "%{$search}%")
-                ->orWhere('overview_title', 'like', "%{$search}%");
-        });
-    }
 }
