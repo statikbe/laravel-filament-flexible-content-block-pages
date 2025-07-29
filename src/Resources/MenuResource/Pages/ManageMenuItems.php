@@ -87,10 +87,11 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->form($this->getMenuItemFormSchema())
                 ->fillForm(function (array $arguments): array {
                     $parentId = $arguments['parent_id'] ?? null;
+
                     return [
                         'parent_id' => $parentId,
                         'is_visible' => true,
-                        'target' => '_self'
+                        'target' => '_self',
                     ];
                 })
                 ->action(function (array $data, array $arguments): void {
@@ -103,7 +104,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 })
                 ->modalHeading(function (array $arguments): string {
                     $parentId = $arguments['parent_id'] ?? null;
-                    return $parentId 
+
+                    return $parentId
                         ? flexiblePagesTrans('menu_items.tree.add_child')
                         : flexiblePagesTrans('menu_items.tree.add_item');
                 })
@@ -121,20 +123,18 @@ class ManageMenuItems extends Page implements HasActions, HasForms
         ];
     }
 
-
-
     public function editMenuItemAction(): Action
     {
         return Action::make('editMenuItem')
             ->form($this->getMenuItemFormSchema())
             ->fillForm(function (array $arguments): array {
                 $itemId = $arguments['itemId'] ?? null;
-                if (!$itemId) {
+                if (! $itemId) {
                     return [];
                 }
-                
+
                 $item = $this->getMenuItemSecurely($itemId);
-                if (!$item) {
+                if (! $item) {
                     return [];
                 }
 
@@ -752,7 +752,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
     protected function validateMenuItemData(array $data): void
     {
         // Label is only required if use_model_title is false
-        if (empty($data['label']) && !($data['use_model_title'] ?? false)) {
+        if (empty($data['label']) && ! ($data['use_model_title'] ?? false)) {
             throw new Exception(flexiblePagesTrans('menu_items.form.label_lbl').' is required');
         }
 
