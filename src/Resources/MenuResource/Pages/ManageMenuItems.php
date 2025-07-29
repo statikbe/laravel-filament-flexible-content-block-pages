@@ -13,7 +13,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Schema;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\MenuItemField;
+use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 
 class ManageMenuItems extends Page implements HasActions, HasForms
@@ -139,7 +139,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
     protected function getMenuItemFormSchema(): array
     {
-        return MenuItemField::create()->getSchema();
+        return MenuItemForm::getSchema();
     }
 
     public function deleteMenuItem(int $itemId): void
@@ -148,9 +148,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $item = $this->getMenuItemSecurely($itemId);
 
             if (! $item) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
 
                 return;
             }
@@ -169,16 +170,19 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $item->delete();
 
             $this->dispatch('menu-items-updated');
-            $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_deleted'),
-            ]);
+
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.messages.item_deleted'))
+                ->success()
+                ->send();
 
         } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.delete_failed', [
                     'error' => $e->getMessage(),
-                ]),
-            ]);
+                ]))
+                ->danger()
+                ->send();
         }
     }
 
@@ -192,21 +196,25 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 $item->delete();
 
                 $this->dispatch('menu-items-updated');
-                $this->dispatch('show-success', [
-                    'message' => flexiblePagesTrans('menu_items.messages.item_and_children_deleted'),
-                ]);
+
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.messages.item_and_children_deleted'))
+                    ->success()
+                    ->send();
             } else {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
             }
 
         } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.delete_failed', [
                     'error' => $e->getMessage(),
-                ]),
-            ]);
+                ]))
+                ->danger()
+                ->send();
         }
     }
 
@@ -217,9 +225,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->getMenuItemModel();
 
             if (empty($orderedItems)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.no_items_to_reorder'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.no_items_to_reorder'))
+                    ->danger()
+                    ->send();
 
                 return;
             }
@@ -231,9 +240,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->count();
 
             if ($validItems !== count($itemIds)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder'))
+                    ->danger()
+                    ->send();
 
                 return;
             }
@@ -242,16 +252,19 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $this->processNestedSetReorder($orderedItems);
 
             $this->dispatch('menu-items-updated');
-            $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.items_reordered'),
-            ]);
+
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.messages.items_reordered'))
+                ->success()
+                ->send();
 
         } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.reorder_failed', [
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.reorder_failed', [
                     'error' => $e->getMessage(),
-                ]),
-            ]);
+                ]))
+                ->danger()
+                ->send();
         }
     }
 
@@ -389,18 +402,20 @@ class ManageMenuItems extends Page implements HasActions, HasForms
         try {
             $item = $this->getMenuItemSecurely($itemId);
             if (! $item) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
 
                 return;
             }
 
             // Validate depth constraints
             if (! $this->validateMenuDepth($itemId, $newParentId)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded'),
-                ]);
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.max_depth_exceeded'))
+                    ->danger()
+                    ->send();
 
                 return;
             }
@@ -408,9 +423,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($newParentId) {
                 $parent = $this->getMenuItemSecurely($newParentId);
                 if (! $parent) {
-                    $this->dispatch('show-error', [
-                        'message' => flexiblePagesTrans('menu_items.errors.parent_not_found'),
-                    ]);
+                    Notification::make()
+                        ->title(flexiblePagesTrans('menu_items.errors.parent_not_found'))
+                        ->danger()
+                        ->send();
 
                     return;
                 }
@@ -440,16 +456,19 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             }
 
             $this->dispatch('menu-items-updated');
-            $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_moved'),
-            ]);
+
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.messages.item_moved'))
+                ->success()
+                ->send();
 
         } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.move_failed', [
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.move_failed', [
                     'error' => $e->getMessage(),
-                ]),
-            ]);
+                ]))
+                ->danger()
+                ->send();
         }
     }
 
@@ -627,8 +646,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->success()
                 ->send();
 
-            // Redirect to refresh the page data
-            redirect()->to($this->getUrl());
+            // Refresh the menu items tree view
+            $this->dispatch('menu-items-updated');
 
         } catch (Exception $e) {
             Notification::make()
@@ -676,8 +695,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->success()
                 ->send();
 
-            // Redirect to refresh the page data
-            redirect()->to($this->getUrl());
+            // Refresh the menu items tree view
+            $this->dispatch('menu-items-updated');
 
         } catch (Exception $e) {
             Notification::make()

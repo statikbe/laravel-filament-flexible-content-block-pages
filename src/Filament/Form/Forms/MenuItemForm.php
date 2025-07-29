@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms;
 
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -14,7 +14,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteM
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
-class MenuItemField
+class MenuItemForm
 {
     const FIELD_LINK_TYPE = 'link_type';
 
@@ -36,36 +36,38 @@ class MenuItemField
 
     protected static ?array $types = null;
 
-    public static function create(): Grid
+    public static function getSchema(): array
     {
-        return Grid::make(2)->schema([
-            // Basic Information Section
-            Grid::make(1)->schema([
-                static::getLinkTypeField(),
-                static::getLabelField(),
-                static::getUseModelTitleField(),
-            ])->columnSpan(1),
-
-            // Link Configuration Section
-            Grid::make(1)->schema([
-                static::getLinkableField(),
-                static::getUrlField(),
-                static::getRouteField(),
-            ])->columnSpan(1),
-
-            // Additional Options Section
+        return [
             Grid::make(2)->schema([
-                static::getTargetField(),
-                static::getIconField(),
-                static::getVisibilityField(),
-            ])->columnSpan(2),
+                // Basic Information Section
+                Grid::make(1)->schema([
+                    static::getLinkTypeField(),
+                    static::getLabelField(),
+                    static::getUseModelTitleField(),
+                ])->columnSpan(1),
 
-            // Hidden fields for nested set
-            Hidden::make('menu_id'),
-            Hidden::make('parent_id'),
-            Hidden::make('_lft'),
-            Hidden::make('_rgt'),
-        ]);
+                // Link Configuration Section
+                Grid::make(1)->schema([
+                    static::getLinkableField(),
+                    static::getUrlField(),
+                    static::getRouteField(),
+                ])->columnSpan(1),
+
+                // Additional Options Section
+                Grid::make(2)->schema([
+                    static::getTargetField(),
+                    static::getIconField(),
+                    static::getVisibilityField(),
+                ])->columnSpan(2),
+
+                // Hidden fields for nested set
+                Hidden::make('menu_id'),
+                Hidden::make('parent_id'),
+                Hidden::make('_lft'),
+                Hidden::make('_rgt'),
+            ]),
+        ];
     }
 
     protected static function getLinkTypeField(): Select
