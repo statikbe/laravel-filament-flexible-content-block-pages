@@ -88,6 +88,8 @@ return [
             'dropdown' => 'Dropdown Menu',
         ],
         'no_items' => 'Geen menu-items beschikbaar',
+        'mobile_toggle_label' => 'Hoofdmenu openen',
+        'toggle_submenu' => ':label submenu in-/uitklappen',
     ],
     'menu_items' => [
         'lbl' => 'menu-item',

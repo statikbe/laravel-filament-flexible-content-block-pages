@@ -88,6 +88,8 @@ return [
             'dropdown' => 'Dropdown Menu',
         ],
         'no_items' => 'No menu items available',
+        'mobile_toggle_label' => 'Open main menu',
+        'toggle_submenu' => 'Toggle :label submenu',
     ],
     'menu_items' => [
         'lbl' => 'menu item',
