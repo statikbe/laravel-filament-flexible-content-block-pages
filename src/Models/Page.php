@@ -27,11 +27,12 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasPageAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
 /**
  * @property bool $is_undeletable
  */
-class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, Linkable
+class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, HasMenuLabel
 {
     use HasAuthorAttributeTrait;
     use HasCodeTrait;
@@ -86,5 +87,20 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     public function getMorphClass()
     {
         return 'filament-flexible-content-block-pages::page';
+    }
+
+    public function getMenuLabel(?string $locale = null): string
+    {
+        $locale = $locale ?: app()->getLocale();
+        return $this->getTranslation('title', $locale) ?: $this->getTranslation('title', config('app.fallback_locale', 'en'));
+    }
+
+    public function scopeSearchForMenuItems($query, string $search)
+    {
+        return $query->where(function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('intro', 'like', "%{$search}%")
+                ->orWhere('overview_title', 'like', "%{$search}%");
+        });
     }
 }

@@ -3,6 +3,8 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Filament\Resources\Resource;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
@@ -28,6 +30,10 @@ class FilamentFlexibleContentBlockPagesConfig
 
     const TYPE_TAGGABLE = 'taggables';
 
+    const TYPE_MENU = 'menus';
+
+    const TYPE_MENU_ITEM = 'menu_items';
+
     private string $pageModel;
 
     private string $redirectModel;
@@ -38,6 +44,10 @@ class FilamentFlexibleContentBlockPagesConfig
 
     private string $tagTypeModel;
 
+    private string $menuModel;
+
+    private string $menuItemModel;
+
     private HandlesPageRoutes $routeHelper;
 
     public function __construct()
@@ -47,6 +57,8 @@ class FilamentFlexibleContentBlockPagesConfig
         $this->settingsModel = $this->packageConfig('models.'.static::TYPE_SETTINGS, Settings::class);
         $this->tagModel = $this->packageConfig('models.'.static::TYPE_TAG, Tag::class);
         $this->tagTypeModel = $this->packageConfig('models.'.static::TYPE_TAG_TYPE, TagType::class);
+        $this->menuModel = $this->packageConfig('models.'.static::TYPE_MENU, Menu::class);
+        $this->menuItemModel = $this->packageConfig('models.'.static::TYPE_MENU_ITEM, MenuItem::class);
 
     }
 
@@ -83,6 +95,16 @@ class FilamentFlexibleContentBlockPagesConfig
         return app($this->tagTypeModel);
     }
 
+    public function getMenuModel(): Menu
+    {
+        return app($this->menuModel);
+    }
+
+    public function getMenuItemModel(): MenuItem
+    {
+        return app($this->menuItemModel);
+    }
+
     public function getAuthorsTable(): string
     {
         return $this->packageConfig('table_names.'.static::TYPE_AUTHOR, 'users');
@@ -116,6 +138,59 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getTaggablesTable(): string
     {
         return $this->packageConfig('table_names.'.static::TYPE_TAGGABLE, 'taggables');
+    }
+
+    public function getMenusTable(): string
+    {
+        return $this->packageConfig('table_names.'.static::TYPE_MENU, 'menus');
+    }
+
+    public function getMenuItemsTable(): string
+    {
+        return $this->packageConfig('table_names.'.static::TYPE_MENU_ITEM, 'menu_items');
+    }
+
+    public function getMenuMaxDepth(): int
+    {
+        return $this->packageConfig('menu.max_depth', 2);
+    }
+
+    public function getMenuLinkableModels(): array
+    {
+        return $this->packageConfig('menu.linkable_models', []);
+    }
+
+    public function getMenuModelIcons(): array
+    {
+        return $this->packageConfig('menu.model_icons', []);
+    }
+
+    public function getMenuStyles(): array
+    {
+        return $this->packageConfig('menu.styles', ['default']);
+    }
+
+    public function getDefaultMenuStyle(): string
+    {
+        $styles = $this->getMenuStyles();
+        return $styles[0] ?? 'default';
+    }
+
+    public function getMenuStyleOptions(): array
+    {
+        $styles = $this->getMenuStyles();
+        $options = [];
+        
+        foreach ($styles as $style) {
+            $options[$style] = flexiblePagesTrans("menu.styles.{$style}");
+        }
+        
+        return $options;
+    }
+
+    public function getMenuTheme(): string
+    {
+        return $this->packageConfig('menu.theme', 'tailwind');
     }
 
     /**
@@ -178,6 +253,8 @@ class FilamentFlexibleContentBlockPagesConfig
             $this->getTagModel()->getMorphClass() => $this->getTagModel()::class,
             $this->getTagTypeModel()->getMorphClass() => $this->getTagTypeModel()::class,
             $this->getRedirectModel()->getMorphClass() => $this->getRedirectModel()::class,
+            $this->getMenuModel()->getMorphClass() => $this->getMenuModel()::class,
+            $this->getMenuItemModel()->getMorphClass() => $this->getMenuItemModel()::class,
         ];
     }
 

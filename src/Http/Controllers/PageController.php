@@ -24,7 +24,7 @@ class PageController extends Controller
 
     const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
 
-    const TEMPLATE_PATH = 'filament-flexible-content-block-pages::pages.index';
+    const TEMPLATE_PATH = 'filament-flexible-content-block-pages::components.%s.pages.index';
 
     public function index(Page $page)
     {
@@ -216,10 +216,37 @@ class PageController extends Controller
 
     private function getTemplatePath(Page $page)
     {
+        $theme = FilamentFlexibleContentBlockPages::config()->getMenuTheme();
+        $defaultTemplatePath = sprintf(self::TEMPLATE_PATH, $theme);
+        
         if (! $page->code) {
-            return self::TEMPLATE_PATH;
+            return $this->getThemeTemplatePath($defaultTemplatePath, $theme);
         }
 
-        return FilamentFlexibleContentBlockPages::config()->getCustomPageTemplate($page->code) ?? self::TEMPLATE_PATH;
+        $customTemplate = FilamentFlexibleContentBlockPages::config()->getCustomPageTemplate($page->code);
+        if ($customTemplate) {
+            // Custom templates should also support theming
+            $themedCustomTemplate = "filament-flexible-content-block-pages::components.{$theme}.{$customTemplate}";
+            return $this->getThemeTemplatePath($themedCustomTemplate, $theme, $customTemplate);
+        }
+
+        return $this->getThemeTemplatePath($defaultTemplatePath, $theme);
+    }
+    
+    private function getThemeTemplatePath(string $template, string $theme, ?string $fallbackTemplate = null): string
+    {
+        // Check if the themed template exists
+        if (view()->exists($template)) {
+            return $template;
+        }
+        
+        // If we have a fallback template (for custom templates), try that
+        if ($fallbackTemplate && view()->exists("filament-flexible-content-block-pages::{$fallbackTemplate}")) {
+            return "filament-flexible-content-block-pages::{$fallbackTemplate}";
+        }
+        
+        // Final fallback to tailwind theme
+        $tailwindTemplate = sprintf(self::TEMPLATE_PATH, 'tailwind');
+        return $tailwindTemplate;
     }
 }

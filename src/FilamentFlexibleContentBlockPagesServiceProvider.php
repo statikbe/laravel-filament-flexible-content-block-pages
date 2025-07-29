@@ -8,6 +8,8 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
 {
@@ -27,12 +29,16 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 'create_filament_flexible_content_block_pages_redirects_table',
                 'create_filament_flexible_content_block_pages_settings_table',
                 'create_filament_flexible_content_block_tags_table',
+                'create_filament_flexible_content_block_menus_table',
+                'create_filament_flexible_content_block_menu_items_table',
             ])
             ->hasTranslations()
             ->hasCommand(SeedDefaultsCommand::class)
             ->hasViewComponents('flexible-pages',
                 LanguageSwitch::class,
                 BaseLayout::class,
+                Menu::class,
+                MenuItem::class,
             );
     }
 
