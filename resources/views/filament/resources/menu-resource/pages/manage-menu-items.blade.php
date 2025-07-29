@@ -10,7 +10,7 @@
         <!-- Tree Container -->
         <x-filament::section>
             <div class="min-h-[400px]">
-                @if(count($this->getMenuItems()) === 0)
+                @if($this->record->menuItems()->count() === 0)
                     <!-- Empty State -->
                     <div class="text-center py-12">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,11 +26,11 @@
                 @else
                     <!-- Tree Items -->
                     <div class="space-y-2" id="menu-items-container">
-                        @foreach($this->getMenuItems() as $item)
+                        @foreach($this->record->menuItems()->with(['children', 'linkable'])->whereNull('parent_id')->orderBy('_lft')->get() as $item)
                             @livewire('filament-flexible-content-block-pages::menu-tree-item', [
                                 'item' => $item,
                                 'maxDepth' => $this->getMaxDepth()
-                            ], key($item['id']))
+                            ], key($item->id))
                         @endforeach
                     </div>
                 @endif

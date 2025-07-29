@@ -5,9 +5,11 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Livewire;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\LocaleSwitcher;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
 
 class MenuTreeItem extends Component implements HasActions, HasForms
@@ -15,7 +17,7 @@ class MenuTreeItem extends Component implements HasActions, HasForms
     use InteractsWithActions;
     use InteractsWithForms;
 
-    public array $item;
+    public $item; // MenuItem model
 
     public int $depth = 0;
 
@@ -25,9 +27,16 @@ class MenuTreeItem extends Component implements HasActions, HasForms
 
     public bool $isExpanded = true;
 
-    public function mount(array $item, int $depth = 0, int $maxDepth = 2, bool $showActions = true): void
+    public function mount($item, int $depth = 0, int $maxDepth = 2, bool $showActions = true): void
     {
-        $this->item = $item;
+        // Convert array to model if needed
+        if (is_array($item)) {
+            $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
+            $this->item = $menuItemModel::with('linkable')->find($item['id']);
+        } else {
+            $this->item = $item;
+        }
+        
         $this->depth = $depth;
         $this->maxDepth = $maxDepth;
         $this->showActions = $showActions;
@@ -46,30 +55,26 @@ class MenuTreeItem extends Component implements HasActions, HasForms
 
     public function hasChildren(): bool
     {
-        return ! empty($this->item['children']);
+        return $this->item->children()->exists();
     }
 
     public function getItemDisplayLabel(): string
     {
-        if (($this->item['use_model_title'] ?? false) && ! empty($this->item['linkable'])) {
-            return $this->item['linkable']['title'] ?? $this->item['label'] ?? flexiblePagesTrans('menu_items.status.no_label');
-        }
-
-        return $this->item['label'] ?? flexiblePagesTrans('menu_items.status.no_label');
+        return $this->item->getDisplayLabel();
     }
 
     public function getItemTypeLabel(): string
     {
-        if (! empty($this->item['linkable_type']) && ! empty($this->item['linkable'])) {
-            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($this->item['linkable_type']);
+        if ($this->item->linkable_type && $this->item->linkable) {
+            return flexiblePagesTrans('menu_items.tree.linked_to') . ' ' . class_basename($this->item->linkable_type);
         }
 
-        if (! empty($this->item['url'])) {
-            return flexiblePagesTrans('menu_items.tree.external_url').': '.$this->item['url'];
+        if ($this->item->url) {
+            return flexiblePagesTrans('menu_items.tree.external_url') . ': ' . $this->item->url;
         }
 
-        if (! empty($this->item['route'])) {
-            return flexiblePagesTrans('menu_items.tree.route').': '.$this->item['route'];
+        if ($this->item->route) {
+            return flexiblePagesTrans('menu_items.tree.route') . ': ' . $this->item->route;
         }
 
         return flexiblePagesTrans('menu_items.tree.no_link');
@@ -80,18 +85,21 @@ class MenuTreeItem extends Component implements HasActions, HasForms
         return Action::make('addChild')
             ->form(MenuItemForm::getSchema())
             ->fillForm([
-                'parent_id' => $this->item['id'],
+                'parent_id' => $this->item->id,
                 'is_visible' => true,
                 'target' => '_self',
             ])
             ->action(function (array $data): void {
-                $data['parent_id'] = $this->item['id'];
+                $data['parent_id'] = $this->item->id;
                 $this->createMenuItem($data);
             })
             ->modalHeading(flexiblePagesTrans('menu_items.tree.add_child'))
             ->modalSubmitActionLabel(__('Create'))
             ->modalWidth('2xl')
-            ->slideOver();
+            ->slideOver()
+            ->extraModalFooterActions([
+                LocaleSwitcher::make(),
+            ]);
     }
 
     public function editAction(): Action
@@ -99,23 +107,26 @@ class MenuTreeItem extends Component implements HasActions, HasForms
         return Action::make('edit')
             ->form(MenuItemForm::getSchema())
             ->fillForm([
-                'link_type' => $this->item['link_type'],
-                'label' => $this->item['label'],
-                'use_model_title' => $this->item['use_model_title'],
-                'url' => $this->item['url'],
-                'route' => $this->item['route'],
-                'linkable_id' => $this->item['linkable_id'],
-                'target' => $this->item['target'] ?? '_self',
-                'icon' => $this->item['icon'],
-                'is_visible' => $this->item['is_visible'],
+                'link_type' => $this->item->link_type,
+                'label' => $this->item->label,
+                'use_model_title' => $this->item->use_model_title,
+                'url' => $this->item->url,
+                'route' => $this->item->route,
+                'linkable_id' => $this->item->linkable_id,
+                'target' => $this->item->target ?? '_self',
+                'icon' => $this->item->icon,
+                'is_visible' => $this->item->is_visible,
             ])
             ->action(function (array $data): void {
-                $this->updateMenuItem($this->item['id'], $data);
+                $this->updateMenuItem($this->item->id, $data);
             })
             ->modalHeading(flexiblePagesTrans('menu_items.tree.edit'))
             ->modalSubmitActionLabel(__('Update'))
             ->modalWidth('2xl')
-            ->slideOver();
+            ->slideOver()
+            ->extraModalFooterActions([
+                LocaleSwitcher::make(),
+            ]);
     }
 
     public function deleteAction(): Action
@@ -127,7 +138,7 @@ class MenuTreeItem extends Component implements HasActions, HasForms
             ->modalSubmitActionLabel(flexiblePagesTrans('menu_items.tree.delete'))
             ->color('danger')
             ->action(function (): void {
-                $this->deleteMenuItem($this->item['id']);
+                $this->deleteMenuItem($this->item->id);
             });
     }
 

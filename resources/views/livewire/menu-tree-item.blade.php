@@ -1,4 +1,4 @@
-<div class="menu-tree-item" data-item-id="{{ $item['id'] }}">
+<div class="menu-tree-item" data-item-id="{{ $item->id }}">
     <div class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 group hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ $depth > 0 ? 'ml-' . ($depth * 8) : '' }}">
         
         @if($showActions)
@@ -29,8 +29,8 @@
         <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    @if(!empty($item['icon']))
-                        <span class="text-gray-500 text-lg">{!! $item['icon'] !!}</span>
+                    @if($item->icon)
+                        <span class="text-gray-500 text-lg">{!! $item->icon !!}</span>
                     @endif
                     
                     <div>
@@ -42,7 +42,7 @@
                         </p>
                     </div>
                     
-                    @if(!($item['is_visible'] ?? true))
+                    @if(!$item->is_visible)
                         <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                             {{ flexiblePagesTrans('menu_items.status.hidden') }}
                         </span>
@@ -66,14 +66,14 @@
     
     <!-- Children -->
     @if($this->hasChildren() && $isExpanded)
-        <div class="space-y-2 mt-2" wire:key="children-{{ $item['id'] }}">
-            @foreach($item['children'] as $child)
+        <div class="space-y-2 mt-2" wire:key="children-{{ $item->id }}">
+            @foreach($item->children as $child)
                 @livewire('filament-flexible-content-block-pages::menu-tree-item', [
                     'item' => $child,
                     'depth' => $depth + 1,
                     'maxDepth' => $maxDepth,
                     'showActions' => $showActions
-                ], key($child['id']))
+                ], key($child->id))
             @endforeach
         </div>
     @endif

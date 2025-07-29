@@ -6,11 +6,13 @@ use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\LocaleSwitcher;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\Concerns\Translatable;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -21,6 +23,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
+    use Translatable;
 
     protected static string $resource = MenuResource::class;
 
@@ -112,7 +115,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 })
                 ->modalSubmitActionLabel(__('Create'))
                 ->modalWidth('2xl')
-                ->slideOver(),
+                ->slideOver()
+                ->extraModalFooterActions([
+                    LocaleSwitcher::make(),
+                ]),
         ];
     }
 
@@ -160,7 +166,10 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             ->modalHeading(flexiblePagesTrans('menu_items.tree.edit'))
             ->modalSubmitActionLabel(__('Update'))
             ->modalWidth('2xl')
-            ->slideOver();
+            ->slideOver()
+            ->extraModalFooterActions([
+                LocaleSwitcher::make(),
+            ]);
     }
 
     public function deleteMenuItemAction(): Action

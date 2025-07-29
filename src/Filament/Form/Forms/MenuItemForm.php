@@ -13,6 +13,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\Linkab
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Concerns\HasTranslatableHint;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class MenuItemForm
@@ -83,13 +84,18 @@ class MenuItemForm
 
     protected static function getLabelField(): TextInput
     {
-        return TextInput::make(static::FIELD_LABEL)
+        $field = new class extends TextInput {
+            use HasTranslatableHint;
+        };
+
+        return $field::make(static::FIELD_LABEL)
             ->label(flexiblePagesTrans('menu_items.form.label_lbl'))
             ->required(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->visible(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->maxLength(255)
             ->helperText(flexiblePagesTrans('menu_items.form.label_help'))
-            ->live();
+            ->live()
+            ->addsTranslatableHint();
     }
 
     protected static function getUseModelTitleField(): Toggle
