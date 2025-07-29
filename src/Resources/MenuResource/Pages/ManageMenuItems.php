@@ -25,6 +25,14 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
     protected static string $view = 'filament-flexible-content-block-pages::filament.resources.menu-resource.pages.manage-menu-items';
 
+    public mixed $record;
+
+    public function mount(int|string $record): void
+    {
+        $menuModel = static::getResource()::getModel();
+        $this->record = $menuModel::findOrFail($record);
+    }
+
     public function getTitle(): string
     {
         return flexiblePagesTrans('menu_items.manage.title', [
