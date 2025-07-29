@@ -247,8 +247,12 @@ class MenuItemForm
         return static::$types;
     }
 
-    protected static function getTypeByAlias(string $alias): ?AbstractMenuItemType
+    protected static function getTypeByAlias(?string $alias): ?AbstractMenuItemType
     {
+        if ($alias === null) {
+            return null;
+        }
+
         foreach (static::getTypes() as $type) {
             if ($type->getAlias() === $alias) {
                 return $type;
