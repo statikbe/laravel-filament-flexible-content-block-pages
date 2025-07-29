@@ -283,5 +283,4 @@ class MenuItemForm
 
         return $type ? $type->isRouteType() : false;
     }
-
 }
