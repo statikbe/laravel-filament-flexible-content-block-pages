@@ -216,9 +216,9 @@ class PageController extends Controller
 
     private function getTemplatePath(Page $page)
     {
-        $theme = FilamentFlexibleContentBlockPages::config()->getMenuTheme();
+        $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
         $defaultTemplatePath = sprintf(self::TEMPLATE_PATH, $theme);
-        
+
         if (! $page->code) {
             return $this->getThemeTemplatePath($defaultTemplatePath, $theme);
         }
@@ -227,26 +227,28 @@ class PageController extends Controller
         if ($customTemplate) {
             // Custom templates should also support theming
             $themedCustomTemplate = "filament-flexible-content-block-pages::components.{$theme}.{$customTemplate}";
+
             return $this->getThemeTemplatePath($themedCustomTemplate, $theme, $customTemplate);
         }
 
         return $this->getThemeTemplatePath($defaultTemplatePath, $theme);
     }
-    
+
     private function getThemeTemplatePath(string $template, string $theme, ?string $fallbackTemplate = null): string
     {
         // Check if the themed template exists
         if (view()->exists($template)) {
             return $template;
         }
-        
+
         // If we have a fallback template (for custom templates), try that
         if ($fallbackTemplate && view()->exists("filament-flexible-content-block-pages::{$fallbackTemplate}")) {
             return "filament-flexible-content-block-pages::{$fallbackTemplate}";
         }
-        
+
         // Final fallback to tailwind theme
         $tailwindTemplate = sprintf(self::TEMPLATE_PATH, 'tailwind');
+
         return $tailwindTemplate;
     }
 }

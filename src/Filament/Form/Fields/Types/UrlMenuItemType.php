@@ -15,7 +15,7 @@ class UrlMenuItemType extends AbstractMenuItemType
 
     public static function make(?string $model = null): static
     {
-        return new static();
+        return new static;
     }
 
     public function getAlias(): string

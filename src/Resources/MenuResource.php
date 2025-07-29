@@ -50,14 +50,14 @@ class MenuResource extends Resource
     {
         $availableStyles = FilamentFlexibleContentBlockPages::config()->getMenuStyles();
         $showStyleField = count($availableStyles) > 1;
-        
+
         $formFields = [
             TextInput::make('name')
                 ->label(flexiblePagesTrans('menus.form.name_lbl'))
                 ->required()
                 ->maxLength(255)
                 ->helperText(flexiblePagesTrans('menus.form.name_help')),
-            
+
             CodeField::create()
                 ->helperText(flexiblePagesTrans('menus.form.code_help')),
         ];
@@ -93,13 +93,13 @@ class MenuResource extends Resource
                     ->label(flexiblePagesTrans('menus.table.name_col'))
                     ->searchable()
                     ->sortable(),
-                
+
                 TextColumn::make('code')
                     ->label(flexiblePagesTrans('menus.table.code_col'))
                     ->searchable()
                     ->sortable()
                     ->badge(),
-                
+
                 TextColumn::make('style')
                     ->label(flexiblePagesTrans('menus.table.style_col'))
                     ->formatStateUsing(function (string $state): string {
@@ -108,12 +108,12 @@ class MenuResource extends Resource
                     ->badge()
                     ->color('gray')
                     ->visible(fn () => count(FilamentFlexibleContentBlockPages::config()->getMenuStyles()) > 1),
-                
+
                 TextColumn::make('menuItems_count')
                     ->label(flexiblePagesTrans('menus.table.items_count_col'))
                     ->counts('menuItems')
                     ->sortable(),
-                
+
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('menus.table.created_at_col'))
                     ->dateTime()

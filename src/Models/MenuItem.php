@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Kalnoy\Nestedset\NodeTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedSlugAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
 class MenuItem extends Model
 {
@@ -72,7 +72,7 @@ class MenuItem extends Model
             if ($this->linkable instanceof HasMenuLabel) {
                 return $this->linkable->getMenuLabel($locale);
             }
-            
+
             // If no interface, fall back to custom label
             return $this->getTranslation('label', $locale ?: app()->getLocale());
         }
@@ -94,6 +94,7 @@ class MenuItem extends Model
     public function canHaveChildren(): bool
     {
         $maxDepth = FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
+
         return $this->depth < $maxDepth;
     }
 

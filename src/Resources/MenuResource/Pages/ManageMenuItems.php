@@ -3,12 +3,24 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
 use Exception;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Schema;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\MenuItemField;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 
-class ManageMenuItems extends Page
+class ManageMenuItems extends Page implements HasActions, HasForms
 {
+    use InteractsWithActions;
+    use InteractsWithForms;
+
     protected static string $resource = MenuResource::class;
 
     protected static string $view = 'filament-flexible-content-block-pages::filament.resources.menu-resource.pages.manage-menu-items';
@@ -47,7 +59,7 @@ class ManageMenuItems extends Page
         foreach ($items as $item) {
             if ($item['parent_id'] == $parentId) {
                 $children = $this->buildTree($items, $item['id']);
-                if (!empty($children)) {
+                if (! empty($children)) {
                     $item['children'] = $children;
                 }
                 $tree[] = $item;
@@ -57,65 +69,77 @@ class ManageMenuItems extends Page
         return $tree;
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('addMenuItem')
+                ->label(flexiblePagesTrans('menu_items.tree.add_item'))
+                ->icon('heroicon-o-plus')
+                ->color('primary')
+                ->form($this->getMenuItemFormSchema())
+                ->action(function (array $data): void {
+                    $this->createMenuItem($data);
+                })
+                ->modalHeading(flexiblePagesTrans('menu_items.tree.add_item'))
+                ->modalSubmitActionLabel(__('Create'))
+                ->modalWidth('2xl')
+                ->slideOver(),
+        ];
+    }
+
     public function addMenuItem(?int $parentId = null): void
     {
-        try {
-            // Validate parent if provided
-            if ($parentId && !$this->validateMenuDepth(null, $parentId)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded')
-                ]);
-                return;
-            }
-
-            if ($parentId && !$this->validateParentExists($parentId)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.parent_not_found')
-                ]);
-                return;
-            }
-
-            // This method will be called from Alpine.js
-            $this->dispatch('open-menu-item-modal', [
-                'menuId' => $this->record->id,
-                'parentId' => $parentId,
-                'action' => 'create',
-            ]);
-
-        } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.general_error', [
-                    'error' => $e->getMessage()
-                ])
-            ]);
-        }
+        $this->mountAction('addMenuItem', ['parent_id' => $parentId]);
     }
 
     public function editMenuItem(int $itemId): void
     {
-        try {
-            // Validate that the item exists and belongs to this menu
-            if (!$this->validateMenuItemExists($itemId)) {
-                $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
-                ]);
-                return;
-            }
+        $item = $this->getMenuItemSecurely($itemId);
 
-            // This method will be called from Alpine.js
-            $this->dispatch('open-menu-item-modal', [
-                'menuId' => $this->record->id,
-                'itemId' => $itemId,
-                'action' => 'edit',
-            ]);
+        if (! $item) {
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                ->danger()
+                ->send();
 
-        } catch (Exception $e) {
-            $this->dispatch('show-error', [
-                'message' => flexiblePagesTrans('menu_items.errors.general_error', [
-                    'error' => $e->getMessage()
-                ])
-            ]);
+            return;
         }
+
+        $this->mountAction('editMenuItem', ['item' => $item]);
+    }
+
+    public function editMenuItemAction(): Action
+    {
+        return Action::make('editMenuItem')
+            ->form($this->getMenuItemFormSchema())
+            ->fillForm(function (array $arguments): array {
+                $item = $arguments['item'];
+
+                return [
+                    'link_type' => $item->link_type,
+                    'label' => $item->label,
+                    'use_model_title' => $item->use_model_title,
+                    'url' => $item->url,
+                    'route' => $item->route,
+                    'linkable_id' => $item->linkable_id,
+                    'target' => $item->target ?? '_self',
+                    'icon' => $item->icon,
+                    'is_visible' => $item->is_visible,
+                ];
+            })
+            ->action(function (array $data, array $arguments): void {
+                $item = $arguments['item'];
+                $this->updateMenuItem($item->id, $data);
+            })
+            ->modalHeading(flexiblePagesTrans('menu_items.tree.edit'))
+            ->modalSubmitActionLabel(__('Update'))
+            ->modalWidth('2xl')
+            ->slideOver();
+    }
+
+    protected function getMenuItemFormSchema(): array
+    {
+        return MenuItemField::create()->getSchema();
     }
 
     public function deleteMenuItem(int $itemId): void
@@ -123,10 +147,11 @@ class ManageMenuItems extends Page
         try {
             $item = $this->getMenuItemSecurely($itemId);
 
-            if (!$item) {
+            if (! $item) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
+
                 return;
             }
 
@@ -134,8 +159,9 @@ class ManageMenuItems extends Page
             if ($item->children()->count() > 0) {
                 $this->dispatch('confirm-delete-with-children', [
                     'itemId' => $itemId,
-                    'childCount' => $item->children()->count()
+                    'childCount' => $item->children()->count(),
                 ]);
+
                 return;
             }
 
@@ -144,14 +170,14 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_deleted')
+                'message' => flexiblePagesTrans('menu_items.messages.item_deleted'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -167,19 +193,19 @@ class ManageMenuItems extends Page
 
                 $this->dispatch('menu-items-updated');
                 $this->dispatch('show-success', [
-                    'message' => flexiblePagesTrans('menu_items.messages.item_and_children_deleted')
+                    'message' => flexiblePagesTrans('menu_items.messages.item_and_children_deleted'),
                 ]);
             } else {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
             }
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.delete_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
@@ -192,8 +218,9 @@ class ManageMenuItems extends Page
 
             if (empty($orderedItems)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.no_items_to_reorder')
+                    'message' => flexiblePagesTrans('menu_items.errors.no_items_to_reorder'),
                 ]);
+
                 return;
             }
 
@@ -205,8 +232,9 @@ class ManageMenuItems extends Page
 
             if ($validItems !== count($itemIds)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder')
+                    'message' => flexiblePagesTrans('menu_items.errors.invalid_items_in_reorder'),
                 ]);
+
                 return;
             }
 
@@ -215,29 +243,29 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.items_reordered')
+                'message' => flexiblePagesTrans('menu_items.messages.items_reordered'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.reorder_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
     }
 
     public function validateMenuDepth(?int $itemId, ?int $parentId = null): bool
     {
-        if (!$parentId) {
+        if (! $parentId) {
             return true; // Root level is always valid
         }
 
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $parent = $menuItemModel::find($parentId);
-        if (!$parent || $parent->menu_id !== $this->record->id) {
+        if (! $parent || $parent->menu_id !== $this->record->id) {
             return false;
         }
 
@@ -251,8 +279,9 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $parent = $menuItemModel::find($parentId);
+
         return $parent && $parent->menu_id === $this->record->id;
     }
 
@@ -260,8 +289,9 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $item = $menuItemModel::find($itemId);
+
         return $item && $item->menu_id === $this->record->id;
     }
 
@@ -269,13 +299,13 @@ class ManageMenuItems extends Page
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()
             ->getMenuItemModel();
-        
+
         $item = $menuItemModel::find($itemId);
-        
-        if (!$item || $item->menu_id !== $this->record->id) {
+
+        if (! $item || $item->menu_id !== $this->record->id) {
             return null;
         }
-        
+
         return $item;
     }
 
@@ -285,12 +315,12 @@ class ManageMenuItems extends Page
         $itemsByParent = [];
         foreach ($orderedItems as $position => $item) {
             $parentId = $item['parent_id'] ?? null;
-            if (!isset($itemsByParent[$parentId])) {
+            if (! isset($itemsByParent[$parentId])) {
                 $itemsByParent[$parentId] = [];
             }
             $itemsByParent[$parentId][] = [
                 'id' => $item['id'],
-                'position' => $position
+                'position' => $position,
             ];
         }
 
@@ -311,7 +341,7 @@ class ManageMenuItems extends Page
                             $menuItem->appendToNode($parent)->save();
                         }
                     }
-                    
+
                     // Then reorder within the parent
                     $this->reorderSiblings($children, $parent);
                 }
@@ -322,15 +352,17 @@ class ManageMenuItems extends Page
     protected function reorderSiblings(array $siblings, $parent = null): void
     {
         // Sort siblings by their intended position
-        usort($siblings, function($a, $b) {
+        usort($siblings, function ($a, $b) {
             return $a['position'] <=> $b['position'];
         });
 
         $previousSibling = null;
-        
+
         foreach ($siblings as $sibling) {
             $menuItem = $this->getMenuItemSecurely($sibling['id']);
-            if (!$menuItem) continue;
+            if (! $menuItem) {
+                continue;
+            }
 
             if ($parent) {
                 // Moving within a parent node
@@ -347,7 +379,7 @@ class ManageMenuItems extends Page
                     $menuItem->makeRoot()->save();
                 }
             }
-            
+
             $previousSibling = $menuItem;
         }
     }
@@ -356,27 +388,30 @@ class ManageMenuItems extends Page
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
-            if (!$item) {
+            if (! $item) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found')
+                    'message' => flexiblePagesTrans('menu_items.errors.item_not_found'),
                 ]);
+
                 return;
             }
 
             // Validate depth constraints
-            if (!$this->validateMenuDepth($itemId, $newParentId)) {
+            if (! $this->validateMenuDepth($itemId, $newParentId)) {
                 $this->dispatch('show-error', [
-                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded')
+                    'message' => flexiblePagesTrans('menu_items.errors.max_depth_exceeded'),
                 ]);
+
                 return;
             }
 
             if ($newParentId) {
                 $parent = $this->getMenuItemSecurely($newParentId);
-                if (!$parent) {
+                if (! $parent) {
                     $this->dispatch('show-error', [
-                        'message' => flexiblePagesTrans('menu_items.errors.parent_not_found')
+                        'message' => flexiblePagesTrans('menu_items.errors.parent_not_found'),
                     ]);
+
                     return;
                 }
 
@@ -406,15 +441,294 @@ class ManageMenuItems extends Page
 
             $this->dispatch('menu-items-updated');
             $this->dispatch('show-success', [
-                'message' => flexiblePagesTrans('menu_items.messages.item_moved')
+                'message' => flexiblePagesTrans('menu_items.messages.item_moved'),
             ]);
 
         } catch (Exception $e) {
             $this->dispatch('show-error', [
                 'message' => flexiblePagesTrans('menu_items.errors.move_failed', [
-                    'error' => $e->getMessage()
-                ])
+                    'error' => $e->getMessage(),
+                ]),
             ]);
         }
+    }
+
+    public function getModalOptionsData(): array
+    {
+        return [
+            'linkableTypes' => $this->getLinkableTypes(),
+            'availableRoutes' => $this->getAvailableRoutes(),
+        ];
+    }
+
+    public function getLinkableTypes(): array
+    {
+        $types = [];
+        $configuredModels = FilamentFlexibleContentBlockPages::config()
+            ->getMenuLinkableModels();
+
+        foreach ($configuredModels as $modelClass) {
+            if (is_string($modelClass) && class_exists($modelClass)) {
+                $types[] = [
+                    'alias' => $this->getModelAlias($modelClass),
+                    'label' => flexiblePagesTrans('menu_items.form.types.model', [
+                        'model' => class_basename($modelClass),
+                    ]),
+                    'model' => $modelClass,
+                ];
+            }
+        }
+
+        return $types;
+    }
+
+    public function getAvailableRoutes(): array
+    {
+        $routes = [];
+        $routeCollection = app('router')->getRoutes();
+
+        foreach ($routeCollection as $route) {
+            $name = $route->getName();
+            if ($name && ! str_contains($name, 'filament.') && ! str_contains($name, 'debugbar')) {
+                $routes[] = [
+                    'name' => $name,
+                    'uri' => $route->uri(),
+                ];
+            }
+        }
+
+        return $routes;
+    }
+
+    public function getMenuItem(int $itemId): ?array
+    {
+        $item = $this->getMenuItemSecurely($itemId);
+
+        if (! $item) {
+            return null;
+        }
+
+        return [
+            'id' => $item->id,
+            'link_type' => $item->link_type,
+            'label' => $item->label,
+            'use_model_title' => (bool) $item->use_model_title,
+            'url' => $item->url,
+            'route' => $item->route,
+            'linkable_id' => $item->linkable_id,
+            'linkable_type' => $item->linkable_type,
+            'target' => $item->target ?? '_self',
+            'icon' => $item->icon,
+            'is_visible' => (bool) $item->is_visible,
+            'linkable' => $item->linkable ? [
+                'id' => $item->linkable->getKey(),
+                'title' => method_exists($item->linkable, 'getMenuLabel')
+                    ? $item->linkable->getMenuLabel()
+                    : ($item->linkable->title ?? $item->linkable->name ?? 'Unknown'),
+            ] : null,
+        ];
+    }
+
+    public function searchLinkableItems(array $params): array
+    {
+        $linkType = $params['linkType'] ?? '';
+        $search = $params['search'] ?? '';
+
+        if (strlen($search) < 2) {
+            return [];
+        }
+
+        $types = $this->getLinkableTypes();
+        $type = collect($types)->firstWhere('alias', $linkType);
+
+        if (! $type || ! isset($type['model'])) {
+            return [];
+        }
+
+        $modelClass = $type['model'];
+
+        if (! class_exists($modelClass)) {
+            return [];
+        }
+
+        try {
+            $query = $modelClass::query();
+
+            // Use searchForMenuItems if available, otherwise basic search
+            if (method_exists($modelClass, 'searchForMenuItems')) {
+                $results = $modelClass::searchForMenuItems($search)->limit(50)->get();
+            } else {
+                // Basic search on common fields
+                $searchableFields = ['title', 'name', 'label'];
+                $query->where(function ($q) use ($searchableFields, $search) {
+                    foreach ($searchableFields as $field) {
+                        if (Schema::hasColumn((new $modelClass)->getTable(), $field)) {
+                            $q->orWhere($field, 'LIKE', "%{$search}%");
+                        }
+                    }
+                });
+                $results = $query->limit(50)->get();
+            }
+
+            return $results->map(function ($item) {
+                return [
+                    'id' => $item->getKey(),
+                    'label' => method_exists($item, 'getMenuLabel')
+                        ? $item->getMenuLabel()
+                        : ($item->title ?? $item->name ?? 'Item #'.$item->getKey()),
+                ];
+            })->toArray();
+
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    public function createMenuItem(array $data): void
+    {
+        try {
+            $menuItemModel = FilamentFlexibleContentBlockPages::config()
+                ->getMenuItemModel();
+
+            // Validate required fields based on link type
+            $this->validateMenuItemData($data);
+
+            // Create the menu item
+            $menuItem = new $menuItemModel;
+            $menuItem->fill([
+                'menu_id' => $this->record->id,
+                'parent_id' => $data['parent_id'] ?? null,
+                'link_type' => $data['link_type'],
+                'label' => $data['label'],
+                'use_model_title' => $data['use_model_title'] ?? false,
+                'url' => $data['url'] ?? null,
+                'route' => $data['route'] ?? null,
+                'linkable_id' => $data['linkable_id'] ?? null,
+                'linkable_type' => $data['linkable_type'] ?? null,
+                'target' => $data['target'] ?? '_self',
+                'icon' => $data['icon'] ?? null,
+                'is_visible' => $data['is_visible'] ?? true,
+            ]);
+
+            // Handle nested set positioning
+            if ($data['parent_id']) {
+                $parent = $this->getMenuItemSecurely($data['parent_id']);
+                if ($parent) {
+                    $menuItem->appendToNode($parent)->save();
+                } else {
+                    throw new Exception('Parent item not found');
+                }
+            } else {
+                $menuItem->makeRoot()->save();
+            }
+
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.messages.item_created'))
+                ->success()
+                ->send();
+
+            // Redirect to refresh the page data
+            redirect()->to($this->getUrl());
+
+        } catch (Exception $e) {
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.create_failed', [
+                    'error' => $e->getMessage(),
+                ]))
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function updateMenuItem(int $itemId, array $data): void
+    {
+        try {
+            $item = $this->getMenuItemSecurely($itemId);
+
+            if (! $item) {
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
+
+                return;
+            }
+
+            // Validate required fields based on link type
+            $this->validateMenuItemData($data);
+
+            // Update the menu item
+            $item->update([
+                'link_type' => $data['link_type'],
+                'label' => $data['label'],
+                'use_model_title' => $data['use_model_title'] ?? false,
+                'url' => $data['url'] ?? null,
+                'route' => $data['route'] ?? null,
+                'linkable_id' => $data['linkable_id'] ?? null,
+                'linkable_type' => $data['linkable_type'] ?? null,
+                'target' => $data['target'] ?? '_self',
+                'icon' => $data['icon'] ?? null,
+                'is_visible' => $data['is_visible'] ?? true,
+            ]);
+
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.messages.item_updated'))
+                ->success()
+                ->send();
+
+            // Redirect to refresh the page data
+            redirect()->to($this->getUrl());
+
+        } catch (Exception $e) {
+            Notification::make()
+                ->title(flexiblePagesTrans('menu_items.errors.update_failed', [
+                    'error' => $e->getMessage(),
+                ]))
+                ->danger()
+                ->send();
+        }
+    }
+
+    protected function validateMenuItemData(array $data): void
+    {
+        if (empty($data['label'])) {
+            throw new Exception(flexiblePagesTrans('menu_items.form.label_lbl').' is required');
+        }
+
+        switch ($data['link_type']) {
+            case 'url':
+                if (empty($data['url'])) {
+                    throw new Exception(flexiblePagesTrans('menu_items.form.url_lbl').' is required for URL links');
+                }
+                break;
+
+            case 'route':
+                if (empty($data['route'])) {
+                    throw new Exception(flexiblePagesTrans('menu_items.form.route_lbl').' is required for route links');
+                }
+                break;
+
+            default:
+                // Model type - check if linkable_id is provided
+                if (empty($data['linkable_id'])) {
+                    throw new Exception(flexiblePagesTrans('menu_items.form.linkable_item_lbl').' is required for model links');
+                }
+                break;
+        }
+    }
+
+    protected function getModelAlias(string $modelClass): string
+    {
+        // Get the morph alias for the model
+        $morphMap = FilamentFlexibleContentBlockPages::config()->getMorphMap();
+
+        foreach ($morphMap as $alias => $class) {
+            if ($class === $modelClass) {
+                return $alias;
+            }
+        }
+
+        // Fallback to class basename if no morph alias found
+        return strtolower(class_basename($modelClass));
     }
 }

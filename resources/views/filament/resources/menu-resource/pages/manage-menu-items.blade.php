@@ -8,25 +8,6 @@
         x-init="init()"
         class="space-y-6"
     >
-        <!-- Header Actions -->
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-medium text-gray-900 dark:text-white">
-                    {{ flexiblePagesTrans('menu_items.manage.subtitle') }}
-                </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ flexiblePagesTrans('menu_items.manage.description') }}
-                </p>
-            </div>
-            <x-filament::button
-                @click="addMenuItem(null)"
-                icon="heroicon-o-plus"
-                color="primary"
-            >
-                {{ flexiblePagesTrans('menu_items.tree.add_item') }}
-            </x-filament::button>
-        </div>
-
         <!-- Tree Container -->
         <x-filament::section>
             <div class="min-h-[400px]">
@@ -41,15 +22,6 @@
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         {{ flexiblePagesTrans('menu_items.manage.empty_description') }}
                     </p>
-                    <div class="mt-6">
-                        <x-filament::button
-                            @click="addMenuItem(null)"
-                            icon="heroicon-o-plus"
-                            color="primary"
-                        >
-                            {{ flexiblePagesTrans('menu_items.tree.add_item') }}
-                        </x-filament::button>
-                    </div>
                 </div>
 
                 <!-- Tree Items -->
@@ -89,7 +61,6 @@
 
                 init() {
                     this.initSortable();
-                    this.listenForUpdates();
                 },
 
                 initSortable() {
@@ -108,12 +79,6 @@
                             });
                         }
                     }
-                },
-
-                listenForUpdates() {
-                    this.$wire.on('menu-items-updated', () => {
-                        this.refreshItems();
-                    });
                 },
 
                 renderTreeItem(item, depth) {
@@ -149,31 +114,19 @@
                                     <!-- Actions -->
                                     <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         ${canHaveChildren ? `
-                                            <x-filament::button
-                                                @click="addMenuItem(${item.id})"
-                                                size="xs"
-                                                color="gray"
-                                                outlined
-                                            >
+                                            <button onclick="$wire.addMenuItem(${item.id})" 
+                                                    class="inline-flex items-center px-2 py-1 border border-gray-300 rounded text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                                 {{ flexiblePagesTrans('menu_items.tree.add_child') }}
-                                            </x-filament::button>
+                                            </button>
                                         ` : ''}
-                                        <x-filament::button
-                                            @click="editMenuItem(${item.id})"
-                                            size="xs"
-                                            color="primary"
-                                            outlined
-                                        >
+                                        <button onclick="$wire.editMenuItem(${item.id})" 
+                                                class="inline-flex items-center px-2 py-1 border border-primary-300 rounded text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                             {{ flexiblePagesTrans('menu_items.tree.edit') }}
-                                        </x-filament::button>
-                                        <x-filament::button
-                                            @click="deleteMenuItem(${item.id})"
-                                            size="xs"
-                                            color="danger"
-                                            outlined
-                                        >
+                                        </button>
+                                        <button onclick="$wire.deleteMenuItem(${item.id})" 
+                                                class="inline-flex items-center px-2 py-1 border border-red-300 rounded text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                             {{ flexiblePagesTrans('menu_items.tree.delete') }}
-                                        </x-filament::button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -204,23 +157,6 @@
                     return '{{ flexiblePagesTrans('menu_items.tree.no_link') }}';
                 },
 
-                addMenuItem(parentId) {
-                    this.$wire.call('addMenuItem', parentId);
-                },
-
-                editMenuItem(itemId) {
-                    this.$wire.call('editMenuItem', itemId);
-                },
-
-                deleteMenuItem(itemId) {
-                    if (confirm('{{ flexiblePagesTrans('menu_items.tree.delete_confirm') }}')) {
-                        this.loading = true;
-                        this.$wire.call('deleteMenuItem', itemId).then(() => {
-                            this.loading = false;
-                        });
-                    }
-                },
-
                 reorderItems(oldIndex, newIndex) {
                     // Move item in array
                     const item = this.items.splice(oldIndex, 1)[0];
@@ -231,17 +167,9 @@
                     this.loading = true;
                     this.$wire.call('reorderMenuItems', orderedIds).then(() => {
                         this.loading = false;
+                        // Refresh items to get updated structure
+                        location.reload();
                     });
-                },
-
-                async refreshItems() {
-                    this.loading = true;
-                    try {
-                        const response = await this.$wire.call('getMenuItems');
-                        this.items = response;
-                    } finally {
-                        this.loading = false;
-                    }
                 }
             }
         }

@@ -73,7 +73,7 @@ class LinkableMenuItemType extends AbstractMenuItemType
         $modelClass = $this->model;
 
         // Verify the model implements HasMenuLabel
-        if (!is_subclass_of($modelClass, HasMenuLabel::class)) {
+        if (! is_subclass_of($modelClass, HasMenuLabel::class)) {
             return [];
         }
 
@@ -88,12 +88,12 @@ class LinkableMenuItemType extends AbstractMenuItemType
 
     public function getOptionLabel($value): ?string
     {
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 
         $record = app($this->model)::find($value);
-        if (!$record || !($record instanceof HasMenuLabel)) {
+        if (! $record || ! ($record instanceof HasMenuLabel)) {
             return null;
         }
 

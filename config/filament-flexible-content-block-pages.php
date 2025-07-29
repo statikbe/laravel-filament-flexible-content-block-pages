@@ -81,30 +81,32 @@ return [
 
     'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Theme
+    |--------------------------------------------------------------------------
+    |
+    | It is possible to create different themes for templates (pages, layouts,
+    | menus, language switch components). Creating a new theme is done by
+    | publishing the views and then creating a new directory under
+    | resources/views/components/{theme}. You should then specify the name
+    | of your theme below.
+    |
+    */
+    'theme' => 'tailwind',
+
     'page_templates' => [
         // Page::HOME_PAGE => 'pages.home',
     ],
 
     'menu' => [
-        /*
-        |--------------------------------------------------------------------------
-        | Menu Theme
-        |--------------------------------------------------------------------------
-        |
-        | It is possible to create different themes for the menu templates.
-        | Creating a new theme is done by publishing the views and then creating 
-        | a new directory under resources/views/components/{theme}/menu.
-        | You should then specify the name of your theme below.
-        |
-        */
-        'theme' => 'tailwind',
 
         'max_depth' => 2,
         'linkable_models' => [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface
             \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
-            
+
             // Add your own models here:
             // \App\Models\Category::class,
             // \App\Models\Product::class,
@@ -112,7 +114,7 @@ return [
         'model_icons' => [
             // Configure icons for different model types based on their morph class
             'filament-flexible-content-block-pages::page' => 'heroicon-o-document-text',
-            
+
             // Add custom icons for your models:
             // 'category' => 'heroicon-o-tag',
             // 'product' => 'heroicon-o-shopping-bag',
@@ -124,7 +126,7 @@ return [
             'horizontal',
             'vertical',
             'dropdown',
-            
+
             // Add your custom styles here:
             // 'mega',
             // 'mobile',

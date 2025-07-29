@@ -128,6 +128,8 @@ return [
             'delete_failed' => 'Verwijderen van menu-item mislukt: :error',
             'reorder_failed' => 'Herordenen van menu-items mislukt: :error',
             'move_failed' => 'Verplaatsen van menu-item mislukt: :error',
+            'create_failed' => 'Aanmaken van menu-item mislukt: :error',
+            'update_failed' => 'Bijwerken van menu-item mislukt: :error',
             'general_error' => 'Er is een fout opgetreden: :error',
         ],
         'messages' => [
@@ -135,6 +137,8 @@ return [
             'item_and_children_deleted' => 'Menu-item en alle subitems succesvol verwijderd.',
             'items_reordered' => 'Menu-items succesvol herordend.',
             'item_moved' => 'Menu-item succesvol verplaatst.',
+            'item_created' => 'Menu-item succesvol aangemaakt.',
+            'item_updated' => 'Menu-item succesvol bijgewerkt.',
         ],
         'form' => [
             'link_type_lbl' => 'Link Type',

@@ -2,7 +2,6 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields;
 
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -18,13 +17,21 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 class MenuItemField
 {
     const FIELD_LINK_TYPE = 'link_type';
+
     const FIELD_LINKABLE_ID = 'linkable_id';
+
     const FIELD_URL = 'url';
+
     const FIELD_ROUTE = 'route';
+
     const FIELD_LABEL = 'label';
+
     const FIELD_USE_MODEL_TITLE = 'use_model_title';
+
     const FIELD_TARGET = 'target';
+
     const FIELD_ICON = 'icon';
+
     const FIELD_IS_VISIBLE = 'is_visible';
 
     protected static ?array $types = null;
@@ -39,7 +46,7 @@ class MenuItemField
                 static::getUseModelTitleField(),
             ])->columnSpan(1),
 
-            // Link Configuration Section  
+            // Link Configuration Section
             Grid::make(1)->schema([
                 static::getLinkableField(),
                 static::getUrlField(),
@@ -96,34 +103,35 @@ class MenuItemField
             ->getSearchResultsUsing(function (string $search, Get $get): array {
                 $linkType = $get(static::FIELD_LINK_TYPE);
                 $type = static::getTypeByAlias($linkType);
-                
+
                 if ($type && $type->isModelType()) {
                     $modelClass = $type->getModel();
-                    
+
                     // Use the model's searchForMenuItems scope if it implements HasMenuLabel
                     if (is_subclass_of($modelClass, HasMenuLabel::class)) {
                         $results = $modelClass::searchForMenuItems($search)
                             ->limit(50)
                             ->get();
+
                         return $results->mapWithKeys(function ($record) {
                             return [$record->getKey() => $record->getMenuLabel()];
                         })->toArray();
                     }
                 }
-                
+
                 return [];
             })
             ->getOptionLabelUsing(function ($value, Get $get): ?string {
                 $linkType = $get(static::FIELD_LINK_TYPE);
                 $type = static::getTypeByAlias($linkType);
-                
+
                 if ($type && $type->isModelType() && $value) {
                     $record = app($type->getModel())::find($value);
                     if ($record && $record instanceof HasMenuLabel) {
                         return $record->getMenuLabel();
                     }
                 }
-                
+
                 return null;
             })
             ->required()
@@ -131,13 +139,13 @@ class MenuItemField
             ->helperText(function (Get $get): string {
                 $linkType = $get(static::FIELD_LINK_TYPE);
                 $type = static::getTypeByAlias($linkType);
-                
+
                 if ($type && $type->isModelType()) {
                     return flexiblePagesTrans('menu_items.form.linkable_help', [
                         'model' => class_basename($type->getModel()),
                     ]);
                 }
-                
+
                 return '';
             });
     }
@@ -193,7 +201,7 @@ class MenuItemField
     protected static function getLinkTypeOptions(): array
     {
         $options = [];
-        
+
         foreach (static::getTypes() as $type) {
             $options[$type->getAlias()] = static::getTypeLabel($type);
         }
@@ -206,11 +214,11 @@ class MenuItemField
         if ($type->isUrlType()) {
             return flexiblePagesTrans('menu_items.form.types.url');
         }
-        
+
         if ($type->isRouteType()) {
             return flexiblePagesTrans('menu_items.form.types.route');
         }
-        
+
         return flexiblePagesTrans('menu_items.form.types.model', [
             'model' => class_basename($type->getModel()),
         ]);
@@ -220,13 +228,13 @@ class MenuItemField
     {
         if (static::$types === null) {
             static::$types = [
-                new UrlMenuItemType(),
-                new RouteMenuItemType(),
+                new UrlMenuItemType,
+                new RouteMenuItemType,
             ];
 
             // Add configured linkable models from config
             $configuredModels = config('filament-flexible-content-block-pages.menu.linkable_models', []);
-            
+
             foreach ($configuredModels as $modelClass) {
                 if (is_string($modelClass) && is_subclass_of($modelClass, HasMenuLabel::class)) {
                     static::$types[] = new LinkableMenuItemType($modelClass);
@@ -251,24 +259,28 @@ class MenuItemField
     protected static function isModelType(?string $linkType): bool
     {
         $type = static::getTypeByAlias($linkType);
+
         return $type ? $type->isModelType() : false;
     }
 
     protected static function isUrlType(?string $linkType): bool
     {
         $type = static::getTypeByAlias($linkType);
+
         return $type ? $type->isUrlType() : false;
     }
 
     protected static function isRouteType(?string $linkType): bool
     {
         $type = static::getTypeByAlias($linkType);
+
         return $type ? $type->isRouteType() : false;
     }
 
     protected static function getRouteOptions(): array
     {
-        $routeType = new RouteMenuItemType();
+        $routeType = new RouteMenuItemType;
+
         return $routeType->getRouteOptions();
     }
 }

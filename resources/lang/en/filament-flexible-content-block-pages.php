@@ -128,6 +128,8 @@ return [
             'delete_failed' => 'Failed to delete menu item: :error',
             'reorder_failed' => 'Failed to reorder menu items: :error',
             'move_failed' => 'Failed to move menu item: :error',
+            'create_failed' => 'Failed to create menu item: :error',
+            'update_failed' => 'Failed to update menu item: :error',
             'general_error' => 'An error occurred: :error',
         ],
         'messages' => [
@@ -135,6 +137,8 @@ return [
             'item_and_children_deleted' => 'Menu item and all children successfully deleted.',
             'items_reordered' => 'Menu items successfully reordered.',
             'item_moved' => 'Menu item successfully moved.',
+            'item_created' => 'Menu item successfully created.',
+            'item_updated' => 'Menu item successfully updated.',
         ],
         'form' => [
             'link_type_lbl' => 'Link Type',

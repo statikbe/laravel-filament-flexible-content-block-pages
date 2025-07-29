@@ -173,6 +173,7 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getDefaultMenuStyle(): string
     {
         $styles = $this->getMenuStyles();
+
         return $styles[0] ?? 'default';
     }
 
@@ -180,17 +181,17 @@ class FilamentFlexibleContentBlockPagesConfig
     {
         $styles = $this->getMenuStyles();
         $options = [];
-        
+
         foreach ($styles as $style) {
             $options[$style] = flexiblePagesTrans("menu.styles.{$style}");
         }
-        
+
         return $options;
     }
 
-    public function getMenuTheme(): string
+    public function getTheme(): string
     {
-        return $this->packageConfig('menu.theme', 'tailwind');
+        return $this->packageConfig('theme', 'tailwind');
     }
 
     /**
