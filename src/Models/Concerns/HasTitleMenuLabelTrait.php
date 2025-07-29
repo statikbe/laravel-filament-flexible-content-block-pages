@@ -11,7 +11,7 @@ trait HasTitleMenuLabelTrait
     public function getMenuLabel(?string $locale = null): string
     {
         $locale = $locale ?: app()->getLocale();
-        
+
         // Check if the model uses translations (like Spatie Laravel Translatable)
         if (method_exists($this, 'getTranslation')) {
             $title = $this->getTranslation('title', $locale);
@@ -19,9 +19,10 @@ trait HasTitleMenuLabelTrait
                 // Fallback to the configured fallback locale
                 $title = $this->getTranslation('title', config('app.fallback_locale', 'en'));
             }
+
             return $title ?: 'Untitled';
         }
-        
+
         return $this->title ?: 'Untitled';
     }
 
@@ -33,12 +34,12 @@ trait HasTitleMenuLabelTrait
     {
         return $query->where(function ($query) use ($search) {
             $query->where('title', 'like', "%{$search}%");
-            
+
             // Add additional searchable fields if they exist
             $searchableFields = ['name', 'intro', 'description', 'overview_title'];
             foreach ($searchableFields as $field) {
-                if (in_array($field, $this->getFillable()) || 
-                    (method_exists($this, 'getTranslatableAttributes') && 
+                if (in_array($field, $this->getFillable()) ||
+                    (method_exists($this, 'getTranslatableAttributes') &&
                      in_array($field, $this->getTranslatableAttributes()))) {
                     $query->orWhere($field, 'like', "%{$search}%");
                 }
