@@ -296,7 +296,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $itemIds = array_column($orderedItems, 'id');
 
             // Filter out null IDs
-            $itemIds = array_filter($itemIds, function($id) {
+            $itemIds = array_filter($itemIds, function ($id) {
                 return $id !== null && is_numeric($id);
             });
 
