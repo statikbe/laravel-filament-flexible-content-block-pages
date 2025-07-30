@@ -935,8 +935,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
 
-                // Just refresh without changing component keys
-                $this->dispatch('menu-items-updated');
+                // Let Livewire handle refresh naturally - no manual refresh
 
                 Notification::make()
                     ->title('Menu item moved up successfully.')
@@ -969,8 +968,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
 
-                // Just refresh without changing component keys
-                $this->dispatch('menu-items-updated');
+                // Let Livewire handle refresh naturally - no manual refresh
 
                 Notification::make()
                     ->title('Menu item moved down successfully.')
