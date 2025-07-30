@@ -935,8 +935,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
                 
-                // Refresh the tree to show new order
-                $this->refreshTree();
+                // Just refresh without changing component keys
+                $this->dispatch('menu-items-updated');
 
                 Notification::make()
                     ->title('Menu item moved up successfully.')
@@ -969,8 +969,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
                 
-                // Refresh the tree to show new order
-                $this->refreshTree();
+                // Just refresh without changing component keys
+                $this->dispatch('menu-items-updated');
 
                 Notification::make()
                     ->title('Menu item moved down successfully.')
