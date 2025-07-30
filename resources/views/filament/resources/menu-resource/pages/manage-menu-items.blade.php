@@ -72,6 +72,11 @@
                     this.$wire.on('menu-items-updated', () => {
                         this.refreshMenuItems();
                     });
+                    
+                    // Listen for reorder completion (no need to refresh, just hide loading)
+                    this.$wire.on('menu-items-reordered', () => {
+                        this.loading = false;
+                    });
                 },
 
                 refreshMenuItems() {
@@ -122,10 +127,11 @@
                     // Call the Livewire method to save the new order
                     this.$wire.reorderMenuItems(items).then(() => {
                         this.loading = false;
+                        // Don't manually refresh - the server-side refreshTree() will handle it
                     }).catch((error) => {
                         console.error('Reorder failed:', error);
                         this.loading = false;
-                        // Revert the visual change by refreshing
+                        // Only refresh on error to revert changes
                         this.refreshMenuItems();
                     });
                 },
