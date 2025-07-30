@@ -886,4 +886,84 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $this->mountAction('deleteMenuItem', ['itemId' => $itemId]);
         }
     }
+
+    #[On('move-item-up')]
+    public function handleMoveItemUp(array $data): void
+    {
+        $itemId = $data['itemId'] ?? null;
+        if ($itemId) {
+            $this->moveItemUp($itemId);
+        }
+    }
+
+    #[On('move-item-down')]
+    public function handleMoveItemDown(array $data): void
+    {
+        $itemId = $data['itemId'] ?? null;
+        if ($itemId) {
+            $this->moveItemDown($itemId);
+        }
+    }
+
+    public function moveItemUp(int $itemId): void
+    {
+        try {
+            $item = $this->getMenuItemSecurely($itemId);
+            if (!$item) {
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
+                return;
+            }
+
+            // Move up means move to previous sibling
+            $previousSibling = $item->getPrevSibling();
+            if ($previousSibling) {
+                $item->beforeNode($previousSibling)->save();
+                $this->refreshTree();
+                
+                Notification::make()
+                    ->title('Menu item moved up successfully.')
+                    ->success()
+                    ->send();
+            }
+        } catch (Exception $e) {
+            Notification::make()
+                ->title('Failed to move menu item: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function moveItemDown(int $itemId): void
+    {
+        try {
+            $item = $this->getMenuItemSecurely($itemId);
+            if (!$item) {
+                Notification::make()
+                    ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
+                    ->danger()
+                    ->send();
+                return;
+            }
+
+            // Move down means move to next sibling
+            $nextSibling = $item->getNextSibling();
+            if ($nextSibling) {
+                $item->afterNode($nextSibling)->save();
+                $this->refreshTree();
+                
+                Notification::make()
+                    ->title('Menu item moved down successfully.')
+                    ->success()
+                    ->send();
+            }
+        } catch (Exception $e) {
+            Notification::make()
+                ->title('Failed to move menu item: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
 }

@@ -1,14 +1,6 @@
 <div class="menu-tree-item" data-item-id="{{ $item->id }}" wire:key="tree-item-{{ $item->id }}">
     <div class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 group hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ $depth > 0 ? 'ml-' . ($depth * 8) : '' }}">
 
-        @if($showActions)
-        <!-- Drag Handle -->
-        <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 mr-4">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-            </svg>
-        </div>
-        @endif
 
         <!-- Expand/Collapse Button for items with children -->
         @if($this->hasChildren())
@@ -54,6 +46,24 @@
                 @if($showActions)
                 <!-- Actions -->
                 <div class="flex items-center gap-1">
+                    <x-filament::button
+                        color="gray"
+                        size="xs"
+                        icon="heroicon-o-arrow-up"
+                        tooltip="Move up"
+                        label-sr-only="Move up"
+                        wire:click="moveUp"
+                    ></x-filament::button>
+
+                    <x-filament::button
+                        color="gray"
+                        size="xs"
+                        icon="heroicon-o-arrow-down"
+                        tooltip="Move down"
+                        label-sr-only="Move down"
+                        wire:click="moveDown"
+                    ></x-filament::button>
+
                     @if($this->canHaveChildren())
                         <x-filament::button
                             color="gray"
