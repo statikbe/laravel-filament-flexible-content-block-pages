@@ -40,6 +40,8 @@ class MenuItem extends Model
         'use_model_title' => 'boolean',
     ];
 
+    public $translatable = ['label'];
+
     public function getTable()
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuItemsTable();
@@ -52,7 +54,7 @@ class MenuItem extends Model
 
     public function linkable(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo(__FUNCTION__, 'linkable_type', 'linkable_id');
     }
 
     public function getUrl(?string $locale = null): ?string
@@ -103,10 +105,5 @@ class MenuItem extends Model
     public function getMorphClass()
     {
         return 'filament-flexible-content-block-pages::menu-item';
-    }
-
-    protected function getTranslatableAttributes(): array
-    {
-        return ['label'];
     }
 }
