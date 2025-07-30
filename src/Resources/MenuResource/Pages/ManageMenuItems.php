@@ -70,6 +70,7 @@ class ManageMenuItems extends TreePage
 
     public function getBreadcrumb(): string
     {
+        //TODO fix
         return flexiblePagesTrans('menu_items.manage.breadcrumb');
     }
 
@@ -87,9 +88,11 @@ class ManageMenuItems extends TreePage
     {
         return [
             IconEntry::make('is_visible')
-                ->icon(fn (bool $state): string => $state ? '' : 'heroicon-o-eye-slash')
+                ->label('')
+                ->icon(fn (bool $state): string => $state ? 'heroicon-o-eye' : 'heroicon-o-eye-slash')
                 ->color(fn (bool $state): string => $state ? 'gray' : 'warning')
                 ->tooltip(fn (bool $state): ?string => $state ? null : flexiblePagesTrans('menu_items.status.hidden'))
+                ->hidden(fn (bool $state): bool => $state)
                 ->size('sm'),
         ];
     }
