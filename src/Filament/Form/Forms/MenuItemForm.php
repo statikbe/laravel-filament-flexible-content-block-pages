@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\LabelField;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\AbstractMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\LinkableMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteMenuItemType;
@@ -84,19 +85,10 @@ class MenuItemForm
 
     protected static function getLabelField(): TextInput
     {
-        $field = new class extends TextInput
-        {
-            use HasTranslatableHint;
-        };
-
-        return $field::make(static::FIELD_LABEL)
-            ->label(flexiblePagesTrans('menu_items.form.label_lbl'))
+        return LabelField::create()
             ->required(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->visible(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
-            ->maxLength(255)
-            ->helperText(flexiblePagesTrans('menu_items.form.label_help'))
-            ->live()
-            ->addsTranslatableHint();
+            ->helperText(flexiblePagesTrans('menu_items.form.label_help'));
     }
 
     protected static function getUseModelTitleField(): Toggle
