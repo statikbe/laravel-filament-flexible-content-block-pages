@@ -51,7 +51,7 @@
 
                 @if($showActions)
                 <!-- Actions -->
-                <div class="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div class="flex items-center space-x-1">
                     @if($this->canHaveChildren())
                         <x-filament::button
                             color="gray"
