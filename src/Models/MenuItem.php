@@ -40,7 +40,10 @@ class MenuItem extends Model
         'use_model_title' => 'boolean',
     ];
 
-    public $translatable = ['label'];
+    public function getTranslatableAttributes(): array
+    {
+        return array_merge($this->translatable, ['slug']);
+    }
 
     public function getTable()
     {
@@ -54,7 +57,7 @@ class MenuItem extends Model
 
     public function linkable(): MorphTo
     {
-        return $this->morphTo(__FUNCTION__, 'linkable_type', 'linkable_id');
+        return $this->morphTo('linkable', 'linkable_type', 'linkable_id');
     }
 
     public function getUrl(?string $locale = null): ?string
