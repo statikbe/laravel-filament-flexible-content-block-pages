@@ -35,7 +35,7 @@ class ManageMenuItems extends TreePage
 
     /**
      * Copied from Resource/Page to support routing in resources.
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function route(string $path): PageRegistration
     {
