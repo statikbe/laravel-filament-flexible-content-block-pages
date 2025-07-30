@@ -32,7 +32,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
     public mixed $record;
 
     public $refreshKey = 0;
-    
+
     public $menuItems = null;
 
     public function mount(int|string $record): void
@@ -934,7 +934,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $previousSibling = $item->getPrevSibling();
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
-                
+
                 // Just refresh without changing component keys
                 $this->dispatch('menu-items-updated');
 
@@ -968,7 +968,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $nextSibling = $item->getNextSibling();
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
-                
+
                 // Just refresh without changing component keys
                 $this->dispatch('menu-items-updated');
 
