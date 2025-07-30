@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <div 
+    <div
         x-data="menuItemsManager({
             maxDepth: {{ $this->getMaxDepth() }},
             menuId: {{ $this->record->id }}
@@ -30,7 +30,7 @@
                             @livewire('filament-flexible-content-block-pages::menu-tree-item', [
                                 'item' => $item,
                                 'maxDepth' => $this->getMaxDepth()
-                            ], key: "item-{$item->id}-{$refreshKey}")
+                            ], key("item-{$item->id}-{$refreshKey}"))
                         @endforeach
                     </div>
                 @endif
