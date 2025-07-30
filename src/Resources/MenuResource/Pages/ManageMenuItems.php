@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 use Filament\Actions\LocaleSwitcher;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Concerns\Translatable;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\QueryBuilder;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
@@ -17,10 +18,15 @@ class ManageMenuItems extends TreePage
 
     protected static string $resource = MenuResource::class;
 
-    public function mount(int|string $record): void
+    public mixed $record;
+
+    public function mount(): void
     {
-        $menuModel = static::getResource()::getModel();
-        $this->record = $menuModel::findOrFail($record);
+        parent::mount();
+        
+        $menuModelClass = MenuResource::getModel();
+        $recordId = request()->route('record');
+        $this->record = app($menuModelClass)->findOrFail($recordId);
     }
 
     public static function getModel(): string|QueryBuilder
@@ -66,7 +72,7 @@ class ManageMenuItems extends TreePage
                     return match($state) {
                         'url' => flexiblePagesTrans('menu_items.form.types.url'),
                         'route' => flexiblePagesTrans('menu_items.form.types.route'),
-                        default => flexiblePagesTrans('menu_items.form.types.model', ['model' => ucfirst($state)])
+                        default => flexiblePagesTrans('menu_items.form.types.model', ['model' => Str::title($state)])
                     };
                 }),
             TextEntry::make('is_visible')
