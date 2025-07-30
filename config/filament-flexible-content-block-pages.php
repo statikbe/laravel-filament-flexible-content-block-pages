@@ -46,7 +46,7 @@ return [
     ],
 
     'panel' => [
-        'path' => 'content',
+        'path' => 'admin/website',
         'middleware' => [
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
