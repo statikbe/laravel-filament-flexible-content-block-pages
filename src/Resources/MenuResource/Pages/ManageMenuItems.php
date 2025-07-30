@@ -23,7 +23,7 @@ class ManageMenuItems extends TreePage
     public function mount(): void
     {
         parent::mount();
-        
+
         $menuModelClass = MenuResource::getModel();
         $recordId = request()->route('record');
         $this->record = app($menuModelClass)->findOrFail($recordId);
