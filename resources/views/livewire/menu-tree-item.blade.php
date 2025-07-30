@@ -53,7 +53,7 @@
 
                 @if($showActions)
                 <!-- Actions -->
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center gap-1">
                     @if($this->canHaveChildren())
                         <x-filament::button
                             color="gray"
@@ -61,7 +61,7 @@
                             icon="heroicon-o-plus"
                             tooltip="{{ flexiblePagesTrans('menu_items.tree.add_child') }}"
                             label-sr-only="{{ flexiblePagesTrans('menu_items.tree.add_child') }}"
-                            wire:click="mountAction('addChild')"
+                            wire:click="addChild"
                         ></x-filament::button>
                     @endif
 
@@ -71,7 +71,7 @@
                         icon="heroicon-o-pencil"
                         tooltip="{{ flexiblePagesTrans('menu_items.tree.edit') }}"
                         label-sr-only="{{ flexiblePagesTrans('menu_items.tree.edit') }}"
-                        wire:click="mountAction('edit')"
+                        wire:click="edit"
                     ></x-filament::button>
 
                     <x-filament::button
@@ -80,7 +80,7 @@
                         icon="heroicon-o-trash"
                         tooltip="{{ flexiblePagesTrans('menu_items.tree.delete') }}"
                         label-sr-only="{{ flexiblePagesTrans('menu_items.tree.delete') }}"
-                        wire:click="mountAction('delete')"
+                        wire:click="delete"
                     ></x-filament::button>
                 </div>
                 @endif

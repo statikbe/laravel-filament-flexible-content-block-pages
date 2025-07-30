@@ -829,21 +829,28 @@ class ManageMenuItems extends Page implements HasActions, HasForms
         return flexiblePagesTrans('menu_items.tree.no_link');
     }
 
-    #[On('menu-item-created')]
-    public function handleMenuItemCreated(array $data): void
+    #[On('show-add-child-modal')]
+    public function handleShowAddChildModal(array $data): void
     {
-        $this->createMenuItem($data);
+        $parentId = $data['parent_id'] ?? null;
+        $this->mountAction('addMenuItem', ['parent_id' => $parentId]);
     }
 
-    #[On('menu-item-updated')]
-    public function handleMenuItemUpdated(int $itemId, array $data): void
+    #[On('show-edit-modal')]
+    public function handleShowEditModal(array $data): void
     {
-        $this->updateMenuItem($itemId, $data);
+        $itemId = $data['itemId'] ?? null;
+        if ($itemId) {
+            $this->mountAction('editMenuItem', ['itemId' => $itemId]);
+        }
     }
 
-    #[On('menu-item-deleted')]
-    public function handleMenuItemDeleted(int $itemId): void
+    #[On('show-delete-modal')]
+    public function handleShowDeleteModal(array $data): void
     {
-        $this->deleteMenuItem($itemId);
+        $itemId = $data['itemId'] ?? null;
+        if ($itemId) {
+            $this->mountAction('deleteMenuItem', ['itemId' => $itemId]);
+        }
     }
 }

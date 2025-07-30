@@ -2,20 +2,11 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Livewire;
 
-use Filament\Actions\Action;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Actions\LocaleSwitcher;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
 
-class MenuTreeItem extends Component implements HasActions, HasForms
+class MenuTreeItem extends Component
 {
-    use InteractsWithActions;
-    use InteractsWithForms;
 
     public $item; // MenuItem model
 
@@ -80,85 +71,24 @@ class MenuTreeItem extends Component implements HasActions, HasForms
         return flexiblePagesTrans('menu_items.tree.no_link');
     }
 
-    public function addChildAction(): Action
+    public function addChild(): void
     {
-        return Action::make('addChild')
-            ->form(MenuItemForm::getSchema())
-            ->fillForm([
-                'parent_id' => $this->item->id,
-                'is_visible' => true,
-                'target' => '_self',
-            ])
-            ->action(function (array $data): void {
-                $data['parent_id'] = $this->item->id;
-                $this->createMenuItem($data);
-            })
-            ->modalHeading(flexiblePagesTrans('menu_items.tree.add_child'))
-            ->modalSubmitActionLabel(__('Create'))
-            ->modalWidth('2xl')
-            ->slideOver()
-            ->extraModalFooterActions([
-                LocaleSwitcher::make(),
-            ]);
+        // Dispatch event to parent component with item ID for adding child
+        $this->dispatch('show-add-child-modal', ['parent_id' => $this->item->id]);
     }
 
-    public function editAction(): Action
+    public function edit(): void
     {
-        return Action::make('edit')
-            ->form(MenuItemForm::getSchema())
-            ->fillForm([
-                'link_type' => $this->item->link_type,
-                'label' => $this->item->label,
-                'use_model_title' => $this->item->use_model_title,
-                'url' => $this->item->url,
-                'route' => $this->item->route,
-                'linkable_id' => $this->item->linkable_id,
-                'target' => $this->item->target ?? '_self',
-                'icon' => $this->item->icon,
-                'is_visible' => $this->item->is_visible,
-            ])
-            ->action(function (array $data): void {
-                $this->updateMenuItem($this->item->id, $data);
-            })
-            ->modalHeading(flexiblePagesTrans('menu_items.tree.edit'))
-            ->modalSubmitActionLabel(__('Update'))
-            ->modalWidth('2xl')
-            ->slideOver()
-            ->extraModalFooterActions([
-                LocaleSwitcher::make(),
-            ]);
+        // Dispatch event to parent component with item ID for editing
+        $this->dispatch('show-edit-modal', ['itemId' => $this->item->id]);
     }
 
-    public function deleteAction(): Action
+    public function delete(): void
     {
-        return Action::make('delete')
-            ->requiresConfirmation()
-            ->modalHeading(flexiblePagesTrans('menu_items.tree.delete_confirm_title'))
-            ->modalDescription(flexiblePagesTrans('menu_items.tree.delete_confirm_text'))
-            ->modalSubmitActionLabel(flexiblePagesTrans('menu_items.tree.delete'))
-            ->color('danger')
-            ->action(function (): void {
-                $this->deleteMenuItem($this->item->id);
-            });
+        // Dispatch event to parent component with item ID for deletion
+        $this->dispatch('show-delete-modal', ['itemId' => $this->item->id]);
     }
 
-    protected function createMenuItem(array $data): void
-    {
-        // Dispatch event to parent component to handle creation
-        $this->dispatch('menu-item-created', $data);
-    }
-
-    protected function updateMenuItem(int $itemId, array $data): void
-    {
-        // Dispatch event to parent component to handle update
-        $this->dispatch('menu-item-updated', $itemId, $data);
-    }
-
-    protected function deleteMenuItem(int $itemId): void
-    {
-        // Dispatch event to parent component to handle deletion
-        $this->dispatch('menu-item-deleted', $itemId);
-    }
 
     public function render()
     {
