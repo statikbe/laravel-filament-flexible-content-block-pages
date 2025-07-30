@@ -53,7 +53,7 @@
 
                 @if($showActions)
                 <!-- Actions -->
-                <div class="flex items-center space-x-1">
+                <div class="flex items-center space-x-2">
                     @if($this->canHaveChildren())
                         <x-filament::button
                             color="gray"
