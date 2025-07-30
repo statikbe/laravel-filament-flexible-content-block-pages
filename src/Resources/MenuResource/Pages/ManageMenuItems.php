@@ -31,10 +31,18 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
     public mixed $record;
 
+    public $refreshKey = 0;
+
     public function mount(int|string $record): void
     {
         $menuModel = static::getResource()::getModel();
         $this->record = $menuModel::findOrFail($record);
+    }
+
+    protected function refreshTree(): void
+    {
+        $this->refreshKey++;
+        $this->dispatch('menu-items-updated');
     }
 
     public function getTitle(): string
@@ -220,7 +228,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             // Delete the item
             $item->delete();
 
-            $this->dispatch('menu-items-updated');
+            $this->refreshTree();
 
             Notification::make()
                 ->title(flexiblePagesTrans('menu_items.messages.item_deleted'))
@@ -246,7 +254,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 // Delete the item and all its descendants
                 $item->delete();
 
-                $this->dispatch('menu-items-updated');
+                $this->refreshTree();
 
                 Notification::make()
                     ->title(flexiblePagesTrans('menu_items.messages.item_and_children_deleted'))
@@ -302,7 +310,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             // Process the reordering with proper nested set operations
             $this->processNestedSetReorder($orderedItems);
 
-            $this->dispatch('menu-items-updated');
+            $this->refreshTree();
 
             Notification::make()
                 ->title(flexiblePagesTrans('menu_items.messages.items_reordered'))
@@ -506,7 +514,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 }
             }
 
-            $this->dispatch('menu-items-updated');
+            $this->refreshTree();
 
             Notification::make()
                 ->title(flexiblePagesTrans('menu_items.messages.item_moved'))
@@ -702,7 +710,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->send();
 
             // Refresh the menu items tree view
-            $this->dispatch('menu-items-updated');
+            $this->refreshTree();
 
         } catch (Exception $e) {
             Notification::make()
@@ -756,7 +764,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 ->send();
 
             // Refresh the menu items tree view
-            $this->dispatch('menu-items-updated');
+            $this->refreshTree();
 
         } catch (Exception $e) {
             Notification::make()

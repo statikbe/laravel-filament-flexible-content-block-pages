@@ -25,12 +25,12 @@
                     </div>
                 @else
                     <!-- Tree Items -->
-                    <div class="space-y-2" id="menu-items-container">
+                    <div class="space-y-2" id="menu-items-container" wire:key="tree-{{ $refreshKey }}">
                         @foreach($this->record->menuItems()->with(['children', 'linkable'])->whereNull('parent_id')->orderBy('_lft')->get() as $item)
                             @livewire('filament-flexible-content-block-pages::menu-tree-item', [
                                 'item' => $item,
                                 'maxDepth' => $this->getMaxDepth()
-                            ], key($item->id))
+                            ], key: "item-{$item->id}-{$refreshKey}")
                         @endforeach
                     </div>
                 @endif
