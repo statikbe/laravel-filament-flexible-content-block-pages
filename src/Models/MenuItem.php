@@ -15,7 +15,6 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 class MenuItem extends Model
 {
     use HasFactory;
-    use HasTranslatedSlugAttributeTrait;
     use NodeTrait;
 
     protected $fillable = [
@@ -40,10 +39,7 @@ class MenuItem extends Model
         'use_model_title' => 'boolean',
     ];
 
-    public function getTranslatableAttributes(): array
-    {
-        return array_merge($this->translatable, ['slug']);
-    }
+    public $translatable = ['label'];
 
     public function getTable()
     {
