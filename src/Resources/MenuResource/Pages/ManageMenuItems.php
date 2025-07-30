@@ -669,7 +669,6 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 'menu_id' => $this->record->id,
                 'parent_id' => $data['parent_id'] ?? null,
                 'link_type' => $data['link_type'],
-                'label' => $data['label'],
                 'use_model_title' => $data['use_model_title'] ?? false,
                 'url' => $data['url'] ?? null,
                 'route' => $data['route'] ?? null,
@@ -679,6 +678,11 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 'icon' => $data['icon'] ?? null,
                 'is_visible' => $data['is_visible'] ?? true,
             ]);
+
+            // Handle translatable label field separately
+            if (isset($data['label'])) {
+                $menuItem->label = $data['label'];
+            }
 
             // Handle nested set positioning
             if ($data['parent_id']) {
@@ -730,7 +734,6 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             // Update the menu item
             $item->update([
                 'link_type' => $data['link_type'],
-                'label' => $data['label'],
                 'use_model_title' => $data['use_model_title'] ?? false,
                 'url' => $data['url'] ?? null,
                 'route' => $data['route'] ?? null,
@@ -740,6 +743,12 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                 'icon' => $data['icon'] ?? null,
                 'is_visible' => $data['is_visible'] ?? true,
             ]);
+
+            // Handle translatable label field separately
+            if (isset($data['label'])) {
+                $item->label = $data['label'];
+                $item->save();
+            }
 
             Notification::make()
                 ->title(flexiblePagesTrans('menu_items.messages.item_updated'))
