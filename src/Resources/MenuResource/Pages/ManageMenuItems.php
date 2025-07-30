@@ -32,7 +32,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
     public mixed $record;
 
     public $refreshKey = 0;
-    
+
     public $menuItems = null;
 
     public function mount(int|string $record): void
@@ -934,7 +934,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $previousSibling = $item->getPrevSibling();
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
-                
+
                 // Refresh the tree to show new order
                 $this->refreshTree();
 
@@ -968,7 +968,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             $nextSibling = $item->getNextSibling();
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
-                
+
                 // Refresh the tree to show new order
                 $this->refreshTree();
 
