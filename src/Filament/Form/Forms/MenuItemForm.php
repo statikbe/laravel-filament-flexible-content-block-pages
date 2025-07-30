@@ -22,6 +22,8 @@ class MenuItemForm
 
     const FIELD_LINKABLE_ID = 'linkable_id';
 
+    const FIELD_LINKABLE_TYPE = 'linkable_type';
+
     const FIELD_URL = 'url';
 
     const FIELD_ROUTE = 'route';
@@ -52,6 +54,7 @@ class MenuItemForm
                 // Link Configuration Section
                 Grid::make(1)->schema([
                     static::getLinkableField(),
+                    static::getLinkableTypeField(),
                     static::getUrlField(),
                     static::getRouteField(),
                 ])->columnSpan(1),
@@ -79,7 +82,12 @@ class MenuItemForm
             ->options(static::getLinkTypeOptions())
             ->required()
             ->live()
-            ->helperText(flexiblePagesTrans('menu_items.form.link_type_help'));
+            ->helperText(flexiblePagesTrans('menu_items.form.link_type_help'))
+            ->afterStateUpdated(function ($state, callable $set) {
+                // Clear linkable fields when link type changes
+                $set(static::FIELD_LINKABLE_ID, null);
+                $set(static::FIELD_LINKABLE_TYPE, null);
+            });
     }
 
     protected static function getLabelField(): TextInput
@@ -151,7 +159,21 @@ class MenuItemForm
                 }
 
                 return '';
+            })
+            ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                // When linkable_id changes, automatically set linkable_type
+                $linkType = $get(static::FIELD_LINK_TYPE);
+                $type = static::getTypeByAlias($linkType);
+                
+                if ($type && $type->isModelType() && $state) {
+                    $set(static::FIELD_LINKABLE_TYPE, $type->getModel());
+                }
             });
+    }
+
+    protected static function getLinkableTypeField(): Hidden
+    {
+        return Hidden::make(static::FIELD_LINKABLE_TYPE);
     }
 
     protected static function getUrlField(): TextInput
