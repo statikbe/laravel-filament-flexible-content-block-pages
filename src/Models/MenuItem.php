@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Kalnoy\Nestedset\NodeTrait;
+use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedSlugAttributeTrait;
@@ -16,6 +17,7 @@ class MenuItem extends Model
 {
     use HasFactory;
     use NodeTrait;
+    use HasTranslations;
 
     protected $fillable = [
         'menu_id',
