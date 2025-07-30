@@ -909,11 +909,12 @@ class ManageMenuItems extends Page implements HasActions, HasForms
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
-            if (!$item) {
+            if (! $item) {
                 Notification::make()
                     ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
                     ->danger()
                     ->send();
+
                 return;
             }
 
@@ -922,7 +923,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
                 $this->refreshTree();
-                
+
                 Notification::make()
                     ->title('Menu item moved up successfully.')
                     ->success()
@@ -930,7 +931,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             }
         } catch (Exception $e) {
             Notification::make()
-                ->title('Failed to move menu item: ' . $e->getMessage())
+                ->title('Failed to move menu item: '.$e->getMessage())
                 ->danger()
                 ->send();
         }
@@ -940,11 +941,12 @@ class ManageMenuItems extends Page implements HasActions, HasForms
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
-            if (!$item) {
+            if (! $item) {
                 Notification::make()
                     ->title(flexiblePagesTrans('menu_items.errors.item_not_found'))
                     ->danger()
                     ->send();
+
                 return;
             }
 
@@ -953,7 +955,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
                 $this->refreshTree();
-                
+
                 Notification::make()
                     ->title('Menu item moved down successfully.')
                     ->success()
@@ -961,7 +963,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             }
         } catch (Exception $e) {
             Notification::make()
-                ->title('Failed to move menu item: ' . $e->getMessage())
+                ->title('Failed to move menu item: '.$e->getMessage())
                 ->danger()
                 ->send();
         }
