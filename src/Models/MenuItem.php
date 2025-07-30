@@ -10,7 +10,6 @@ use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
-use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedSlugAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class MenuItem extends Model
