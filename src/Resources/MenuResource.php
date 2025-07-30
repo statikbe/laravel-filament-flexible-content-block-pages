@@ -18,6 +18,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\Crea
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\EditMenu;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ListMenus;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ManageMenuItems;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\OldManageMenuItems;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
 
 class MenuResource extends Resource

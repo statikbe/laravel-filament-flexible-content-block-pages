@@ -11,12 +11,14 @@ use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
+use Studio15\FilamentTree\Concerns\InteractsWithTree;
 
 class MenuItem extends Model
 {
     use HasFactory;
     use HasTranslations;
     use NodeTrait;
+    use InteractsWithTree;
 
     protected $fillable = [
         'menu_id',
@@ -105,5 +107,10 @@ class MenuItem extends Model
     public function getMorphClass()
     {
         return 'filament-flexible-content-block-pages::menu-item';
+    }
+
+    public static function getTreeLabelAttribute(): string
+    {
+        return 'label';
     }
 }
