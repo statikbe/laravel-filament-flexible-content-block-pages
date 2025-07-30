@@ -88,6 +88,18 @@ class MenuTreeItem extends Component
         $this->dispatch('show-delete-modal', ['itemId' => $this->item->id]);
     }
 
+    public function moveUp(): void
+    {
+        // Dispatch event to parent component to move item up
+        $this->dispatch('move-item-up', ['itemId' => $this->item->id]);
+    }
+
+    public function moveDown(): void
+    {
+        // Dispatch event to parent component to move item down
+        $this->dispatch('move-item-down', ['itemId' => $this->item->id]);
+    }
+
     public function render()
     {
         return view('filament-flexible-content-block-pages::livewire.menu-tree-item');

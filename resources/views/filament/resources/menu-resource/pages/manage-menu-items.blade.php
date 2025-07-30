@@ -85,56 +85,7 @@
                 },
 
                 initSortable() {
-                    if (typeof Sortable !== 'undefined') {
-                        const container = document.getElementById('menu-items-container');
-                        if (container) {
-                            Sortable.create(container, {
-                                group: 'menu-items',
-                                animation: 150,
-                                handle: '.drag-handle',
-                                onStart: (evt) => {
-                                    // Store the original order and DOM state before drag
-                                    this.originalOrder = Array.from(container.children).map(el => this.extractItemId(el));
-                                    this.originalElements = Array.from(container.children);
-                                },
-                                onEnd: (evt) => {
-                                    if (evt.oldIndex !== evt.newIndex) {
-                                        // Calculate the new order based on the drag operation
-                                        const newOrder = [...this.originalOrder];
-                                        const movedItem = newOrder.splice(evt.oldIndex, 1)[0];
-                                        newOrder.splice(evt.newIndex, 0, movedItem);
-                                        
-                                        // Immediately revert DOM to original state to preserve Livewire
-                                        container.innerHTML = '';
-                                        this.originalElements.forEach(el => container.appendChild(el));
-                                        
-                                        this.saveReorderFromOrder(newOrder);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                },
-
-                saveReorderFromOrder(newOrder) {
-                    this.loading = true;
-                    
-                    // Build items array from the calculated new order
-                    const items = newOrder.map((itemId, index) => {
-                        return {
-                            id: itemId,
-                            position: index,
-                            parent_id: null // Root level items for now
-                        };
-                    });
-
-                    // Call the Livewire method to save the new order
-                    this.$wire.reorderMenuItems(items);
-                },
-
-                extractItemId(element) {
-                    const itemId = element.dataset.itemId;
-                    return itemId ? parseInt(itemId) : null;
+                    // Drag and drop disabled - using up/down buttons instead
                 },
             }
         }
