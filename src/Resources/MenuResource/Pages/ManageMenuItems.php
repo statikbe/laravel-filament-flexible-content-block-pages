@@ -941,7 +941,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                     ->send();
 
                 // Force page reload to avoid component issues
-                return redirect()->to(request()->url());
+                return redirect()->to(static::getUrl(['record' => $this->record->id]));
             }
         } catch (Exception $e) {
             Notification::make()
@@ -975,7 +975,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
                     ->send();
 
                 // Force page reload to avoid component issues
-                return redirect()->to(request()->url());
+                return redirect()->to(static::getUrl(['record' => $this->record->id]));
             }
         } catch (Exception $e) {
             Notification::make()
