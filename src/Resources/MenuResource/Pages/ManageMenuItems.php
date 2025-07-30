@@ -294,21 +294,21 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
             // Validate that all items belong to this menu
             $itemIds = array_column($orderedItems, 'id');
-            
+
             // Filter out null IDs
             $itemIds = array_filter($itemIds, function($id) {
                 return $id !== null && is_numeric($id);
             });
-            
+
             if (empty($itemIds)) {
                 Notification::make()
                     ->title(flexiblePagesTrans('menu_items.errors.no_items_to_reorder'))
                     ->danger()
                     ->send();
-                    
+
                 return;
             }
-            
+
             $validItems = $menuItemModel::whereIn('id', $itemIds)
                 ->where('menu_id', $this->record->id)
                 ->count();
@@ -418,7 +418,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
 
         // Process items with parents
         foreach ($itemsByParent as $parentId => $children) {
-            if ($parentId !== null) {
+            if ($parentId) {
                 $parent = $this->getMenuItemSecurely($parentId);
                 if ($parent) {
                     // Move items to the correct parent first
