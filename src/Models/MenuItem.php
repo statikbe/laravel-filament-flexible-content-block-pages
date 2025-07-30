@@ -15,8 +15,8 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 class MenuItem extends Model
 {
     use HasFactory;
-    use NodeTrait;
     use HasTranslations;
+    use NodeTrait;
 
     protected $fillable = [
         'menu_id',
