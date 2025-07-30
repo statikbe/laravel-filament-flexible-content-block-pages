@@ -70,7 +70,7 @@ class ManageMenuItems extends TreePage
 
     public function getBreadcrumb(): string
     {
-        //TODO fix
+        // TODO fix
         return flexiblePagesTrans('menu_items.manage.breadcrumb');
     }
 
