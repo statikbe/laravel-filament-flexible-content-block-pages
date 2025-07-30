@@ -54,8 +54,7 @@ class ManageMenuItems extends TreePage
 
     public static function getModel(): string|QueryBuilder
     {
-        return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()
-            ::scoped(['menu_id' => static::getMenuRecordId()]);
+        return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::scoped(['menu_id' => static::getMenuRecordId()]);
     }
 
     public function getTitle(): string
