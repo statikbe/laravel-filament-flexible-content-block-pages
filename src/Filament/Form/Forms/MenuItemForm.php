@@ -164,7 +164,7 @@ class MenuItemForm
                 // When linkable_id changes, automatically set linkable_type
                 $linkType = $get(static::FIELD_LINK_TYPE);
                 $type = static::getTypeByAlias($linkType);
-                
+
                 if ($type && $type->isModelType() && $state) {
                     $set(static::FIELD_LINKABLE_TYPE, $type->getModel());
                 }
