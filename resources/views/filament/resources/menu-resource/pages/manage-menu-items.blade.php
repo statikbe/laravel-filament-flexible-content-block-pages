@@ -92,9 +92,23 @@
                                 group: 'menu-items',
                                 animation: 150,
                                 handle: '.drag-handle',
+                                onStart: (evt) => {
+                                    // Store the original order and DOM state before drag
+                                    this.originalOrder = Array.from(container.children).map(el => this.extractItemId(el));
+                                    this.originalElements = Array.from(container.children);
+                                },
                                 onEnd: (evt) => {
                                     if (evt.oldIndex !== evt.newIndex) {
-                                        this.saveReorder(evt);
+                                        // Calculate the new order based on the drag operation
+                                        const newOrder = [...this.originalOrder];
+                                        const movedItem = newOrder.splice(evt.oldIndex, 1)[0];
+                                        newOrder.splice(evt.newIndex, 0, movedItem);
+                                        
+                                        // Immediately revert DOM to original state to preserve Livewire
+                                        container.innerHTML = '';
+                                        this.originalElements.forEach(el => container.appendChild(el));
+                                        
+                                        this.saveReorderFromOrder(newOrder);
                                     }
                                 }
                             });
@@ -102,14 +116,11 @@
                     }
                 },
 
-                saveReorder(evt) {
+                saveReorderFromOrder(newOrder) {
                     this.loading = true;
                     
-                    // Get all items in their new order
-                    const container = document.getElementById('menu-items-container');
-                    const items = Array.from(container.children).map((element, index) => {
-                        // Extract item ID from the wire:key attribute or data attribute
-                        const itemId = this.extractItemId(element);
+                    // Build items array from the calculated new order
+                    const items = newOrder.map((itemId, index) => {
                         return {
                             id: itemId,
                             position: index,
