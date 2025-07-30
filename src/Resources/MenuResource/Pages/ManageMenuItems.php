@@ -63,7 +63,7 @@ class ManageMenuItems extends TreePage
             TextEntry::make('link_type')
                 ->label(flexiblePagesTrans('menu_items.form.link_type_lbl'))
                 ->formatStateUsing(function (string $state): string {
-                    return match($state) {
+                    return match ($state) {
                         'url' => flexiblePagesTrans('menu_items.form.types.url'),
                         'route' => flexiblePagesTrans('menu_items.form.types.route'),
                         default => flexiblePagesTrans('menu_items.form.types.model', ['model' => ucfirst($state)])
@@ -71,8 +71,7 @@ class ManageMenuItems extends TreePage
                 }),
             TextEntry::make('is_visible')
                 ->label(flexiblePagesTrans('menu_items.form.is_visible_lbl'))
-                ->formatStateUsing(fn (bool $state): string => 
-                    $state ? flexiblePagesTrans('menu_items.status.visible') : flexiblePagesTrans('menu_items.status.hidden')
+                ->formatStateUsing(fn (bool $state): string => $state ? flexiblePagesTrans('menu_items.status.visible') : flexiblePagesTrans('menu_items.status.hidden')
                 )
                 ->badge()
                 ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
@@ -89,12 +88,14 @@ class ManageMenuItems extends TreePage
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['menu_id'] = $this->record->id;
+
         return $data;
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['menu_id'] = $this->record->id;
+
         return $data;
     }
 }
