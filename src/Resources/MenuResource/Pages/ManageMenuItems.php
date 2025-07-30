@@ -325,9 +325,8 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             // Process the reordering with proper nested set operations
             $this->processNestedSetReorder($orderedItems);
 
-            // Don't refresh tree for reordering - the visual order is already correct
-            // Only dispatch event for JavaScript to hide loading state
-            $this->dispatch('menu-items-reordered');
+            // Refresh tree to sync with database state
+            $this->refreshTree();
 
             Notification::make()
                 ->title(flexiblePagesTrans('menu_items.messages.items_reordered'))

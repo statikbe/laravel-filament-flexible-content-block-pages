@@ -27,12 +27,10 @@
                     <!-- Tree Items -->
                     <div class="space-y-2" id="menu-items-container" wire:key="tree-{{ $refreshKey }}">
                         @foreach($this->record->menuItems()->with(['children', 'linkable'])->whereNull('parent_id')->orderBy('_lft')->get() as $item)
-                            <div data-item-id="{{ $item->id }}">
-                                @livewire('filament-flexible-content-block-pages::menu-tree-item', [
-                                    'item' => $item,
-                                    'maxDepth' => $this->getMaxDepth()
-                                ], key("item-{$item->id}-{$refreshKey}"))
-                            </div>
+                            @livewire('filament-flexible-content-block-pages::menu-tree-item', [
+                                'item' => $item,
+                                'maxDepth' => $this->getMaxDepth()
+                            ], key("item-{$item->id}-{$refreshKey}"))
                         @endforeach
                     </div>
                 @endif
@@ -71,11 +69,6 @@
                     // Listen for Livewire events to refresh menu items
                     this.$wire.on('menu-items-updated', () => {
                         this.refreshMenuItems();
-                    });
-                    
-                    // Listen for reorder completion (no need to refresh, just hide loading)
-                    this.$wire.on('menu-items-reordered', () => {
-                        this.loading = false;
                     });
                 },
 
@@ -125,15 +118,7 @@
                     });
 
                     // Call the Livewire method to save the new order
-                    this.$wire.reorderMenuItems(items).then(() => {
-                        this.loading = false;
-                        // Don't manually refresh - the server-side refreshTree() will handle it
-                    }).catch((error) => {
-                        console.error('Reorder failed:', error);
-                        this.loading = false;
-                        // Only refresh on error to revert changes
-                        this.refreshMenuItems();
-                    });
+                    this.$wire.reorderMenuItems(items);
                 },
 
                 extractItemId(element) {
