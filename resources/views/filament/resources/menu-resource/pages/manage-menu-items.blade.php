@@ -66,10 +66,7 @@
                 },
 
                 setupEventListeners() {
-                    // Listen for Livewire events to refresh menu items
-                    this.$wire.on('menu-items-updated', () => {
-                        this.refreshMenuItems();
-                    });
+                    // No event listeners needed - using natural Livewire reactivity
                 },
 
                 refreshMenuItems() {

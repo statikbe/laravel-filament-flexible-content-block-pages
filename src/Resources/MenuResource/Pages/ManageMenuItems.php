@@ -917,7 +917,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
         }
     }
 
-    public function moveItemUp(int $itemId): void
+    public function moveItemUp(int $itemId)
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
@@ -935,12 +935,13 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($previousSibling) {
                 $item->beforeNode($previousSibling)->save();
 
-                // Let Livewire handle refresh naturally - no manual refresh
-
                 Notification::make()
                     ->title('Menu item moved up successfully.')
                     ->success()
                     ->send();
+
+                // Force page reload to avoid component issues
+                return redirect()->to(request()->url());
             }
         } catch (Exception $e) {
             Notification::make()
@@ -950,7 +951,7 @@ class ManageMenuItems extends Page implements HasActions, HasForms
         }
     }
 
-    public function moveItemDown(int $itemId): void
+    public function moveItemDown(int $itemId)
     {
         try {
             $item = $this->getMenuItemSecurely($itemId);
@@ -968,12 +969,13 @@ class ManageMenuItems extends Page implements HasActions, HasForms
             if ($nextSibling) {
                 $item->afterNode($nextSibling)->save();
 
-                // Let Livewire handle refresh naturally - no manual refresh
-
                 Notification::make()
                     ->title('Menu item moved down successfully.')
                     ->success()
                     ->send();
+
+                // Force page reload to avoid component issues
+                return redirect()->to(request()->url());
             }
         } catch (Exception $e) {
             Notification::make()
