@@ -3,13 +3,12 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
 use Filament\Actions\LocaleSwitcher;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Panel;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Pages\PageRegistration;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
-use Illuminate\Support\Str;
 use Kalnoy\Nestedset\QueryBuilder;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
@@ -87,23 +86,11 @@ class ManageMenuItems extends TreePage
     public static function getInfolistColumns(): array
     {
         return [
-            TextEntry::make('label')
-                ->label(flexiblePagesTrans('menu_items.form.label_lbl')),
-            TextEntry::make('link_type')
-                ->label(flexiblePagesTrans('menu_items.form.link_type_lbl'))
-                ->formatStateUsing(function (string $state): string {
-                    return match ($state) {
-                        'url' => flexiblePagesTrans('menu_items.form.types.url'),
-                        'route' => flexiblePagesTrans('menu_items.form.types.route'),
-                        default => flexiblePagesTrans('menu_items.form.types.model', ['model' => Str::title($state)])
-                    };
-                }),
-            TextEntry::make('is_visible')
-                ->label(flexiblePagesTrans('menu_items.form.is_visible_lbl'))
-                ->formatStateUsing(fn (bool $state): string => $state ? flexiblePagesTrans('menu_items.status.visible') : flexiblePagesTrans('menu_items.status.hidden')
-                )
-                ->badge()
-                ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
+            IconEntry::make('is_visible')
+                ->icon(fn (bool $state): string => $state ? '' : 'heroicon-o-eye-slash')
+                ->color(fn (bool $state): string => $state ? 'gray' : 'warning')
+                ->tooltip(fn (bool $state): ?string => $state ? null : flexiblePagesTrans('menu_items.status.hidden'))
+                ->size('sm'),
         ];
     }
 

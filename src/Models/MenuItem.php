@@ -114,6 +114,23 @@ class MenuItem extends Model
         return 'label';
     }
 
+    public function getTreeCaption(): string
+    {
+        if ($this->linkable_type && $this->linkable) {
+            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($this->linkable_type);
+        }
+
+        if ($this->url) {
+            return flexiblePagesTrans('menu_items.tree.external_url').': '.$this->url;
+        }
+
+        if ($this->route) {
+            return flexiblePagesTrans('menu_items.tree.route').': '.$this->route;
+        }
+
+        return flexiblePagesTrans('menu_items.tree.no_link');
+    }
+
     public function getScopeAttributes(): array
     {
         return ['menu_id'];
