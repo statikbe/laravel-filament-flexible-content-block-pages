@@ -27,10 +27,12 @@
                     <!-- Tree Items -->
                     <div class="space-y-2" id="menu-items-container" wire:key="tree-{{ $refreshKey }}">
                         @foreach($this->record->menuItems()->with(['children', 'linkable'])->whereNull('parent_id')->orderBy('_lft')->get() as $item)
-                            @livewire('filament-flexible-content-block-pages::menu-tree-item', [
-                                'item' => $item,
-                                'maxDepth' => $this->getMaxDepth()
-                            ], key("item-{$item->id}-{$refreshKey}"))
+                            <div data-item-id="{{ $item->id }}">
+                                @livewire('filament-flexible-content-block-pages::menu-tree-item', [
+                                    'item' => $item,
+                                    'maxDepth' => $this->getMaxDepth()
+                                ], key("item-{$item->id}-{$refreshKey}"))
+                            </div>
                         @endforeach
                     </div>
                 @endif
@@ -94,13 +96,43 @@
                                 handle: '.drag-handle',
                                 onEnd: (evt) => {
                                     if (evt.oldIndex !== evt.newIndex) {
-                                        // TODO: Implement reordering with proper nested set handling
-                                        console.log('Reorder from', evt.oldIndex, 'to', evt.newIndex);
+                                        this.saveReorder(evt);
                                     }
                                 }
                             });
                         }
                     }
+                },
+
+                saveReorder(evt) {
+                    this.loading = true;
+                    
+                    // Get all items in their new order
+                    const container = document.getElementById('menu-items-container');
+                    const items = Array.from(container.children).map((element, index) => {
+                        // Extract item ID from the wire:key attribute or data attribute
+                        const itemId = this.extractItemId(element);
+                        return {
+                            id: itemId,
+                            position: index,
+                            parent_id: null // Root level items for now
+                        };
+                    });
+
+                    // Call the Livewire method to save the new order
+                    this.$wire.reorderMenuItems(items).then(() => {
+                        this.loading = false;
+                    }).catch((error) => {
+                        console.error('Reorder failed:', error);
+                        this.loading = false;
+                        // Revert the visual change by refreshing
+                        this.refreshMenuItems();
+                    });
+                },
+
+                extractItemId(element) {
+                    const itemId = element.dataset.itemId;
+                    return itemId ? parseInt(itemId) : null;
                 },
             }
         }

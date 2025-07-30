@@ -1,4 +1,4 @@
-<div class="menu-tree-item" data-item-id="{{ $item->id }}">
+<div class="menu-tree-item" data-item-id="{{ $item->id }}" wire:key="tree-item-{{ $item->id }}">
     <div class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 group hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ $depth > 0 ? 'ml-' . ($depth * 8) : '' }}">
 
         @if($showActions)
