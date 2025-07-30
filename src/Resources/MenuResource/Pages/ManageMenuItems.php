@@ -4,7 +4,11 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\LocaleSwitcher;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Panel;
 use Filament\Resources\Concerns\Translatable;
+use Filament\Resources\Pages\PageRegistration;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use Kalnoy\Nestedset\QueryBuilder;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -23,10 +27,24 @@ class ManageMenuItems extends TreePage
     public function mount(): void
     {
         parent::mount();
-        
+
         $menuModelClass = MenuResource::getModel();
         $recordId = request()->route('record');
         $this->record = app($menuModelClass)->findOrFail($recordId);
+    }
+
+    /**
+     * Copied from Resource/Page to support routing in resources.
+     * @inheritDoc
+     */
+    public static function route(string $path): PageRegistration
+    {
+        return new PageRegistration(
+            page: static::class,
+            route: fn (Panel $panel): Route => RouteFacade::get($path, static::class)
+                ->middleware(static::getRouteMiddleware($panel))
+                ->withoutMiddleware(static::getWithoutRouteMiddleware($panel)),
+        );
     }
 
     public static function getModel(): string|QueryBuilder
