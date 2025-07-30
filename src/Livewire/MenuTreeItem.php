@@ -90,14 +90,14 @@ class MenuTreeItem extends Component
 
     public function moveUp(): void
     {
-        // Call parent method directly to avoid component refresh issues
-        $this->dispatch('move-item-up', ['itemId' => $this->item->id])->to('filament-flexible-content-block-pages::menu-resource.pages.manage-menu-items');
+        // Dispatch event to parent component to move item up
+        $this->dispatch('move-item-up', ['itemId' => $this->item->id]);
     }
 
     public function moveDown(): void
     {
-        // Call parent method directly to avoid component refresh issues
-        $this->dispatch('move-item-down', ['itemId' => $this->item->id])->to('filament-flexible-content-block-pages::menu-resource.pages.manage-menu-items');
+        // Dispatch event to parent component to move item down
+        $this->dispatch('move-item-down', ['itemId' => $this->item->id]);
     }
 
     public function render()
