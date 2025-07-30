@@ -7,7 +7,6 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 
 class MenuTreeItem extends Component
 {
-
     public $item; // MenuItem model
 
     public int $depth = 0;
@@ -88,7 +87,6 @@ class MenuTreeItem extends Component
         // Dispatch event to parent component with item ID for deletion
         $this->dispatch('show-delete-modal', ['itemId' => $this->item->id]);
     }
-
 
     public function render()
     {
