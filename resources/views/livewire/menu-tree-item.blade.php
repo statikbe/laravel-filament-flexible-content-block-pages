@@ -51,13 +51,41 @@
 
                 @if($showActions)
                 <!-- Actions -->
-                <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div class="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     @if($this->canHaveChildren())
-                        {{ ($this->addChildAction)(['color' => 'gray']) }}
+                        <x-filament::button
+                            color="gray"
+                            size="xs"
+                            wire:click="mountAction('addChild')"
+                        >
+                            <x-slot name="icon">
+                                heroicon-o-plus
+                            </x-slot>
+                            {{ flexiblePagesTrans('menu_items.tree.add_child') }}
+                        </x-filament::button>
                     @endif
                     
-                    {{ ($this->editAction)(['color' => 'primary']) }}
-                    {{ ($this->deleteAction)(['color' => 'danger']) }}
+                    <x-filament::button
+                        color="primary"
+                        size="xs"
+                        wire:click="mountAction('edit')"
+                    >
+                        <x-slot name="icon">
+                            heroicon-o-pencil
+                        </x-slot>
+                        {{ flexiblePagesTrans('menu_items.tree.edit') }}
+                    </x-filament::button>
+                    
+                    <x-filament::button
+                        color="danger"
+                        size="xs"
+                        wire:click="mountAction('delete')"
+                    >
+                        <x-slot name="icon">
+                            heroicon-o-trash
+                        </x-slot>
+                        {{ flexiblePagesTrans('menu_items.tree.delete') }}
+                    </x-filament::button>
                 </div>
                 @endif
             </div>

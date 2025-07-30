@@ -114,6 +114,25 @@ The menu builder is partially implemented with the following components:
 ],
 ```
 
+## Development Guidelines
+
+### Use Existing Filament Components
+**IMPORTANT**: Always use existing Filament blade components and patterns instead of implementing custom HTML/CSS solutions.
+
+- Use `<x-filament::button>` instead of custom button HTML
+- Use `<x-filament::badge>` instead of custom badge styling  
+- Use `<x-filament::icon>` for consistent icon rendering
+- Use Filament's built-in form components and actions
+- Use Filament's existing patterns for modals, notifications, and UI elements
+- Leverage Filament's color system, sizing, and theming capabilities
+
+This ensures:
+- Consistent styling across the application
+- Automatic theme support (light/dark mode)
+- Built-in accessibility features
+- Future compatibility with Filament updates
+- Reduced maintenance overhead
+
 ## Common Development Patterns
 
 When extending this package:
@@ -123,3 +142,4 @@ When extending this package:
 4. SEO handling follows a fallback pattern: page SEO → hero image → default settings
 5. Route generation uses the configured route helper class
 6. Menu items follow the linkable pattern for polymorphic relationships
+7. **Always prefer existing Filament components over custom implementations**
