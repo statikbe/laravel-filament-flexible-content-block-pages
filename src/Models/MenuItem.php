@@ -17,8 +17,8 @@ class MenuItem extends Model
 {
     use HasFactory;
     use HasTranslations;
-    use NodeTrait;
     use InteractsWithTree;
+    use NodeTrait;
 
     protected $fillable = [
         'menu_id',
