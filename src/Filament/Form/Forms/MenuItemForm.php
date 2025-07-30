@@ -14,7 +14,6 @@ use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\Linkab
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Concerns\HasTranslatableHint;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class MenuItemForm
