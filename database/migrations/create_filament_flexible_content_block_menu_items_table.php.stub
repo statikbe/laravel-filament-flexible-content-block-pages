@@ -13,30 +13,30 @@ return new class extends Migration
         Schema::create(FilamentFlexibleContentBlockPages::config()->getMenuItemsTable(), function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->constrained(FilamentFlexibleContentBlockPages::config()->getMenusTable())->cascadeOnDelete();
-            
+
             // Translatable label
-            $table->json('label');
-            
+            $table->json('label')->nullable();
+
             // Link type (url, route, or model alias)
             $table->string('link_type');
-            
+
             // Link options
             $table->string('url')->nullable();
             $table->string('route')->nullable();
             $table->string('linkable_type')->nullable();
             $table->unsignedBigInteger('linkable_id')->nullable();
-            
+
             // Additional options
             $table->string('target')->default('_self');
             $table->string('icon')->nullable();
             $table->boolean('is_visible')->default(true);
             $table->boolean('use_model_title')->default(false);
-            
+
             // Nested set structure
             NestedSet::columns($table);
-            
+
             $table->timestamps();
-            
+
             // Indexes
             $table->index(['linkable_type', 'linkable_id']);
         });
