@@ -54,6 +54,7 @@ class ManageMenuItems extends TreePage
     protected function getViewData(): array
     {
         $query = static::getModel()::scoped(['menu_id' => $this->record->id])
+            ->with('linkable')
             ->defaultOrder();
 
         return [
