@@ -113,4 +113,9 @@ class MenuItem extends Model
     {
         return 'label';
     }
+
+    public function getScopeAttributes(): array
+    {
+        return ['menu_id'];
+    }
 }

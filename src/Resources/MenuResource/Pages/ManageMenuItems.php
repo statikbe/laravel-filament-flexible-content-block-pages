@@ -29,7 +29,7 @@ class ManageMenuItems extends TreePage
         parent::mount();
 
         $menuModelClass = MenuResource::getModel();
-        $recordId = request()->route('record');
+        $recordId = static::getMenuRecordId();
         $this->record = app($menuModelClass)->findOrFail($recordId);
     }
 
@@ -47,14 +47,15 @@ class ManageMenuItems extends TreePage
         );
     }
 
-    public static function getModel(): string|QueryBuilder
+    protected static function getMenuRecordId(): int
     {
-        return FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
+        return request()->route('record');
     }
 
-    public function getTreeQuery()
+    public static function getModel(): string|QueryBuilder
     {
-        return static::getModel()::where('menu_id', $this->record->id);
+        return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()
+            ::scoped(['menu_id' => static::getMenuRecordId()]);
     }
 
     public function getTitle(): string
