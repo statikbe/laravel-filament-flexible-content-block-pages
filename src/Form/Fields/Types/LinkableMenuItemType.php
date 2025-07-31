@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
 
 use Closure;
-use Filament\Forms\Components\Select;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
 class LinkableMenuItemType extends AbstractMenuItemType
