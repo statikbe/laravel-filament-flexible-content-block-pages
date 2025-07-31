@@ -8,11 +8,6 @@ class UrlMenuItemType extends AbstractMenuItemType
 {
     const TYPE_URL = 'url';
 
-    public function __construct()
-    {
-        $this->icon = 'heroicon-o-link';
-    }
-
     public static function make(?string $model = null): static
     {
         return new static;

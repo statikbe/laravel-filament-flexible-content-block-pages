@@ -9,11 +9,6 @@ class RouteMenuItemType extends AbstractMenuItemType
 {
     const TYPE_ROUTE = 'route';
 
-    public function __construct()
-    {
-        $this->icon = 'heroicon-o-map';
-    }
-
     public static function make(?string $model = null): static
     {
         return new static;

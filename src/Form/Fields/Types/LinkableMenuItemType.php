@@ -18,14 +18,6 @@ class LinkableMenuItemType extends AbstractMenuItemType
     public function __construct(string $model)
     {
         $this->model = $model;
-        $this->icon = 'heroicon-o-link';
-
-        // Set icon based on model if it has a getMorphClass method
-        $modelInstance = app($model);
-        if (method_exists($modelInstance, 'getMorphClass')) {
-            $morphClass = $modelInstance->getMorphClass();
-            $this->icon = $this->getIconForMorphClass($morphClass);
-        }
     }
 
     public static function make(string $model): static
@@ -122,26 +114,6 @@ class LinkableMenuItemType extends AbstractMenuItemType
         ]);
     }
 
-    protected function getIconForMorphClass(string $morphClass): string
-    {
-        // Check config for exact morph class match
-        $configuredIcons = FilamentFlexibleContentBlockPages::config()
-            ->getMenuModelIcons();
-
-        if (isset($configuredIcons[$morphClass])) {
-            return $configuredIcons[$morphClass];
-        }
-
-        // Fallback to pattern matching for backwards compatibility
-        foreach ($configuredIcons as $pattern => $icon) {
-            if (str_contains($morphClass, $pattern)) {
-                return $icon;
-            }
-        }
-
-        // Final fallback to default icon
-        return 'heroicon-o-link';
-    }
 
     public function isModelType(): bool
     {
