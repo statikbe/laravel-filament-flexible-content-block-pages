@@ -2,9 +2,9 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
+use Filament\Actions\CreateAction;
 use Filament\Actions\LocaleSwitcher;
 use Illuminate\Database\Eloquent\Model;
-use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
@@ -50,21 +50,15 @@ class ManageMenuItems extends TreePage
 
     public function getBreadcrumb(): string
     {
-        // TODO fix
         return flexiblePagesTrans('menu_items.manage.breadcrumb');
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            LocaleSwitcher::make(),
-        ];
     }
 
     protected function getActions(): array
     {
         return [
-            Action::make('create')
+            LocaleSwitcher::make(),
+            CreateAction::make()
+                ->label(flexiblePagesTrans('menu_items.tree.add_item'))
                 ->mountUsing(
                     fn ($arguments, $form, $model) => $form->fill([
                         'menu_id' => $this->record->id,
