@@ -11,7 +11,7 @@ use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Forms\MenuItemForm;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 
@@ -21,7 +21,7 @@ class ManageMenuItems extends TreePage
 
     protected static string $resource = MenuResource::class;
 
-    public mixed $record;
+    public mixed $menu;
 
     protected static int $maxDepth = 3;
 
@@ -29,7 +29,7 @@ class ManageMenuItems extends TreePage
     {
         $menuModelClass = MenuResource::getModel();
         $recordId = request()->route('record');
-        $this->record = app($menuModelClass)
+        $this->menu = app($menuModelClass)
             ->query()
             ->with('menuItems.linkable')
             ->findOrFail($recordId);
@@ -43,7 +43,7 @@ class ManageMenuItems extends TreePage
     public function getTitle(): string
     {
         return flexiblePagesTrans('menu_items.manage.title', [
-            'menu' => $this->record->name ?? 'Menu',
+            'menu' => $this->menu->name ?? 'Menu',
         ]);
     }
 
@@ -59,15 +59,15 @@ class ManageMenuItems extends TreePage
             CreateAction::make()
                 ->label(flexiblePagesTrans('menu_items.tree.add_item'))
                 ->mountUsing(
-                    fn ($arguments, $form, $model) => $form->fill([
-                        'menu_id' => $this->record->id,
+                    fn ($arguments, $form) => $form->fill([
+                        'menu_id' => $this->menu->id,
                         'parent_id' => $arguments['parent_id'] ?? -1,
                         'is_visible' => true,
                         'target' => '_self',
                     ])
                 )
                 ->action(function (array $data): void {
-                    $data['menu_id'] = $this->record->id;
+                    $data['menu_id'] = $this->menu->id;
                     static::getModel()::create($data);
                 }),
         ];
@@ -78,10 +78,15 @@ class ManageMenuItems extends TreePage
         return [
             EditAction::make()
                 ->mountUsing(
-                    fn ($arguments, $form, $model) => $form->fill([
-                        ...$model->toArray(),
-                        'menu_id' => $this->record->id,
-                    ])
+                    function($arguments, $form, $model, MenuItem $record) {
+                        $data = [
+                            ...$record->toArray(),
+                            'menu_id' => $this->record->id,
+                        ];
+                        $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
+
+                        $form->fill($data);
+                    }
                 ),
             DeleteAction::make(),
         ];
@@ -89,7 +94,7 @@ class ManageMenuItems extends TreePage
 
     protected function getTreeRecords()
     {
-        return static::getModel()::where('menu_id', $this->record->id)
+        return static::getModel()::where('menu_id', $this->menu->id)
             ->with('linkable')
             ->orderBy('order')
             ->get();
@@ -115,13 +120,6 @@ class ManageMenuItems extends TreePage
         }
 
         $description = $this->getMenuItemTypeDescription($record);
-        
-        // Add visibility indicator if hidden
-        if (! $record->is_visible) {
-            $hiddenText = flexiblePagesTrans('menu_items.status.hidden');
-            $eyeSlashIcon = svg('heroicon-o-eye-slash', 'w-4 h-4 inline text-warning-600 dark:text-warning-400')->toHtml();
-            $description .= " • <span class=\"text-warning-600 dark:text-warning-400\">{$eyeSlashIcon} {$hiddenText}</span>";
-        }
 
         return new HtmlString($description);
     }

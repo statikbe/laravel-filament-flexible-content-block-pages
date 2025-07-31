@@ -29,7 +29,7 @@ class Menu extends Model implements HasCode
     public function menuItems(): HasMany
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class)
-            ->whereNull('parent_id')
+            ->where('parent_id', -1)
             ->orderBy('order');
     }
 

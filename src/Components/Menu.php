@@ -76,7 +76,7 @@ class Menu extends Component
         return $this->buildMenuTree($items->toArray(), $locale);
     }
 
-    protected function buildMenuTree(array $items, ?string $locale = null, $parentId = null): array
+    protected function buildMenuTree(array $items, ?string $locale = null, $parentId = -1): array
     {
         $tree = [];
 

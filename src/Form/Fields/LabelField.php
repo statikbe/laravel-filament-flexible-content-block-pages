@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields;
 
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 

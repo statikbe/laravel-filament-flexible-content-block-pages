@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Forms;
 
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -8,13 +8,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\LabelField;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\AbstractMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\LinkableMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\RouteMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\UrlMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\LabelField;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\AbstractMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\LinkableMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\RouteMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
+use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\is_string;
+use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\is_subclass_of;
 
 class MenuItemForm
 {
