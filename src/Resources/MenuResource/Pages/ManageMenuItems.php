@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 use Filament\Actions\CreateAction;
 use Filament\Actions\LocaleSwitcher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
@@ -37,11 +38,6 @@ class ManageMenuItems extends TreePage
     public function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class;
-    }
-
-    public function getTranslatableLocales(): array
-    {
-        return static::getResource()::getTranslatableLocales();
     }
 
     public function getTitle(): string
@@ -109,6 +105,42 @@ class ManageMenuItems extends TreePage
         $locale = $this->getActiveLocale();
 
         return $record->getDisplayLabel($locale);
+    }
+
+    public function getTreeRecordDescription(?Model $record = null): string|HtmlString|null
+    {
+        /** @var MenuItem $record */
+        if (! $record) {
+            return null;
+        }
+
+        $description = $this->getMenuItemTypeDescription($record);
+        
+        // Add visibility indicator if hidden
+        if (! $record->is_visible) {
+            $hiddenText = flexiblePagesTrans('menu_items.status.hidden');
+            $eyeSlashIcon = svg('heroicon-o-eye-slash', 'w-4 h-4 inline text-warning-600 dark:text-warning-400')->toHtml();
+            $description .= " • <span class=\"text-warning-600 dark:text-warning-400\">{$eyeSlashIcon} {$hiddenText}</span>";
+        }
+
+        return new HtmlString($description);
+    }
+
+    protected function getMenuItemTypeDescription(MenuItem $record): string
+    {
+        if ($record->linkable_type && $record->linkable) {
+            return flexiblePagesTrans('menu_items.tree.linked_to') . ' ' . class_basename($record->linkable_type);
+        }
+
+        if ($record->url) {
+            return flexiblePagesTrans('menu_items.tree.external_url') . ': ' . $record->url;
+        }
+
+        if ($record->route) {
+            return flexiblePagesTrans('menu_items.tree.route') . ': ' . $record->route;
+        }
+
+        return flexiblePagesTrans('menu_items.tree.no_link');
     }
 
     public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string

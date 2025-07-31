@@ -43,6 +43,12 @@ class MenuItem extends Model
 
     public $translatable = ['label'];
 
+    /*
+     * The filament-tree package iterates over the tree and it is too complicated to implement eager fetching
+     * on a recursive children relationship.
+     */
+    protected $with = ['linkable'];
+
     public function getTable()
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuItemsTable();
