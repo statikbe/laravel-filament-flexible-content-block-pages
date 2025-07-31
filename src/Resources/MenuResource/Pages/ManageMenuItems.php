@@ -199,7 +199,7 @@ class ManageMenuItems extends TreePage
         }
 
         if ($record->url) {
-            return 'heroicon-o-globe-alt';
+            return 'heroicon-o-link';
         }
 
         if ($record->route) {

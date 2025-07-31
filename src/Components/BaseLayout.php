@@ -3,11 +3,14 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
 use Illuminate\View\Component;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
 class BaseLayout extends Component
 {
     public function render()
     {
-        return view('filament-flexible-content-block-pages::components.layouts.base');
+        $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
+
+        return view("filament-flexible-content-block-pages::components.{$theme}.layouts.base");
     }
 }
