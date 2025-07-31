@@ -101,7 +101,7 @@ return [
             'edit' => 'Edit',
             'delete' => 'Delete',
             'empty_state' => 'No menu items yet. Click "Add item" to get started.',
-            'linked_to' => 'Linked to',
+            'linked_to' => 'Linked to a',
             'external_url' => 'External URL',
             'route' => 'Route',
             'no_link' => 'No link',

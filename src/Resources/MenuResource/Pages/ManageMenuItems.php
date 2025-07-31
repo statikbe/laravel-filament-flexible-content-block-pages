@@ -80,7 +80,7 @@ class ManageMenuItems extends TreePage
                     function ($arguments, $form, $model, MenuItem $record) {
                         $data = [
                             ...$record->toArray(),
-                            'menu_id' => $this->record->id,
+                            'menu_id' => $this->menu->id,
                         ];
                         $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
 
@@ -120,7 +120,7 @@ class ManageMenuItems extends TreePage
 
         $description = $this->getMenuItemTypeDescription($record);
 
-        return new HtmlString($description);
+        return new HtmlString(' &rarr; '.$description);
     }
 
     protected function getMenuItemTypeDescription(MenuItem $record): string

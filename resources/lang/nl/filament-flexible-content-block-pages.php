@@ -101,7 +101,7 @@ return [
             'edit' => 'Bewerken',
             'delete' => 'Verwijderen',
             'empty_state' => 'Nog geen menu-items. Klik op "Item toevoegen" om te beginnen.',
-            'linked_to' => 'Gekoppeld aan',
+            'linked_to' => 'Gekoppeld aan een',
             'external_url' => 'Externe URL',
             'route' => 'Route',
             'no_link' => 'Geen link',
