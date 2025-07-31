@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\CreateAction;
 use Filament\Actions\LocaleSwitcher;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
@@ -143,9 +144,9 @@ class ManageMenuItems extends TreePage
 
     protected function getModelLabelFromResource(string $modelClass): string
     {
-        $resourceClass = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+        $resourceClass = Filament::getModelResource($modelClass);
 
-        if ($resourceClass && class_exists($resourceClass)) {
+        if ($resourceClass) {
             try {
                 return $resourceClass::getModelLabel();
             } catch (\Exception $e) {
@@ -158,9 +159,9 @@ class ManageMenuItems extends TreePage
 
     protected function getModelIconFromResource(string $modelClass): ?string
     {
-        $resourceClass = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+        $resourceClass = Filament::getModelResource($modelClass);
 
-        if ($resourceClass && class_exists($resourceClass)) {
+        if ($resourceClass) {
             try {
                 return $resourceClass::getNavigationIcon();
             } catch (\Exception $e) {

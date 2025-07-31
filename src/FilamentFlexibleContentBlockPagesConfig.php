@@ -160,33 +160,6 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('menu.linkable_models', []);
     }
 
-    public function getMenuLinkableModelClasses(): array
-    {
-        $models = $this->getMenuLinkableModels();
-        $classes = [];
-
-        foreach ($models as $model) {
-            if (isset($model['model'])) {
-                $classes[] = $model['model'];
-            }
-        }
-
-        return $classes;
-    }
-
-    public function getMenuLinkableModelResource(string $modelClass): ?string
-    {
-        $models = $this->getMenuLinkableModels();
-
-        foreach ($models as $model) {
-            if (isset($model['model'], $model['resource']) && $model['model'] === $modelClass) {
-                return $model['resource'];
-            }
-        }
-
-        return null;
-    }
-
     public function getMenuStyles(): array
     {
         return $this->packageConfig('menu.styles', ['default']);

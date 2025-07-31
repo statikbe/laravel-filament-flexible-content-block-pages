@@ -104,16 +104,12 @@ return [
         'linkable_models' => [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface
-            [
-                'model' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
-                'resource' => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
-            ],
+            // Resources are automatically discovered via Filament::getModelResource()
+            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
 
             // Add your own models here:
-            // [
-            //     'model' => \App\Models\Category::class,
-            //     'resource' => \App\Filament\Resources\CategoryResource::class,
-            // ],
+            // \App\Models\Category::class,
+            // \App\Models\Post::class,
         ],
         'styles' => [
             // Available menu styles (codes only - labels come from translations)

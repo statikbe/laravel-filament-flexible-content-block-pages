@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Forms;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -257,9 +258,9 @@ class MenuItemForm
 
     protected static function getModelLabelFromResource(string $modelClass): string
     {
-        $resourceClass = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+        $resourceClass = Filament::getModelResource($modelClass);
 
-        if ($resourceClass && class_exists($resourceClass)) {
+        if ($resourceClass) {
             try {
                 return $resourceClass::getModelLabel();
             } catch (\Exception $e) {
@@ -282,7 +283,7 @@ class MenuItemForm
             ];
 
             // Add configured linkable models from config
-            $configuredModels = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelClasses();
+            $configuredModels = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModels();
 
             foreach ($configuredModels as $modelClass) {
                 if (is_subclass_of($modelClass, HasMenuLabel::class)) {
