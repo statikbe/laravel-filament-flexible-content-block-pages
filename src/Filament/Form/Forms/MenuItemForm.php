@@ -66,11 +66,10 @@ class MenuItemForm
                     static::getVisibilityField(),
                 ])->columnSpan(2),
 
-                // Hidden fields for nested set
+                // Hidden fields for solution-forest/filament-tree
                 Hidden::make('menu_id'),
                 Hidden::make('parent_id'),
-                Hidden::make('_lft'),
-                Hidden::make('_rgt'),
+                Hidden::make('order'),
             ]),
         ];
     }
