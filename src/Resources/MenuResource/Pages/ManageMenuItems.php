@@ -8,7 +8,7 @@ use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
 use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
-use SolutionForest\FilamentTree\Pages\TreePage;
+use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
