@@ -4,7 +4,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
 
 use Closure;
 use Filament\Forms\Components\Select;
-use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
 class LinkableMenuItemType extends AbstractMenuItemType
@@ -113,7 +112,6 @@ class LinkableMenuItemType extends AbstractMenuItemType
             'model' => class_basename($this->model),
         ]);
     }
-
 
     public function isModelType(): bool
     {
