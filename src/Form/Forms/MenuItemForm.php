@@ -63,11 +63,13 @@ class MenuItemForm
                 ])->columnSpan(1),
 
                 // Additional Options Section
-                Grid::make(2)->schema([
+                Grid::make(2)->schema(array_filter([
                     static::getTargetField(),
-                    static::getIconField(),
+                    FilamentFlexibleContentBlockPages::config()->isMenuItemIconFieldEnabled() 
+                        ? static::getIconField() 
+                        : null,
                     static::getVisibilityField(),
-                ])->columnSpan(2),
+                ]))->columnSpan(2),
 
                 // Hidden fields for solution-forest/filament-tree
                 Hidden::make('menu_id'),

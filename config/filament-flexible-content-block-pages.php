@@ -101,6 +101,7 @@ return [
 
     'menu' => [
         'max_depth' => 2,
+        'enable_menu_item_icon_field' => true,
         'linkable_models' => [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface

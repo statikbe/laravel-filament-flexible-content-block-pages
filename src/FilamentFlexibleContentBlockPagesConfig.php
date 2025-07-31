@@ -160,6 +160,11 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('menu.linkable_models', []);
     }
 
+    public function isMenuItemIconFieldEnabled(): bool
+    {
+        return $this->packageConfig('menu.enable_menu_item_icon_field', true);
+    }
+
     public function getMenuStyles(): array
     {
         return $this->packageConfig('menu.styles', ['default']);
