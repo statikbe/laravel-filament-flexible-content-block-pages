@@ -78,7 +78,7 @@ class ManageMenuItems extends TreePage
         return [
             EditAction::make()
                 ->mountUsing(
-                    function($arguments, $form, $model, MenuItem $record) {
+                    function ($arguments, $form, $model, MenuItem $record) {
                         $data = [
                             ...$record->toArray(),
                             'menu_id' => $this->record->id,
