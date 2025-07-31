@@ -49,17 +49,6 @@ class LinkableMenuItemType extends AbstractMenuItemType
         return $this;
     }
 
-    public function getSelectField(): Select
-    {
-        return Select::make('linkable_id')
-            ->label(flexiblePagesTrans('menu_items.form.linkable_item_lbl'))
-            ->searchable()
-            ->getSearchResultsUsing(fn (string $search): array => $this->getSearchResults($search))
-            ->getOptionLabelUsing(fn ($value): ?string => $this->getOptionLabel($value))
-            ->required()
-            ->helperText($this->getHelperText());
-    }
-
     public function getSearchResults(string $search): array
     {
         $modelClass = $this->model;

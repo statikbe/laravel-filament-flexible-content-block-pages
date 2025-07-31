@@ -111,9 +111,4 @@ class MenuItem extends Model
     {
         return $this->is_visible;
     }
-
-    public function getTitleAttribute(): string
-    {
-        return $this->getDisplayLabel();
-    }
 }

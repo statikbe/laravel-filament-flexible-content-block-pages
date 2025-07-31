@@ -168,7 +168,7 @@ class MenuItemForm
                 $type = static::getTypeByAlias($linkType);
 
                 if ($type && $type->isModelType() && $state) {
-                    $set(static::FIELD_LINKABLE_TYPE, $type->getModel());
+                    $set(static::FIELD_LINKABLE_TYPE, $type->getAlias());
                 }
             });
     }
@@ -270,6 +270,9 @@ class MenuItemForm
         return class_basename($modelClass);
     }
 
+    /**
+     * @return AbstractMenuItemType[]
+     */
     protected static function getTypes(): array
     {
         if (static::$types === null) {

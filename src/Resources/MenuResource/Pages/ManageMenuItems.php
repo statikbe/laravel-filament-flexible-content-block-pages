@@ -126,7 +126,7 @@ class ManageMenuItems extends TreePage
     {
         if ($record->linkable_type && $record->linkable) {
             // Get model label from Filament resource if available
-            $modelLabel = $this->getModelLabelFromResource($record->linkable_type);
+            $modelLabel = $this->getModelLabelFromResource($record->linkable::class);
 
             return flexiblePagesTrans('menu_items.tree.linked_to').' '.$modelLabel;
         } elseif ($record->url) {
@@ -194,7 +194,7 @@ class ManageMenuItems extends TreePage
 
         // Return appropriate icon based on type
         if ($record->linkable_type && $record->linkable) {
-            return $this->getModelIconFromResource($record->linkable_type) ?: 'heroicon-o-link';
+            return $this->getModelIconFromResource($record->linkable::class) ?: 'heroicon-o-link';
         }
 
         if ($record->url) {
