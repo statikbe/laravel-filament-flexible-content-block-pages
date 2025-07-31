@@ -30,13 +30,13 @@ class Menu extends Model implements HasCode
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class)
             ->whereNull('parent_id')
-            ->orderBy('_lft');
+            ->orderBy('order');
     }
 
     public function allMenuItems(): HasMany
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class)
-            ->orderBy('_lft');
+            ->orderBy('order');
     }
 
     public function getMorphClass()

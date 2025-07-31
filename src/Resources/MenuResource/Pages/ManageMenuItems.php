@@ -28,7 +28,10 @@ class ManageMenuItems extends TreePage
     {
         $menuModelClass = MenuResource::getModel();
         $recordId = request()->route('record');
-        $this->record = app($menuModelClass)->findOrFail($recordId);
+        $this->record = app($menuModelClass)
+            ->query()
+            ->with('menuItems.linkable')
+            ->findOrFail($recordId);
     }
 
     public function getModel(): string

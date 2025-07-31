@@ -70,7 +70,7 @@ class Menu extends Component
 
         $items = $menu->menuItems()
             ->with('linkable')
-            ->orderBy('_lft')
+            ->orderBy('order')
             ->get();
 
         return $this->buildMenuTree($items->toArray(), $locale);
