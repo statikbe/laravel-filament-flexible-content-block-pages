@@ -65,8 +65,8 @@ class MenuItemForm
                 // Additional Options Section
                 Grid::make(2)->schema(array_filter([
                     static::getTargetField(),
-                    FilamentFlexibleContentBlockPages::config()->isMenuItemIconFieldEnabled() 
-                        ? static::getIconField() 
+                    FilamentFlexibleContentBlockPages::config()->isMenuItemIconFieldEnabled()
+                        ? static::getIconField()
                         : null,
                     static::getVisibilityField(),
                 ]))->columnSpan(2),
