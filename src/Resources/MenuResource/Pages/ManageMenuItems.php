@@ -115,7 +115,7 @@ class ManageMenuItems extends TreePage
         }
 
         $description = $this->getMenuItemTypeDescription($record);
-        
+
         // Add visibility indicator if hidden
         if (! $record->is_visible) {
             $hiddenText = flexiblePagesTrans('menu_items.status.hidden');
@@ -129,15 +129,15 @@ class ManageMenuItems extends TreePage
     protected function getMenuItemTypeDescription(MenuItem $record): string
     {
         if ($record->linkable_type && $record->linkable) {
-            return flexiblePagesTrans('menu_items.tree.linked_to') . ' ' . class_basename($record->linkable_type);
+            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($record->linkable_type);
         }
 
         if ($record->url) {
-            return flexiblePagesTrans('menu_items.tree.external_url') . ': ' . $record->url;
+            return flexiblePagesTrans('menu_items.tree.external_url').': '.$record->url;
         }
 
         if ($record->route) {
-            return flexiblePagesTrans('menu_items.tree.route') . ': ' . $record->route;
+            return flexiblePagesTrans('menu_items.tree.route').': '.$record->route;
         }
 
         return flexiblePagesTrans('menu_items.tree.no_link');
