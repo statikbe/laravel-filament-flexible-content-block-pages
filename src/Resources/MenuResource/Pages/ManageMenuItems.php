@@ -61,7 +61,7 @@ class ManageMenuItems extends TreePage
         ];
     }
 
-    protected function getTreeActions(): array
+    protected function getActions(): array
     {
         return [
             Action::make('create')
@@ -77,6 +77,12 @@ class ManageMenuItems extends TreePage
                     $data['menu_id'] = $this->record->id;
                     static::getModel()::create($data);
                 }),
+        ];
+    }
+
+    protected function getTreeActions(): array
+    {
+        return [
             EditAction::make()
                 ->mountUsing(
                     fn ($arguments, $form, $model) => $form->fill([
