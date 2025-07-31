@@ -4,10 +4,10 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\LocaleSwitcher;
 use Illuminate\Database\Eloquent\Model;
-use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
 use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
+use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
 use SolutionForest\FilamentTree\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
@@ -104,12 +104,13 @@ class ManageMenuItems extends TreePage
         }
 
         $locale = $this->getActiveLocale();
+
         return $record->getDisplayLabel($locale);
     }
 
     public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
     {
-        //TODO
+        // TODO
         return parent::getTreeRecordIcon($record);
     }
 
