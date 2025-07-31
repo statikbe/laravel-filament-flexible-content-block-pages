@@ -166,8 +166,8 @@ class FilamentFlexibleContentBlockPagesConfig
         $classes = [];
 
         foreach ($models as $model) {
-            if (isset($model['class'])) {
-                $classes[] = $model['class'];
+            if (isset($model['model'])) {
+                $classes[] = $model['model'];
             }
         }
 
@@ -179,7 +179,7 @@ class FilamentFlexibleContentBlockPagesConfig
         $models = $this->getMenuLinkableModels();
 
         foreach ($models as $model) {
-            if (isset($model['class'], $model['resource']) && $model['class'] === $modelClass) {
+            if (isset($model['model'], $model['resource']) && $model['model'] === $modelClass) {
                 return $model['resource'];
             }
         }

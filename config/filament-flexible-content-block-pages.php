@@ -105,18 +105,14 @@ return [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface
             [
-                'class' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+                'model' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
                 'resource' => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
             ],
 
             // Add your own models here:
             // [
-            //     'class' => \App\Models\Category::class,
+            //     'model' => \App\Models\Category::class,
             //     'resource' => \App\Filament\Resources\CategoryResource::class,
-            // ],
-            // [
-            //     'class' => \App\Models\Product::class,
-            //     'resource' => \App\Filament\Resources\ProductResource::class,
             // ],
         ],
         'styles' => [
