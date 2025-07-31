@@ -100,25 +100,24 @@ return [
     ],
 
     'menu' => [
-
         'max_depth' => 2,
         'linkable_models' => [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface
-            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            [
+                'class' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+                'resource' => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
+            ],
 
             // Add your own models here:
-            // \App\Models\Category::class,
-            // \App\Models\Product::class,
-        ],
-        'model_icons' => [
-            // Configure icons for different model types based on their morph class
-            'filament-flexible-content-block-pages::page' => 'heroicon-o-document-text',
-
-            // Add custom icons for your models:
-            // 'category' => 'heroicon-o-tag',
-            // 'product' => 'heroicon-o-shopping-bag',
-            // 'post' => 'heroicon-o-newspaper',
+            // [
+            //     'class' => \App\Models\Category::class,
+            //     'resource' => \App\Filament\Resources\CategoryResource::class,
+            // ],
+            // [
+            //     'class' => \App\Models\Product::class,
+            //     'resource' => \App\Filament\Resources\ProductResource::class,
+            // ],
         ],
         'styles' => [
             // Available menu styles (codes only - labels come from translations)

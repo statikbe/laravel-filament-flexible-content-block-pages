@@ -23,8 +23,6 @@ class ManageMenuItems extends TreePage
 
     public mixed $menu;
 
-    protected static int $maxDepth = 3;
-
     public function mount(): void
     {
         $menuModelClass = MenuResource::getModel();
@@ -78,7 +76,7 @@ class ManageMenuItems extends TreePage
         return [
             EditAction::make()
                 ->mountUsing(
-                    function($arguments, $form, $model, MenuItem $record) {
+                    function ($arguments, $form, $model, MenuItem $record) {
                         $data = [
                             ...$record->toArray(),
                             'menu_id' => $this->record->id,
@@ -127,28 +125,96 @@ class ManageMenuItems extends TreePage
     protected function getMenuItemTypeDescription(MenuItem $record): string
     {
         if ($record->linkable_type && $record->linkable) {
-            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($record->linkable_type);
-        }
+            // Get model label from Filament resource if available
+            $modelLabel = $this->getModelLabelFromResource($record->linkable_type);
 
-        if ($record->url) {
+            return flexiblePagesTrans('menu_items.tree.linked_to').' '.$modelLabel;
+        } elseif ($record->url) {
             return flexiblePagesTrans('menu_items.tree.external_url').': '.$record->url;
+        } elseif ($record->route) {
+            // Show route URL instead of route name
+            $routeUrl = $this->getRouteUrl($record->route);
+
+            return flexiblePagesTrans('menu_items.tree.route').': '.($routeUrl ?: $record->route);
+        } else {
+            return flexiblePagesTrans('menu_items.tree.no_link');
+        }
+    }
+
+    protected function getModelLabelFromResource(string $modelClass): string
+    {
+        $resourceClass = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+
+        if ($resourceClass && class_exists($resourceClass)) {
+            try {
+                return $resourceClass::getModelLabel();
+            } catch (\Exception $e) {
+                // Fallback to class basename if resource method fails
+            }
         }
 
-        if ($record->route) {
-            return flexiblePagesTrans('menu_items.tree.route').': '.$record->route;
+        return class_basename($modelClass);
+    }
+
+    protected function getModelIconFromResource(string $modelClass): ?string
+    {
+        $resourceClass = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+
+        if ($resourceClass && class_exists($resourceClass)) {
+            try {
+                return $resourceClass::getNavigationIcon();
+            } catch (\Exception $e) {
+                // Fallback to null if resource method fails
+            }
         }
 
-        return flexiblePagesTrans('menu_items.tree.no_link');
+        return null;
+    }
+
+    protected function getRouteUrl(string $routeName): ?string
+    {
+        try {
+            return route($routeName);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
     {
-        // TODO
-        return parent::getTreeRecordIcon($record);
+        /** @var MenuItem $record */
+        if (! $record) {
+            return null;
+        }
+
+        // If not visible, show eye-slash icon
+        if (! $record->is_visible) {
+            return 'heroicon-o-eye-slash';
+        }
+
+        // Return appropriate icon based on type
+        if ($record->linkable_type && $record->linkable) {
+            return $this->getModelIconFromResource($record->linkable_type) ?: 'heroicon-o-link';
+        }
+
+        if ($record->url) {
+            return 'heroicon-o-globe-alt';
+        }
+
+        if ($record->route) {
+            return 'heroicon-o-command-line';
+        }
+
+        return 'heroicon-o-bars-3';
     }
 
     protected function getFormSchema(): array
     {
         return MenuItemForm::getSchema();
+    }
+
+    public static function getMaxDepth(): int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth() ?? 3;
     }
 }

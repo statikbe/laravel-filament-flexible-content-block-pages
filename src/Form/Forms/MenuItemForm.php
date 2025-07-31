@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\LabelField;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\AbstractMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\LinkableMenuItemType;
@@ -15,8 +16,6 @@ use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\RouteMenuItemTy
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\UrlMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
-use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\is_string;
-use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\is_subclass_of;
 
 class MenuItemForm
 {
@@ -154,8 +153,10 @@ class MenuItemForm
                 $type = static::getTypeByAlias($linkType);
 
                 if ($type && $type->isModelType()) {
+                    $modelLabel = static::getModelLabelFromResource($type->getModel());
+
                     return flexiblePagesTrans('menu_items.form.linkable_help', [
-                        'model' => class_basename($type->getModel()),
+                        'model' => $modelLabel,
                     ]);
                 }
 
@@ -246,9 +247,27 @@ class MenuItemForm
             return flexiblePagesTrans('menu_items.form.types.route');
         }
 
+        // Get translated model label from Filament resource
+        $modelLabel = static::getModelLabelFromResource($type->getModel());
+
         return flexiblePagesTrans('menu_items.form.types.model', [
-            'model' => class_basename($type->getModel()),
+            'model' => $modelLabel,
         ]);
+    }
+
+    protected static function getModelLabelFromResource(string $modelClass): string
+    {
+        $resourceClass = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelResource($modelClass);
+
+        if ($resourceClass && class_exists($resourceClass)) {
+            try {
+                return $resourceClass::getModelLabel();
+            } catch (\Exception $e) {
+                // Fallback to class basename if resource method fails
+            }
+        }
+
+        return class_basename($modelClass);
     }
 
     protected static function getTypes(): array
@@ -260,10 +279,10 @@ class MenuItemForm
             ];
 
             // Add configured linkable models from config
-            $configuredModels = config('filament-flexible-content-block-pages.menu.linkable_models', []);
+            $configuredModels = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModelClasses();
 
             foreach ($configuredModels as $modelClass) {
-                if (is_string($modelClass) && is_subclass_of($modelClass, HasMenuLabel::class)) {
+                if (is_subclass_of($modelClass, HasMenuLabel::class)) {
                     static::$types[] = new LinkableMenuItemType($modelClass);
                 }
             }

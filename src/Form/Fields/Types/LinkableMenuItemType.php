@@ -6,9 +6,6 @@ use Closure;
 use Filament\Forms\Components\Select;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
-use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\call_user_func;
-use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\is_subclass_of;
-use function Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Fields\Types\method_exists;
 
 class LinkableMenuItemType extends AbstractMenuItemType
 {
