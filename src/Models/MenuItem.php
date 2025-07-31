@@ -2,24 +2,21 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Kalnoy\Nestedset\NodeTrait;
+use SolutionForest\FilamentTree\Concern\ModelTree;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
-use Studio15\FilamentTree\Concerns\InteractsWithTree;
 
 class MenuItem extends Model
 {
     use HasFactory;
     use HasTranslations;
-    use InteractsWithTree;
-    use NodeTrait;
+    use ModelTree;
 
     protected $fillable = [
         'menu_id',
@@ -33,14 +30,15 @@ class MenuItem extends Model
         'icon',
         'is_visible',
         'use_model_title',
-        '_lft',
-        '_rgt',
+        'order',
         'parent_id',
     ];
 
     protected $casts = [
         'is_visible' => 'boolean',
         'use_model_title' => 'boolean',
+        'parent_id' => 'int',
+        'order' => 'int',
     ];
 
     public $translatable = ['label'];
@@ -58,6 +56,16 @@ class MenuItem extends Model
     public function linkable(): MorphTo
     {
         return $this->morphTo('linkable', 'linkable_type', 'linkable_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(static::class, $this->determineParentColumnName());
+    }
+
+    public function getMorphClass()
+    {
+        return 'filament-flexible-content-block-pages::menu-item';
     }
 
     public function getUrl(?string $locale = null): ?string
@@ -98,49 +106,8 @@ class MenuItem extends Model
         return $this->is_visible;
     }
 
-    public function canHaveChildren(): bool
+    public function getTitleAttribute(): string
     {
-        $maxDepth = FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
-
-        return $this->depth < $maxDepth;
-    }
-
-    public function getMorphClass()
-    {
-        return 'filament-flexible-content-block-pages::menu-item';
-    }
-
-    public static function getTreeLabelAttribute(): string
-    {
-        return 'tree_label';
-    }
-
-    protected function treeLabel(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => $this->getDisplayLabel(),
-        );
-    }
-
-    public function getTreeCaption(): string
-    {
-        if ($this->linkable_type && $this->linkable) {
-            return flexiblePagesTrans('menu_items.tree.linked_to').' '.class_basename($this->linkable_type);
-        }
-
-        if ($this->url) {
-            return flexiblePagesTrans('menu_items.tree.external_url').': '.$this->url;
-        }
-
-        if ($this->route) {
-            return flexiblePagesTrans('menu_items.tree.route').': '.$this->route;
-        }
-
-        return flexiblePagesTrans('menu_items.tree.no_link');
-    }
-
-    public function getScopeAttributes(): array
-    {
-        return ['menu_id'];
+        return $this->getDisplayLabel();
     }
 }

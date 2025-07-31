@@ -47,6 +47,16 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-migratio
 php artisan migrate
 ```
 
+Configure the Filament tailwind styling by adding these view paths to `tailwind.config.js`:
+
+```php
+content: [
+    ...
+    './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
+    './vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php',
+]
+```
+
 You can now seed the home page and default settings by running:
 
 ```bash

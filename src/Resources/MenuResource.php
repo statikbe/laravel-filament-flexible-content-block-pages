@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -22,6 +23,12 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
 
 class MenuResource extends Resource
 {
+    /*
+     * For translating menu item labels
+     * @see ManageMenuItems
+     */
+    use Translatable;
+
     protected static ?string $navigationIcon = 'heroicon-o-bars-3';
 
     protected static ?string $recordRouteKeyName = 'id';

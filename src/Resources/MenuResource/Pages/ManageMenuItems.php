@@ -3,17 +3,16 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
 use Filament\Actions\LocaleSwitcher;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Panel;
-use Filament\Resources\Concerns\Translatable;
-use Filament\Resources\Pages\PageRegistration;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Route as RouteFacade;
-use Kalnoy\Nestedset\QueryBuilder;
+use Illuminate\Database\Eloquent\Model;
+use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
+use SolutionForest\FilamentTree\Actions\Action;
+use SolutionForest\FilamentTree\Actions\DeleteAction;
+use SolutionForest\FilamentTree\Actions\EditAction;
+use SolutionForest\FilamentTree\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Filament\Form\Forms\MenuItemForm;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
-use Studio15\FilamentTree\Components\TreePage;
 
 class ManageMenuItems extends TreePage
 {
@@ -23,43 +22,23 @@ class ManageMenuItems extends TreePage
 
     public mixed $record;
 
+    protected static int $maxDepth = 3;
+
     public function mount(): void
     {
-        parent::mount();
-
         $menuModelClass = MenuResource::getModel();
         $recordId = request()->route('record');
         $this->record = app($menuModelClass)->findOrFail($recordId);
     }
 
-    /**
-     * Copied from Resource/Page to support routing in resources.
-     * {@inheritDoc}
-     */
-    public static function route(string $path): PageRegistration
-    {
-        return new PageRegistration(
-            page: static::class,
-            route: fn (Panel $panel): Route => RouteFacade::get($path, static::class)
-                ->middleware(static::getRouteMiddleware($panel))
-                ->withoutMiddleware(static::getWithoutRouteMiddleware($panel)),
-        );
-    }
-
-    public static function getModel(): string|QueryBuilder
+    public function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class;
     }
 
-    protected function getViewData(): array
+    public function getTranslatableLocales(): array
     {
-        $query = static::getModel()::scoped(['menu_id' => $this->record->id])
-            ->with('linkable')
-            ->defaultOrder();
-
-        return [
-            'tree' => $query->get()->toTree(),
-        ];
+        return static::getResource()::getTranslatableLocales();
     }
 
     public function getTitle(): string
@@ -75,29 +54,6 @@ class ManageMenuItems extends TreePage
         return flexiblePagesTrans('menu_items.manage.breadcrumb');
     }
 
-    public static function getCreateForm(): array
-    {
-        return MenuItemForm::getSchema();
-    }
-
-    public static function getEditForm(): array
-    {
-        return MenuItemForm::getSchema();
-    }
-
-    public static function getInfolistColumns(): array
-    {
-        return [
-            IconEntry::make('is_visible')
-                ->label('')
-                ->icon(fn (bool $state): string => $state ? 'heroicon-o-eye' : 'heroicon-o-eye-slash')
-                ->color(fn (bool $state): string => $state ? 'gray' : 'warning')
-                ->tooltip(fn (bool $state): ?string => $state ? null : flexiblePagesTrans('menu_items.status.hidden'))
-                ->hidden(fn (bool $state): bool => $state)
-                ->size('sm'),
-        ];
-    }
-
     protected function getHeaderActions(): array
     {
         return [
@@ -105,17 +61,60 @@ class ManageMenuItems extends TreePage
         ];
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+    protected function getTreeActions(): array
     {
-        $data['menu_id'] = $this->record->id;
-
-        return $data;
+        return [
+            Action::make('create')
+                ->mountUsing(
+                    fn ($arguments, $form, $model) => $form->fill([
+                        'menu_id' => $this->record->id,
+                        'parent_id' => $arguments['parent_id'] ?? -1,
+                        'is_visible' => true,
+                        'target' => '_self',
+                    ])
+                )
+                ->action(function (array $data): void {
+                    $data['menu_id'] = $this->record->id;
+                    static::getModel()::create($data);
+                }),
+            EditAction::make()
+                ->mountUsing(
+                    fn ($arguments, $form, $model) => $form->fill([
+                        ...$model->toArray(),
+                        'menu_id' => $this->record->id,
+                    ])
+                ),
+            DeleteAction::make(),
+        ];
     }
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function getTreeRecords()
     {
-        $data['menu_id'] = $this->record->id;
+        return static::getModel()::where('menu_id', $this->record->id)
+            ->with('linkable')
+            ->orderBy('order')
+            ->get();
+    }
 
-        return $data;
+    public function getTreeRecordTitle(?Model $record = null): string
+    {
+        /** @var MenuItem $record */
+        if (! $record) {
+            return '';
+        }
+
+        $locale = $this->getActiveLocale();
+        return $record->getDisplayLabel($locale);
+    }
+
+    public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
+    {
+        //TODO
+        return parent::getTreeRecordIcon($record);
+    }
+
+    protected function getFormSchema(): array
+    {
+        return MenuItemForm::getSchema();
     }
 }
