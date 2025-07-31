@@ -167,7 +167,6 @@ return [
             'types' => [
                 'url' => 'External URL',
                 'route' => 'Internal route',
-                'model' => ':model',
             ],
         ],
     ],

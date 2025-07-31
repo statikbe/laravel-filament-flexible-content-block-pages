@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\LabelField;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\AbstractMenuItemType;
@@ -249,11 +250,7 @@ class MenuItemForm
         }
 
         // Get translated model label from Filament resource
-        $modelLabel = static::getModelLabelFromResource($type->getModel());
-
-        return flexiblePagesTrans('menu_items.form.types.model', [
-            'model' => $modelLabel,
-        ]);
+        return Str::ucfirst(static::getModelLabelFromResource($type->getModel()));
     }
 
     protected static function getModelLabelFromResource(string $modelClass): string
