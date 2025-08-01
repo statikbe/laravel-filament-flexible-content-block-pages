@@ -19,7 +19,9 @@ class LanguageSwitch extends Component
         }
 
         // Final fallback to tailwind theme
-        return view('filament-flexible-content-block-pages::tailwind.components.language-switch');
+        /** @var view-string $fallbackTemplate */
+        $fallbackTemplate = 'filament-flexible-content-block-pages::tailwind.components.language-switch';
+        return view($fallbackTemplate);
     }
 
     public function shouldRender(): bool
