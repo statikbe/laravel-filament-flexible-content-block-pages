@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 
 /**
  * @property string $code
@@ -18,9 +20,10 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
  * @property bool $is_default_type
  * @property bool $has_seo_pages
  */
-class TagType extends Model
+class TagType extends Model implements HasCode
 {
     use HasTranslations;
+    use HasCodeTrait;
 
     public const TYPE_DEFAULT = 'default';
 
@@ -74,16 +77,6 @@ class TagType extends Model
     public function tags(): HasMany
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getTagModel()::class, 'code', 'type');
-    }
-
-    public function scopeCode(Builder $query, string $code): void
-    {
-        $query->where('code', $code);
-    }
-
-    public static function getByCode(string $code): ?self
-    {
-        return static::code($code)->first();
     }
 
     public function formatColour(): ?string
