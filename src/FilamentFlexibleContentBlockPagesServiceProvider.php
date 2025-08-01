@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;

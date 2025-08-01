@@ -76,10 +76,10 @@ class TagResource extends Resource
                         ->preload()
                         ->default(function (Select $component) {
                             $relationship = $component->getRelationship();
-                            if (!$relationship) {
+                            if (! $relationship) {
                                 return null;
                             }
-                            
+
                             /** @phpstan-ignore-next-line */
                             return $relationship->getModel()->query()
                                 ->where('is_default_type', true)->first()->id ?? null;

@@ -3,9 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
 
 use Closure;
-use phpDocumentor\Reflection\Types\ClassString;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
-use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class LinkableMenuItemType extends AbstractMenuItemType
 {
