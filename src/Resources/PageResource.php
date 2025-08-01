@@ -133,7 +133,10 @@ class PageResource extends Resource
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),
-            ]);
+            ])
+            ->recordUrl(
+                fn ($record): string => static::getUrl('edit', ['record' => $record])
+            );
     }
 
     public static function getRelations(): array
