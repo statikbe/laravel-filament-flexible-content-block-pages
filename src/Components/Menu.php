@@ -4,7 +4,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
 use Illuminate\View\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 
 class Menu extends Component
 {
@@ -47,6 +46,7 @@ class Menu extends Component
         }
 
         $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default";
+
         return view($defaultTemplate);
     }
 

@@ -35,7 +35,7 @@ class MenuItem extends Component
         }
 
         $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default-item";
+
         return view($defaultTemplate);
     }
-
 }

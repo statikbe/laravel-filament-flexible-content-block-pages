@@ -37,6 +37,7 @@ class MenuItem extends Model
     use ModelTree;
 
     const LINK_TYPE_URL = 'url';
+
     const LINK_TYPE_ROUTE = 'route';
 
     protected $fillable = [
@@ -176,7 +177,7 @@ class MenuItem extends Model
 
     public function hasActiveChildren(): bool
     {
-        if (!$this->children || $this->children->isEmpty()) {
+        if (! $this->children || $this->children->isEmpty()) {
             return false;
         }
 
