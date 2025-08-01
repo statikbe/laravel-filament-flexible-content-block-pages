@@ -55,7 +55,7 @@ class ManageMenuItems extends TreePage
 
     /**
      * Add an extra breadcrumb to the edit page of the menu.
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getBreadcrumbs(): array
     {
