@@ -39,20 +39,20 @@ class Menu extends Component
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
-        $template = "filament-flexible-content-block-pages::components.{$theme}.menu.{$this->style}";
+        $template = "filament-flexible-content-block-pages::{$theme}.components.menu.{$this->style}";
 
         // Check if the themed style template exists, otherwise try default style in theme
         if (view()->exists($template)) {
             return view($template);
         }
 
-        $defaultTemplate = "filament-flexible-content-block-pages::components.{$theme}.menu.default";
+        $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default";
         if (view()->exists($defaultTemplate)) {
             return view($defaultTemplate);
         }
 
         // Final fallback to tailwind theme default
-        return view('filament-flexible-content-block-pages::components.tailwind.menu.default');
+        return view('filament-flexible-content-block-pages::tailwind.components.menu.default');
     }
 
     protected function getMenuByCode(string $code)

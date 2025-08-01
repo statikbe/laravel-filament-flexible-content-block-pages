@@ -22,20 +22,20 @@ class MenuItem extends Component
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
-        $template = "filament-flexible-content-block-pages::components.{$theme}.menu.{$this->style}-item";
+        $template = "filament-flexible-content-block-pages::{$theme}.components.menu.{$this->style}-item";
 
         // Check if the themed style item template exists, otherwise try default item in theme
         if (view()->exists($template)) {
             return view($template);
         }
 
-        $defaultTemplate = "filament-flexible-content-block-pages::components.{$theme}.menu.default-item";
+        $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default-item";
         if (view()->exists($defaultTemplate)) {
             return view($defaultTemplate);
         }
 
         // Final fallback to tailwind theme default
-        return view('filament-flexible-content-block-pages::components.tailwind.menu.default-item');
+        return view('filament-flexible-content-block-pages::tailwind.components.menu.default-item');
     }
 
     public function getDataAttributes(): string

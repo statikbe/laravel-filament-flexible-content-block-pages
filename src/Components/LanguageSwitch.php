@@ -11,7 +11,7 @@ class LanguageSwitch extends Component
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
-        $template = "filament-flexible-content-block-pages::components.{$theme}.language-switch";
+        $template = "filament-flexible-content-block-pages::{$theme}.components.language-switch";
 
         // Check if the themed template exists, otherwise fallback to tailwind theme
         if (view()->exists($template)) {
@@ -19,11 +19,11 @@ class LanguageSwitch extends Component
         }
 
         // Final fallback to tailwind theme
-        return view('filament-flexible-content-block-pages::components.tailwind.language-switch');
+        return view('filament-flexible-content-block-pages::tailwind.components.language-switch');
     }
 
     public function shouldRender(): bool
     {
-        return ! empty(LaravelLocalization::getSupportedLocales());
+        return count(LaravelLocalization::getSupportedLocales()) > 1;
     }
 }

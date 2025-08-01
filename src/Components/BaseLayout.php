@@ -11,6 +11,6 @@ class BaseLayout extends Component
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
 
-        return view("filament-flexible-content-block-pages::components.{$theme}.layouts.base");
+        return view("filament-flexible-content-block-pages::{$theme}.components.layouts.base");
     }
 }
