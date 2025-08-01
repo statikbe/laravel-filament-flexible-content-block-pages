@@ -216,15 +216,16 @@ class PageController extends Controller
 
     private function getTemplatePath(Page $page)
     {
-        //handle custom templates
-        if($page->code){
+        // handle custom templates
+        if ($page->code) {
             $customTemplate = FilamentFlexibleContentBlockPages::config()->getCustomPageTemplate($page->code);
-            if($customTemplate){
+            if ($customTemplate) {
                 return $customTemplate;
             }
         }
 
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
+
         return sprintf(self::TEMPLATE_PATH, $theme);
     }
 }
