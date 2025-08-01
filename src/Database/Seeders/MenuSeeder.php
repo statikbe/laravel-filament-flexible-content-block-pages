@@ -2,8 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -142,7 +142,6 @@ abstract class MenuSeeder extends Seeder
         return $menuItem;
     }
 
-
     /**
      * Convert string labels to translatable array format.
      */
@@ -174,7 +173,7 @@ abstract class MenuSeeder extends Seeder
      */
     private function validateRoute(string $route): void
     {
-        if (!Route::has($route)) {
+        if (! Route::has($route)) {
             throw new InvalidArgumentException("Route '{$route}' does not exist.");
         }
     }
