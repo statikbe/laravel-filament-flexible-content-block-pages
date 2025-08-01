@@ -53,6 +53,21 @@ class ManageMenuItems extends TreePage
         return flexiblePagesTrans('menu_items.manage.breadcrumb');
     }
 
+    /**
+     * Add an extra breadcrumb to the edit page of the menu.
+     * @inheritDoc
+     */
+    public function getBreadcrumbs(): array
+    {
+        $breadcrumbs = collect(parent::getBreadcrumbs());
+
+        $breadcrumbs->pop();
+        $breadcrumbs->put(MenuResource::getUrl('edit', ['record' => $this->menu->id]), $this->menu->name ?? 'Menu');
+        $breadcrumbs->push(static::getBreadcrumb());
+
+        return $breadcrumbs->toArray();
+    }
+
     protected function getActions(): array
     {
         return [

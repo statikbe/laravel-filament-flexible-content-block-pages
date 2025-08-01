@@ -69,6 +69,12 @@ class MenuResource extends Resource
                 ->helperText(flexiblePagesTrans('menus.form.code_help')),
         ];
 
+        $formFields[] = Textarea::make('description')
+            ->label(flexiblePagesTrans('menus.form.description_lbl'))
+            ->rows(3)
+            ->helperText(flexiblePagesTrans('menus.form.description_help'))
+            ->columnSpan(2);
+
         // Only show style field if there are multiple styles available
         if ($showStyleField) {
             $formFields[] = Select::make('style')
@@ -87,16 +93,11 @@ class MenuResource extends Resource
             ->placeholder(FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth())
             ->helperText(flexiblePagesTrans('menus.form.max_depth_help'));
 
-        $formFields[] = Textarea::make('description')
-            ->label(flexiblePagesTrans('menus.form.description_lbl'))
-            ->rows(3)
-            ->helperText(flexiblePagesTrans('menus.form.description_help'));
-
         return $form
             ->schema([
                 Section::make(flexiblePagesTrans('menus.form.general_section'))
                     ->schema($formFields)
-                    ->columns(1),
+                    ->columns(2),
             ]);
     }
 
@@ -123,24 +124,6 @@ class MenuResource extends Resource
                     ->badge()
                     ->color('gray')
                     ->visible(fn () => count(FilamentFlexibleContentBlockPages::config()->getMenuStyles()) > 1),
-
-                TextColumn::make('max_depth')
-                    ->label(flexiblePagesTrans('menus.table.max_depth_col'))
-                    ->formatStateUsing(function (?int $state): string {
-                        return $state ? (string) $state : flexiblePagesTrans('menus.table.default_depth');
-                    })
-                    ->sortable(),
-
-                TextColumn::make('menuItems_count')
-                    ->label(flexiblePagesTrans('menus.table.items_count_col'))
-                    ->counts('menuItems')
-                    ->sortable(),
-
-                TextColumn::make('created_at')
-                    ->label(flexiblePagesTrans('menus.table.created_at_col'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -149,7 +132,7 @@ class MenuResource extends Resource
                 Action::make('manage_items')
                     ->label(flexiblePagesTrans('menus.actions.manage_items'))
                     ->icon('heroicon-o-bars-3')
-                    ->color('primary')
+                    ->color('secondary')
                     ->url(fn ($record) => static::getUrl('items', ['record' => $record])),
                 EditAction::make(),
             ])
