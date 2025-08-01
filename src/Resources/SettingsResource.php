@@ -20,6 +20,10 @@ class SettingsResource extends Resource
 {
     use Translatable;
 
+    protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
+
+    protected static ?int $navigationSort = 1;
+
     /**
      * @return class-string
      */
@@ -27,10 +31,6 @@ class SettingsResource extends Resource
     {
         return FilamentFlexibleContentBlockPages::config()->getSettingsModel()::class;
     }
-
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
-
-    protected static ?int $navigationSort = 1;
 
     public static function getLabel(): ?string
     {

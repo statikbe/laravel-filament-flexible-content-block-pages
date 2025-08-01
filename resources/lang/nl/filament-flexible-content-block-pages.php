@@ -11,6 +11,7 @@ return [
             'content' => 'Inhoud',
             'seo' => 'Search engine optimalisatie',
             'overview' => 'Overzicht',
+            'advanced' => 'Geavanceerd',
         ],
         'table' => [
             'created_at_col' => 'Aangemaakt op',

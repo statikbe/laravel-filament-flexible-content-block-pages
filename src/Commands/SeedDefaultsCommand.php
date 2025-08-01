@@ -65,9 +65,18 @@ class SeedDefaultsCommand extends Command
         }
     }
 
+    /**
+     * Set a translated field value for all given locales.
+     * 
+     * @param Model $model Model that uses HasTranslations trait
+     * @param string $field
+     * @param string $value
+     * @param array<string> $locales
+     */
     private function setTranslatedField(Model $model, string $field, string $value, array $locales)
     {
         foreach ($locales as $locale) {
+            /** @phpstan-ignore-next-line */
             $model->setTranslation($field, $locale, $value);
         }
     }

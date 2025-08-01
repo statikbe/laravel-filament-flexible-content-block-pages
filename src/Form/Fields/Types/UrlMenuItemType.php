@@ -8,7 +8,9 @@ class UrlMenuItemType extends AbstractMenuItemType
 {
     const TYPE_URL = 'url';
 
-    public static function make(?string $model = null): static
+    final public function __construct() {}
+
+    public static function make(): static
     {
         return new static;
     }

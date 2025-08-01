@@ -11,6 +11,7 @@ return [
             'content' => 'Content',
             'seo' => 'Search engine optimization',
             'overview' => 'Overview',
+            'advanced' => 'Advanced',
         ],
         'table' => [
             'created_at_col' => 'Created at',

@@ -118,11 +118,11 @@ class ManageMenuItems extends TreePage
 
     public function getTreeRecordTitle(?Model $record = null): string
     {
-        /** @var MenuItem $record */
         if (! $record) {
             return '';
         }
 
+        /** @var MenuItem $record */
         $locale = $this->getActiveLocale();
 
         return $record->getDisplayLabel($locale);
@@ -130,11 +130,11 @@ class ManageMenuItems extends TreePage
 
     public function getTreeRecordDescription(?Model $record = null): string|HtmlString|null
     {
-        /** @var MenuItem $record */
         if (! $record) {
             return null;
         }
 
+        /** @var MenuItem $record */
         $description = $this->getMenuItemTypeDescription($record);
 
         return new HtmlString(' &rarr; '.$description);
@@ -200,10 +200,11 @@ class ManageMenuItems extends TreePage
 
     public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
     {
-        /** @var MenuItem $record */
         if (! $record) {
             return null;
         }
+
+        /** @var MenuItem $record */
 
         // If not visible, show eye-slash icon
         if (! $record->is_visible) {
@@ -245,7 +246,7 @@ class ManageMenuItems extends TreePage
             }
 
             // Fallback to global config if we can't determine the menu
-            static::$modelMaxDepth = FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth() ?? 3;
+            static::$modelMaxDepth = FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
         }
 
         return static::$modelMaxDepth;

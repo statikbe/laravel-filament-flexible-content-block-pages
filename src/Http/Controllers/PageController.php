@@ -194,7 +194,7 @@ class PageController extends Controller
                         'height' => $image->getHeight(),
                     ];
                 });
-        } catch (CouldNotLoadImage $exception) {
+        } catch (CouldNotLoadImage $exception) { // @phpstan-ignore-line
             return [];
         }
     }

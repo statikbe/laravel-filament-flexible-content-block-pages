@@ -3,7 +3,9 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
 
 use Closure;
+use phpDocumentor\Reflection\Types\ClassString;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class LinkableMenuItemType extends AbstractMenuItemType
 {
@@ -13,7 +15,7 @@ class LinkableMenuItemType extends AbstractMenuItemType
 
     protected int $searchResultLimit = 50;
 
-    public function __construct(string $model)
+    final public function __construct(string $model)
     {
         $this->model = $model;
     }
@@ -56,6 +58,8 @@ class LinkableMenuItemType extends AbstractMenuItemType
             return [];
         }
 
+        /** @var class-string<HasMenuLabel> $modelClass */
+        /** @phpstan-ignore-next-line */
         $results = $modelClass::searchForMenuItems($search)
             ->limit($this->searchResultLimit)
             ->get();

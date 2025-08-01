@@ -31,6 +31,8 @@ class TagTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     /**
      * @return class-string
      */

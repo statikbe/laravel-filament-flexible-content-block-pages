@@ -9,6 +9,8 @@ class RouteMenuItemType extends AbstractMenuItemType
 {
     const TYPE_ROUTE = 'route';
 
+    final public function __construct() {}
+
     public static function make(?string $model = null): static
     {
         return new static;
@@ -32,7 +34,7 @@ class RouteMenuItemType extends AbstractMenuItemType
     public function getRouteOptions(): array
     {
         $routes = [];
-        $routeCollection = Route::getRoutes();
+        $routeCollection = Route::getRoutes()->getRoutes();
 
         foreach ($routeCollection as $route) {
             $name = $route->getName();

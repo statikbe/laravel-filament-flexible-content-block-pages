@@ -27,7 +27,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
  * @property bool $use_model_title
  * @property int $order
  * @property int $parent_id
- * @property \Illuminate\Database\Eloquent\Collection $children
+ * @property \Illuminate\Database\Eloquent\Collection<int, MenuItem> $children
  * @property \Illuminate\Database\Eloquent\Model|null $linkable
  */
 class MenuItem extends Model
@@ -177,11 +177,12 @@ class MenuItem extends Model
 
     public function hasActiveChildren(): bool
     {
-        if (! $this->children || $this->children->isEmpty()) {
+        if (! $this->relationLoaded('children') || $this->children->isEmpty()) {
             return false;
         }
 
-        return $this->children->some(function (MenuItem $child) {
+        return $this->children->some(function ($child) {
+            /** @var MenuItem $child */
             return $child->isCurrentMenuItem() || $child->hasActiveChildren();
         });
     }

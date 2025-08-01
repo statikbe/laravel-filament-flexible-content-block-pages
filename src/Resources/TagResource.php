@@ -27,6 +27,8 @@ class TagResource extends Resource
 
     protected static ?string $recordRouteKeyName = 'id';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     /**
      * @return class-string
      */
@@ -73,7 +75,13 @@ class TagResource extends Resource
                         ->relationship('tagType', 'name')
                         ->preload()
                         ->default(function (Select $component) {
-                            return $component->getRelationship()?->getModel()->query()
+                            $relationship = $component->getRelationship();
+                            if (!$relationship) {
+                                return null;
+                            }
+                            
+                            /** @phpstan-ignore-next-line */
+                            return $relationship->getModel()->query()
                                 ->where('is_default_type', true)->first()->id ?? null;
                         }),
                 ]),

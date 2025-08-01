@@ -11,7 +11,6 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
-use Statikbe\FilamentFlexibleContentBlockPages\Livewire\MenuTreeItem;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
 {
@@ -48,8 +47,5 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
     {
         // add morph map
         Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());
-
-        // Register Livewire components
-        Livewire::component('filament-flexible-content-block-pages::menu-tree-item', MenuTreeItem::class);
     }
 }

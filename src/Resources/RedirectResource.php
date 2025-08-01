@@ -15,14 +15,14 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages;
 
 class RedirectResource extends Resource
 {
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
+
+    protected static ?int $navigationSort = 10;
+
     public static function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getRedirectModel()::class;
     }
-
-    protected static ?string $navigationIcon = 'heroicon-o-bolt';
-
-    protected static ?int $navigationSort = 10;
 
     public static function getLabel(): ?string
     {

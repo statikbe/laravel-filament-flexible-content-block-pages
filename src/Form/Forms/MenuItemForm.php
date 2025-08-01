@@ -121,10 +121,12 @@ class MenuItemForm
                 $type = static::getTypeByAlias($linkType);
 
                 if ($type && $type->isModelType()) {
+                    /** @var LinkableMenuItemType $type */
                     $modelClass = $type->getModel();
 
                     // Use the model's searchForMenuItems scope if it implements HasMenuLabel
                     if (is_subclass_of($modelClass, HasMenuLabel::class)) {
+                        /** @phpstan-ignore-next-line */
                         $results = $modelClass::searchForMenuItems($search)
                             ->limit(50)
                             ->get();
@@ -142,6 +144,7 @@ class MenuItemForm
                 $type = static::getTypeByAlias($linkType);
 
                 if ($type && $type->isModelType() && $value) {
+                    /** @var LinkableMenuItemType $type */
                     $record = app($type->getModel())::find($value);
                     if ($record && $record instanceof HasMenuLabel) {
                         return $record->getMenuLabel();
@@ -157,6 +160,7 @@ class MenuItemForm
                 $type = static::getTypeByAlias($linkType);
 
                 if ($type && $type->isModelType()) {
+                    /** @var LinkableMenuItemType $type */
                     $modelLabel = static::getModelLabelFromResource($type->getModel());
 
                     return flexiblePagesTrans('menu_items.form.linkable_help', [
@@ -252,6 +256,7 @@ class MenuItemForm
         }
 
         // Get translated model label from Filament resource
+        /** @var LinkableMenuItemType $type */
         return Str::ucfirst(static::getModelLabelFromResource($type->getModel()));
     }
 

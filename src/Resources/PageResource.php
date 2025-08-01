@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
@@ -42,6 +43,8 @@ class PageResource extends Resource
 
     protected static ?string $recordRouteKeyName = 'id';
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     public static function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getPageModel()::class;
@@ -80,36 +83,67 @@ class PageResource extends Resource
                     ->columnSpan(2)
                     ->tabs([
                         Tab::make(flexiblePagesTrans('pages.tabs.general'))
-                            ->schema([
-                                TitleField::create(true),
-                                // TODO feature flag
-                                CodeField::create(),
-                                SlugField::create(false),
-                                // TODO feature flag
-                                ParentField::create()
-                                    ->searchable(['title', 'code', 'slug', 'intro']),
-                                IntroField::create(),
-                                // TODO feature flag
-                                AuthorField::create(),
-                                HeroImageSection::create(true),
-                                PublicationSection::create(),
-                            ]),
+                            ->schema(static::getGeneralTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.content'))
-                            ->schema([
-                                CopyContentBlocksToLocalesAction::create(),
-                                ContentBlocksField::create(),
-                            ]),
+                            ->schema(static::getContentTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.overview'))
-                            ->schema([
-                                OverviewFields::create(1, true),
-                            ]),
+                            ->schema(static::getOverviewTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.seo'))
-                            ->schema([
-                                SEOFields::create(1, true),
-                            ]),
+                            ->schema(static::getSEOTabFields()),
+                        Tab::make(flexiblePagesTrans('pages.tabs.advanced'))
+                            ->schema(static::getAdvancedTabFields()),
                     ])
                     ->persistTabInQueryString(),
             ]);
+    }
+
+    protected static function getGeneralTabFields(): array
+    {
+        return [
+            TitleField::create(true),
+            IntroField::create(),
+            HeroImageSection::create(true),
+        ];
+    }
+
+    protected static function getContentTabFields(): array
+    {
+        return [
+            CopyContentBlocksToLocalesAction::create(),
+            ContentBlocksField::create(),
+        ];
+    }
+
+    protected static function getSEOTabFields(): array
+    {
+        return [
+            SEOFields::create(1, true),
+        ];
+    }
+
+    protected static function getOverviewTabFields(): array
+    {
+        return [
+            OverviewFields::create(1, true),
+        ];
+    }
+
+    protected static function getAdvancedTabFields(): array
+    {
+        return [
+            PublicationSection::create(),
+            // TODO feature flag
+            CodeField::create(),
+            SlugField::create(false),
+            Grid::make()
+                ->schema([
+                    // TODO feature flag
+                    AuthorField::create(),
+                    // TODO feature flag
+                    ParentField::create()
+                        ->searchable(['title', 'code', 'slug', 'intro']),
+                ]),
+        ];
     }
 
     public static function table(Table $table): Table

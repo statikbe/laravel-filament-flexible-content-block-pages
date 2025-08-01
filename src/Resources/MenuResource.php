@@ -33,6 +33,8 @@ class MenuResource extends Resource
 
     protected static ?string $recordRouteKeyName = 'id';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuModel()::class;
@@ -90,7 +92,7 @@ class MenuResource extends Resource
             ->numeric()
             ->minValue(1)
             ->maxValue(10)
-            ->placeholder(FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth())
+            ->placeholder((string) FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth())
             ->helperText(flexiblePagesTrans('menus.form.max_depth_help'));
 
         return $form

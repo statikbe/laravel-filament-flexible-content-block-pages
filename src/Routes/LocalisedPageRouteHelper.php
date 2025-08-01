@@ -30,7 +30,7 @@ class LocalisedPageRouteHelper extends AbstractPageRouteHelper
         $ancestorSlugs = [];
         $locale = $locale ?? app()->getLocale();
 
-        if ($page->parent?->parent) {
+        if ($page->parent?->parent) { /** @phpstan-ignore-line */
             /** @var Page $grandparent */
             $grandparent = $page->parent->parent;
             $ancestorSlugs[] = $grandparent->translate('slug', $locale);
