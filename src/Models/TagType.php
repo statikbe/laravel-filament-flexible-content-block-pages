@@ -22,8 +22,8 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
  */
 class TagType extends Model implements HasCode
 {
-    use HasTranslations;
     use HasCodeTrait;
+    use HasTranslations;
 
     public const TYPE_DEFAULT = 'default';
 
