@@ -13,6 +13,7 @@ renders web pages that can be easily extended and styled.
 Other features that will be provided:
 - Pages with hero, slugs, content blocks, publication options and SEO fields.
 - Website: routing, blade views, CSS themes included.
+- Menu builder with customisable blade templates
 - Extendable settings model and Filament resource to store CMS settings and images.
 - Redirect support for when slugs are renamed
 - Sitemap generation
@@ -116,6 +117,90 @@ The package contains a pre-configured panel. You can register the panel in the `
 ```
 
 If you want you can build your own panel from the provided resources.
+
+## Menu builder
+
+The package includes a powerful hierarchical menu builder with a drag-and-drop interface for creating navigation menus. Menus support multiple types of links and can be easily styled with custom templates.
+
+### Features
+
+- **Hierarchical structure** - With configurable max depth per menu
+- **Multiple link types** - Internal routes, external URLs, and linkable models (Pages or your own project model)
+- **Drag & drop management** - Intuitive tree interface for reordering and nesting items
+- **Multiple menu styles** - Default, horizontal, vertical, and dropdown templates included
+- **Translation support** - Multilingual menu labels with locale-aware URLs
+- **Conditional visibility** - Show/hide menu items without deleting them
+- **Icon support** - Optional icons for menu items (basic implementation currently)
+- **Dynamic labels** - Use model titles or custom labels for linked content
+
+### Adding linkable models
+
+To make your models available in the menu builder, add them to the configuration:
+
+```php
+// config/filament-flexible-content-block-pages.php
+'menu' => [
+    'linkable_models' => [
+        \App\Models\Page::class,
+        \App\Models\Product::class,
+        \App\Models\Category::class,
+    ],
+],
+```
+
+Your models should implement the `HasMenuLabel` contract:
+
+```php
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+
+class Product extends Model implements HasMenuLabel
+{
+    public function getMenuLabel(?string $locale = null): string
+    {
+        return $this->getTranslation('name', $locale ?? app()->getLocale());
+    }
+}
+```
+
+If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
+easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrait.php).
+
+### Customizing menu styles
+
+The package includes several built-in menu styles, but you can easily add your own:
+
+1. **Add new styles to config:**
+```php
+// config/filament-flexible-content-block-pages.php
+'menu' => [
+    'styles' => [
+        'default',
+        'horizontal', 
+        'vertical',
+        'dropdown',
+        'mega', // Your custom style
+    ],
+],
+```
+**Tip:** Add translations if you want UX-friendly style dropdowns.
+
+2. **Create the template files:**
+```bash
+# Main menu template
+resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega.blade.php
+
+# Menu item template  
+resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega-item.blade.php
+```
+
+3. **Use in your templates:**
+```blade
+<x-flexible-pages-menu code="header" style="mega" />
+```
+
+The style can also be configured in the database model, then you can skip the `style` attribute.
+
+See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
 ## Configuration
 
