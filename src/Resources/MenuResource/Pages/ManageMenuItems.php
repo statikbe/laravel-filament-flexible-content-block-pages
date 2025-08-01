@@ -22,6 +22,8 @@ class ManageMenuItems extends TreePage
 
     protected static string $resource = MenuResource::class;
 
+    protected static int $modelMaxDepth;
+
     public mixed $menu;
 
     public function mount(): void
@@ -216,6 +218,21 @@ class ManageMenuItems extends TreePage
 
     public static function getMaxDepth(): int
     {
-        return FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth() ?? 3;
+        if (! isset(static::$modelMaxDepth)) {
+            // Since this is static, we need to get the menu from the current request
+            $recordId = request()->route('record');
+            if ($recordId) {
+                $menuModelClass = MenuResource::getModel();
+                $menu = app($menuModelClass)->find($recordId);
+                if ($menu) {
+                    return $menu->getEffectiveMaxDepth();
+                }
+            }
+
+            // Fallback to global config if we can't determine the menu
+            static::$modelMaxDepth = FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth() ?? 3;
+        }
+
+        return static::$modelMaxDepth;
     }
 }

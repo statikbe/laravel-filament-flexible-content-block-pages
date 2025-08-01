@@ -9,6 +9,18 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $code
+ * @property string|null $description
+ * @property string $style
+ * @property int|null $max_depth
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $menuItems
+ * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $allMenuItems
+ */
 class Menu extends Model implements HasCode
 {
     use HasCodeTrait;
@@ -19,6 +31,7 @@ class Menu extends Model implements HasCode
         'code',
         'description',
         'style',
+        'max_depth',
     ];
 
     public function getTable()
@@ -55,5 +68,11 @@ class Menu extends Model implements HasCode
         }
 
         return FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle();
+    }
+
+    public function getEffectiveMaxDepth(): int
+    {
+        // Return the menu's max_depth if set, otherwise fall back to config default
+        return $this->max_depth ?? FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
     }
 }

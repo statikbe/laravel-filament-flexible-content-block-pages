@@ -79,6 +79,14 @@ class MenuResource extends Resource
                 ->helperText(flexiblePagesTrans('menus.form.style_help'));
         }
 
+        $formFields[] = TextInput::make('max_depth')
+            ->label(flexiblePagesTrans('menus.form.max_depth_lbl'))
+            ->numeric()
+            ->minValue(1)
+            ->maxValue(10)
+            ->placeholder(FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth())
+            ->helperText(flexiblePagesTrans('menus.form.max_depth_help'));
+
         $formFields[] = Textarea::make('description')
             ->label(flexiblePagesTrans('menus.form.description_lbl'))
             ->rows(3)
@@ -115,6 +123,13 @@ class MenuResource extends Resource
                     ->badge()
                     ->color('gray')
                     ->visible(fn () => count(FilamentFlexibleContentBlockPages::config()->getMenuStyles()) > 1),
+
+                TextColumn::make('max_depth')
+                    ->label(flexiblePagesTrans('menus.table.max_depth_col'))
+                    ->formatStateUsing(function (?int $state): string {
+                        return $state ? (string) $state : flexiblePagesTrans('menus.table.default_depth');
+                    })
+                    ->sortable(),
 
                 TextColumn::make('menuItems_count')
                     ->label(flexiblePagesTrans('menus.table.items_count_col'))
