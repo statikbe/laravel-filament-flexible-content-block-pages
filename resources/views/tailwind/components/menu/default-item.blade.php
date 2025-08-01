@@ -1,32 +1,35 @@
 {{-- Default menu item template --}}
 @php
+    $hasChildren = $item->children && $item->children->isNotEmpty();
+    $isCurrent = $item->isCurrentMenuItem();
+    $isActive = $isCurrent || ($hasChildren && $item->hasActiveChildren());
+    
     $classes = collect(['menu-item'])
-        ->when($item['has_children'], fn($collection) => $collection->push('has-children'))
-        ->when($item['is_current'], fn($collection) => $collection->push('current'))
-        ->when($item['is_active'], fn($collection) => $collection->push('active'))
-        ->when(!empty($item['css_classes']), fn($collection) => $collection->push($item['css_classes']))
+        ->when($hasChildren, fn($collection) => $collection->push('has-children'))
+        ->when($isCurrent, fn($collection) => $collection->push('current'))
+        ->when($isActive, fn($collection) => $collection->push('active'))
         ->filter()
         ->implode(' ');
 
     $linkClasses = collect(['menu-link'])
-        ->when($item['is_current'], fn($collection) => $collection->push('current'))
-        ->when($item['is_active'], fn($collection) => $collection->push('active'))
+        ->when($isCurrent, fn($collection) => $collection->push('current'))
+        ->when($isActive, fn($collection) => $collection->push('active'))
         ->filter()
         ->implode(' ');
 @endphp
 
-<li class="{{ $classes }}" {!! $getDataAttributes() !!}>
-    <a href="{{ $item['url'] }}" 
+<li class="{{ $classes }}">
+    <a href="{{ $item->getCompleteUrl($locale) }}" 
        class="{{ $linkClasses }}"
-       @if($item['target'] !== '_self') target="{{ $item['target'] }}" @endif
-       @if($item['is_current']) aria-current="page" @endif>
-        {{ $item['label'] }}
+       @if($item->getTarget() !== '_self') target="{{ $item->getTarget() }}" @endif
+       @if($isCurrent) aria-current="page" @endif>
+        {{ $item->getDisplayLabel($locale) }}
     </a>
     
-    @if($item['has_children'])
+    @if($hasChildren)
         <ul class="menu submenu">
-            @foreach($item['children'] as $child)
-                <x-flexible-pages-menu-item :item="$child" :style="$style" />
+            @foreach($item->children as $child)
+                <x-flexible-pages-menu-item :item="$child" :style="$style" :locale="$locale" />
             @endforeach
         </ul>
     @endif

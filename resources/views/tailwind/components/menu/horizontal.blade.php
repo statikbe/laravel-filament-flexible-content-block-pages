@@ -1,5 +1,5 @@
 {{-- Horizontal menu template with mobile toggle --}}
-@if($items && $menu)
+@if($items && $items->isNotEmpty() && $menu)
 <nav class="menu-navigation menu-horizontal" 
      role="navigation" 
      aria-label="{{ $menu->name }}"
@@ -31,7 +31,7 @@
     <ul class="hidden md:flex md:space-x-6" role="menubar">
         @foreach($items as $item)
             <li role="none">
-                <x-flexible-pages-menu-item :item="$item" :style="$style" />
+                <x-flexible-pages-menu-item :item="$item" :style="$style" :locale="$locale" />
             </li>
         @endforeach
     </ul>
@@ -51,7 +51,7 @@
         <ul class="px-2 pt-2 pb-3 space-y-1" role="menu">
             @foreach($items as $item)
                 <li role="none">
-                    <x-flexible-pages-menu-item :item="$item" :style="'mobile'" />
+                    <x-flexible-pages-menu-item :item="$item" :style="'mobile'" :locale="$locale" />
                 </li>
             @endforeach
         </ul>

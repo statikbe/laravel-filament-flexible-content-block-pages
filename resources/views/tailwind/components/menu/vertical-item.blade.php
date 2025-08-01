@@ -1,45 +1,48 @@
 {{-- Vertical menu item template with collapsible submenus --}}
 @php
+    $hasChildren = $item->children && $item->children->isNotEmpty();
+    $isCurrent = $item->isCurrentMenuItem();
+    $isActive = $isCurrent || ($hasChildren && $item->hasActiveChildren());
+    
     $classes = collect(['menu-item'])
-        ->when($item['has_children'], fn($collection) => $collection->push('has-children'))
-        ->when($item['is_current'], fn($collection) => $collection->push('current'))
-        ->when($item['is_active'], fn($collection) => $collection->push('active'))
-        ->when(!empty($item['css_classes']), fn($collection) => $collection->push($item['css_classes']))
+        ->when($hasChildren, fn($collection) => $collection->push('has-children'))
+        ->when($isCurrent, fn($collection) => $collection->push('current'))
+        ->when($isActive, fn($collection) => $collection->push('active'))
         ->filter()
         ->implode(' ');
 
     $linkClasses = collect(['menu-link', 'flex', 'items-center', 'px-4', 'py-3', 'text-sm', 'font-medium', 'rounded-lg'])
-        ->when($item['is_current'], fn($collection) => $collection->push('bg-blue-100', 'text-blue-700'))
-        ->when(!$item['is_current'], fn($collection) => $collection->push('text-gray-700', 'hover:bg-gray-100'))
+        ->when($isCurrent, fn($collection) => $collection->push('bg-blue-100', 'text-blue-700'))
+        ->when(!$isCurrent, fn($collection) => $collection->push('text-gray-700', 'hover:bg-gray-100'))
         ->filter()
         ->implode(' ');
         
-    $itemId = 'menu-item-' . $item['id'];
+    $itemId = 'menu-item-' . $item->id;
+    $displayLabel = $item->getDisplayLabel($locale);
 @endphp
 
-<li class="{{ $classes }}" 
-    {!! $getDataAttributes() !!}
-    @if($item['has_children']) 
+<li class="{{ $classes }}"
+    @if($hasChildren) 
         data-has-children="true" 
         data-item-id="{{ $itemId }}"
     @endif>
     
-    @if($item['has_children'])
+    @if($hasChildren)
         {{-- Parent item with submenu toggle --}}
         <div class="flex items-center">
-            <a href="{{ $item['url'] }}" 
+            <a href="{{ $item->getCompleteUrl($locale) }}" 
                class="{{ $linkClasses }} flex-1"
                role="menuitem"
-               @if($item['target'] !== '_self') target="{{ $item['target'] }}" @endif
-               @if($item['is_current']) aria-current="page" @endif>
-                <span class="flex-1">{{ $item['label'] }}</span>
+               @if($item->getTarget() !== '_self') target="{{ $item->getTarget() }}" @endif
+               @if($isCurrent) aria-current="page" @endif>
+                <span class="flex-1">{{ $displayLabel }}</span>
             </a>
             <button type="button"
                     class="p-1 ml-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     @click="$parent.toggleSubmenu('{{ $itemId }}')"
                     :aria-expanded="$parent.isExpanded('{{ $itemId }}')"
                     :aria-controls="'submenu-{{ $itemId }}'"
-                    aria-label="{{ flexiblePagesTrans('menu.toggle_submenu', ['label' => $item['label']]) }}">
+                    aria-label="{{ flexiblePagesTrans('menu.toggle_submenu', ['label' => $displayLabel]) }}">
                 <svg class="w-4 h-4 transition-transform" 
                      :class="{ 'rotate-90': $parent.isExpanded('{{ $itemId }}') }"
                      fill="currentColor" 
@@ -60,26 +63,26 @@
             class="ml-6 mt-2 space-y-1"
             id="submenu-{{ $itemId }}"
             role="menu">
-            @foreach($item['children'] as $child)
+            @foreach($item->children as $child)
                 <li role="none">
-                    <a href="{{ $child['url'] }}" 
-                       class="flex items-center px-3 py-2 text-sm rounded-lg {{ $child['is_current'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}"
+                    <a href="{{ $child->getCompleteUrl($locale) }}" 
+                       class="flex items-center px-3 py-2 text-sm rounded-lg {{ $child->isCurrentMenuItem() ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}"
                        role="menuitem"
-                       @if($child['target'] !== '_self') target="{{ $child['target'] }}" @endif
-                       @if($child['is_current']) aria-current="page" @endif>
-                        {{ $child['label'] }}
+                       @if($child->getTarget() !== '_self') target="{{ $child->getTarget() }}" @endif
+                       @if($child->isCurrentMenuItem()) aria-current="page" @endif>
+                        {{ $child->getDisplayLabel($locale) }}
                     </a>
                 </li>
             @endforeach
         </ul>
     @else
         {{-- Regular menu item without children --}}
-        <a href="{{ $item['url'] }}" 
+        <a href="{{ $item->getCompleteUrl($locale) }}" 
            class="{{ $linkClasses }}"
            role="menuitem"
-           @if($item['target'] !== '_self') target="{{ $item['target'] }}" @endif
-           @if($item['is_current']) aria-current="page" @endif>
-            <span class="flex-1">{{ $item['label'] }}</span>
+           @if($item->getTarget() !== '_self') target="{{ $item->getTarget() }}" @endif
+           @if($isCurrent) aria-current="page" @endif>
+            <span class="flex-1">{{ $displayLabel }}</span>
         </a>
     @endif
 </li>

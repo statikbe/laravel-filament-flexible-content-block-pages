@@ -4,19 +4,24 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
 use Illuminate\View\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem as MenuItemModel;
 
 class MenuItem extends Component
 {
-    public array $item;
+    public MenuItemModel $item;
 
     public string $style;
 
+    public ?string $locale;
+
     public function __construct(
-        array $item,
-        ?string $style = null
+        MenuItemModel $item,
+        ?string $style = null,
+        ?string $locale = null
     ) {
         $this->item = $item;
         $this->style = $style ?: FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle();
+        $this->locale = $locale ?: app()->getLocale();
     }
 
     public function render()
@@ -30,25 +35,7 @@ class MenuItem extends Component
         }
 
         $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default-item";
-        if (view()->exists($defaultTemplate)) {
-            return view($defaultTemplate);
-        }
-
-        // Final fallback to tailwind theme default
-        return view('filament-flexible-content-block-pages::tailwind.components.menu.default-item');
+        return view($defaultTemplate);
     }
 
-    public function getDataAttributes(): string
-    {
-        if (empty($this->item['data_attributes'])) {
-            return '';
-        }
-
-        $attributes = '';
-        foreach ($this->item['data_attributes'] as $key => $value) {
-            $attributes .= ' data-'.e($key).'="'.e($value).'"';
-        }
-
-        return $attributes;
-    }
 }

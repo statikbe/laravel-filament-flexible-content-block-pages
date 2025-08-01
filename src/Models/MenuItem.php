@@ -12,11 +12,32 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
+/**
+ * @property int $id
+ * @property int $menu_id
+ * @property string $link_type
+ * @property array $label
+ * @property string|null $url
+ * @property string|null $route
+ * @property string|null $linkable_type
+ * @property int|null $linkable_id
+ * @property string $target
+ * @property string|null $icon
+ * @property bool $is_visible
+ * @property bool $use_model_title
+ * @property int $order
+ * @property int $parent_id
+ * @property \Illuminate\Database\Eloquent\Collection $children
+ * @property \Illuminate\Database\Eloquent\Model|null $linkable
+ */
 class MenuItem extends Model
 {
     use HasFactory;
     use HasTranslations;
     use ModelTree;
+
+    const LINK_TYPE_URL = 'url';
+    const LINK_TYPE_ROUTE = 'route';
 
     protected $fillable = [
         'menu_id',
@@ -110,5 +131,67 @@ class MenuItem extends Model
     public function isVisible(): bool
     {
         return $this->is_visible;
+    }
+
+    public function getCompleteUrl(?string $locale = null): string
+    {
+        switch ($this->link_type) {
+            case self::LINK_TYPE_URL:
+                return $this->url ?? '#';
+
+            case self::LINK_TYPE_ROUTE:
+                try {
+                    $routeName = $this->route ?? '';
+                    if (empty($routeName)) {
+                        return '#';
+                    }
+
+                    $parameters = []; // Route parameters not currently supported in schema
+
+                    return route($routeName, $parameters);
+
+                } catch (\Exception $e) {
+                    return '#';
+                }
+            default:
+                return $this->getUrl($locale) ?? '#';
+        }
+    }
+
+    public function isCurrentMenuItem(): bool
+    {
+        $currentUrl = request()->url();
+        $itemUrl = $this->getCompleteUrl();
+
+        // Remove trailing slashes for comparison
+        $currentUrl = rtrim($currentUrl, '/');
+        $itemUrl = rtrim($itemUrl, '/');
+
+        if ($itemUrl === '#' || empty($itemUrl)) {
+            return false;
+        }
+
+        return $currentUrl === $itemUrl;
+    }
+
+    public function hasActiveChildren(): bool
+    {
+        if (!$this->children || $this->children->isEmpty()) {
+            return false;
+        }
+
+        return $this->children->some(function (MenuItem $child) {
+            return $child->isCurrentMenuItem() || $child->hasActiveChildren();
+        });
+    }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_visible', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order');
     }
 }

@@ -1,5 +1,5 @@
 {{-- Dropdown menu template with Alpine.js --}}
-@if($items && $menu)
+@if($items && $items->isNotEmpty() && $menu)
 <div class="menu-navigation menu-dropdown relative inline-block text-left" 
      x-data="dropdownMenu()" 
      x-init="init()"
@@ -46,7 +46,7 @@
          @keydown.tab="close()">
         <div class="py-1" role="none">
             @foreach($items as $item)
-                <x-flexible-pages-menu-item :item="$item" :style="$style" />
+                <x-flexible-pages-menu-item :item="$item" :style="$style" :locale="$locale" />
             @endforeach
         </div>
     </div>

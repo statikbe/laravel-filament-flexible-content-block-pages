@@ -1,34 +1,36 @@
 {{-- Dropdown menu item template --}}
 @php
+    $isCurrent = $item->isCurrentMenuItem();
+    $hasChildren = $item->children && $item->children->isNotEmpty();
+    
     $linkClasses = collect(['block', 'px-4', 'py-2', 'text-sm', 'text-gray-700'])
-        ->when($item['is_current'], fn($collection) => $collection->push('bg-gray-100', 'text-gray-900'))
-        ->when(!$item['is_current'], fn($collection) => $collection->push('hover:bg-gray-100', 'hover:text-gray-900'))
+        ->when($isCurrent, fn($collection) => $collection->push('bg-gray-100', 'text-gray-900'))
+        ->when(!$isCurrent, fn($collection) => $collection->push('hover:bg-gray-100', 'hover:text-gray-900'))
         ->filter()
         ->implode(' ');
 @endphp
 
-<a href="{{ $item['url'] }}" 
+<a href="{{ $item->getCompleteUrl($locale) }}" 
    class="{{ $linkClasses }}" 
    role="menuitem" 
    tabindex="-1"
-   @if($item['target'] !== '_self') target="{{ $item['target'] }}" @endif
-   @if($item['is_current']) aria-current="page" @endif
-   {!! $getDataAttributes() !!}>
-    {{ $item['label'] }}
-    @if($item['has_children'])
+   @if($item->getTarget() !== '_self') target="{{ $item->getTarget() }}" @endif
+   @if($isCurrent) aria-current="page" @endif>
+    {{ $item->getDisplayLabel($locale) }}
+    @if($hasChildren)
         <span class="ml-2 text-gray-400">→</span>
     @endif
 </a>
 
-@if($item['has_children'])
-    @foreach($item['children'] as $child)
-        <a href="{{ $child['url'] }}" 
-           class="block px-8 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900" 
+@if($hasChildren)
+    @foreach($item->children as $child)
+        <a href="{{ $child->getCompleteUrl($locale) }}" 
+           class="block px-8 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 {{ $child->isCurrentMenuItem() ? 'bg-gray-100 text-gray-900' : '' }}" 
            role="menuitem" 
            tabindex="-1"
-           @if($child['target'] !== '_self') target="{{ $child['target'] }}" @endif
-           @if($child['is_current']) aria-current="page" @endif>
-            {{ $child['label'] }}
+           @if($child->getTarget() !== '_self') target="{{ $child->getTarget() }}" @endif
+           @if($child->isCurrentMenuItem()) aria-current="page" @endif>
+            {{ $child->getDisplayLabel($locale) }}
         </a>
     @endforeach
 @endif

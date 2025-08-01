@@ -1,5 +1,5 @@
 {{-- Vertical menu template with collapsible submenus --}}
-@if($items && $menu)
+@if($items && $items->isNotEmpty() && $menu)
 <nav class="menu-navigation menu-vertical" 
      role="navigation" 
      aria-label="{{ $menu->name }}"
@@ -8,7 +8,7 @@
     <ul class="space-y-1" role="menubar" aria-orientation="vertical">
         @foreach($items as $item)
             <li role="none">
-                <x-flexible-pages-menu-item :item="$item" :style="$style" />
+                <x-flexible-pages-menu-item :item="$item" :style="$style" :locale="$locale" />
             </li>
         @endforeach
     </ul>
