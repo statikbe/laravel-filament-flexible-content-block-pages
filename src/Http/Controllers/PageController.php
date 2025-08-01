@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Image;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -168,7 +169,7 @@ class PageController extends Controller
             }
         }
 
-        if ($seoUrl && $imageDimensions) {
+        if ($seoUrl && ! empty($imageDimensions)) {
             SEOTools::opengraph()->addImage($seoUrl, $imageDimensions);
             SEOTools::twitter()->addValue('image', $seoUrl);
         }
@@ -176,24 +177,26 @@ class PageController extends Controller
 
     /**
      * Get the dimensions of an image with the given path. Uses cache so the image file does not need to be read each time.
-     *
-     * @return array|mixed
      */
-    protected function getSEOImageDimensions(Media $seoMedia, string $conversion)
+    protected function getSEOImageDimensions(Media $seoMedia, string $conversion): array
     {
         $cacheKey = sprintf(self::CACHE_SEO_IMAGE_DIMENSIONS, $seoMedia->uuid);
 
-        return Cache::remember($cacheKey,
-            self::CACHE_SEO_IMAGE_TTL,
-            function () use ($seoMedia, $conversion) {
-                $filePath = $seoMedia->getPath($conversion);
-                $image = Image::load($filePath);
+        try {
+            return Cache::remember($cacheKey,
+                self::CACHE_SEO_IMAGE_TTL,
+                function () use ($seoMedia, $conversion) {
+                    $filePath = $seoMedia->getPath($conversion);
+                    $image = Image::load($filePath);
 
-                return [
-                    'width' => $image->getWidth(),
-                    'height' => $image->getHeight(),
-                ];
-            });
+                    return [
+                        'width' => $image->getWidth(),
+                        'height' => $image->getHeight(),
+                    ];
+                });
+        } catch (CouldNotLoadImage $exception) {
+            return [];
+        }
     }
 
     private function getSettingsTitle(): string

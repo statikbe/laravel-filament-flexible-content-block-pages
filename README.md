@@ -215,6 +215,8 @@ TODO
 - tag controller
 - sitemap implementation
 - asset manager install in panel
+- orm listeners for linkable models that are in a menu to avoid accidental deletion.
+- frontend caching for menus
 
 ## Changelog
 
