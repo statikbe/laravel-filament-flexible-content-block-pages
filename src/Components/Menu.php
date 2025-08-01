@@ -63,11 +63,32 @@ class Menu extends Component
             return collect();
         }
 
+        $maxDepth = $menu->getEffectiveMaxDepth();
+        $eagerLoadRelations = $this->buildEagerLoadRelations($maxDepth);
+
+        // Get only top-level menu items with their visible children based on max depth
         return $menu->menuItems()
-            ->with('linkable', 'children')
+            ->with($eagerLoadRelations)
             ->visible()
             ->ordered()
-            ->get()
-            ->toTree();
+            ->get();
     }
+
+    protected function buildEagerLoadRelations(int $maxDepth): array
+    {
+        $relations = ['linkable'];
+        $currentPath = '';
+        $depth = 1;
+
+        while ($depth < $maxDepth) {
+            $currentPath .= $depth === 1 ? 'children' : '.children';
+            $relations[$currentPath] = function ($query) {
+                $query->visible()->ordered()->with('linkable');
+            };
+            $depth++;
+        }
+
+        return $relations;
+    }
+
 }
