@@ -21,6 +21,7 @@ class LanguageSwitch extends Component
         // Final fallback to tailwind theme
         /** @var view-string $fallbackTemplate */
         $fallbackTemplate = 'filament-flexible-content-block-pages::tailwind.components.language-switch';
+
         return view($fallbackTemplate);
     }
 
