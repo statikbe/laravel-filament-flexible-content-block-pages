@@ -6,6 +6,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\CreateRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class CreateTagType extends CreateRecord
 {
@@ -24,7 +25,7 @@ class CreateTagType extends CreateRecord
     protected function getActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
         ];
     }
 }

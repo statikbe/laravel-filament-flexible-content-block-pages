@@ -6,6 +6,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
 
 class EditSettings extends EditRecord
@@ -20,7 +21,7 @@ class EditSettings extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
         ];
     }
 }

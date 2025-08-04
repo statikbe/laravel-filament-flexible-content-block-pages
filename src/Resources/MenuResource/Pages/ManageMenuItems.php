@@ -15,6 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Forms\MenuItemForm;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class ManageMenuItems extends TreePage
 {
@@ -71,7 +72,7 @@ class ManageMenuItems extends TreePage
     protected function getActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
             CreateAction::make()
                 ->label(flexiblePagesTrans('menu_items.tree.add_item'))
                 ->mountUsing(

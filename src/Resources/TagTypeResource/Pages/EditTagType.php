@@ -7,6 +7,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class EditTagType extends EditRecord
 {
@@ -20,7 +21,7 @@ class EditTagType extends EditRecord
     protected function getActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
             DeleteAction::make(),
         ];
     }

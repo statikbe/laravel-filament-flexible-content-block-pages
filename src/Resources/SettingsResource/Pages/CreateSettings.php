@@ -6,6 +6,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\CreateRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\CreateRecord\Concerns\TranslatableWithMedia;
 
 class CreateSettings extends CreateRecord
@@ -20,7 +21,7 @@ class CreateSettings extends CreateRecord
     protected function getHeaderActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
         ];
     }
 }

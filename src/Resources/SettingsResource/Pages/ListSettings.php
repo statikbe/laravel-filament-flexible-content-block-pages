@@ -7,6 +7,7 @@ use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\ListRecords;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class ListSettings extends ListRecords
 {
@@ -20,7 +21,7 @@ class ListSettings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            LocaleSwitcher::make(),
+            FlexibleLocaleSwitcher::make(),
             CreateAction::make()
                 // only show when no settings are created yet
                 ->hidden(FilamentFlexibleContentBlockPages::config()->getSettingsModel()::exists()),
