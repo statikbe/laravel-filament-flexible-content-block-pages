@@ -2,7 +2,6 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource\Pages;
 
-use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\CreateRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;

@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
 use Filament\Actions\CreateAction;
-use Filament\Actions\LocaleSwitcher;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;

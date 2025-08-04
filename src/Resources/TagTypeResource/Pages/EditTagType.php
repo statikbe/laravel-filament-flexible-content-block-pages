@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages;
 
 use Filament\Actions\DeleteAction;
-use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;

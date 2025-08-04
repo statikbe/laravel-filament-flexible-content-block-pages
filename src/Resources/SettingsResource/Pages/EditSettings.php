@@ -2,7 +2,6 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages;
 
-use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;

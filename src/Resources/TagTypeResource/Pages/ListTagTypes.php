@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages;
 
 use Filament\Actions\CreateAction;
-use Filament\Actions\LocaleSwitcher;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
