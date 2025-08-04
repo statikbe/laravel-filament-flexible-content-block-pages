@@ -83,14 +83,19 @@ class PageResource extends Resource
                     ->columnSpan(2)
                     ->tabs([
                         Tab::make(flexiblePagesTrans('pages.tabs.general'))
+                            ->icon('heroicon-m-globe-alt')
                             ->schema(static::getGeneralTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.content'))
+                            ->icon('heroicon-o-rectangle-group')
                             ->schema(static::getContentTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.overview'))
+                            ->icon('heroicon-o-magnifying-glass')
                             ->schema(static::getOverviewTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.seo'))
+                            ->icon('heroicon-o-globe-alt')
                             ->schema(static::getSEOTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.advanced'))
+                            ->icon('heroicon-o-wrench-screwdriver')
                             ->schema(static::getAdvancedTabFields()),
                     ])
                     ->persistTabInQueryString(),
