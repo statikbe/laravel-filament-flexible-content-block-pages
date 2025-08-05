@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -220,7 +221,7 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function getSEODefaultCanonicalLocale(): string
     {
-        return $this->packageConfig('seo.default_canonical_locale', 'en');
+        return $this->packageConfig('sitemap.default_canonical_locale', 'en');
     }
 
     public function getRouteHelper(): HandlesPageRoutes
@@ -298,6 +299,42 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getSitemapCustomUrls(): array
     {
         return $this->packageConfig('sitemap.custom_urls', []);
+    }
+
+    /**
+     * @param class-string<Model> $modelClass
+     * @return bool
+     */
+    public function isHeroCallToActionsEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_hero_call_to_actions", true);
+    }
+
+    /**
+     * @param class-string<Model> $modelClass
+     * @return bool
+     */
+    public function isAuthorEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_author", true);
+    }
+
+    /**
+     * @param class-string<Model> $modelClass
+     * @return bool
+     */
+    public function isParentEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_parent", true);
+    }
+
+    /**
+     * @param class-string<Model> $modelClass
+     * @return bool
+     */
+    public function isUndeletableEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_undeletable", true);
     }
 
     private function packageConfig(string $configKey, $default = null): mixed

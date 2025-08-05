@@ -20,6 +20,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\CopyContentBloc
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\AuthorField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ContentBlocksField;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroCallToActionSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroImageSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\OverviewFields;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\PublicationSection;
@@ -104,11 +105,17 @@ class PageResource extends Resource
 
     protected static function getGeneralTabFields(): array
     {
-        return [
+        $fields = [
             TitleField::create(true),
             IntroField::create(),
             HeroImageSection::create(true),
         ];
+
+        if(FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())){
+            $fields[] = new HeroCallToActionSection();
+        }
+
+        return $fields;
     }
 
     protected static function getContentTabFields(): array
@@ -135,20 +142,31 @@ class PageResource extends Resource
 
     protected static function getAdvancedTabFields(): array
     {
-        return [
+        $config = FilamentFlexibleContentBlockPages::config();
+        $modelClass = static::getModel();
+
+        $fields = [
             PublicationSection::create(),
-            // TODO feature flag
             CodeField::create(),
             SlugField::create(false),
-            Grid::make()
-                ->schema([
-                    // TODO feature flag
-                    AuthorField::create(),
-                    // TODO feature flag
-                    ParentField::create()
-                        ->searchable(['title', 'code', 'slug', 'intro']),
-                ]),
         ];
+
+        $gridFields = [];
+
+        if ($config->isAuthorEnabled($modelClass)) {
+            $gridFields[] = AuthorField::create();
+        }
+
+        if ($config->isParentEnabled($modelClass)) {
+            $gridFields[] = ParentField::create()
+                ->searchable(['title', 'code', 'slug', 'intro']);
+        }
+
+        if (!empty($gridFields)) {
+            $fields[] = Grid::make()->schema($gridFields);
+        }
+
+        return $fields;
     }
 
     public static function table(Table $table): Table

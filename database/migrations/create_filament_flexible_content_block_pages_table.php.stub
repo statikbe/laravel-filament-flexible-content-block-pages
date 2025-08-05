@@ -10,8 +10,9 @@ return new class extends Migration
     public function up()
     {
         $pageTable = FilamentFlexibleContentBlockPages::config()->getPagesTable();
+        $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel()::class;
 
-        Schema::create($pageTable, function (Blueprint $table) use ($pageTable) {
+        Schema::create($pageTable, function (Blueprint $table) use ($pageTable, $pageModel) {
             $table->id();
 
             $table->json('title');
@@ -25,6 +26,10 @@ return new class extends Migration
                 ->nullable();
             $table->json('hero_image_title')
                 ->nullable();
+            if(FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled($pageModel)) {
+                $table->json('hero_call_to_actions')
+                    ->nullable();
+            }
 
             //Publishing:
             $table->timestamp('publishing_begins_at')
@@ -62,24 +67,30 @@ return new class extends Migration
                 ->unique();
 
             //Author:
-            $table->unsignedBigInteger('author_id')
-                ->nullable();
-            $table->foreign('author_id')
-                ->references('id')
-                ->on(FilamentFlexibleContentBlockPages::config()->getAuthorsTable())
-                ->onDelete('set null');
+            if(FilamentFlexibleContentBlockPages::config()->isAuthorEnabled($pageModel)) {
+                $table->unsignedBigInteger('author_id')
+                    ->nullable();
+                $table->foreign('author_id')
+                    ->references('id')
+                    ->on(FilamentFlexibleContentBlockPages::config()->getAuthorsTable())
+                    ->onDelete('set null');
+            }
 
             // Parent-child:
-            $table->unsignedBigInteger('parent_id')
-                ->nullable();
-            $table->foreign('parent_id')
-                ->references('id')
-                ->on($pageTable)
-                ->onDelete('set null');
+            if(FilamentFlexibleContentBlockPages::config()->isParentEnabled($pageModel)) {
+                $table->unsignedBigInteger('parent_id')
+                    ->nullable();
+                $table->foreign('parent_id')
+                    ->references('id')
+                    ->on($pageTable)
+                    ->onDelete('set null');
+            }
 
             // Deletable:
-            $table->boolean('is_undeletable')
-                ->default(false);
+            if(FilamentFlexibleContentBlockPages::config()->isUndeletableEnabled($pageModel)) {
+                $table->boolean('is_undeletable')
+                    ->default(false);
+            }
 
             $table->timestamps();
         });

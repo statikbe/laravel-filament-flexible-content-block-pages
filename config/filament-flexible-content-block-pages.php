@@ -46,6 +46,16 @@ return [
         FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => \Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource::class,
     ],
 
+    'page_resource' => [
+        \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class => [
+            'enable_hero_call_to_actions' => true,
+            'enable_author' =>  true,
+            'enable_parent' => true,
+            'enable_undeletable' => true,
+        ],
+        // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
+    ],
+
     'panel' => [
         'path' => 'admin/website',
         'middleware' => [
@@ -74,10 +84,6 @@ return [
             //     ->icon('heroicon-o-globe-alt')
             //     ->sort(-100),
         ],
-    ],
-
-    'seo' => [
-        'default_canonical_locale' => 'nl',
     ],
 
     'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
@@ -129,6 +135,7 @@ return [
 
     'sitemap' => [
         'enabled' => true,
+        'default_canonical_locale' => 'nl',
         'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
         'method' => SitemapGeneratorMethod::MANUAL,
         'include_pages' => true,

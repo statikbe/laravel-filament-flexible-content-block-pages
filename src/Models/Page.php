@@ -81,6 +81,10 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
 
     public function isDeletable(): bool
     {
+        if(!$this->hasAttribute('is_undeletable')){
+            return true;
+        }
+
         // TODO improve once the authorisation is implemented:
         return ! $this->is_undeletable;
     }
