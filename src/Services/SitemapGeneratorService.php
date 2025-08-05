@@ -15,14 +15,15 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
-use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasPageAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class SitemapGeneratorService
 {
     protected Sitemap $sitemap;
+
     protected string $canonicalLocale;
+
     protected array $supportedLocales;
 
     public function __construct()
@@ -35,15 +36,14 @@ class SitemapGeneratorService
 
     public function generate(): void
     {
-        if (!FilamentFlexibleContentBlockPages::config()->isSitemapEnabled()) {
+        if (! FilamentFlexibleContentBlockPages::config()->isSitemapEnabled()) {
             return;
         }
 
         $method = FilamentFlexibleContentBlockPages::config()->getSitemapMethod();
         if ($method === SitemapGeneratorMethod::CRAWL) {
             $this->generateByCrawling();
-        }
-        else if($method === SitemapGeneratorMethod::HYBRID) {
+        } elseif ($method === SitemapGeneratorMethod::HYBRID) {
             $this->generateByCrawling();
             $this->generateManually();
         } else {
@@ -143,7 +143,7 @@ class SitemapGeneratorService
 
             $modelQuery = $modelClass::query();
 
-            if(method_exists($modelClass, 'scopePublished')) {
+            if (method_exists($modelClass, 'scopePublished')) {
                 $modelQuery->published();
             }
 
@@ -233,17 +233,17 @@ class SitemapGeneratorService
         return false;
     }
 
-    protected function addToSitemap(string $url, ?Carbon $lastModifiedAt, float $priority, string $frequency, bool $onlyCreate=false): Url
+    protected function addToSitemap(string $url, ?Carbon $lastModifiedAt, float $priority, string $frequency, bool $onlyCreate = false): Url
     {
         $urlTag = Url::create($url)
             ->setPriority($priority)
             ->setChangeFrequency($frequency);
 
-        if($lastModifiedAt) {
+        if ($lastModifiedAt) {
             $urlTag->setLastModificationDate($lastModifiedAt);
         }
 
-        if (!$onlyCreate) {
+        if (! $onlyCreate) {
             $this->sitemap->add($urlTag);
         }
 
