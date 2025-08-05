@@ -49,7 +49,7 @@ return [
     'page_resource' => [
         \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class => [
             'enable_hero_call_to_actions' => true,
-            'enable_author' =>  true,
+            'enable_author' => true,
             'enable_parent' => true,
             'enable_undeletable' => true,
         ],

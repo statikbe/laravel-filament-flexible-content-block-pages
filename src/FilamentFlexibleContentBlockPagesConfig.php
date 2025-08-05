@@ -302,8 +302,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isHeroCallToActionsEnabled(string $modelClass): bool
     {
@@ -311,8 +310,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isAuthorEnabled(string $modelClass): bool
     {
@@ -320,8 +318,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isParentEnabled(string $modelClass): bool
     {
@@ -329,8 +326,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isUndeletableEnabled(string $modelClass): bool
     {
