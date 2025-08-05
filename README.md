@@ -5,25 +5,30 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 
-A simple content page management system with a flexible content block builder based on the [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks).
+A complete CMS solution for Laravel applications built on [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks). This package extends the flexible content block system into a full page management solution with routing, SEO, menus, and multilingual support.
 
-This package aims to provide a basic, batteries-included CMS for Filament by providing page creation in Filament and 
-renders web pages that can be easily extended and styled.
+Designed for developers who need a content management system that integrates seamlessly with existing Laravel applications while providing editors with an intuitive interface for managing pages and content.
 
-Other features that will be provided:
-- Pages with hero, slugs, content blocks, publication options and SEO fields.
-- Website: routing, blade views, CSS themes included.
-- Menu builder with customisable blade templates
-- Extendable settings model and Filament resource to store CMS settings and images.
-- Redirect support for when slugs are renamed
-- Sitemap generation
-- A ready-to-use, extendable Filament panel with all CMS features implemented.
-- Extendable models, resources and database tables.
-- A simple asset manager (TODO)
-- Re-usable content blocks (TODO)
-- Contact form (TODO)
+## Key Features
 
-This package combines several existing packages and is therefore quite opinionated. 
+- **Flexible page management** - Create pages with hero images, flexible content blocks, SEO fields, and publication controls
+- **Hierarchical menu builder** - Configurable depth with drag-and-drop interface for creating navigation menus
+- **Multilingual support** - Full localization with automatic route generation for multiple languages
+- **SEO tools** - Automatic sitemap generation, meta tag management, and URL redirect handling
+- **Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
+- **Developer-friendly** - Extendable models, customizable templates, and comprehensive configuration options
+- **Content organization** - Tag system, hierarchical page structure, and settings management
+
+## Additional Features
+
+- Website routing with customizable URL patterns
+- Blade view components and CSS themes
+- Media library integration via Spatie packages
+- Automatic 301 redirects when page URLs change
+- Multiple sitemap generation methods (manual, crawling, hybrid)
+- Configurable content block types and layouts
+
+This package combines several Laravel packages into a cohesive CMS solution, making it opinionated but comprehensive for typical content management needs. 
 
 ## Installation
 
@@ -79,7 +84,7 @@ Publish the config and change the tag model to the package model:
 ]
 ```
 
-Check [the configuration documentation}(#configuration) for more explanations on how to tweak the package.
+Check [the configuration documentation](#configuration) for more explanations on how to tweak the package.
 
 Optionally, you can publish the views using
 
@@ -202,6 +207,150 @@ The style can also be configured in the database model, then you can skip the `s
 
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
+## Sitemap Generator
+
+The package includes an automatic sitemap generator that creates XML sitemaps for your website with support for multilingual sites and various content types.
+
+### Features
+
+- **Multiple generation methods** - Manual, crawling, or hybrid approach
+- **Multilingual support** - Automatic hreflang tags for alternate language versions
+- **Smart priority calculation** - Homepage gets priority 1.0, parent pages 0.8, child pages 0.6
+- **Dynamic change frequency** - Based on last modification date (weekly, monthly, yearly)
+- **Flexible content inclusion** - Pages, routes, linkable models, and custom URLs
+- **URL exclusion patterns** - Skip specific URLs or patterns from the sitemap
+- **SEO optimization** - Includes last modification dates and proper XML structure
+
+### Configuration
+
+Enable and configure the sitemap generator in your config file:
+
+```php
+// config/filament-flexible-content-block-pages.php
+'sitemap' => [
+    'enabled' => true,
+    'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
+    'method' => SitemapGeneratorMethod::MANUAL, // MANUAL, CRAWL, or HYBRID
+    'include_pages' => true,
+    'include_link_routes' => true,
+    'include_linkable_models' => true,
+    'exclude_patterns' => [
+        '/admin/*',
+        '/api/*',
+    ],
+    'custom_urls' => [
+        'https://example.com/special-page',
+    ],
+],
+```
+
+### Generation Methods
+
+**Manual** (`SitemapGeneratorMethod::MANUAL`):
+- Generates sitemap based on database content (pages, routes, models)
+- Faster and more predictable
+- Best for most use cases
+
+**Crawl** (`SitemapGeneratorMethod::CRAWL`):
+- Crawls your website to discover URLs
+- May find URLs not in your database
+- Slower but comprehensive
+
+**Hybrid** (`SitemapGeneratorMethod::HYBRID`):
+- Combines both approaches
+- Crawls first, then adds manual entries
+- Most comprehensive but slowest
+
+### Usage
+
+Generate the sitemap manually:
+
+```bash
+php artisan flexible-content-block-pages:generate-sitemap
+```
+
+The sitemap will be saved to `public/sitemap.xml` and can be accessed at `https://yoursite.com/sitemap.xml`.
+
+### Automatic Generation
+
+You can schedule automatic sitemap generation in your `routes/console.php`:
+
+```php
+$schedule->command('flexible-content-block-pages:generate-sitemap')
+         ->daily()
+         ->at('03:00');
+```
+
+### Linkable Models
+
+To include your own models in the sitemap, ensure they implement [the `Linkable` contract and have a `getViewUrl()` method](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable).
+
+You will most likely already have added those models to the menu configuration's `linkable_models` array or 
+[call-to-actions models](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable) then they will automatically be included in the sitemap.
+
+If you do not want your model in menus or call-to-actions, you can extend the [SitemapGeneratorService](src/Services/SitemapGeneratorService.php).
+
+### Extending the SitemapGeneratorService
+
+For full customization power, you can create your own sitemap generator service by extending the base class:
+
+```php
+<?php
+
+namespace App\Services;
+
+use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
+
+class CustomSitemapGeneratorService extends SitemapGeneratorService
+{
+    protected function addCustomUrls(): void
+    {
+        parent::addCustomUrls();
+        
+        // Add your custom logic
+        $this->addToSitemap(
+            url: 'https://example.com/dynamic-page',
+            lastModifiedAt: now(),
+            priority: 0.7,
+            frequency: 'weekly'
+        );
+    }
+    
+    protected function getLinkableModels(): array
+    {
+        $models = parent::getLinkableModels();
+        
+        // Add additional models not in menu/CTA config
+        $models[] = \App\Models\BlogPost::class;
+        $models[] = \App\Models\Event::class;
+        
+        return $models;
+    }
+    
+    protected function calculatePriority($page): float
+    {
+        // Custom priority logic
+        if ($page->is_featured) {
+            return 0.9;
+        }
+        
+        return parent::calculatePriority($page);
+    }
+}
+```
+
+Then update your configuration to use your custom service:
+
+```php
+// config/filament-flexible-content-block-pages.php
+'sitemap' => [
+    'generator_service' => \App\Services\CustomSitemapGeneratorService::class,
+    // ... other config
+],
+```
+
+You can override any protected method to customize the sitemap generation behavior, including priority calculation, change frequency, URL filtering, or adding entirely new content types.
+
 ## Configuration
 
 TODO
@@ -213,10 +362,12 @@ TODO
 - undeletable page toggle only for permission holder
 - redirect controller
 - tag controller
-- sitemap implementation
-- asset manager install in panel
 - orm listeners for linkable models that are in a menu to avoid accidental deletion.
+- page delete modal when page used in menu
 - frontend caching for menus
+- A simple asset manager
+- Re-usable content blocks
+- Contact form
 
 ## Changelog
 

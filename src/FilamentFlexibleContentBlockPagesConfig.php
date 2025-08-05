@@ -12,6 +12,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
 
 class FilamentFlexibleContentBlockPagesConfig
@@ -257,6 +258,46 @@ class FilamentFlexibleContentBlockPagesConfig
             $this->getMenuModel()->getMorphClass() => $this->getMenuModel()::class,
             $this->getMenuItemModel()->getMorphClass() => $this->getMenuItemModel()::class,
         ];
+    }
+
+    public function isSitemapEnabled(): bool
+    {
+        return $this->packageConfig('sitemap.enabled', true);
+    }
+
+    public function getSitemapGeneratorService(): string
+    {
+        return $this->packageConfig('sitemap.generator_service', \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class);
+    }
+
+    public function getSitemapMethod(): SitemapGeneratorMethod
+    {
+        return $this->packageConfig('sitemap.method', SitemapGeneratorMethod::MANUAL);
+    }
+
+    public function shouldIncludePagesInSitemap(): bool
+    {
+        return $this->packageConfig('sitemap.include_pages', true);
+    }
+
+    public function shouldIncludeLinkRoutesInSitemap(): bool
+    {
+        return $this->packageConfig('sitemap.include_link_routes', true);
+    }
+
+    public function shouldIncludeLinkableModelsInSitemap(): bool
+    {
+        return $this->packageConfig('sitemap.include_linkable_models', true);
+    }
+
+    public function getSitemapExcludePatterns(): array
+    {
+        return $this->packageConfig('sitemap.exclude_patterns', []);
+    }
+
+    public function getSitemapCustomUrls(): array
+    {
+        return $this->packageConfig('sitemap.custom_urls', []);
     }
 
     private function packageConfig(string $configKey, $default = null): mixed

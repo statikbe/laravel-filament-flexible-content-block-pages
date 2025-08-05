@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
@@ -33,7 +34,10 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 'create_filament_flexible_content_block_menu_items_table',
             ])
             ->hasTranslations()
-            ->hasCommand(SeedDefaultsCommand::class)
+            ->hasCommands([
+                SeedDefaultsCommand::class,
+                GenerateSitemapCommand::class,
+            ])
             ->hasViewComponents('flexible-pages',
                 LanguageSwitch::class,
                 BaseLayout::class,
@@ -46,5 +50,17 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
     {
         // add morph map
         Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());
+    }
+
+    public function packageRegistered()
+    {
+        $this->app->bind(
+            \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
+            function ($app) {
+                $serviceClass = FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
+
+                return $app->make($serviceClass);
+            }
+        );
     }
 }

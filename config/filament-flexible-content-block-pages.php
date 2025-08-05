@@ -12,6 +12,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 
 return [
     'models' => [
@@ -123,6 +124,21 @@ return [
             // 'mega',
             // 'mobile',
             // 'breadcrumb',
+        ],
+    ],
+
+    'sitemap' => [
+        'enabled' => true,
+        'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
+        'method' => SitemapGeneratorMethod::MANUAL,
+        'include_pages' => true,
+        'include_link_routes' => true,
+        'include_linkable_models' => true,
+        'exclude_patterns' => [
+            // URL patterns to exclude from sitemap
+        ],
+        'custom_urls' => [
+            // Custom URLs to include in sitemap
         ],
     ],
 ];
