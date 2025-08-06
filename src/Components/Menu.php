@@ -80,7 +80,7 @@ class Menu extends Component
         $currentPath = '';
         $depth = 1;
 
-        while ($depth < $maxDepth) {
+        while ($depth <= $maxDepth) {
             $currentPath .= $depth === 1 ? 'children' : '.children';
             $relations[$currentPath] = function ($query) {
                 $query->visible()->ordered()->with('linkable');

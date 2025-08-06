@@ -368,15 +368,28 @@ TODO
 
 ## TODO's
 
+check: 
+- do install docs work
+- tailwind config complete? do we need to add flexible content blocks styling?
+- menu components ok?
+
+menu: 
+- page delete modal when page used in menu
+  - orm listeners for linkable models that are in a menu to avoid accidental deletion.
+- caching tree model + observer to clear cache
+- add menu to default page template
+
+release:
 - policies:
   - note: undeletable pages
 - undeletable page toggle only for permission holder
 - redirect controller
 - tag controller
-- orm listeners for linkable models that are in a menu to avoid accidental deletion.
-- page delete modal when page used in menu
-- frontend caching for menus
-- A simple asset manager
+- documentation
+- screenshots + banner + packagist + filament plugin store
+
+future:
+- A simple asset manager (include or not?)
 - Re-usable content blocks
 - Contact form
 
