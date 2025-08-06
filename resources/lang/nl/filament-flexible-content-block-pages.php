@@ -23,6 +23,7 @@ return [
         'redirect_old_url' => 'Oude URL',
         'redirect_new_url' => 'Nieuwe URL',
         'redirect_status_code' => 'Status code',
+        'nav_group' => 'Instellingen',
     ],
     'settings' => [
         'settings_lbl' => 'instelling',
