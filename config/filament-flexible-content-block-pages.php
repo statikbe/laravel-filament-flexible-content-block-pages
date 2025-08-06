@@ -145,5 +145,5 @@ return [
 
     'settings' => [
         'navigation_sort' => 5,
-    ]
+    ],
 ];
