@@ -22,7 +22,7 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
      *
      * Another option if you are not already extending from another class, is to extend this class and overwrite the functions.
      */
-    public static function configurePanel(Panel $panel, ?string $id=null): Panel
+    public static function configurePanel(Panel $panel, ?string $id = null): Panel
     {
         return $panel
             ->id($id ?? static::ID)
