@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -14,7 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
-use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
+use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
 
 class FilamentFlexibleContentBlockPagesConfig
 {
@@ -66,10 +67,12 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function getSupportedLocales(): array
     {
-        return config(
-            FilamentFlexibleContentBlocksServiceProvider::$name.'.supported_locales',
-            config('app.supported_locales', ['en'])
-        );
+        $flexibleBlocksLocales = FilamentFlexibleContentBlocks::getLocales();
+        if (! empty($flexibleBlocksLocales)) {
+            return $flexibleBlocksLocales;
+        }
+
+        return LaravelLocalization::getSupportedLanguagesKeys() ?? ['en'];
     }
 
     public function getPageModel(): Page
@@ -233,11 +236,6 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->routeHelper;
     }
 
-    public function getPanelNavigationItems(): array
-    {
-        return $this->packageConfig('panel.navigation_items', []);
-    }
-
     public function getCustomPageTemplates(): array
     {
         return $this->packageConfig('page_templates', []);
@@ -302,8 +300,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isHeroCallToActionsEnabled(string $modelClass): bool
     {
@@ -311,8 +308,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isAuthorEnabled(string $modelClass): bool
     {
@@ -320,8 +316,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isParentEnabled(string $modelClass): bool
     {
@@ -329,8 +324,7 @@ class FilamentFlexibleContentBlockPagesConfig
     }
 
     /**
-     * @param class-string<Model> $modelClass
-     * @return bool
+     * @param  class-string<Model>  $modelClass
      */
     public function isUndeletableEnabled(string $modelClass): bool
     {

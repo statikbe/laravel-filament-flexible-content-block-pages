@@ -83,4 +83,34 @@ class FlexibleContentBlockPagesPlugin implements Plugin
     {
         return static::$widgets;
     }
+
+    /**
+     * @param array<class-string<\Filament\Pages\Page>>
+     */
+    public static function pages(array $pages): static
+    {
+        static::$pages = $pages;
+
+        return new static;
+    }
+
+    /**
+     * @param array<class-string<\Filament\Widgets\Widget>>
+     */
+    public static function widgets(array $widgets): static
+    {
+        static::$widgets = $widgets;
+
+        return new static;
+    }
+
+    /**
+     * @param  array<class-string<resource>>  $resources
+     */
+    public static function resources(array $resources): static
+    {
+        static::$resources = $resources;
+
+        return new static;
+    }
 }

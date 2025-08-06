@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
@@ -11,6 +12,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocks;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
 {
@@ -50,6 +52,10 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
     {
         // add morph map
         Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());
+
+        $this->mergeConfigFrom(__DIR__.'/../config/'.$this->package->name.'.php', $this->package->name);
+
+        FilamentFlexibleContentBlocks::setLocales(LaravelLocalization::getSupportedLanguagesKeys());
     }
 
     public function packageRegistered()

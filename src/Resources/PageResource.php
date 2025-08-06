@@ -111,8 +111,8 @@ class PageResource extends Resource
             HeroImageSection::create(true),
         ];
 
-        if(FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())){
-            $fields[] = new HeroCallToActionSection();
+        if (FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())) {
+            $fields[] = new HeroCallToActionSection;
         }
 
         return $fields;
@@ -162,7 +162,7 @@ class PageResource extends Resource
                 ->searchable(['title', 'code', 'slug', 'intro']);
         }
 
-        if (!empty($gridFields)) {
+        if (! empty($gridFields)) {
             $fields[] = Grid::make()->schema($gridFields);
         }
 

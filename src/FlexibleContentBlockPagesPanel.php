@@ -13,8 +13,19 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
 
     public function panel(Panel $panel): Panel
     {
+        return static::configurePanel($panel, static::ID);
+    }
+
+    /**
+     * This function can be used to create a custom panel. Just create a new PanelProvider sub class and implement the
+     * `panel` function. You can then call `configurePanel` statically.
+     *
+     * Another option if you are not already extending from another class, is to extend this class and overwrite the functions.
+     */
+    public static function configurePanel(Panel $panel, string $id): Panel
+    {
         return $panel
-            ->id(static::ID)
+            ->id($id)
             ->path(FilamentFlexibleContentBlockPages::config()->getPanelPath())
             ->middleware(FilamentFlexibleContentBlockPages::config()->getPanelMiddleware())
             ->authMiddleware(FilamentFlexibleContentBlockPages::config()->getPanelAuthMiddleware())
@@ -22,6 +33,14 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
             ->plugin(FlexibleContentBlockPagesPlugin::make())
             ->plugin(SpatieLaravelTranslatablePlugin::make()
                 ->defaultLocales(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()))
-            ->navigationItems(FilamentFlexibleContentBlockPages::config()->getPanelNavigationItems());
+            ->navigationItems(static::getExtraNavigationItems());
+    }
+
+    /**
+     * Implement this function in a sub class, to add nav items.
+     */
+    public static function getExtraNavigationItems(): array
+    {
+        return [];
     }
 }
