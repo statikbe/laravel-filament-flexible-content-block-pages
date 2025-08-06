@@ -123,6 +123,17 @@ The package contains a pre-configured panel. You can register the panel in the `
 
 If you want you can build your own panel from the provided resources.
 
+### Schedule
+
+We suggest to add media library maintenance tasks to your schedule in `routes/console.php`:
+
+```php
+Schedule::command('media-library:clean')
+    ->weeklyOn(1, '11:00');
+Schedule::command('media-library:regenerate --only-missing')
+    ->dailyAt('4:20');
+```
+
 ## Menu builder
 
 The package includes a powerful hierarchical menu builder with a drag-and-drop interface for creating navigation menus. Menus support multiple types of links and can be easily styled with custom templates.
