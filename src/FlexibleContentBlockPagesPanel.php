@@ -22,10 +22,10 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
      *
      * Another option if you are not already extending from another class, is to extend this class and overwrite the functions.
      */
-    public static function configurePanel(Panel $panel, string $id): Panel
+    public static function configurePanel(Panel $panel, ?string $id=null): Panel
     {
         return $panel
-            ->id($id)
+            ->id($id ?? static::ID)
             ->path(FilamentFlexibleContentBlockPages::config()->getPanelPath())
             ->middleware(FilamentFlexibleContentBlockPages::config()->getPanelMiddleware())
             ->authMiddleware(FilamentFlexibleContentBlockPages::config()->getPanelAuthMiddleware())
