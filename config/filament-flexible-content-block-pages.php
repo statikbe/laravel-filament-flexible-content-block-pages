@@ -138,4 +138,12 @@ return [
             // Custom URLs to include in sitemap
         ],
     ],
+
+    'redirects' => [
+        'navigation_sort' => 10,
+    ],
+
+    'settings' => [
+        'navigation_sort' => 5,
+    ]
 ];

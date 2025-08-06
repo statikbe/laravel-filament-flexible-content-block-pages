@@ -343,6 +343,16 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('menu.navigation_sort');
     }
 
+    public function getRedirectNavigationSort(): ?int
+    {
+        return $this->packageConfig('redirects.navigation_sort');
+    }
+
+    public function getSettingsNavigationSort(): ?int
+    {
+        return $this->packageConfig('settings.navigation_sort');
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

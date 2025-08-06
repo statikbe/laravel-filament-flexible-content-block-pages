@@ -22,8 +22,6 @@ class SettingsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
 
-    protected static ?int $navigationSort = 1;
-
     /**
      * @return class-string
      */
@@ -45,6 +43,11 @@ class SettingsResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return flexiblePagesTrans('settings.navigation_group');
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getSettingsNavigationSort();
     }
 
     public static function form(Form $form): Form

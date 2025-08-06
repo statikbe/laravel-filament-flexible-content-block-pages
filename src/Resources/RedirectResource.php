@@ -17,8 +17,6 @@ class RedirectResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
-    protected static ?int $navigationSort = 10;
-
     public static function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getRedirectModel()::class;
@@ -37,6 +35,11 @@ class RedirectResource extends Resource
     public static function getNavigationGroup(): string
     {
         return flexiblePagesTrans('redirects.nav_group');
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getRedirectNavigationSort();
     }
 
     public static function form(Form $form): Form
