@@ -353,6 +353,11 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('settings.navigation_sort');
     }
 
+    public function getTagNavigationSort(): ?int
+    {
+        return $this->packageConfig('tags.navigation_sort');
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

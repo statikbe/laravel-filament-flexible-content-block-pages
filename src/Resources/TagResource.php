@@ -59,7 +59,7 @@ class TagResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return 1;
+        return FilamentFlexibleContentBlockPages::config()->getTagNavigationSort();
     }
 
     public static function form(Form $form): Form
