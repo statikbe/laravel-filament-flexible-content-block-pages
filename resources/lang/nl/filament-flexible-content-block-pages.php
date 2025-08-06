@@ -153,7 +153,6 @@ return [
             'link_type_help' => 'Kies waarnaar dit menu-item moet linken.',
             'label_lbl' => 'Label',
             'label_help' => 'De tekst die wordt weergegeven voor dit menu-item.',
-            'label_disabled_help' => 'Het label veld is uitgeschakeld omdat de titel van het model zelf wordt gebruikt.',
             'use_model_title_lbl' => 'Gebruik model titel',
             'use_model_title_help' => 'Gebruik de titel van het gekoppelde model in plaats van een aangepast label.',
             'linkable_item_lbl' => 'Selecteer item',

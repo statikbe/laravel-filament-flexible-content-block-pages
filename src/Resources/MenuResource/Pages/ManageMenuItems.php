@@ -109,7 +109,14 @@ class ManageMenuItems extends TreePage
 
                         $form->fill($data);
                     }
-                ),
+                )
+                ->mutateFormDataBeforeSaveUsing(function ($data) {
+                    if (! isset($data['label'])) {
+                        $data['label'] = null;
+                    }
+
+                    return $data;
+                }),
             DeleteAction::make(),
         ];
     }

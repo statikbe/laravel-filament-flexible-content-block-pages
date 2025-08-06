@@ -153,7 +153,6 @@ return [
             'link_type_help' => 'Choose what this menu item should link to.',
             'label_lbl' => 'Label',
             'label_help' => 'The text displayed for this menu item.',
-            'label_disabled_help' => 'Label field is disabled because the model title itself will be used.',
             'use_model_title_lbl' => 'Use model title',
             'use_model_title_help' => 'Use the title from the linked model instead of custom label.',
             'linkable_item_lbl' => 'Select item',
