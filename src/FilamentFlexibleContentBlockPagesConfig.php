@@ -73,7 +73,8 @@ class FilamentFlexibleContentBlockPagesConfig
         }
 
         $supportedKeys = LaravelLocalization::getSupportedLanguagesKeys();
-        return !empty($supportedKeys) ? $supportedKeys : ['en'];
+
+        return ! empty($supportedKeys) ? $supportedKeys : ['en'];
     }
 
     public function getPageModel(): Page

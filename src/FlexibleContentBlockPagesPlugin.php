@@ -37,7 +37,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
 
     public static function make(): static
     {
-        return app(static::class);
+        return app(self::class);
     }
 
     public static function get(): self
@@ -85,7 +85,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param array<class-string<\Filament\Pages\Page>> $pages
+     * @param  array<class-string<\Filament\Pages\Page>>  $pages
      */
     public static function pages(array $pages): static
     {
@@ -95,7 +95,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param array<class-string<\Filament\Widgets\Widget>> $widgets
+     * @param  array<class-string<\Filament\Widgets\Widget>>  $widgets
      */
     public static function widgets(array $widgets): static
     {
