@@ -13,6 +13,7 @@ use Spatie\Sitemap\Tags\Url;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
+use Statikbe\FilamentFlexibleContentBlocks\ContentBlocks\CallToActionBlock;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
@@ -95,8 +96,10 @@ class SitemapGeneratorService
         // Get canonical URL
         $canonicalUrl = $page->getViewUrl($this->canonicalLocale);
 
+        $lastModified = $page->{$page->getUpdatedAtColumn()} ?? $page->{$page->getCreatedAtColumn()};
+
         $urlTag = $this->addToSitemap($canonicalUrl,
-            $page->updated_at ?? $page->created_at,
+            $lastModified,
             $this->calculatePriority($page),
             $this->calculateChangeFrequency($page),
             onlyCreate: true);
@@ -183,8 +186,7 @@ class SitemapGeneratorService
 
     protected function getLinkableModels(): array
     {
-        // 'general' is just random block to trigger fetching the default configuration:
-        $ctaModels = FilamentFlexibleBlocksConfig::getCallToActionModels('general');
+        $ctaModels = FilamentFlexibleBlocksConfig::getCallToActionModels(CallToActionBlock::class);
         $menuModels = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModels();
 
         // Merge and remove duplicates
@@ -194,12 +196,12 @@ class SitemapGeneratorService
     protected function calculatePriority(HasParent&HasCode $page): float
     {
         // Homepage gets highest priority
-        if ($page->code === Page::HOME_PAGE) {
+        if (property_exists($page, 'code') && $page->code === Page::HOME_PAGE) {
             return 1.0;
         }
 
         // Parent pages get higher priority than children
-        if (! $page->parent_id) {
+        if (property_exists($page, 'parent_id') && ! $page->parent_id) {
             return 0.8;
         }
 
@@ -209,7 +211,8 @@ class SitemapGeneratorService
 
     protected function calculateChangeFrequency(Model $page): string
     {
-        $daysSinceUpdate = $page->updated_at ? $page->updated_at->diffInDays(Carbon::now()) : 365;
+        $updatedAt = $page->{$page->getUpdatedAtColumn()};
+        $daysSinceUpdate = $updatedAt ? $updatedAt->diffInDays(Carbon::now()) : 365;
 
         if ($daysSinceUpdate < 7) {
             return Url::CHANGE_FREQUENCY_WEEKLY;

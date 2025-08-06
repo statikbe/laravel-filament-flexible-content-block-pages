@@ -7,7 +7,7 @@ use Filament\Panel;
 use Filament\Resources\Resource;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
-class FlexibleContentBlockPagesPlugin implements Plugin
+final class FlexibleContentBlockPagesPlugin implements Plugin
 {
     protected static self $instance;
 
@@ -85,7 +85,7 @@ class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param array<class-string<\Filament\Pages\Page>>
+     * @param array<class-string<\Filament\Pages\Page>> $pages
      */
     public static function pages(array $pages): static
     {
@@ -95,7 +95,7 @@ class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param array<class-string<\Filament\Widgets\Widget>>
+     * @param array<class-string<\Filament\Widgets\Widget>> $widgets
      */
     public static function widgets(array $widgets): static
     {

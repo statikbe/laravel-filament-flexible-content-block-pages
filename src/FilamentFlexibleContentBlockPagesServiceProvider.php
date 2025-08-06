@@ -64,7 +64,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         $this->app->bind(
             \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
             function ($app) {
-                $serviceClass = FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
+                $serviceClass = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
 
                 return $app->make($serviceClass);
             }

@@ -72,7 +72,8 @@ class FilamentFlexibleContentBlockPagesConfig
             return $flexibleBlocksLocales;
         }
 
-        return LaravelLocalization::getSupportedLanguagesKeys() ?? ['en'];
+        $supportedKeys = LaravelLocalization::getSupportedLanguagesKeys();
+        return !empty($supportedKeys) ? $supportedKeys : ['en'];
     }
 
     public function getPageModel(): Page

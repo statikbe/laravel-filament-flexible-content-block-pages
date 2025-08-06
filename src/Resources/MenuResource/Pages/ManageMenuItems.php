@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
@@ -39,6 +40,11 @@ class ManageMenuItems extends TreePage
     public function getModel(): string
     {
         return FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class;
+    }
+
+    protected function getTreeQuery(): Builder
+    {
+        return $this->getModel()::query()->where('menu_id', $this->menu->id);
     }
 
     public function getTitle(): string
