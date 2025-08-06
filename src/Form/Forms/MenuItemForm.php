@@ -98,8 +98,10 @@ class MenuItemForm
     {
         return LabelField::create()
             ->required(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
-            ->visible(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
-            ->helperText(flexiblePagesTrans('menu_items.form.label_help'));
+            ->disabled(fn (Get $get): bool => $get(static::FIELD_USE_MODEL_TITLE))
+            ->helperText(fn (Get $get): string => $get(static::FIELD_USE_MODEL_TITLE) 
+                ? flexiblePagesTrans('menu_items.form.label_disabled_help')
+                : flexiblePagesTrans('menu_items.form.label_help'));
     }
 
     protected static function getUseModelTitleField(): Toggle
