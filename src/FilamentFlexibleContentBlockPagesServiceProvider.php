@@ -53,7 +53,8 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         // add morph map
         Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());
 
-        $this->mergeConfigFrom(__DIR__.'/../config/'.$this->package->name.'.php', $this->package->name);
+        $configName = $this->package->shortName();
+        $this->mergeConfigFrom(__DIR__.'/../config/'.$configName.'.php', $configName);
 
         FilamentFlexibleContentBlocks::setLocales(LaravelLocalization::getSupportedLanguagesKeys());
     }
