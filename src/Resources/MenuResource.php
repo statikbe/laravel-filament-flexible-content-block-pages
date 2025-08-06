@@ -55,6 +55,11 @@ class MenuResource extends Resource
         return flexiblePagesTrans('menus.nav_group');
     }
 
+    public static function getNavigationSort(): ?int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getMenuNavigationSort();
+    }
+
     public static function form(Form $form): Form
     {
         $availableStyles = FilamentFlexibleContentBlockPages::config()->getMenuStyles();

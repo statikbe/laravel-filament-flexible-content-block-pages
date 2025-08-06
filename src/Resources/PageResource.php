@@ -66,6 +66,11 @@ class PageResource extends Resource
         return flexiblePagesTrans('pages.nav_group');
     }
 
+    public static function getNavigationSort(): ?int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getPageNavigationSort(static::getModel());
+    }
+
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
         $query = parent::getEloquentQuery()
