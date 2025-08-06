@@ -378,6 +378,10 @@ menu:
   - orm listeners for linkable models that are in a menu to avoid accidental deletion.
 - caching tree model + observer to clear cache
 - add menu to default page template
+- test global search and improve table search and ordering
+
+page:
+- make table searchable, columns orderable, test global search
 
 release:
 - policies:

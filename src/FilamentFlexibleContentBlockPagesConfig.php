@@ -333,6 +333,16 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig("page_resource.{$modelClass}.enable_undeletable", true);
     }
 
+    public function getPageNavigationSort(string $modelClass): ?int
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.navigation_sort");
+    }
+
+    public function getMenuNavigationSort(): ?int
+    {
+        return $this->packageConfig('menu.navigation_sort');
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

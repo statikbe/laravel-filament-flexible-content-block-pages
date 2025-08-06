@@ -52,6 +52,7 @@ return [
             'enable_author' => true,
             'enable_parent' => true,
             'enable_undeletable' => true,
+            'navigation_sort' => 5,
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
     ],
@@ -95,6 +96,7 @@ return [
     ],
 
     'menu' => [
+        'navigation_sort' => 30,
         'max_depth' => 2,
         'enable_menu_item_icon_field' => true,
         'linkable_models' => [
