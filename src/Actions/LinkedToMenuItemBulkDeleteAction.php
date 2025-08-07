@@ -44,8 +44,7 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
 
             if ($usedInMenu) {
                 $action->failure();
-            }
-            else {
+            } else {
                 $this->process(static fn (Collection $records) => $records->each(fn (Model&HasMenuLabel $record) => $record->delete()));
                 $action->success();
             }
