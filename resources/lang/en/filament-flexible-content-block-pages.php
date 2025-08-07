@@ -16,6 +16,11 @@ return [
         'table' => [
             'created_at_col' => 'Created at',
         ],
+        'notifications' => [
+            'used_in_menu' => 'This page is used in the ":menu" menu, in item :menu_item. Please update the menu first and then try deleting this page again.',
+            'used_in_menu_bulk' => 'Page ":page" is used in the ":menu" menu, in item :menu_item. Please update the menu first and then try deleting this page again.',
+        ],
+
     ],
     'redirects' => [
         'redirects_lbl' => 'redirect',

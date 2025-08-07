@@ -19,7 +19,7 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
     {
         parent::setUp();
 
-        $this->action(function (Collection $records, Action $action) {
+        $this->action(function (Collection $records, LinkedToMenuItemBulkDeleteAction $action) {
             $usedInMenu = false;
             foreach ($records as $record) {
                 /** @var Model&HasMenuLabel $record */
@@ -31,16 +31,21 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
                     $usedInMenu = true;
 
                     Notification::make()
-                        ->title(flexiblePagesTrans('pages.notifications.used_in_menu', [
+                        ->title(flexiblePagesTrans('pages.notifications.used_in_menu_bulk', [
+                            'page' => $record->getMenuLabel(),
                             'menu' => $menuItem->menu->name,
                             'menu_item' => $menuItem->getDisplayLabel(),
                         ]))
                         ->danger()
+                        ->duration(12000)
                         ->send();
                 }
             }
 
-            if (! $usedInMenu) {
+            if ($usedInMenu) {
+                $action->failure();
+            }
+            else {
                 $this->process(static fn (Collection $records) => $records->each(fn (Model&HasMenuLabel $record) => $record->delete()));
                 $action->success();
             }

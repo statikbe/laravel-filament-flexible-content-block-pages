@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
@@ -167,7 +168,7 @@ class PageResource extends Resource
                 ->searchable(['title', 'code', 'slug', 'intro']);
         }
 
-        if (! empty($gridFields)) {
+        if (!empty($gridFields)) {
             $fields[] = Grid::make()->schema($gridFields);
         }
 
@@ -197,8 +198,11 @@ class PageResource extends Resource
                 LinkedToMenuItemBulkDeleteAction::make(),
             ])
             ->recordUrl(
-                fn ($record): string => static::getUrl('edit', ['record' => $record])
-            );
+                fn($record): string => static::getUrl('edit', ['record' => $record])
+            )
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with(['menuItem']);
+            });
     }
 
     public static function getRelations(): array

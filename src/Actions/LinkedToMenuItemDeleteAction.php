@@ -29,6 +29,7 @@ class LinkedToMenuItemDeleteAction extends DeleteAction
                         'menu_item' => $menuItem->getDisplayLabel(),
                     ]))
                     ->danger()
+                    ->duration(12000)
                     ->send();
             } else {
                 $record->delete();

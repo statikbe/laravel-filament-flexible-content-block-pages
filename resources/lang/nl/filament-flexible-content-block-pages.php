@@ -18,6 +18,7 @@ return [
         ],
         'notifications' => [
             'used_in_menu' => 'Deze pagina wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan deze pagina opnieuw te verwijderen.',
+            'used_in_menu_bulk' => 'Pagina ":page" wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan deze pagina opnieuw te verwijderen.',
         ],
     ],
     'redirects' => [
