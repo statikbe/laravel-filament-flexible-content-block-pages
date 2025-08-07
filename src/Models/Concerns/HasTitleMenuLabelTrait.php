@@ -4,6 +4,8 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns;
 
 trait HasTitleMenuLabelTrait
 {
+    use HasMenuItemTrait;
+
     /**
      * Get the display label for menu items.
      * This implementation uses the 'title' field with locale support.

@@ -50,16 +50,28 @@ You can publish and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="filament-flexible-content-block-pages-migrations"
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
 php artisan migrate
 ```
 
-Configure the Filament tailwind styling by adding these view paths to `tailwind.config.js`:
+Configure the Filament tailwind styling of the frontend by adding these view paths to `content` array of `tailwind.config.js`:
 
-```php
+```javascript
 content: [
     ...
     './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
     './vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php',
+    './vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php',
+    './config/filament-flexible-content-blocks.php',
+]
+```
+
+In the tailwind config of your filament back-end, add the following lines to the `content` array:
+
+```javascript
+content: [
+    ...
+    './config/filament-flexible-content-blocks.php',
 ]
 ```
 
@@ -164,13 +176,16 @@ To make your models available in the menu builder, add them to the configuration
 ],
 ```
 
-Your models should implement the `HasMenuLabel` contract:
+Your models should implement the `[HasMenuLabel](src/Models/Contracts/HasMenuLabel.php)` contract and the [HasTitleMenuLabelTrait](src/Models/Concerns/HasTitleMenuLabelTrait.php) trait:
 
 ```php
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasMenuItemTrait;
 
 class Product extends Model implements HasMenuLabel
 {
+    use HasMenuItemTrait;
+    
     public function getMenuLabel(?string $locale = null): string
     {
         return $this->getTranslation('name', $locale ?? app()->getLocale());
@@ -382,6 +397,7 @@ menu:
 
 page:
 - make table searchable, columns orderable, test global search
+- laravel scout
 
 release:
 - policies:

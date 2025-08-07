@@ -90,7 +90,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             static::CACHE_TAG_SETTINGS,
             $cacheKey,
             function () use ($settingField) {
-                $setting = static::getSettings()->getAttribute($settingField);
+                $setting = static::getSettings()?->getAttribute($settingField);
 
                 // replace text params in settings if it is a text field (based on $translatable fields):
                 if (in_array($settingField, app(static::class)->translatable)) {
