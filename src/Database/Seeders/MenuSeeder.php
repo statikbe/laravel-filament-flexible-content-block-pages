@@ -26,9 +26,7 @@ abstract class MenuSeeder extends Seeder
         ?string $style = null,
         ?int $maxDepth = null
     ): Menu {
-        $menuModel = FilamentFlexibleContentBlockPages::config()->getMenuModel();
-
-        return $menuModel::create([
+        return $this->getMenuModel()::create([
             'name' => $name,
             'code' => $code,
             'description' => $description,
@@ -38,15 +36,22 @@ abstract class MenuSeeder extends Seeder
     }
 
     /**
-     * Create a base menu item with common fields.
+     * Generic function to create a menu item.
      */
     protected function createMenuItem(
         Menu|int $menu,
         string|array $label,
+        string $link_type,
         bool $isVisible = true,
         string $target = '_self',
         ?string $icon = null,
-        MenuItem|int $parent = -1
+        MenuItem|int $parent = -1,
+        /* only for link_type MenuItem::LINK_TYPE_ROUTE */
+        ?string $route = null,
+        /* only for link_type MenuItem::LINK_TYPE_URL */
+        ?string $url = null,
+        /* only for link_type 'model' */
+        bool $useModelTitle = false,
     ): MenuItem {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
         $menuId = $menu->id ?? $menu;
@@ -54,13 +59,16 @@ abstract class MenuSeeder extends Seeder
 
         return $menuItemModel::create([
             'menu_id' => $menuId,
-            'link_type' => null, // Will be set by specific type methods
+            'link_type' => $link_type,
             'label' => $this->normalizeLabel($label),
             'is_visible' => $isVisible,
             'target' => $target,
             'icon' => $icon,
             'parent_id' => $parentId,
             'order' => $this->getNextOrder($menuId, $parentId),
+            'route' => $route,
+            'url' => $url,
+            'use_model_title' => $useModelTitle,
         ]);
     }
 
@@ -78,14 +86,16 @@ abstract class MenuSeeder extends Seeder
     ): MenuItem {
         $this->validateRoute($route);
 
-        $menuItem = $this->createMenuItem($menu, $label, $isVisible, $target, $icon, $parent);
-
-        $menuItem->update([
-            'link_type' => MenuItem::LINK_TYPE_ROUTE,
-            'route' => $route,
-        ]);
-
-        return $menuItem;
+        return $this->createMenuItem(
+            menu: $menu,
+            label: $label,
+            link_type: MenuItem::LINK_TYPE_ROUTE,
+            isVisible: $isVisible,
+            target: $target,
+            icon: $icon,
+            parent: $parent,
+            route: $route,
+        );
     }
 
     /**
@@ -100,23 +110,56 @@ abstract class MenuSeeder extends Seeder
         ?string $icon = null,
         MenuItem|int $parent = -1
     ): MenuItem {
-        $menuItem = $this->createMenuItem($menu, $label, $isVisible, $target, $icon, $parent);
+        return $this->createMenuItem(
+            menu: $menu,
+            label: $label,
+            link_type: MenuItem::LINK_TYPE_URL,
+            isVisible: $isVisible,
+            target: $target,
+            icon: $icon,
+            parent: $parent,
+            url: $url,
+        );
+    }
 
-        $menuItem->update([
-            'link_type' => MenuItem::LINK_TYPE_URL,
-            'url' => $url,
-        ]);
+    /**
+     * Create a menu item that links to a Page model
+     */
+    protected function createMenuItemForPageCode(
+        Menu|int $menu,
+        string $pageCode,
+        string|array|null $label = null,
+        bool $useModelTitle = true,
+        bool $isVisible = true,
+        string $target = '_self',
+        ?string $icon = null,
+        MenuItem|int $parent = -1
+    ): MenuItem {
+        $model = $this->getPageModel()::code($pageCode)->first();
+
+        $menuItem = $this->createMenuItemForModel(
+            menu: $menu,
+            model: $model,
+            label: $label,
+            link_type: 'filament-flexible-content-block-pages::page',
+            useModelTitle: $useModelTitle,
+            isVisible: $isVisible,
+            target: $target,
+            icon: $icon,
+            parent: $parent,
+        );
 
         return $menuItem;
     }
 
     /**
-     * Create a menu item that links to a model (Page, etc.).
+     * Create a menu item that links to a model
      */
     protected function createMenuItemForModel(
         Menu|int $menu,
         Model $model,
         string|array|null $label = null,
+        string $link_type = 'model',
         bool $useModelTitle = true,
         bool $isVisible = true,
         string $target = '_self',
@@ -128,12 +171,16 @@ abstract class MenuSeeder extends Seeder
             $label = $model->getMenuLabel();
         }
 
-        $menuItem = $this->createMenuItem($menu, $label, $isVisible, $target, $icon, $parent);
-
-        $menuItem->update([
-            'link_type' => 'model', // Assuming this is the linkable type
-            'use_model_title' => $useModelTitle,
-        ]);
+        $menuItem = $this->createMenuItem(
+            menu: $menu,
+            label: $label,
+            link_type: $link_type,
+            isVisible: $isVisible,
+            target: $target,
+            icon: $icon,
+            parent: $parent,
+            useModelTitle: $label ? false : $useModelTitle,
+        );
 
         // Set the polymorphic relationship
         $menuItem->linkable()->associate($model);
@@ -142,10 +189,25 @@ abstract class MenuSeeder extends Seeder
         return $menuItem;
     }
 
+    protected function getMenuModel()
+    {
+        return FilamentFlexibleContentBlockPages::config()->getMenuModel();
+    }
+
+    protected function getPageModel()
+    {
+        return FilamentFlexibleContentBlockPages::config()->getPageModel();
+    }
+
+    protected function doesMenuExist(string $code): bool
+    {
+        return $this->getMenuModel()::code($code)->count() > 0;
+    }
+
     /**
      * Convert string labels to translatable array format.
      */
-    private function normalizeLabel(string|array $label): array
+    protected function normalizeLabel(string|array $label): array
     {
         if (is_string($label)) {
             return [app()->getLocale() => $label];
@@ -157,7 +219,7 @@ abstract class MenuSeeder extends Seeder
     /**
      * Get the next order value for items within the same menu/parent scope.
      */
-    private function getNextOrder(int $menuId, int $parentId): int
+    protected function getNextOrder(int $menuId, int $parentId): int
     {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
 
@@ -171,7 +233,7 @@ abstract class MenuSeeder extends Seeder
     /**
      * Validate that a route exists.
      */
-    private function validateRoute(string $route): void
+    protected function validateRoute(string $route): void
     {
         if (! Route::has($route)) {
             throw new InvalidArgumentException("Route '{$route}' does not exist.");

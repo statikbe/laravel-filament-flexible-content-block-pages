@@ -59,7 +59,7 @@ $headerMenu = $this->createMenu(
     name: 'Header Navigation',
     code: 'header',
     description: 'Main navigation menu displayed in the header',
-    style: 'horizontal',
+    style: 'default',
     maxDepth: 3
 );
 ```
@@ -153,6 +153,7 @@ protected function createMenuItemForModel(
     Menu|int $menu,
     Model $model,
     string|array|null $label = null,
+    string $link_type = 'model',
     bool $useModelTitle = true,
     bool $isVisible = true,
     string $target = '_self',
@@ -166,6 +167,7 @@ protected function createMenuItemForModel(
 - Falls back to class name + ID if no label provided
 - Sets up polymorphic relationship correctly
 - Supports `use_model_title` for dynamic labels
+- There is also a convenience function `createMenuItemForPageCode` (uses `createMenuItemForModel` under the hood) which will search the Page model based on an input `pageCode`
 
 **Example:**
 ```php
@@ -175,6 +177,7 @@ $page = Page::where('slug', 'about')->first();
 $aboutItem = $this->createMenuItemForModel(
     menu: $menu,
     model: $page,
+    link_type: 'filament-flexible-content-block-pages::page',
     useModelTitle: true
 );
 
@@ -183,6 +186,7 @@ $contactItem = $this->createMenuItemForModel(
     menu: $menu,
     model: $contactPage,
     label: 'Get in Touch',
+    link_type: 'filament-flexible-content-block-pages::page',
     useModelTitle: false
 );
 ```
@@ -252,7 +256,7 @@ class MainMenuSeeder extends MenuSeeder
             name: 'Main Navigation',
             code: 'main',
             description: 'Primary website navigation',
-            style: 'horizontal',
+            style: 'default',
             maxDepth: 3
         );
 

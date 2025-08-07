@@ -112,14 +112,9 @@ return [
         'styles' => [
             // Available menu styles (codes only - labels come from translations)
             'default',
-            'horizontal',
-            'vertical',
-            'dropdown',
 
-            // Add your custom styles here:
+            // If needed, add your custom style(s) here:
             // 'mega',
-            // 'mobile',
-            // 'breadcrumb',
         ],
     ],
 
