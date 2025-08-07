@@ -11,6 +11,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasAuthorAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasDefaultContentBlocksTrait;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasHeroCallToActionsTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasParentTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedContentBlocksTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedHeroImageAttributesTrait;
@@ -21,6 +22,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedSEOAttri
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedSlugAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasContentBlocks;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasHeroCallToActionsAttribute;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasHeroImageAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasIntroAttribute;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasMediaAttributes;
@@ -32,7 +34,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 /**
  * @property bool $is_undeletable
  */
-class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
+class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, HasHeroCallToActionsAttribute
 {
     use HasAuthorAttributeTrait;
     use HasCodeTrait;
@@ -47,6 +49,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     use HasTranslatedPageAttributesTrait;
     use HasTranslatedSEOAttributesTrait;
     use HasTranslatedSlugAttributeTrait;
+    use HasHeroCallToActionsTrait;
 
     const HOME_PAGE = 'HOME';
 

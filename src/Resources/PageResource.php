@@ -117,7 +117,7 @@ class PageResource extends Resource
         ];
 
         if (FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())) {
-            $fields[] = new HeroCallToActionSection;
+            $fields[] = HeroCallToActionSection::create();
         }
 
         return $fields;
