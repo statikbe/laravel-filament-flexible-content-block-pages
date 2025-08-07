@@ -34,12 +34,13 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 /**
  * @property bool $is_undeletable
  */
-class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes, HasHeroCallToActionsAttribute
+class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActionsAttribute, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
 {
     use HasAuthorAttributeTrait;
     use HasCodeTrait;
     use HasDefaultContentBlocksTrait;
     use HasFactory;
+    use HasHeroCallToActionsTrait;
     use HasParentTrait;
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
@@ -49,7 +50,6 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroImageAttri
     use HasTranslatedPageAttributesTrait;
     use HasTranslatedSEOAttributesTrait;
     use HasTranslatedSlugAttributeTrait;
-    use HasHeroCallToActionsTrait;
 
     const HOME_PAGE = 'HOME';
 
