@@ -2,12 +2,14 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasTitleMenuLabelTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlockPages\Observers\PageObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasAuthorAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasDefaultContentBlocksTrait;
@@ -34,6 +36,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 /**
  * @property bool $is_undeletable
  */
+#[ObservedBy(PageObserver::class)]
 class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActionsAttribute, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
 {
     use HasAuthorAttributeTrait;

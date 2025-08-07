@@ -403,10 +403,8 @@ check:
 - Seppe: menu components ok?
 
 menu:
-- page delete modal when page used in menu
-  - orm listeners for linkable models that are in a menu to avoid accidental deletion.
 - caching tree model + observer to clear cache
-- Menu titels
+- Menu titels menu items
 - Ben: add menu to default page template
 - test global search and improve table search and ordering
 
