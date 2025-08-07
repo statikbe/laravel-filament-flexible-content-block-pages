@@ -370,18 +370,19 @@ TODO
 
 check: 
 - do install docs work
-- tailwind config complete? do we need to add flexible content blocks styling?
-- menu components ok?
+- Seppe: tailwind config complete? do we need to add flexible content blocks styling?
+- Seppe: menu components ok?
 
 menu: 
+- Ben: menu seeder extra functions from VLWPLA
 - page delete modal when page used in menu
   - orm listeners for linkable models that are in a menu to avoid accidental deletion.
 - caching tree model + observer to clear cache
-- add menu to default page template
+- Ben: add menu to default page template
 - test global search and improve table search and ordering
 
 page:
-- make table searchable, columns orderable, test global search
+- Kristof: make table searchable, columns orderable, test global search
 
 release:
 - policies:
@@ -390,7 +391,7 @@ release:
 - redirect controller
 - tag controller
 - documentation
-- screenshots + banner + packagist + filament plugin store
+- Kristof: screenshots + banner + packagist + slack + filament plugin store
 
 future:
 - A simple asset manager (include or not?)
