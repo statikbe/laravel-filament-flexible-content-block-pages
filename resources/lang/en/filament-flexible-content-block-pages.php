@@ -89,9 +89,6 @@ return [
     'menu' => [
         'styles' => [
             'default' => 'Default menu',
-            'horizontal' => 'Horizontal navigation',
-            'vertical' => 'Sidebar navigation',
-            'dropdown' => 'Dropdown menu',
         ],
         'no_items' => 'No menu items available',
         'mobile_toggle_label' => 'Open main menu',

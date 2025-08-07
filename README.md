@@ -181,9 +181,26 @@ class Product extends Model implements HasMenuLabel
 If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
 easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrait.php).
 
-### Customizing menu styles
+### Using the 'default' menu style
 
-The package includes several built-in menu styles, but you can easily add your own:
+The package includes a `default` built-in menu style which is developed in a generic way so that you can tweak its styling by passing some attributes without having to publish the corresponding blade templates.
+
+Example usage to have a horizontal menu using tailwind:
+```blade
+<x-flexible-pages-menu
+    code="HEADER"
+    style="default"
+    ulClass="flex flex-row justify-start items-center gap-x-4"
+    itemLinkClass="text-black hover:text-primary hover:underline"
+    currentItemLinkClass="text-grey hover:no-underline"
+/>
+```
+
+See the file `../tailwind/components/menu/default.blade.php` for all possible attributes.
+
+### Customizing additional menu styles
+
+If needed, you can easily add your own menu styles in addition to the `default` style:
 
 1. **Add new styles to config:**
 ```php
@@ -191,9 +208,6 @@ The package includes several built-in menu styles, but you can easily add your o
 'menu' => [
     'styles' => [
         'default',
-        'horizontal', 
-        'vertical',
-        'dropdown',
         'mega', // Your custom style
     ],
 ],
@@ -211,7 +225,7 @@ resources/views/vendor/filament-flexible-content-block-pages/tailwind/components
 
 3. **Use in your templates:**
 ```blade
-<x-flexible-pages-menu code="header" style="mega" />
+<x-flexible-pages-menu code="HEADER" style="mega" />
 ```
 
 The style can also be configured in the database model, then you can skip the `style` attribute.
@@ -373,8 +387,7 @@ check:
 - Seppe: tailwind config complete? do we need to add flexible content blocks styling?
 - Seppe: menu components ok?
 
-menu: 
-- Ben: menu seeder extra functions from VLWPLA
+menu:
 - page delete modal when page used in menu
   - orm listeners for linkable models that are in a menu to avoid accidental deletion.
 - caching tree model + observer to clear cache
