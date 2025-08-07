@@ -2,22 +2,17 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
+use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages;
@@ -199,32 +194,7 @@ class PageResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([
-                DeleteBulkAction::make()
-                    ->action(function (Collection $records, Action $action) {
-                        $usedInMenu = false;
-                        foreach ($records as $record) {
-                            // Prevent deletion if the page is referenced by a menu item
-                            /** @var ?MenuItem $menuItem */
-                            $menuItem = $record->menuItem();
-
-                            if ($menuItem) {
-                                $usedInMenu = true;
-
-                                Notification::make()
-                                    ->title(flexiblePagesTrans('pages.notifications.used_in_menu', [
-                                        'menu' => $menuItem->menu->name,
-                                        'menu_item' => $menuItem->getDisplayLabel(),
-                                    ]))
-                                    ->danger()
-                                    ->send();
-                            }
-                        }
-
-                        if (! $usedInMenu) {
-                            $this->process(static fn (Collection $records) => $records->each(fn (Page $record) => $record->delete()));
-                            $action->success();
-                        }
-                    }),
+                LinkedToMenuItemBulkDeleteAction::make(),
             ])
             ->recordUrl(
                 fn ($record): string => static::getUrl('edit', ['record' => $record])
