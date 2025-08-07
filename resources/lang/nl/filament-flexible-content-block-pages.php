@@ -17,8 +17,10 @@ return [
             'created_at_col' => 'Aangemaakt op',
         ],
         'notifications' => [
-            'used_in_menu' => 'Deze pagina wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan deze pagina opnieuw te verwijderen.',
-            'used_in_menu_bulk' => 'Pagina ":page" wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan deze pagina opnieuw te verwijderen.',
+            'used_in_menu' => 'Dit wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan dit opnieuw te verwijderen.',
+            'used_in_menu_bulk' => 'Sommige items worden in menu\'s gebruikt. Gelieve eerst de menu\'s aan te passen en dan deze itemss opnieuw te verwijderen.',
+            'page_referenced_by_menu_item' => '":page" (gerefereerd door :menu in :menu_item)',
+            'bulk_delete_successful' => ':count items verwijderd.',
         ],
     ],
     'redirects' => [

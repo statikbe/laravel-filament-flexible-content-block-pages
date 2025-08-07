@@ -17,8 +17,10 @@ return [
             'created_at_col' => 'Created at',
         ],
         'notifications' => [
-            'used_in_menu' => 'This page is used in the ":menu" menu, in item :menu_item. Please update the menu first and then try deleting this page again.',
-            'used_in_menu_bulk' => 'Page ":page" is used in the ":menu" menu, in item :menu_item. Please update the menu first and then try deleting this page again.',
+            'used_in_menu' => 'This is used in the ":menu" menu, in item :menu_item. Please update the menu first and then delete this again.',
+            'used_in_menu_bulk' => 'Some items are used in menus. Please update the menus first and then delete these items again.',
+            'page_referenced_by_menu_item' => '":page" (referenced by :menu in :menu_item)',
+            'bulk_delete_successful' => ':count items deleted.',
         ],
 
     ],

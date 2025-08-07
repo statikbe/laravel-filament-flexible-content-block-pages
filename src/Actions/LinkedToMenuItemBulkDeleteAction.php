@@ -7,6 +7,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 
@@ -20,7 +21,9 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
         parent::setUp();
 
         $this->action(function (Collection $records, LinkedToMenuItemBulkDeleteAction $action) {
-            $usedInMenu = false;
+            $referencedPages = [];
+            $deletablePages = [];
+
             foreach ($records as $record) {
                 /** @var Model&HasMenuLabel $record */
                 // Prevent deletion if the page is referenced by a menu item
@@ -28,25 +31,39 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
                 $menuItem = $record->menuItem;
 
                 if ($menuItem) {
-                    $usedInMenu = true;
-
-                    Notification::make()
-                        ->title(flexiblePagesTrans('pages.notifications.used_in_menu_bulk', [
-                            'page' => $record->getMenuLabel(),
-                            'menu' => $menuItem->menu->name,
-                            'menu_item' => $menuItem->getDisplayLabel(),
-                        ]))
-                        ->danger()
-                        ->duration(12000)
-                        ->send();
+                    $referencedPages[] = $record;
+                } else {
+                    $deletablePages[] = $record;
                 }
             }
 
-            if ($usedInMenu) {
-                $action->failure();
+            if (! empty($referencedPages)) {
+                $pageNames = collect($referencedPages)->map(function (Model&HasMenuLabel $page) {
+                    return '<li>'.
+                        flexiblePagesTrans('pages.notifications.page_referenced_by_menu_item', [
+                            'page' => $page->getMenuLabel(),
+                            'menu' => $page->menuItem->menu->name,
+                            'menu_item' => $page->menuItem->getDisplayLabel(),
+                        ])
+                        .'</li>';
+                })->join('');
+
+                Notification::make()
+                    ->title(flexiblePagesTrans('pages.notifications.used_in_menu_bulk'))
+                    ->body(new HtmlString("<ul>$pageNames</ul>"))
+                    ->danger()
+                    ->duration(12000)
+                    ->send();
             }
-            else {
-                $this->process(static fn (Collection $records) => $records->each(fn (Model&HasMenuLabel $record) => $record->delete()));
+
+            if (! empty($deletablePages)) {
+                collect($deletablePages)->each(fn (Model&HasMenuLabel $record) => $record->delete());
+
+                Notification::make()
+                    ->title(flexiblePagesTrans('pages.notifications.bulk_delete_successful', ['count' => count($deletablePages)]))
+                    ->success()
+                    ->send();
+
                 $action->success();
             }
         });

@@ -168,7 +168,7 @@ class PageResource extends Resource
                 ->searchable(['title', 'code', 'slug', 'intro']);
         }
 
-        if (!empty($gridFields)) {
+        if (! empty($gridFields)) {
             $fields[] = Grid::make()->schema($gridFields);
         }
 
@@ -198,7 +198,7 @@ class PageResource extends Resource
                 LinkedToMenuItemBulkDeleteAction::make(),
             ])
             ->recordUrl(
-                fn($record): string => static::getUrl('edit', ['record' => $record])
+                fn ($record): string => static::getUrl('edit', ['record' => $record])
             )
             ->modifyQueryUsing(function (Builder $query) {
                 $query->with(['menuItem']);
