@@ -43,6 +43,7 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
                     /** @var ?MenuItem $menuItem */
                     /** @phpstan-ignore-next-line */
                     $menuItem = $page->menuItem;
+
                     return '<li>'.
                         flexiblePagesTrans('pages.notifications.page_referenced_by_menu_item', [
                             'page' => $page->getMenuLabel(),
