@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Event;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -13,6 +14,8 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
+use Statikbe\FilamentFlexibleContentBlockPages\Listeners\SlugChangedListener;
+use Statikbe\FilamentFlexibleContentBlocks\Events\SlugChanged;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocks;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
@@ -73,5 +76,8 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
 
         // set our custom redirector for spatie/laravel-missing-page-redirector
         $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
+
+        // register slug changed listener
+        Event::listen(SlugChanged::class, SlugChangedListener::class);
     }
 }
