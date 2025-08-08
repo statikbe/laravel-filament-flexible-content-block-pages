@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\SitemapGenerator;
+use Spatie\Sitemap\SitemapGenerator as SpatieSitemapGenerator;
 use Spatie\Sitemap\Tags\Alternate;
 use Spatie\Sitemap\Tags\Url;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 use Statikbe\FilamentFlexibleContentBlocks\ContentBlocks\CallToActionBlock;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
@@ -19,7 +20,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
-class SitemapGeneratorService
+class SitemapGeneratorService implements GeneratesSitemap
 {
     protected Sitemap $sitemap;
 
@@ -75,7 +76,7 @@ class SitemapGeneratorService
     {
         $baseUrl = config('app.url');
 
-        $this->sitemap = SitemapGenerator::create($baseUrl)->getSitemap();
+        $this->sitemap = SpatieSitemapGenerator::create($baseUrl)->getSitemap();
     }
 
     protected function addPages(): void

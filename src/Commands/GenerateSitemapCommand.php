@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
 use Illuminate\Console\Command;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
 
 class GenerateSitemapCommand extends Command
 {
@@ -35,8 +36,7 @@ class GenerateSitemapCommand extends Command
         $this->info('Generating sitemap...');
 
         try {
-            $generatorServiceClass = FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
-            $generator = app($generatorServiceClass);
+            $generator = app(GeneratesSitemap::class);
 
             $generator->generate();
 

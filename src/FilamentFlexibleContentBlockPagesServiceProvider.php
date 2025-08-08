@@ -15,6 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Listeners\SlugChangedListener;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
 use Statikbe\FilamentFlexibleContentBlocks\Events\SlugChanged;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocks;
 
@@ -68,13 +69,10 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
 
     public function packageRegistered()
     {
+        // Bind sitemap generator interface to the configured implementation
         $this->app->bind(
-            \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
-            function ($app) {
-                $serviceClass = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
-
-                return $app->make($serviceClass);
-            }
+            GeneratesSitemap::class,
+            config('filament-flexible-content-block-pages.sitemap.generator_service', \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class)
         );
 
         // register slug changed listener
