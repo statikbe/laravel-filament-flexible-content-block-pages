@@ -20,6 +20,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
+            \Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
             FilamentFlexibleContentBlockPagesServiceProvider::class,
         ];
     }
@@ -27,6 +28,12 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+
+        // Configure Laravel Localization for tests
+        config()->set('laravellocalization.supportedLocales', [
+            'en' => ['name' => 'English', 'script' => 'Latn', 'native' => 'English', 'regional' => 'en_GB'],
+            'es' => ['name' => 'Spanish', 'script' => 'Latn', 'native' => 'español', 'regional' => 'es_ES'],
+        ]);
 
         /*
          foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/database/migrations') as $migration) {
