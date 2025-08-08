@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Observers;
 
 use Illuminate\Support\Facades\Cache;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\DatabaseAndConfigRedirector;
 
 /**
  * Clear redirect cache if a redirect changes
@@ -15,7 +16,7 @@ class RedirectObserver
      */
     public function created(Redirect $redirect): void
     {
-        Cache::forget(Redirect::CACHE_REDIRECTS_KEY);
+        $this->clearRedirectCache();
     }
 
     /**
@@ -23,7 +24,7 @@ class RedirectObserver
      */
     public function updated(Redirect $redirect): void
     {
-        Cache::forget(Redirect::CACHE_REDIRECTS_KEY);
+        $this->clearRedirectCache();
     }
 
     /**
@@ -31,7 +32,7 @@ class RedirectObserver
      */
     public function deleted(Redirect $redirect): void
     {
-        Cache::forget(Redirect::CACHE_REDIRECTS_KEY);
+        $this->clearRedirectCache();
     }
 
     /**
@@ -39,7 +40,7 @@ class RedirectObserver
      */
     public function restored(Redirect $redirect): void
     {
-        Cache::forget(Redirect::CACHE_REDIRECTS_KEY);
+        $this->clearRedirectCache();
     }
 
     /**
@@ -47,6 +48,11 @@ class RedirectObserver
      */
     public function forceDeleted(Redirect $redirect): void
     {
-        Cache::forget(Redirect::CACHE_REDIRECTS_KEY);
+        $this->clearRedirectCache();
+    }
+
+    private function clearRedirectCache(): void
+    {
+        Cache::forget(DatabaseAndConfigRedirector::CACHE_REDIRECTS_KEY);
     }
 }

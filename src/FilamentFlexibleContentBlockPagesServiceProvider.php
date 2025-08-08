@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\MissingPageRedirector\Redirector\Redirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
@@ -69,5 +70,8 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 return $app->make($serviceClass);
             }
         );
+
+        // set our custom redirector for spatie/laravel-missing-page-redirector
+        $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
     }
 }
