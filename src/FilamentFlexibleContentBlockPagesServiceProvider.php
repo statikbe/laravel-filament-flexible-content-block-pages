@@ -61,6 +61,9 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         $this->mergeConfigFrom(__DIR__.'/../config/'.$configName.'.php', $configName);
 
         FilamentFlexibleContentBlocks::setLocales(LaravelLocalization::getSupportedLanguagesKeys());
+
+        // Override spatie/laravel-missing-page-redirector's redirector - this runs after all packages are registered
+        $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
     }
 
     public function packageRegistered()
@@ -73,9 +76,6 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 return $app->make($serviceClass);
             }
         );
-
-        // set our custom redirector for spatie/laravel-missing-page-redirector
-        $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
 
         // register slug changed listener
         Event::listen(SlugChanged::class, SlugChangedListener::class);
