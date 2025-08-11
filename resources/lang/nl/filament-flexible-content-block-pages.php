@@ -44,6 +44,11 @@ return [
         'translatable_field_hint' => 'Dit veld kan vertaald worden. De huidige taal kan je rechtsbovenaan bekijken/aanpassen.',
         'settings_footer_copyright' => 'Copyrightboodschap in footer',
     ],
+    'tag_pages' => [
+        'no_content' => 'Er is momenteel geen gepubliceerde inhoud getagd met ":tag".',
+        'meta_description_no_content' => 'Bekijk inhoud getagd met :tag.',
+        'meta_description_with_content' => 'Bekijk :count items getagd met :tag.',
+    ],
     'form_component' => [
         'name_lbl' => 'Naam',
         'colour_lbl' => 'Kleur',
@@ -95,9 +100,6 @@ return [
     'menu' => [
         'styles' => [
             'default' => 'Standaard menu',
-            'horizontal' => 'Horizontale navigatie',
-            'vertical' => 'Zijbalk navigatie',
-            'dropdown' => 'Dropdown menu',
         ],
         'no_items' => 'Geen menu-items beschikbaar',
         'mobile_toggle_label' => 'Hoofdmenu openen',

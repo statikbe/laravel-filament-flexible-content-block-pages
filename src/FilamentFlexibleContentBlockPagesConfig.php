@@ -358,6 +358,36 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('tags.navigation_sort');
     }
 
+    public function areTagPagesEnabled(): bool
+    {
+        return ! empty($this->getTagPageEnabledModels());
+    }
+
+    public function getTagPageEnabledModels(): array
+    {
+        return $this->packageConfig('tag_pages.models.enabled', []);
+    }
+
+    public function getTagPagePaginationItemCount(): int
+    {
+        return $this->packageConfig('tag_pages.pagination.item_count', 20);
+    }
+
+    public function shouldGroupTagPagesByType(): bool
+    {
+        return $this->packageConfig('tag_pages.models.group_by_type', false);
+    }
+
+    public function shouldShowTagPageTypeCounts(): bool
+    {
+        return $this->packageConfig('tag_pages.pagination.show_type_counts', true);
+    }
+
+    public function getTagPageRoutePrefix(): string
+    {
+        return $this->packageConfig('tag_pages.route_path_prefix', 'tag');
+    }
+
     private function packageConfig(string $configKey, $default = null): mixed
     {
         return config('filament-flexible-content-block-pages.'.$configKey, $default);

@@ -17,6 +17,16 @@ class FilamentFlexibleContentBlockPages
         $this->config()->getRouteHelper()->defineRoutes();
     }
 
+    public function pageRoutes(): void
+    {
+        $this->config()->getRouteHelper()->definePageRoutes();
+    }
+
+    public function seoTagRoutes(): void
+    {
+        $this->config()->getRouteHelper()->defineSeoTagRoutes();
+    }
+
     public function getUrl(Page $page, ?string $locale = null): string
     {
         return $this->config()->getRouteHelper()->getUrl($page, $locale);

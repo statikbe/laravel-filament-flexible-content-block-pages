@@ -247,6 +247,10 @@ The style can also be configured in the database model, then you can skip the `s
 
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
+## Settings
+
+TODO how to add settings in model and resource
+
 ## Redirects
 
 The package includes automatic redirect management: when the slug of a page changes, a redirect from the old page 
@@ -360,7 +364,8 @@ If you do not want your model in menus or call-to-actions, you can extend the [S
 
 ### Extending the SitemapGeneratorService
 
-For full customization power, you can create your own sitemap generator service by extending the base class:
+For full customization power, you can create your own sitemap generator service by extending the base class or completely
+implementing a new service by implementing [GeneratesSitemap](src/Services/Contracts/GeneratesSitemap.php):
 
 ```php
 <?php
@@ -433,7 +438,6 @@ check:
 menu:
 - caching tree model + observer to clear cache
 - Menu titels menu items
-- Ben: add menu to default page template
 - test global search and improve table search and ordering
 
 page:
@@ -445,7 +449,6 @@ release:
 - policies:
   - note: undeletable pages
 - undeletable page toggle only for permission holder
-- redirect controller
 - tag controller
 - documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store

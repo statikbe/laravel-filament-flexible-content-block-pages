@@ -45,6 +45,11 @@ return [
         'translatable_field_hint' => 'This field can be translated. You can view/change the current language in the top right.',
         'settings_footer_copyright' => 'Copyright message in footer',
     ],
+    'tag_pages' => [
+        'no_content' => 'No published content is tagged with ":tag" at this time.',
+        'meta_description_no_content' => 'Browse content tagged with :tag.',
+        'meta_description_with_content' => 'Browse :count items tagged with :tag.',
+    ],
     'form_component' => [
         'name_lbl' => 'Name',
         'colour_lbl' => 'Color',

@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Routes;
 
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
 /**
  * Handles non-localised URLs.
@@ -33,5 +34,10 @@ class PageRouteHelper extends AbstractPageRouteHelper
         }
 
         return route(static::ROUTE_PAGE, ['page' => $page]);
+    }
+
+    public function getTagPageUrl(Tag $tag, ?string $locale = null): string
+    {
+        return route(static::ROUTE_SEO_TAG_PAGE, ['tag' => $tag]);
     }
 }

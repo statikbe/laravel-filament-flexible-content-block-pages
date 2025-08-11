@@ -5,19 +5,30 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Routes;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
 /**
  * Handles localised URLs.
  */
 class LocalisedPageRouteHelper extends AbstractPageRouteHelper
 {
-    public function defineRoutes(): void
+    public function definePageRoutes(): void
     {
         Route::group([
             'prefix' => LaravelLocalization::setLocale(),
             'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'localize'],
         ], function () {
-            parent::defineRoutes();
+            parent::definePageRoutes();
+        });
+    }
+
+    public function defineSeoTagRoutes(): void
+    {
+        Route::group([
+            'prefix' => LaravelLocalization::setLocale(),
+            'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'localize'],
+        ], function () {
+            parent::defineSeoTagRoutes();
         });
     }
 
@@ -45,5 +56,10 @@ class LocalisedPageRouteHelper extends AbstractPageRouteHelper
         $ancestorSlugs[] = $page->translate('slug', $locale);
 
         return LaravelLocalization::getLocalizedUrl($locale, route(static::ROUTE_HOME)).'/'.implode('/', $ancestorSlugs);
+    }
+
+    public function getTagPageUrl(Tag $tag, ?string $locale = null): string
+    {
+        return LaravelLocalization::getLocalizedUrl($locale, route(static::ROUTE_SEO_TAG_PAGE, ['tag' => $tag]));
     }
 }
