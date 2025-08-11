@@ -4,13 +4,12 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns;
 
 trait HasSearchFilterTrait
 {
-
     public function scopeSearch($query, string $search): void
     {
         $search = strtolower($search);
         $query->when($search, function ($query, $search) {
             $locale = app()->getLocale();
-            $query->where(function($query) use ($search, $locale) {
+            $query->where(function ($query) use ($search, $locale) {
                 $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"])
                     ->orWhereRaw("LOWER(intro->>'$.{$locale}') LIKE ?", ["%{$search}%"])
                     ->orWhereRaw("LOWER(content_blocks->>'$.{$locale}') LIKE ?", ["%{$search}%"])

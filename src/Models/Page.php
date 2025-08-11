@@ -46,6 +46,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     use HasFactory;
     use HasHeroCallToActionsTrait;
     use HasParentTrait;
+    use HasSearchFilterTrait;
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;
@@ -54,7 +55,6 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     use HasTranslatedPageAttributesTrait;
     use HasTranslatedSEOAttributesTrait;
     use HasTranslatedSlugAttributeTrait;
-    use HasSearchFilterTrait;
 
     const HOME_PAGE = 'HOME';
 
