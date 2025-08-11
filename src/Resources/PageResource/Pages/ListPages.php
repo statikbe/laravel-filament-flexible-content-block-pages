@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Concerns\Translatable;
+use Illuminate\Database\Eloquent\Builder;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
@@ -29,5 +30,14 @@ class ListPages extends ListRecords
     public function isTableSearchable(): bool
     {
         return true;
+    }
+
+    protected function applySearchToTableQuery(Builder $query): Builder
+    {
+        if (filled($searchQuery = $this->getTableSearch())) {
+            $query->search($searchQuery);
+        }
+
+        return $query;
     }
 }

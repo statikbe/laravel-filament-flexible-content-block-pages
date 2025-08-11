@@ -241,7 +241,9 @@ class PageResource extends Resource
             'content_blocks',
             'seo_title',
             'seo_description',
-            'seo_keywords'
+            'seo_keywords',
+            'overview_title',
+            'overview_description',
         ];
     }
 
