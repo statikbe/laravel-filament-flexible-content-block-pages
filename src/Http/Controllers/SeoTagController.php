@@ -73,7 +73,7 @@ class SeoTagController extends AbstractSeoPageController
     {
         // Use tag's SEO description if available
         $seoDescription = $tag->getTranslation('seo_description', app()->getLocale());
-        if (!empty($seoDescription)) {
+        if (! empty($seoDescription)) {
             return Str::limit($seoDescription, self::MAX_META_DESCRIPTION_LENGTH);
         }
 
