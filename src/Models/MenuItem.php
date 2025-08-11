@@ -29,6 +29,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
  * @property int $parent_id
  * @property \Illuminate\Database\Eloquent\Collection<int, MenuItem> $children
  * @property \Illuminate\Database\Eloquent\Model|null $linkable
+ * @property Menu $menu
  */
 class MenuItem extends Model
 {

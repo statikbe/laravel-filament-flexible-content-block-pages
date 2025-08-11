@@ -3,15 +3,20 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Event;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\MissingPageRedirector\Redirector\Redirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
+use Statikbe\FilamentFlexibleContentBlockPages\Listeners\SlugChangedListener;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
+use Statikbe\FilamentFlexibleContentBlocks\Events\SlugChanged;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocks;
 
 class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServiceProvider
@@ -57,17 +62,20 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         $this->mergeConfigFrom(__DIR__.'/../config/'.$configName.'.php', $configName);
 
         FilamentFlexibleContentBlocks::setLocales(LaravelLocalization::getSupportedLanguagesKeys());
+
+        // Override spatie/laravel-missing-page-redirector's redirector - this runs after all packages are registered
+        $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
     }
 
     public function packageRegistered()
     {
+        // Bind sitemap generator interface to the configured implementation
         $this->app->bind(
-            \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
-            function ($app) {
-                $serviceClass = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getSitemapGeneratorService();
-
-                return $app->make($serviceClass);
-            }
+            GeneratesSitemap::class,
+            config('filament-flexible-content-block-pages.sitemap.generator_service', \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class)
         );
+
+        // register slug changed listener
+        Event::listen(SlugChanged::class, SlugChangedListener::class);
     }
 }

@@ -20,6 +20,7 @@ class LinkedToMenuItemDeleteAction extends DeleteAction
         $this->action(function (Model&HasMenuLabel $record, $action) {
             // Prevent deletion if the page is referenced by a menu item
             /** @var ?MenuItem $menuItem */
+            /** @phpstan-ignore-next-line */
             $menuItem = $record->menuItem;
 
             if ($menuItem) {

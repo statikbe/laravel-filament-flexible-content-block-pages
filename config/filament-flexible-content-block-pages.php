@@ -136,6 +136,17 @@ return [
 
     'redirects' => [
         'navigation_sort' => 10,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirector
+        |--------------------------------------------------------------------------
+        |
+        | This package implements its own redirector for spatie/laravel-missing-page-redirector.
+        | To avoid manual configuration of this custom redirector in the spatie-package's config, we set the default here.
+        | In case you would like to customise this, please change the redirector here and not in the spatie package.
+        */
+        'redirector' => \Statikbe\FilamentFlexibleContentBlockPages\Services\DatabaseAndConfigRedirector::class,
     ],
 
     'settings' => [

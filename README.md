@@ -247,6 +247,34 @@ The style can also be configured in the database model, then you can skip the `s
 
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
+## Redirects
+
+The package includes automatic redirect management: when the slug of a page changes, a redirect from the old page 
+to the new page is added. These redirects are stored in the database and are managable with the Filament resource, 
+so you can add your own redirects.
+
+Additionally, we integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector),
+so you can easily configure other redirects in the spatie packages config.
+
+### Configuration
+
+1. Prepend/append the [RedirectsMissingPages.php](src/Http/Middleware/RedirectsMissingPages.php) middleware to your global middleware stack:
+
+```php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->append([
+        \Statikbe\FilamentFlexibleContentBlockPages\Http\Middleware\RedirectsMissingPages::class,
+    ]);
+})
+```
+
+2. **Optional:** If you want to hardcode a set of redirects, you can [do this in the config file of the spatie package](https://github.com/spatie/laravel-missing-page-redirector?tab=readme-ov-file#usage). Publish this package:
+
+```php
+php artisan vendor:publish --provider="Spatie\MissingPageRedirector\MissingPageRedirectorServiceProvider"
+```
+
 ## Sitemap Generator
 
 The package includes an automatic sitemap generator that creates XML sitemaps for your website with support for multilingual sites and various content types.

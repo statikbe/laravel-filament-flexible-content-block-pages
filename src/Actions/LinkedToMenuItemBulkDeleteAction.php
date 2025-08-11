@@ -28,6 +28,7 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
                 /** @var Model&HasMenuLabel $record */
                 // Prevent deletion if the page is referenced by a menu item
                 /** @var ?MenuItem $menuItem */
+                /** @phpstan-ignore-next-line */
                 $menuItem = $record->menuItem;
 
                 if ($menuItem) {
@@ -39,11 +40,15 @@ class LinkedToMenuItemBulkDeleteAction extends DeleteBulkAction
 
             if (! empty($referencedPages)) {
                 $pageNames = collect($referencedPages)->map(function (Model&HasMenuLabel $page) {
+                    /** @var ?MenuItem $menuItem */
+                    /** @phpstan-ignore-next-line */
+                    $menuItem = $page->menuItem;
+
                     return '<li>'.
                         flexiblePagesTrans('pages.notifications.page_referenced_by_menu_item', [
                             'page' => $page->getMenuLabel(),
-                            'menu' => $page->menuItem->menu->name,
-                            'menu_item' => $page->menuItem->getDisplayLabel(),
+                            'menu' => $menuItem?->menu->name,
+                            'menu_item' => $menuItem?->getDisplayLabel(),
                         ])
                         .'</li>';
                 })->join('');
