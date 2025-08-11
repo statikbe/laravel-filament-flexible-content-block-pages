@@ -19,7 +19,7 @@ class RedirectsMissingPages extends SpatieRedirectsMissingPages
         /** @var Response $response */
         $response = parent::handle($request, $next);
 
-        if ($request->query->count() > 0 && $response->$this->shouldRedirect($response)) {
+        if ($request->query->count() > 0 && $this->shouldRedirect($response)) {
             // make sure we do not lose the query string:
             /** @var RedirectResponse $response */
             if (! Str::contains($response->getTargetUrl(), '?')) {
