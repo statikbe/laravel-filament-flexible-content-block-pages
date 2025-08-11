@@ -186,11 +186,12 @@ class PageResource extends Resource
         return $table
             ->columns([
                 TitleColumn::create()
-                ->searchable(query: function($query, $search) {
-                    $locale = app()->getLocale();
-                    $search = strtolower($search);
-                    return $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"]);
-                }),
+                    ->searchable(query: function ($query, $search) {
+                        $locale = app()->getLocale();
+                        $search = strtolower($search);
+
+                        return $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"]);
+                    }),
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('pages.table.created_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
@@ -263,7 +264,7 @@ class PageResource extends Resource
 
         return [
             trans('filament-flexible-content-blocks::filament-flexible-content-blocks.form_component.intro_lbl') => Str::limit(strip_tags($record->intro)),
-            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published') => $published
+            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published') => $published,
         ];
     }
 }
