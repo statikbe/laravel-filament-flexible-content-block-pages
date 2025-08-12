@@ -42,7 +42,7 @@ class TagType extends Model implements HasCode
 
     protected $translatable = ['name'];
 
-    public $guarded = [];
+    public $fillable = ['is_default_type', 'colour', 'icon'];
 
     protected static function booted(): void
     {
