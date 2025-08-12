@@ -10,6 +10,8 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 /**
  * @method static FilamentFlexibleContentBlockPagesConfig config()
  * @method static void routes()
+ * @method static void pageRoutes()
+ * @method static void seoTagRoutes()
  * @method static string getUrl(Page $page, ?string $locale = null)
  * @method static Settings settings()
  *

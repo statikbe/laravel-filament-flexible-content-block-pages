@@ -153,6 +153,53 @@ return [
         'navigation_sort' => 5,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tag Pages Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure how tag pages work, including which models are included
+    | and pagination settings.
+    */
+    'tag_pages' => [
+        'models' => [
+            /*
+            | Which model classes should be included in tag pages.
+            | These models must use the HasTags trait from spatie/laravel-tags.
+            */
+            'enabled' => [
+                \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+                // Add your own taggable models here:
+                // \App\Models\Article::class,
+                // \App\Models\Product::class,
+            ],
+
+            /*
+            | Whether to group similar content types together in display.
+            | If true, all pages will be shown before all articles, etc.
+            | If false, content will be mixed by publication date.
+            */
+            'group_by_type' => false,
+        ],
+        /*
+         | The prefix of the route for tag pages. The format is:
+         | /{route_path_prefix}/{tag:slug}
+         */
+        'route_path_prefix' => 'tag',
+        'pagination' => [
+            /*
+            | Number of items per page for tag listings.
+            */
+            'item_count' => 20,
+
+            /*
+            | Show count of each content type in tag page title/description.
+            | Example: "Laravel (5 pages, 12 articles)"
+            */
+            'show_type_counts' => true,
+        ],
+    ],
+
     'tags' => [
         'navigation_sort' => 20,
     ],
