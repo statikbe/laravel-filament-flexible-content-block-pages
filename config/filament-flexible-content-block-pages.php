@@ -153,6 +153,11 @@ return [
         'navigation_sort' => 5,
     ],
 
+
+    'tags' => [
+        'navigation_sort' => 20,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Tag Pages Configuration
@@ -198,9 +203,5 @@ return [
             */
             'show_type_counts' => true,
         ],
-    ],
-
-    'tags' => [
-        'navigation_sort' => 20,
     ],
 ];

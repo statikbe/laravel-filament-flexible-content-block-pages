@@ -22,11 +22,11 @@ abstract class AbstractPageRouteHelper implements HandlesPageRoutes
 
     public function defineRoutes(): void
     {
-        $this->definePageRoutes();
-
         if (FilamentFlexibleContentBlockPages::config()->areTagPagesEnabled()) {
             $this->defineSeoTagRoutes();
         }
+
+        $this->definePageRoutes();
     }
 
     public function definePageRoutes(): void
