@@ -23,7 +23,7 @@ class SeoTagController extends AbstractSeoPageController
     public function index(Tag $tag): View
     {
         // Return not found when tag pages are not enabled
-        if (FilamentFlexibleContentBlockPages::config()->areTagPagesEnabled()) {
+        if (! FilamentFlexibleContentBlockPages::config()->areTagPagesEnabled()) {
             abort(404);
         }
 
