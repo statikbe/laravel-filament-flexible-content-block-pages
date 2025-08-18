@@ -41,7 +41,10 @@ class SeoTagController extends AbstractSeoPageController
         $modelLabels = $this->createModelLabelsLookup();
         $this->setupSEO($tag, $taggedContent);
 
-        return view('filament-flexible-content-block-pages::tailwind.pages.tag_index', [
+        /** @var view-string $viewName */
+        $viewName = 'filament-flexible-content-block-pages::tailwind.pages.tag_index';
+        
+        return view($viewName, [
             'tag' => $tag,
             'taggedContent' => $taggedContent,
             'contentCounts' => $contentCounts,
