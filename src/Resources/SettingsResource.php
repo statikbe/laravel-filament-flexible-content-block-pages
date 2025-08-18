@@ -69,8 +69,7 @@ class SettingsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make(Settings::SETTING_SITE_TITLE)
-                    ->label(trans('filament.settings_lbl')),
+                Tables\Columns\TextColumn::make(Settings::SETTING_SITE_TITLE),
             ])
             ->filters([
                 //

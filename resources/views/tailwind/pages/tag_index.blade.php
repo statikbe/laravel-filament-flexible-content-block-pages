@@ -12,7 +12,7 @@
 
                 @if($tag->seo_description)
                     <p class="text-lg text-gray-600 mb-6">
-                        {{ $tag->getTranslation('seo_description', app()->getLocale()) }}
+                        {!! $tag->getTranslation('seo_description', app()->getLocale()) !!}
                     </p>
                 @endif
 
@@ -79,14 +79,10 @@
             @else
                 <div class="text-center py-12">
                     <p class="text-gray-600 text-lg">
-                        @lang('filament-flexible-content-block-pages::tag_pages.no_content', ['tag' => $tag->getTranslation('name', app()->getLocale())])
+                        {{ flexiblePagesTrans('tag_pages.no_content', ['tag' => $tag->getTranslation('name', app()->getLocale())]) }}
                     </p>
                 </div>
             @endif
         </div>
     </main>
-
-    <footer>
-        <div>{{flexiblePagesSetting(Settings::SETTING_FOOTER_COPYRIGHT)}}</div>
-    </footer>
 </x-flexible-pages-base-layout>

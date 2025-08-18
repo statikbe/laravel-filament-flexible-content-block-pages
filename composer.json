@@ -29,9 +29,9 @@
         "statikbe/laravel-filament-flexible-content-blocks": "dev-main"
     },
     "require-dev": {
+        "larastan/larastan": "^2.9||^3.0",
         "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.1.1",
-        "larastan/larastan": "^2.9||^3.0",
         "orchestra/testbench": "^10.0.0",
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-arch": "^3.0",
