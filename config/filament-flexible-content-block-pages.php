@@ -153,7 +153,6 @@ return [
         'navigation_sort' => 5,
     ],
 
-
     'tags' => [
         'navigation_sort' => 20,
     ],
