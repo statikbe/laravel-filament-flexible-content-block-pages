@@ -21,6 +21,7 @@ function flexiblePagesSettingImageUrl(string $imageCollection, ?string $imageCon
 function flexiblePagesPrefix(string $var): string
 {
     $package = FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
+
     return "{$package}::{$var}";
 }
 
