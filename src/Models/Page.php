@@ -97,6 +97,6 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::page';
+        return flexiblePagesPrefix('page');
     }
 }

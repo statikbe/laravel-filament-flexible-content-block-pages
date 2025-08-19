@@ -15,7 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 
 abstract class AbstractSeoPageController extends Controller
 {
-    const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
+    const CACHE_SEO_IMAGE_DIMENSIONS = 'filament-flexible-content-block-pages::seo_image_dimensions:%s';
 
     const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
 

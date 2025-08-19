@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
@@ -141,7 +142,7 @@ abstract class MenuSeeder extends Seeder
             menu: $menu,
             model: $model,
             label: $label,
-            link_type: 'filament-flexible-content-block-pages::page',
+            link_type: FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX.'::page',
             useModelTitle: $useModelTitle,
             isVisible: $isVisible,
             target: $target,

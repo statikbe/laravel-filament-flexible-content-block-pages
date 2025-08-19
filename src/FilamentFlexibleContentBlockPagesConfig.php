@@ -390,6 +390,6 @@ class FilamentFlexibleContentBlockPagesConfig
 
     private function packageConfig(string $configKey, $default = null): mixed
     {
-        return config('filament-flexible-content-block-pages.'.$configKey, $default);
+        return config(FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX.'.'.$configKey, $default);
     }
 }

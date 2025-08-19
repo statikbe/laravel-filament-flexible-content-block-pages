@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
 use Illuminate\View\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem as MenuItemModel;
 
 class MenuItem extends Component
@@ -27,14 +28,15 @@ class MenuItem extends Component
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
-        $template = "filament-flexible-content-block-pages::{$theme}.components.menu.{$this->style}-item";
+        $package = FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
+        $template = "{$package}::{$theme}.components.menu.{$this->style}-item";
 
         // Check if the themed style item template exists, otherwise try default item in theme
         if (view()->exists($template)) {
             return view($template);
         }
 
-        $defaultTemplate = "filament-flexible-content-block-pages::{$theme}.components.menu.default-item";
+        $defaultTemplate = "{$package}::{$theme}.components.menu.default-item";
 
         return view($defaultTemplate);
     }

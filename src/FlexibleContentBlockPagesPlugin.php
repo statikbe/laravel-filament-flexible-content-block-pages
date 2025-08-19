@@ -19,7 +19,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'filament-flexible-content-block-pages';
+        return FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
     }
 
     public function register(Panel $panel): void

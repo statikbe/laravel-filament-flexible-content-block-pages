@@ -94,7 +94,7 @@ class MenuItem extends Model
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::menu-item';
+        return flexiblePagesPrefix('menu-item');
     }
 
     public function getUrl(?string $locale = null): ?string

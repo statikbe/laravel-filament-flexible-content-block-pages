@@ -103,6 +103,6 @@ class TagType extends Model implements HasCode
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::tag_type';
+        return flexiblePagesPrefix('tag_type');
     }
 }

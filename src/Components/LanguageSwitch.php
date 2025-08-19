@@ -5,13 +5,15 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 use Illuminate\View\Component;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 
 class LanguageSwitch extends Component
 {
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
-        $template = "filament-flexible-content-block-pages::{$theme}.components.language-switch";
+        $package = FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
+        $template = "{$package}::{$theme}.components.language-switch";
 
         // Check if the themed template exists, otherwise fallback to tailwind theme
         if (view()->exists($template)) {
@@ -20,7 +22,7 @@ class LanguageSwitch extends Component
 
         // Final fallback to tailwind theme
         /** @var view-string $fallbackTemplate */
-        $fallbackTemplate = 'filament-flexible-content-block-pages::tailwind.components.language-switch';
+        $fallbackTemplate = "{$package}::tailwind.components.language-switch";
 
         return view($fallbackTemplate);
     }

@@ -85,7 +85,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             $locale = app()->getLocale();
         }
 
-        $cacheKey = "filament-flexible-content-block-pages::settings::setting__{$settingField}_{$locale}";
+        $cacheKey = static::CACHE_TAG_SETTINGS."::setting__{$settingField}_{$locale}";
         $settingValue = TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
             $cacheKey,
@@ -116,7 +116,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
         $imageMedia = TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
-            "filament-flexible-content-block-pages::settings::image_media__{$imageCollection}__{$locale}",
+            static::CACHE_TAG_SETTINGS."::image_media__{$imageCollection}__{$locale}",
             function () use ($imageCollection): ?Media {
                 return static::getSettings()->getImageMedia($imageCollection);
             });
@@ -143,7 +143,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
         return TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
-            "filament-flexible-content-block-pages::settings::image_url__{$imageCollection}__{$imageConversion}",
+            static::CACHE_TAG_SETTINGS."::image_url__{$imageCollection}__{$imageConversion}",
             function () use ($imageCollection, $imageConversion) {
                 return static::getSettings()->getImageUrl($imageCollection, $imageConversion);
             });
@@ -176,6 +176,6 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::settings';
+        return flexiblePagesPrefix('settings');
     }
 }

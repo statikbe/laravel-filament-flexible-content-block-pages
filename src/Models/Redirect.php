@@ -30,6 +30,6 @@ class Redirect extends Model
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::redirect';
+        return flexiblePagesPrefix('redirect');
     }
 }

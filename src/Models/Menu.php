@@ -54,7 +54,7 @@ class Menu extends Model implements HasCode
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::menu';
+        return flexiblePagesPrefix('menu');
     }
 
     public function getEffectiveStyle(): string

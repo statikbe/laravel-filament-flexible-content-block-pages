@@ -79,6 +79,6 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
 
     public function getMorphClass()
     {
-        return 'filament-flexible-content-block-pages::tag';
+        return flexiblePagesPrefix('tag');
     }
 }
