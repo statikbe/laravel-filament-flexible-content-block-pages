@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
@@ -30,7 +31,7 @@ class TagPageService
         $groupedIds = collect($unionResults->items())->groupBy('model_class');
 
         // Step 3: Load actual models in batches
-        $models = $this->hydrateModels($groupedIds, $tag);
+        $models = $this->hydrateModels($groupedIds);
 
         // Return as paginator with actual models
         return new LengthAwarePaginator(
@@ -55,12 +56,13 @@ class TagPageService
 
         foreach ($enabledModels as $modelClass) {
             /** @var class-string $modelClass */
+            $escapedModelClass = Str::replace('\\', '\\\\', $modelClass);
             $query = $modelClass::withAnyTagsOfAnyType([$tag->name])
                 ->select([
                     'id',
                     'publishing_begins_at',
                     'created_at', // fallback for sorting
-                    DB::raw("'{$modelClass}' as model_class"),
+                    DB::raw("'{$escapedModelClass}' as model_class"),
                 ]);
 
             // Add published scope if available
@@ -91,7 +93,7 @@ class TagPageService
     /**
      * Hydrate actual model instances from the union query results.
      */
-    private function hydrateModels(Collection $groupedIds, Tag $tag): Collection
+    private function hydrateModels(Collection $groupedIds): Collection
     {
         $models = collect();
 
@@ -156,7 +158,7 @@ class TagPageService
 
         foreach ($enabledModels as $modelClass) {
             /** @var class-string $modelClass */
-            $count = $modelClass::withAnyTags([$tag->name])
+            $count = $modelClass::withAnyTagsOfAnyType([$tag->name])
                 ->when(method_exists($modelClass, 'scopePublished'), function ($query) {
                     return $query->published();
                 })
