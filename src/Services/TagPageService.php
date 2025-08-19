@@ -100,7 +100,7 @@ class TagPageService
 
             // Load actual models with eager loading
             /** @var class-string $modelClass */
-            $modelInstances = $modelClass::withAnyTags([$tag->name])
+            $modelInstances = $modelClass::withAnyTagsOfAnyType([$tag->name])
                 ->whereIn('id', $ids)
                 ->when(method_exists($modelClass, 'scopePublished'), function ($query) {
                     return $query->published();
