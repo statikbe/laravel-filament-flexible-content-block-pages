@@ -43,7 +43,7 @@ class SeoTagController extends AbstractSeoPageController
 
         /** @var view-string $viewName */
         $viewName = 'filament-flexible-content-block-pages::tailwind.pages.tag_index';
-        
+
         return view($viewName, [
             'tag' => $tag,
             'taggedContent' => $taggedContent,
