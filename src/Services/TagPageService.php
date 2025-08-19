@@ -55,7 +55,7 @@ class TagPageService
 
         foreach ($enabledModels as $modelClass) {
             /** @var class-string $modelClass */
-            $query = $modelClass::withAnyTags([$tag->name])
+            $query = $modelClass::withAnyTagsOfAnyType([$tag->name])
                 ->select([
                     'id',
                     'publishing_begins_at',
@@ -100,7 +100,7 @@ class TagPageService
 
             // Load actual models with eager loading
             /** @var class-string $modelClass */
-            $modelInstances = $modelClass::withAnyTagsOfAnyType([$tag->name])
+            $modelInstances = $modelClass::query()
                 ->whereIn('id', $ids)
                 ->when(method_exists($modelClass, 'scopePublished'), function ($query) {
                     return $query->published();
