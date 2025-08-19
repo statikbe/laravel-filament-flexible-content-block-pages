@@ -2,6 +2,7 @@
 
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Illuminate\Contracts\View\View;
 
 function flexiblePagesTrans(string $translationKey, array $replace = [], ?string $locale = null): string
 {
@@ -26,9 +27,9 @@ function flexiblePagesPrefix(string $var): string
 }
 
 /**
- * @return ($view is null ? \Illuminate\Contracts\View\Factory : \Illuminate\Contracts\View\View)
+ * @return View
  */
-function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): View
 {
-    return view(flexiblePagesPrefix($viewPath));
+    return view(flexiblePagesPrefix($viewPath), $data, $mergeData);
 }
