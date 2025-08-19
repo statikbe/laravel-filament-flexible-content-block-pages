@@ -28,7 +28,7 @@ function flexiblePagesPrefix(string $var): string
 /**
  * @return ($view is null ? \Illuminate\Contracts\View\Factory : \Illuminate\Contracts\View\View)
  */
-function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): string
+function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 {
     return view(flexiblePagesPrefix($viewPath));
 }
