@@ -154,6 +154,11 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
         return $this->getFirstMediaUrl($collection, $conversion);
     }
 
+    public function getImage(string $collection, $filters = []): ?Media
+    {
+        return $this->getFirstMedia($collection, $filters);
+    }
+
     /**
      * Returns the first media for the given collection. First, we check if there is a locale specific version.
      */
