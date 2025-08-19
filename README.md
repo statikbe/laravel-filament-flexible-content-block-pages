@@ -450,6 +450,7 @@ release:
   - note: undeletable pages
 - undeletable page toggle only for permission holder
 - tag controller
+  - add tag urls to sitemap.
 - documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
 

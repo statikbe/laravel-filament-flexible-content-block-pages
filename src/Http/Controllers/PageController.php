@@ -13,10 +13,6 @@ class PageController extends AbstractSeoPageController
 {
     use ValidatesRequests;
 
-    const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
-
-    const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
-
     const TEMPLATE_PATH = 'filament-flexible-content-block-pages::%s.pages.index';
 
     public function index(Page $page)

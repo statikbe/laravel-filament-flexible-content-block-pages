@@ -15,6 +15,10 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 
 abstract class AbstractSeoPageController extends Controller
 {
+    const CACHE_SEO_IMAGE_DIMENSIONS = 'seo_image_dimensions:%s';
+
+    const CACHE_SEO_IMAGE_TTL = 60 * 60 * 8; // in seconds
+
     protected function setSEOImage(Page $page)
     {
         /** @var Media|null $firstSeoMedia */
@@ -68,11 +72,11 @@ abstract class AbstractSeoPageController extends Controller
      */
     protected function getSEOImageDimensions(Media $seoMedia, string $conversion): array
     {
-        $cacheKey = sprintf(PageController::CACHE_SEO_IMAGE_DIMENSIONS, $seoMedia->uuid);
+        $cacheKey = sprintf(static::CACHE_SEO_IMAGE_DIMENSIONS, $seoMedia->uuid);
 
         try {
             return Cache::remember($cacheKey,
-                PageController::CACHE_SEO_IMAGE_TTL,
+                static::CACHE_SEO_IMAGE_TTL,
                 function () use ($seoMedia, $conversion) {
                     $filePath = $seoMedia->getPath($conversion);
                     $image = Image::load($filePath);
