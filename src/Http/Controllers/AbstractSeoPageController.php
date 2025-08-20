@@ -99,7 +99,7 @@ abstract class AbstractSeoPageController extends Controller
         SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
 
-        if($page->seo_keywords){
+        if ($page->seo_keywords) {
             SEOMeta::setKeywords($page->seo_keywords);
         }
     }
