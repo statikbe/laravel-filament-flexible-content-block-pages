@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers;
 
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -97,6 +98,10 @@ abstract class AbstractSeoPageController extends Controller
         SEOTools::setTitle($title.$this->getSEOTitlePostfix($page), false);
         SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
+
+        if($page->seo_keywords){
+            SEOMeta::setKeywords($page->seo_keywords);
+        }
     }
 
     protected function getValidTitle(?string $title): ?string
