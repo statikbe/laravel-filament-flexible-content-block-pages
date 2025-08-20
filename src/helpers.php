@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Contracts\View\View;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
-use Illuminate\Contracts\View\View;
 
 function flexiblePagesTrans(string $translationKey, array $replace = [], ?string $locale = null): string
 {
@@ -26,9 +26,6 @@ function flexiblePagesPrefix(string $var): string
     return "{$package}::{$var}";
 }
 
-/**
- * @return View
- */
 function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): View
 {
     return view(flexiblePagesPrefix($viewPath), $data, $mergeData);
