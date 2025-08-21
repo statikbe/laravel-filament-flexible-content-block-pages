@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasSearchFilterTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasTitleMenuLabelTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\PageObserver;
@@ -45,6 +46,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     use HasFactory;
     use HasHeroCallToActionsTrait;
     use HasParentTrait;
+    use HasSearchFilterTrait;
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;
