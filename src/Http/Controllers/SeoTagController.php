@@ -3,7 +3,6 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers;
 
 use Artesaos\SEOTools\Facades\SEOTools;
-use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;

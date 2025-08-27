@@ -39,9 +39,13 @@
                                 <span class="text-sm text-blue-600 font-medium uppercase">
                                     {{ $modelLabels[$item::class] ?? class_basename($item) }}
                                 </span>
-                                @if(method_exists($item, 'publishing_begins_at') && $item->publishing_begins_at)
+                                @if($item->publishing_begins_at)
                                     <time class="text-sm text-gray-500">
-                                        {{ $item->publishing_begins_at->format('M j, Y') }}
+                                        {{ $item->publishing_begins_at->format('d/m/Y') }}
+                                    </time>
+                                @else
+                                    <time class="text-sm text-gray-500">
+                                        {{ $item->created_at->format('d/m/Y') }}
                                     </time>
                                 @endif
                             </div>
@@ -62,7 +66,7 @@
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($item->tags->take(5) as $itemTag)
                                         <span class="px-2 py-1 bg-gray-50 rounded text-xs text-gray-700">
-                                            {{ $itemTag->getTranslation('name', app()->getLocale()) }}
+                                            {{ $itemTag->name }}
                                         </span>
                                     @endforeach
                                 </div>
@@ -79,7 +83,7 @@
             @else
                 <div class="text-center py-12">
                     <p class="text-gray-600 text-lg">
-                        {{ flexiblePagesTrans('tag_pages.no_content', ['tag' => $tag->getTranslation('name', app()->getLocale())]) }}
+                        {{ flexiblePagesTrans('tag_pages.no_content', ['tag' => $tag->name]) }}
                     </p>
                 </div>
             @endif
