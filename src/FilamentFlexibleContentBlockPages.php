@@ -42,8 +42,8 @@ class FilamentFlexibleContentBlockPages
     /**
      * Looks up the resource class of a model in ANY panel.
      *
-     * @param  string<class-string>  $modelClass
-     * @return string<class-string>|null
+     * @param  class-string  $modelClass
+     * @return class-string|null
      */
     public function getModelResource(string $modelClass): ?string
     {

@@ -10,16 +10,6 @@ use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoute
 
 abstract class AbstractPageRouteHelper implements HandlesPageRoutes
 {
-    const ROUTE_HOME = 'home';
-
-    const ROUTE_PAGE = 'filament-flexible-content-block-pages::page_index';
-
-    const ROUTE_CHILD_PAGE = 'filament-flexible-content-block-pages::child_page_index';
-
-    const ROUTE_GRANDCHILD_PAGE = 'filament-flexible-content-block-pages::grandchild_page_index';
-
-    const ROUTE_SEO_TAG_PAGE = 'filament-flexible-content-block-pages::seo_tag_page_index';
-
     public function defineRoutes(): void
     {
         if (FilamentFlexibleContentBlockPages::config()->areTagPagesEnabled()) {

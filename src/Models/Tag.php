@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Mcamara\LaravelLocalization\Interfaces\LocalizedUrlRoutable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 /**
@@ -67,14 +68,14 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
     {
         $locale = $locale ?? app()->getLocale();
 
-        // TODO impl routing & controller
-        // return LaravelLocalization::getURLFromRouteNameTranslated($locale, 'routes.article_tag_index', ['tag:slug' => $this->translate('slug', $locale)]);
-        return 'https://www.statik.be';
+        return route(HandlesPageRoutes::ROUTE_SEO_TAG_PAGE, [
+            'tag:slug' => $this->getTranslation('slug', $locale) ?? $this->slug,
+        ]);
     }
 
     public function getPreviewUrl(?string $locale = null): string
     {
-        return $this->getPreviewUrl($locale);
+        return $this->getViewUrl($locale);
     }
 
     public function getMorphClass()

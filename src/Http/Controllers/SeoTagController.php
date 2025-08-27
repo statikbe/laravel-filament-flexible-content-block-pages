@@ -118,7 +118,7 @@ class SeoTagController extends AbstractSeoPageController
 
         foreach ($enabledModels as $modelClass) {
             $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
-            /** @var resource|null $resourceClass */
+            /** @var class-string|null $resourceClass */
             $labels[$modelClass] = $resourceClass ? $resourceClass::getModelLabel() : class_basename($modelClass);
         }
 

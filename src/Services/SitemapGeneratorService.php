@@ -12,6 +12,7 @@ use Spatie\Sitemap\Tags\Alternate;
 use Spatie\Sitemap\Tags\Url;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 use Statikbe\FilamentFlexibleContentBlocks\ContentBlocks\CallToActionBlock;
@@ -67,6 +68,10 @@ class SitemapGeneratorService implements GeneratesSitemap
 
         if (FilamentFlexibleContentBlockPages::config()->shouldIncludeLinkableModelsInSitemap()) {
             $this->addLinkableModels();
+        }
+
+        if (FilamentFlexibleContentBlockPages::config()->areTagPagesEnabled()) {
+            $this->addSeoTagPages();
         }
 
         $this->addCustomUrls();
@@ -182,6 +187,22 @@ class SitemapGeneratorService implements GeneratesSitemap
                     ->setPriority(0.5)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
             );
+        }
+    }
+
+    protected function addSeoTagPages(): void
+    {
+        $seoTags = Tag::whereRelation('tagType', 'has_seo_pages', true)->get();
+
+        foreach ($seoTags as $tag) {
+            $this->sitemap->add(
+                Url::create($tag->getViewUrl($this->canonicalLocale))
+            );
+
+            $this->addToSitemap($tag->getViewUrl($this->canonicalLocale),
+                null, // TODO query the last updated_at of all models.
+                0.6,
+                Url::CHANGE_FREQUENCY_WEEKLY);
         }
     }
 

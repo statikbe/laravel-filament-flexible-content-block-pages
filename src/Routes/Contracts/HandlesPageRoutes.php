@@ -7,6 +7,16 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
 interface HandlesPageRoutes
 {
+    public const ROUTE_PAGE = 'filament-flexible-content-block-pages::page_index';
+
+    public const ROUTE_CHILD_PAGE = 'filament-flexible-content-block-pages::child_page_index';
+
+    public const ROUTE_SEO_TAG_PAGE = 'filament-flexible-content-block-pages::seo_tag_page_index';
+
+    public const ROUTE_HOME = 'home';
+
+    public const ROUTE_GRANDCHILD_PAGE = 'filament-flexible-content-block-pages::grandchild_page_index';
+
     /**
      * Creates the page and SEO tag routes.
      */
