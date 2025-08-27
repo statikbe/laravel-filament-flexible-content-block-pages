@@ -102,7 +102,7 @@ return [
         'linkable_models' => [
             // Models that can be linked in menu items
             // These models must implement HasMenuLabel interface
-            // Resources are automatically discovered via Filament::getModelResource()
+            // Resources are automatically discovered via FilamentFlexibleContentBlockPages::getModelResource()
             \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
 
             // Add your own models here:

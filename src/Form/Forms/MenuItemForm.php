@@ -262,7 +262,7 @@ class MenuItemForm
 
     protected static function getModelLabelFromResource(string $modelClass): string
     {
-        $resourceClass = Filament::getModelResource($modelClass);
+        $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
 
         if ($resourceClass) {
             try {

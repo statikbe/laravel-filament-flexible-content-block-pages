@@ -28,7 +28,7 @@ class SeoTagController extends AbstractSeoPageController
         }
 
         // Return not found when the tag type does not have seo pages enabled
-        if ($tag->tagType->has_seo_pages) {
+        if (! $tag->tagType->has_seo_pages) {
             abort(404);
         }
 
@@ -118,7 +118,7 @@ class SeoTagController extends AbstractSeoPageController
         $enabledModels = FilamentFlexibleContentBlockPages::config()->getTagPageEnabledModels();
 
         foreach ($enabledModels as $modelClass) {
-            $resourceClass = Filament::getModelResource($modelClass);
+            $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
             /** @var resource|null $resourceClass */
             $labels[$modelClass] = $resourceClass ? $resourceClass::getModelLabel() : class_basename($modelClass);
         }

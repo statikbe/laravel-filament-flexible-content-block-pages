@@ -1,3 +1,7 @@
+@php
+    /** @var \Statikbe\FilamentFlexibleContentBlockPages\Models\Tag $tag */
+@endphp
+
 <x-flexible-pages-base-layout wide="true">
     <header>
         <x-flexible-pages-language-switch/>
@@ -7,12 +11,12 @@
         <div class="container mx-auto px-6 py-8">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold mb-4">
-                    {{ $tag->getTranslation('name', app()->getLocale()) }}
+                    {{ $tag->name }}
                 </h1>
 
                 @if($tag->seo_description)
                     <p class="text-lg text-gray-600 mb-6">
-                        {!! $tag->getTranslation('seo_description', app()->getLocale()) !!}
+                        {!! $tag->seo_description !!}
                     </p>
                 @endif
 

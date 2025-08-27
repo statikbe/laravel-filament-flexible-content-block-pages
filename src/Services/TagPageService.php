@@ -2,7 +2,6 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Services;
 
-use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -166,8 +165,8 @@ class TagPageService
 
             if ($count > 0) {
                 /** @var class-string<\Filament\Resources\Resource>|null $resourceClass */
-                $resourceClass = Filament::getModelResource($modelClass);
-                $label = $resourceClass ? ($count === 1 ? $resourceClass::getModelLabel() : $resourceClass::getPluralLabel()) : class_basename($modelClass);
+                $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
+                $label = $resourceClass ? ($count === 1 ? $resourceClass::getModelLabel() : $resourceClass::getPluralModelLabel()) : class_basename($modelClass);
                 $counts[$label] = $count;
             }
         }

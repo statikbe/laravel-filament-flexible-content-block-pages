@@ -174,7 +174,7 @@ class ManageMenuItems extends TreePage
 
     protected function getModelLabelFromResource(string $modelClass): string
     {
-        $resourceClass = Filament::getModelResource($modelClass);
+        $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
 
         if ($resourceClass) {
             try {
@@ -189,7 +189,7 @@ class ManageMenuItems extends TreePage
 
     protected function getModelIconFromResource(string $modelClass): ?string
     {
-        $resourceClass = Filament::getModelResource($modelClass);
+        $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
 
         if ($resourceClass) {
             try {
