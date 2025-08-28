@@ -263,14 +263,14 @@ class PageResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /** @var Page $record */
-        $published = flexiblePagesTrans('columns.is_published_state_unpublished');
+        $published = trans('filament-flexible-content-blocks::filament-flexible-content-blocks.is_published_state_unpublished');
         if ($record->isPublished()) {
-            $published = flexiblePagesTrans('columns.is_published_state_published');
+            $published = trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published_state_published');
         }
 
         return [
-            flexiblePagesTrans('form_component.intro_lbl') => Str::limit(strip_tags($record->intro)),
-            flexiblePagesTrans('columns.is_published') => $published,
+            flexiblePagesTrans('pages.search.intro_lbl') => Str::limit(strip_tags($record->intro)),
+            flexiblePagesTrans('pages.search.is_published') => $published,
         ];
     }
 }

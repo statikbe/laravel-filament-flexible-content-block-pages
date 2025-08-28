@@ -23,6 +23,10 @@ return [
             'page_referenced_by_menu_item' => '":page" (gerefereerd door :menu in :menu_item)',
             'bulk_delete_successful' => ':count items verwijderd.',
         ],
+        'search' => [
+            'intro_lbl' => 'Introductie',
+            'is_published_lbl' => 'Is gepubliceerd?',
+        ],
     ],
     'redirects' => [
         'redirects_lbl' => 'redirect',
