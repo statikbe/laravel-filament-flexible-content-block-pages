@@ -20,6 +20,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\Edit
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ListMenus;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ManageMenuItems;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class MenuResource extends Resource
 {
@@ -131,6 +132,17 @@ class MenuResource extends Resource
                     ->badge()
                     ->color('gray')
                     ->visible(fn () => count(FilamentFlexibleContentBlockPages::config()->getMenuStyles()) > 1),
+
+                TextColumn::make('created_at')
+                    ->label(flexiblePagesTrans('menus.table.created_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(flexiblePagesTrans('menus.table.updated_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

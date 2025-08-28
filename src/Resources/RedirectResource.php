@@ -8,10 +8,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Http\Response;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class RedirectResource extends Resource
 {
@@ -80,6 +82,16 @@ class RedirectResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_code')
                     ->label(flexiblePagesTrans('redirects.redirect_status_code')),
+                TextColumn::make('created_at')
+                    ->label(flexiblePagesTrans('redirects.table.created_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(flexiblePagesTrans('redirects.table.updated_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

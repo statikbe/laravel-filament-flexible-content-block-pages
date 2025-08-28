@@ -441,8 +441,6 @@ menu:
 - test global search and improve table search and ordering
 
 page:
-- Kristof: make table searchable, columns orderable, test global search
-- make table searchable, columns orderable, test global search
 - laravel scout
 
 release:
@@ -451,6 +449,9 @@ release:
 - undeletable page toggle only for permission holder
 - documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
+
+tags:
+- check doubles in tag field
 
 future:
 - A simple asset manager (include or not?)

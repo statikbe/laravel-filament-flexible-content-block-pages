@@ -15,6 +15,7 @@ return [
         ],
         'table' => [
             'created_at_col' => 'Created at',
+            'updated_at_col' => 'Updated at',
         ],
         'notifications' => [
             'used_in_menu' => 'This is used in the ":menu" menu, in item :menu_item. Please update the menu first and then delete this again.',
@@ -31,6 +32,10 @@ return [
         'redirect_new_url' => 'New URL',
         'redirect_status_code' => 'Status code',
         'nav_group' => 'Settings',
+        'table' => [
+            'created_at_col' => 'Created at',
+            'updated_at_col' => 'Updated at',
+        ],
     ],
     'settings' => [
         'settings_lbl' => 'setting',
@@ -61,6 +66,10 @@ return [
         'tag_type_plural_lbl' => 'tag types',
         'tag_type_lbl' => 'tag type',
         'tag_type_is_default_type_lbl' => 'Is default tag type',
+        'table' => [
+            'created_at_col' => 'Created at',
+            'updated_at_col' => 'Updated at',
+        ],
     ],
     'tags' => [
         'navigation_group' => 'Settings',
@@ -68,6 +77,10 @@ return [
         'tag_lbl' => 'tag',
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'You can assign a type to use this tag only on certain page types.',
+        'table' => [
+            'created_at_col' => 'Created at',
+            'updated_at_col' => 'Updated at',
+        ],
     ],
     'menus' => [
         'lbl' => 'menu',
@@ -93,6 +106,7 @@ return [
             'default_depth' => 'Default',
             'items_count_col' => 'Items',
             'created_at_col' => 'Created at',
+            'updated_at_col' => 'Updated at',
         ],
         'actions' => [
             'manage_items' => 'Manage items',

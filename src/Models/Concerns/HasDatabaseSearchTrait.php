@@ -2,9 +2,17 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns;
 
-trait HasSearchFilterTrait
+use Illuminate\Database\Eloquent\Builder;
+
+trait HasDatabaseSearchTrait
 {
-    public function scopeSearch($query, string $search): void
+    /**
+     * Searches in database on different fields with LIKE queries.
+     * @param $query
+     * @param string $search
+     * @return void
+     */
+    public function scopeSearch(Builder $query, string $search): void
     {
         $search = strtolower($search);
         $query->when($search, function ($query, $search) {

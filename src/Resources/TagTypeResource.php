@@ -24,6 +24,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\C
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\EditTagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\ListTagTypes;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class TagTypeResource extends Resource
 {
@@ -103,6 +104,16 @@ class TagTypeResource extends Resource
                     ->label(flexiblePagesTrans('tag_types.tag_type_is_default_type_lbl')),
                 IconColumn::make('icon')
                     ->label(flexiblePagesTrans('form_component.icon_lbl')),
+                TextColumn::make('created_at')
+                    ->label(flexiblePagesTrans('menu_items.table.created_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(flexiblePagesTrans('menu_items.table.updated_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages;
@@ -195,7 +196,13 @@ class PageResource extends Resource
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('pages.table.created_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(flexiblePagesTrans('pages.table.updated_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 PublishedColumn::create()
                     ->sortable(),
             ])
@@ -255,16 +262,15 @@ class PageResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        $published = trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published_state_unpublished');
+        /** @var Page $record */
+        $published = flexiblePagesTrans('columns.is_published_state_unpublished');
         if ($record->isPublished()) {
-            $published = trans(
-                'filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published_state_published'
-            );
+            $published = flexiblePagesTrans('columns.is_published_state_published');
         }
 
         return [
-            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.form_component.intro_lbl') => Str::limit(strip_tags($record->intro)),
-            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published') => $published,
+            flexiblePagesTrans('form_component.intro_lbl') => Str::limit(strip_tags($record->intro)),
+            flexiblePagesTrans('columns.is_published') => $published,
         ];
     }
 }

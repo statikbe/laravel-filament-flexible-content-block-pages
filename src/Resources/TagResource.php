@@ -18,6 +18,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\NameField;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource\Pages\CreateTag;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource\Pages\EditTag;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource\Pages\ListTags;
+use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class TagResource extends Resource
 {
@@ -97,6 +98,16 @@ class TagResource extends Resource
                 TextColumn::make('tagType.name')
                     ->label(flexiblePagesTrans('tags.tag_type_lbl'))
                     ->badge(),
+                TextColumn::make('created_at')
+                    ->label(flexiblePagesTrans('tags.table.created_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(flexiblePagesTrans('tags.table.updated_at_col'))
+                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

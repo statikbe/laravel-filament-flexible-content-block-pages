@@ -15,6 +15,7 @@ return [
         ],
         'table' => [
             'created_at_col' => 'Aangemaakt op',
+            'updated_at_col' => 'Aangepast op',
         ],
         'notifications' => [
             'used_in_menu' => 'Dit wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan dit opnieuw te verwijderen.',
@@ -30,6 +31,10 @@ return [
         'redirect_new_url' => 'Nieuwe URL',
         'redirect_status_code' => 'Status code',
         'nav_group' => 'Instellingen',
+        'table' => [
+            'created_at_col' => 'Aangemaakt op',
+            'updated_at_col' => 'Aangepast op',
+        ],
     ],
     'settings' => [
         'settings_lbl' => 'instelling',
@@ -60,6 +65,10 @@ return [
         'tag_type_plural_lbl' => 'tagtypes',
         'tag_type_lbl' => 'tagtype',
         'tag_type_is_default_type_lbl' => 'Is standaard tagtype',
+        'table' => [
+            'created_at_col' => 'Aangemaakt op',
+            'updated_at_col' => 'Aangepast op',
+        ],
     ],
     'tags' => [
         'navigation_group' => 'Instellingen',
@@ -67,6 +76,10 @@ return [
         'tag_lbl' => 'tag',
         'tag_type_lbl' => 'Tag type',
         'tag_type_hint' => 'Je kunt een type toewijzen om deze tag alleen op bepaalde paginatypes te gebruiken.',
+        'table' => [
+            'created_at_col' => 'Aangemaakt op',
+            'updated_at_col' => 'Aangepast op',
+        ],
     ],
     'menus' => [
         'lbl' => 'menu',
@@ -92,6 +105,7 @@ return [
             'default_depth' => 'Standaard',
             'items_count_col' => 'Items',
             'created_at_col' => 'Aangemaakt op',
+            'updated_at_col' => 'Aangepast op',
         ],
         'actions' => [
             'manage_items' => 'Items beheren',
