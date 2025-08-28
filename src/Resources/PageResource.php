@@ -12,6 +12,8 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
@@ -46,6 +48,10 @@ class PageResource extends Resource
     protected static ?string $recordRouteKeyName = 'id';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    protected static int $globalSearchResultsLimit = 10;
+
+    protected static ?bool $isGlobalSearchForcedCaseInsensitive = true;
 
     public static function getModel(): string
     {
@@ -179,12 +185,19 @@ class PageResource extends Resource
     {
         return $table
             ->columns([
-                TitleColumn::create(),
+                TitleColumn::create()
+                    ->searchable(query: function ($query, $search) {
+                        $locale = app()->getLocale();
+                        $search = strtolower($search);
+
+                        return $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"]);
+                    }),
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('pages.table.created_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
                     ->sortable(),
-                PublishedColumn::create(),
+                PublishedColumn::create()
+                    ->sortable(),
             ])
             ->filters([
                 PublishedFilter::create(),
@@ -218,6 +231,40 @@ class PageResource extends Resource
             'index' => ListPages::route('/'),
             'create' => CreatePage::route('/create'),
             'edit' => EditPage::route('/{record:id}/edit'),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return [
+            'title',
+            'intro',
+            'content_blocks',
+            'seo_title',
+            'seo_description',
+            'seo_keywords',
+            'overview_title',
+            'overview_description',
+        ];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->getTranslation('title', app()->getLocale());
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        $published = trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published_state_unpublished');
+        if ($record->isPublished()) {
+            $published = trans(
+                'filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published_state_published'
+            );
+        }
+
+        return [
+            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.form_component.intro_lbl') => Str::limit(strip_tags($record->intro)),
+            trans('filament-flexible-content-blocks::filament-flexible-content-blocks.columns.is_published') => $published,
         ];
     }
 }
