@@ -42,11 +42,11 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
 {
     use HasAuthorAttributeTrait;
     use HasCodeTrait;
+    use HasDatabaseSearchTrait;
     use HasDefaultContentBlocksTrait;
     use HasFactory;
     use HasHeroCallToActionsTrait;
     use HasParentTrait;
-    use HasDatabaseSearchTrait;
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;
