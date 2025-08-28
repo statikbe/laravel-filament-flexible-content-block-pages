@@ -270,7 +270,7 @@ class PageResource extends Resource
 
         return [
             flexiblePagesTrans('pages.search.intro_lbl') => Str::limit(strip_tags($record->intro)),
-            flexiblePagesTrans('pages.search.is_published') => $published,
+            flexiblePagesTrans('pages.search.is_published_lbl') => $published,
         ];
     }
 }
