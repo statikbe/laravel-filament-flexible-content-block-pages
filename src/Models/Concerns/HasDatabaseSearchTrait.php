@@ -8,9 +8,6 @@ trait HasDatabaseSearchTrait
 {
     /**
      * Searches in database on different fields with LIKE queries.
-     * @param $query
-     * @param string $search
-     * @return void
      */
     public function scopeSearch(Builder $query, string $search): void
     {
