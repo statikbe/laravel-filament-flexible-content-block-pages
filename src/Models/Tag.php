@@ -69,7 +69,7 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
         $locale = $locale ?? app()->getLocale();
 
         return route(HandlesPageRoutes::ROUTE_SEO_TAG_PAGE, [
-            'tag:slug' => $this->getTranslation('slug', $locale) ?? $this->slug,
+            'tag' => $this->getTranslation('slug', $locale) ?? $this->slug,
         ]);
     }
 

@@ -156,7 +156,7 @@ class SitemapGeneratorService implements GeneratesSitemap
                 $modelQuery->published();
             }
 
-            $models = $modelQuery->all();
+            $models = $modelQuery->get();
 
             foreach ($models as $model) {
                 if (method_exists($model, 'getViewUrl')) {
