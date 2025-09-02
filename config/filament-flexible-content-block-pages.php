@@ -1,6 +1,5 @@
 <?php
 
-// config for Statikbe/FilamentFlexibleContentBlockPages
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -14,7 +13,25 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
 
+/*
+|--------------------------------------------------------------------------
+| Filament Flexible Content Block Pages Configuration
+|--------------------------------------------------------------------------
+| @see https://github.com/statikbe/laravel-filament-flexible-content-block-pages/blob/main/documentation/configuration.md
+*/
+
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Model Classes
+    |--------------------------------------------------------------------------
+    |
+    | Specify the model classes for each component type. This allows you to
+    | extend the default models with your own implementations if needed.
+    | All models should extend the corresponding base models from this package.
+    | Except the page model, you can tailor to your exact needs by selecting the
+    | necessary interfaces and traits.
+    */
     'models' => [
         FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
         FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class,
@@ -25,6 +42,14 @@ return [
         FilamentFlexibleContentBlockPagesConfig::TYPE_MENU_ITEM => \Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Database Table Names
+    |--------------------------------------------------------------------------
+    |
+    | Define the database table names used by the package.
+    |
+    */
     'table_names' => [
         FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => 'pages',
         FilamentFlexibleContentBlockPagesConfig::TYPE_AUTHOR => 'users',
@@ -37,6 +62,16 @@ return [
         FilamentFlexibleContentBlockPagesConfig::TYPE_MENU_ITEM => 'menu_items',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Filament Resources
+    |--------------------------------------------------------------------------
+    |
+    | Specify the Filament resource classes for managing each model type.
+    | You can extend these resources to customize the admin interface
+    | or create your own implementations.
+    |
+    */
     'resources' => [
         FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
         FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource::class,
@@ -46,17 +81,56 @@ return [
         FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => \Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Page Resource Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure various features and options for the page resource.
+    | These settings control which fields and functionality are available
+    | in the page management interface.
+    |
+    */
     'page_resource' => [
         \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class => [
+            /*
+            | Enable the feature to have call-to-action buttons in the hero of the page
+            */
             'enable_hero_call_to_actions' => true,
+
+            /*
+            | Enable the feature for pages to have an author
+            */
             'enable_author' => true,
+
+            /*
+            | Enable the feature for pages to have parent pages.
+            */
             'enable_parent' => true,
+
+            /*
+            | Enable the feature for pages to have a boolean to make them undeletable.
+            */
             'enable_undeletable' => true,
+
+            /*
+            | The Filament navigation menu sorting order of the page resource
+            */
             'navigation_sort' => 5,
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | CMS Panel Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure the Filament CMS panel settings including the access path
+    | and middleware stack. The middleware ensures proper authentication,
+    | session management, and CSRF protection.
+    |
+    */
     'panel' => [
         'path' => 'admin/website',
         'middleware' => [
@@ -75,6 +149,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Route Helper
+    |--------------------------------------------------------------------------
+    |
+    | Specify the route helper class for generating page URLs. The default
+    | LocalisedPageRouteHelper supports multi-language sites with localized
+    | URLs. You can implement your own route helper for custom URL patterns.
+    | Use the PageRouteHelper for non-translatable routes.
+    |
+    */
     'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
 
     /*
@@ -91,50 +176,154 @@ return [
     */
     'theme' => 'tailwind',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Page Templates
+    |--------------------------------------------------------------------------
+    |
+    | Define custom Blade templates for specific page types. This allows you
+    | to override the default page rendering with custom layouts for special
+    | pages like home pages, landing pages, or other unique page types.
+    | Use the code of the page as key and the blade template as value.
+    |
+    */
     'page_templates' => [
         // Page::HOME_PAGE => 'pages.home',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Menu Builder Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure the menu builder system including navigation sorting,
+    | maximum depth, linkable models, and available menu styles.
+    |
+    */
     'menu' => [
+        /*
+        | The Filament navigation menu sorting order of the menu resource
+        */
         'navigation_sort' => 30,
+
+        /*
+        | Maximum depth allowed for menu items. Defines how many levels deep
+        | the menu hierarchy can go (e.g., 2 = parent → child → grandchild).
+        | This is the default value. You can override this in the menu database record.
+        */
         'max_depth' => 2,
+
+        /*
+        | Enable the icon field for menu items. When enabled, menu items
+        | can have icons assigned to them for better visual representation
+        | in the frontend menu display.
+        */
         'enable_menu_item_icon_field' => true,
+
+        /*
+        | Models that can be linked in menu items. These models must implement
+        | the HasMenuLabel interface to provide a label for menu display, and the Linkable interface to get a url of the model.
+        */
         'linkable_models' => [
-            // Models that can be linked in menu items
-            // These models must implement HasMenuLabel interface
-            // Resources are automatically discovered via FilamentFlexibleContentBlockPages::getModelResource()
             \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
 
             // Add your own models here:
             // \App\Models\Category::class,
             // \App\Models\Post::class,
         ],
+
+        /*
+        | Available menu styles for frontend rendering. These are style codes
+        | only - the actual labels in the dropdowns in the UI come from translation files.
+        | Each style corresponds to a different menu layout/appearance.
+        */
         'styles' => [
-            // Available menu styles (codes only - labels come from translations)
             'default',
 
             // If needed, add your custom style(s) here:
             // 'mega',
+            // 'horizontal',
+            // 'vertical',
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sitemap Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure sitemap generation including which content types to include,
+    | URL patterns to exclude, and custom URLs to add.
+    |
+    */
     'sitemap' => [
+        /*
+        | Enable or disable sitemap generation entirely.
+        */
         'enabled' => true,
+
+        /*
+        | The default canonical locale for multilingual sites. This locale
+        | will be used as the canonical URL in the sitemap when multiple
+        | language versions of a page exist.
+        */
         'default_canonical_locale' => 'nl',
+
+        /*
+        | The service class responsible for generating the sitemap.
+        | You can extend or replace this with your own implementation by implementing the GeneratesSitemap interface.
+        */
         'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
+
+        /*
+        | Sitemap generation method. MANUAL requires calling the artisan command,
+        | while AUTOMATIC generates the sitemap on each request (not recommended for production)
+        | and HYBRID does a combination of both.
+        */
         'method' => SitemapGeneratorMethod::MANUAL,
+
+        /*
+        | Include pages in the sitemap. When true, all published pages will be automatically added to the sitemap.
+        */
         'include_pages' => true,
+
+        /*
+        | Include link routes in the sitemap. This adds GET routes that are defined in your application's route files.
+        */
         'include_link_routes' => true,
+
+        /*
+        | Include linkable models in the sitemap. Models that implement the Linkable interface will be automatically included.
+        */
         'include_linkable_models' => true,
+
+        /*
+        | URL patterns to exclude from the sitemap. Use regex patterns to match URLs that should not appear in the sitemap.
+        */
         'exclude_patterns' => [
-            // URL patterns to exclude from sitemap
+            // '/admin/.*',
+            // '/test/.*',
         ],
+
+        /*
+        | Custom URLs to manually include in the sitemap. Add specific
+        | URLs that should be included but might not be automatically discovered.
+        */
         'custom_urls' => [
-            // Custom URLs to include in sitemap
+            // '/special-page',
+            // '/custom-landing',
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Redirects Configuration
+    |--------------------------------------------------------------------------
+    */
     'redirects' => [
+        /*
+        | The Filament navigation menu sorting order of the redirect resource
+        */
         'navigation_sort' => 10,
 
         /*
@@ -149,11 +338,27 @@ return [
         'redirector' => \Statikbe\FilamentFlexibleContentBlockPages\Services\DatabaseAndConfigRedirector::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Settings Configuration
+    |--------------------------------------------------------------------------
+    */
     'settings' => [
+        /*
+        | The Filament navigation menu sorting order of the settings resource
+        */
         'navigation_sort' => 5,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tags Configuration
+    |--------------------------------------------------------------------------
+    */
     'tags' => [
+        /*
+        | The Filament navigation menu sorting order of the tag resource
+        */
         'navigation_sort' => 20,
     ],
 
@@ -162,7 +367,7 @@ return [
     | Tag Pages Configuration
     |--------------------------------------------------------------------------
     |
-    | Configure how tag pages work, including which models are included
+    | Configure how SEO tag pages work, including which models are included
     | and pagination settings.
     */
     'tag_pages' => [
