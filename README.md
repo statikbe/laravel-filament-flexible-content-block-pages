@@ -5,18 +5,20 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 
-A complete CMS solution for Laravel applications built on [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks). This package extends the flexible content block system into a full page management solution with routing, SEO, menus, and multilingual support.
+A CMS solution for Laravel applications built on [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks). 
+This package extends the flexible content block system, into a full page management solution with routing, SEO, menus, and multilingual support.
 
-Designed for developers who need a content management system that integrates seamlessly with existing Laravel applications while providing editors with an intuitive interface for managing pages and content.
+Designed for developers who need a content management system that integrates seamlessly with existing Laravel Filament application, 
+while providing content editors with an intuitive interface for managing pages and content.
 
 ## Key Features
 
 - **Flexible page management** - Create pages with hero images, flexible content blocks, SEO fields, and publication controls
-- **Hierarchical menu builder** - Configurable depth with drag-and-drop interface for creating navigation menus
+- **Hierarchical menu builder** - Drag-and-drop interface for creating navigation menus
 - **Multilingual support** - Full localization with automatic route generation for multiple languages
-- **SEO tools** - Automatic sitemap generation, meta tag management, and URL redirect handling
+- **SEO tools** - Automatic sitemap generation, meta tag management, and URL redirect handling when slugs change
 - **Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
-- **Developer-friendly** - Extendable models, customizable templates, and comprehensive configuration options
+- **Developer-friendly** - Extendable models & tables, customizable templates, and comprehensive configuration options
 - **Content organization** - Tag system, hierarchical page structure, and settings management
 
 ## Additional Features
@@ -26,9 +28,11 @@ Designed for developers who need a content management system that integrates sea
 - Media library integration via Spatie packages
 - Automatic 301 redirects when page URLs change
 - Multiple sitemap generation methods (manual, crawling, hybrid)
-- Configurable content block types and layouts
+- Configurable content blocks and layouts
 
-This package combines several Laravel packages into a cohesive CMS solution, making it opinionated but comprehensive for typical content management needs. 
+## Table of contents
+
+TODO
 
 ## Installation
 
@@ -81,11 +85,16 @@ You can now seed the home page and default settings by running:
 php artisan flexible-content-block-pages:seed
 ```
 
-Further configure the third-party packages that are used. Check the installation documentation of these packages:
+Further configure the [third-party packages that are used](#credits). Check the installation documentation of the following packages:
+
+### [Laravel Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks)
+
+Probably, you will want to tweak the configuration of the Flexible blocks package. Publish the configuration using [the
+installation guide](https://github.com/statikbe/laravel-filament-flexible-content-blocks?tab=readme-ov-file#installation).
 
 ### [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation):
 
-Make sure the middlewares are properly setup if you want to use localised routes.
+Make sure the middlewares are properly set up if you want to use localised routes.
 
 ### [Laravel Tags](https://spatie.be/docs/laravel-tags/v4/installation-and-setup):
 
@@ -98,7 +107,7 @@ Publish the config and change the tag model to the package model:
 
 Check [the configuration documentation](#configuration) for more explanations on how to tweak the package.
 
-Optionally, you can publish the views using
+Most likely you want to publish the views, so you can customise it for your project:
 
 ```bash
 php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
@@ -110,7 +119,7 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
 
 If you want translated content and routes, go through the following steps: 
 
-1. Configure the supported locales in the Filament Flexible Content Blocks configuration
+1. Configure the `supported_locales` in the Filament Flexible Content Blocks configuration or in a service provider
 2. Configure the `route_helper` in [`filament-flexible-content-block-pages.php`](./config/filament-flexible-content-block-pages.php)
 
 ### Routes
@@ -153,9 +162,8 @@ The package includes a powerful hierarchical menu builder with a drag-and-drop i
 ### Features
 
 - **Hierarchical structure** - With configurable max depth per menu
-- **Multiple link types** - Internal routes, external URLs, and linkable models (Pages or your own project model)
+- **Multiple link types** - Internal routes, external URLs, and linkable models (Pages or your own project models)
 - **Drag & drop management** - Intuitive tree interface for reordering and nesting items
-- **Multiple menu styles** - Default, horizontal, vertical, and dropdown templates included
 - **Translation support** - Multilingual menu labels with locale-aware URLs
 - **Conditional visibility** - Show/hide menu items without deleting them
 - **Icon support** - Optional icons for menu items (basic implementation currently)
@@ -176,7 +184,7 @@ To make your models available in the menu builder, add them to the configuration
 ],
 ```
 
-Your models should implement the `[HasMenuLabel](src/Models/Contracts/HasMenuLabel.php)` contract and the [HasTitleMenuLabelTrait](src/Models/Concerns/HasTitleMenuLabelTrait.php) trait:
+Your models should implement the `[HasMenuLabel](src/Models/Contracts/HasMenuLabel.php)` contract and the [HasMenuItemTrait](src/Models/Concerns/HasMenuItemTrait.php) trait:
 
 ```php
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
@@ -215,7 +223,7 @@ See the file `../tailwind/components/menu/default.blade.php` for all possible at
 
 ### Customizing additional menu styles
 
-If needed, you can easily add your own menu styles in addition to the `default` style:
+If needed, you can easily add your own menu styles in addition to the `default` style, e.g. the 'mega' menu style:
 
 1. **Add new styles to config:**
 ```php
@@ -245,20 +253,97 @@ resources/views/vendor/filament-flexible-content-block-pages/tailwind/components
 
 The style can also be configured in the database model, then you can skip the `style` attribute.
 
+### Menu seeding
+
+It makes a lot of sense to create most of the menu's in seeders, so they can be automatically synced over different environments.
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
 ## Settings
 
-TODO how to add settings in model and resource
+All settings are stored in one table in one record. The reason is to be able to add spatie medialibrary media as a config value.
+
+### Use settings
+
+Access settings values using helper functions or static methods:
+
+```php
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
+
+// Helper functions (recommended)
+$siteTitle = flexiblePagesSetting(Settings::SETTING_SITE_TITLE);
+$contactInfo = flexiblePagesSetting(Settings::SETTING_CONTACT_INFO, 'en', 'info@statik.be');
+$seoImageUrl = flexiblePagesSettingImageUrl(Settings::COLLECTION_DEFAULT_SEO, Settings::CONVERSION_DEFAULT_SEO);
+
+// Static methods
+$siteTitle = Settings::setting(Settings::SETTING_SITE_TITLE);
+$seoImageHtml = Settings::imageHtml(Settings::COLLECTION_DEFAULT_SEO, Settings::CONVERSION_DEFAULT_SEO);
+$settings = Settings::getSettings();
+```
+
+### Extend settings
+
+To add custom settings fields:
+
+1. **Create a migration** to add new columns:
+```php
+Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), function (Blueprint $table) {
+    $table->string('custom_field')->nullable();
+    $table->json('translatable_field')->nullable(); // for translatable fields
+});
+```
+
+2. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed:
+```php
+class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings
+{
+    const SETTING_CUSTOM_FIELD = 'custom_field';
+    
+    protected $translatable = [
+        parent::SETTING_FOOTER_COPYRIGHT,
+        parent::SETTING_CONTACT_INFO,
+        self::SETTING_CUSTOM_FIELD, // if translatable
+    ];
+}
+```
+
+3. **Extend the SettingsResource** by overriding `getExtraFormTabs()`:
+```php
+class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource
+{
+    protected static function getExtraFormTabs(): array
+    {
+        return [
+            Tab::make('Custom Tab')->schema([
+                TextInput::make(CustomSettings::SETTING_CUSTOM_FIELD)
+                    ->label('Custom Field')
+                    ->required(),
+            ]),
+        ];
+    }
+}
+```
+
+4. **Configure the extended model and resource** in your config file:
+```php
+// config/filament-flexible-content-block-pages.php
+'models' => [
+    // ...
+    'settings' => \App\Models\CustomSettings::class,
+],
+
+'resources' => [
+    // ...
+    'settings' => \App\Resources\CustomSettingsResource::class,
+],
+```
 
 ## Redirects
 
 The package includes automatic redirect management: when the slug of a page changes, a redirect from the old page 
 to the new page is added. These redirects are stored in the database and are managable with the Filament resource, 
-so you can add your own redirects.
+so you can add your own redirects. For example, you can add handy redirects for marketing campaigns.
 
-Additionally, we integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector),
-so you can easily configure other redirects in the spatie packages config.
+We have integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector), so you can easily configure other redirects in the spatie packages config.
 
 ### Configuration
 
@@ -327,6 +412,7 @@ Enable and configure the sitemap generator in your config file:
 - Crawls your website to discover URLs
 - May find URLs not in your database
 - Slower but comprehensive
+- Requires chromium
 
 **Hybrid** (`SitemapGeneratorMethod::HYBRID`):
 - Combines both approaches
@@ -424,6 +510,10 @@ Then update your configuration to use your custom service:
 
 You can override any protected method to customize the sitemap generation behavior, including priority calculation, change frequency, URL filtering, or adding entirely new content types.
 
+## Authorisation
+
+TODO handle in project
+
 ## Configuration
 
 TODO
@@ -438,7 +528,6 @@ check:
 menu:
 - caching tree model + observer to clear cache
 - Menu titels menu items
-- test global search and improve table search and ordering
 
 page:
 - laravel scout
@@ -449,9 +538,6 @@ release:
 - undeletable page toggle only for permission holder
 - documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
-
-tags:
-- check doubles in tag field
 
 future:
 - A simple asset manager (include or not?)
@@ -474,6 +560,16 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 - [Sten Govaerts](https://github.com/sten)
 - [All Contributors](../../contributors)
+
+We built this on the shoulders of others by combining several Laravel packages into a cohesive CMS solution, making it opinionated.
+We would like to thank the developers and contributors of the following packages:
+
+- [artesaos/seotools](https://github.com/artesaos/seotools)
+- [guava/filament-icon-picker](https://github.com/lukas-frey/filament-icon-picker)
+- [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
+- [solution-forest/filament-tree](https://github.com/solutionforest/filament-tree)
+- [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector)
+- [spatie/laravel-sitemap](https://github.com/spatie/laravel-sitemap)
 
 ## License
 
