@@ -512,11 +512,20 @@ You can override any protected method to customize the sitemap generation behavi
 
 ## Authorisation
 
-TODO handle in project
+Authorisation setup is not included in this package. Most projects will use an authorisation strategy project-wide, e.g. via policies.
+
+However authorisation can be easily implemented. There are two easy strategies:
+
+1. Use the panel and implement a simple access rule for the panel on the user model in `canAccessPanel(Panel $panel)`
+2. Use a Filament authorisation library, like [Filament Shield](https://github.com/bezhanSalleh/filament-shield). 
+Shield can automatically generate policies with permissions that you can link to specific roles. 
 
 ## Configuration
 
-TODO
+The package provides extensive configuration options to customize models, resources, database tables, and various features. 
+You can modify the published configuration file to match your application's requirements.
+
+For detailed configuration options and examples, see the [configuration documentation](documentation/configuration.md).
 
 ## TODO's
 
