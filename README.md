@@ -20,6 +20,7 @@ while providing content editors with an intuitive interface for managing pages a
 - **Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
 - **Developer-friendly** - Extendable models & tables, customizable templates, and comprehensive configuration options
 - **Content organization** - Tag system, hierarchical page structure, and settings management
+- **Works out-of-the-box** - Get the package quickly up and running, while focussing on easy configuration, customisation & extendability.
 
 ## Additional Features
 
@@ -124,7 +125,8 @@ If you want translated content and routes, go through the following steps:
 
 ### Routes
 
-Register the routes in your route file, probably `web.php`:
+Register the routes in your route file, probably `web.php`. 
+Best at the bottom of the file, since the pages routes with slugs will catch many urls.
 
 ```php
 \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
@@ -169,6 +171,23 @@ The package includes a powerful hierarchical menu builder with a drag-and-drop i
 - **Icon support** - Optional icons for menu items (basic implementation currently)
 - **Dynamic labels** - Use model titles or custom labels for linked content
 
+### Adding a menu to Blade
+
+The package includes a `default` built-in menu style which is developed in a generic way so that you can tweak its styling by passing some attributes without having to publish the corresponding blade templates.
+
+Example usage to have a horizontal menu using tailwind:
+```blade
+<x-flexible-pages-menu
+    code="HEADER"
+    style="default"
+    ulClass="flex flex-row justify-start items-center gap-x-4"
+    itemLinkClass="text-black hover:text-primary hover:underline"
+    currentItemLinkClass="text-grey hover:no-underline"
+/>
+```
+
+See the file `../tailwind/components/menu/default.blade.php` for all possible attributes.
+
 ### Adding linkable models
 
 To make your models available in the menu builder, add them to the configuration:
@@ -204,63 +223,17 @@ class Product extends Model implements HasMenuLabel
 If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
 easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrait.php).
 
-### Using the 'default' menu style
-
-The package includes a `default` built-in menu style which is developed in a generic way so that you can tweak its styling by passing some attributes without having to publish the corresponding blade templates.
-
-Example usage to have a horizontal menu using tailwind:
-```blade
-<x-flexible-pages-menu
-    code="HEADER"
-    style="default"
-    ulClass="flex flex-row justify-start items-center gap-x-4"
-    itemLinkClass="text-black hover:text-primary hover:underline"
-    currentItemLinkClass="text-grey hover:no-underline"
-/>
-```
-
-See the file `../tailwind/components/menu/default.blade.php` for all possible attributes.
-
-### Customizing additional menu styles
-
-If needed, you can easily add your own menu styles in addition to the `default` style, e.g. the 'mega' menu style:
-
-1. **Add new styles to config:**
-```php
-// config/filament-flexible-content-block-pages.php
-'menu' => [
-    'styles' => [
-        'default',
-        'mega', // Your custom style
-    ],
-],
-```
-**Tip:** Add translations if you want UX-friendly style dropdowns.
-
-2. **Create the template files:**
-```bash
-# Main menu template
-resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega.blade.php
-
-# Menu item template  
-resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega-item.blade.php
-```
-
-3. **Use in your templates:**
-```blade
-<x-flexible-pages-menu code="HEADER" style="mega" />
-```
-
-The style can also be configured in the database model, then you can skip the `style` attribute.
-
 ### Menu seeding
 
 It makes a lot of sense to create most of the menu's in seeders, so they can be automatically synced over different environments.
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
+For creating custom menu styles and advanced menu customization, see the [menu customization documentation](documentation/extending-and-customisation.md#menu).
+
 ## Settings
 
 All settings are stored in one table in one record. The reason is to be able to add spatie medialibrary media as a config value.
+Each setting is cached and refreshed when the settings change.
 
 ### Use settings
 
@@ -280,62 +253,59 @@ $seoImageHtml = Settings::imageHtml(Settings::COLLECTION_DEFAULT_SEO, Settings::
 $settings = Settings::getSettings();
 ```
 
-### Extend settings
+To add custom settings fields and extend the settings functionality, see the [settings extension documentation](documentation/extending-and-customisation.md#settings).
 
-To add custom settings fields:
+## Routing
 
-1. **Create a migration** to add new columns:
+The package provides a flexible routing system that supports hierarchical page structures and multilingual sites.
+
+### URL Structure
+
+Pages are organized in a three-level hierarchy:
+- **Root pages**: `/about`, `/contact` 
+- **Child pages**: `/services/web-development`
+- **Grandchild pages**: `/services/web-development/laravel`
+
+### Route Registration
+
+Register the package routes in your `web.php` file. Place this at the **bottom** of your routes file since page routes with slugs will catch many URLs:
+
 ```php
-Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), function (Blueprint $table) {
-    $table->string('custom_field')->nullable();
-    $table->json('translatable_field')->nullable(); // for translatable fields
-});
+// At the bottom of routes/web.php
+\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
 ```
 
-2. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed:
+### Generating URLs
+
+Use the facade to generate URLs for pages:
+
 ```php
-class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings
-{
-    const SETTING_CUSTOM_FIELD = 'custom_field';
-    
-    protected $translatable = [
-        parent::SETTING_FOOTER_COPYRIGHT,
-        parent::SETTING_CONTACT_INFO,
-        self::SETTING_CUSTOM_FIELD, // if translatable
-    ];
-}
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+
+// Generate URL for a page
+$url = FilamentFlexibleContentBlockPages::getUrl($page);
+
+// Generate URL for a specific locale
+$url = FilamentFlexibleContentBlockPages::getUrl($page, 'en');
 ```
 
-3. **Extend the SettingsResource** by overriding `getExtraFormTabs()`:
-```php
-class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource
-{
-    protected static function getExtraFormTabs(): array
-    {
-        return [
-            Tab::make('Custom Tab')->schema([
-                TextInput::make(CustomSettings::SETTING_CUSTOM_FIELD)
-                    ->label('Custom Field')
-                    ->required(),
-            ]),
-        ];
-    }
-}
+In Blade templates:
+```blade
+<a href="{{ \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::getUrl($page) }}">
+    {{ $page->title }}
+</a>
 ```
 
-4. **Configure the extended model and resource** in your config file:
-```php
-// config/filament-flexible-content-block-pages.php
-'models' => [
-    // ...
-    'settings' => \App\Models\CustomSettings::class,
-],
+### Route Helpers
 
-'resources' => [
-    // ...
-    'settings' => \App\Resources\CustomSettingsResource::class,
-],
-```
+The package includes two route helper implementations:
+
+- **`PageRouteHelper`**: For non-multilingual sites with simple URLs
+- **`LocalisedPageRouteHelper`**: For multilingual sites with localized URLs (e.g., `/en/about`, `/nl/over-ons`)
+
+Configure which helper to use in your [configuration file](documentation/configuration.md#route-helper).
+
+For advanced routing customization, custom route helpers, and controller extensions, see the [routing customization documentation](documentation/extending-and-customisation.md#routes).
 
 ## Redirects
 
@@ -376,52 +346,11 @@ The package includes an automatic sitemap generator that creates XML sitemaps fo
 - **Dynamic change frequency** - Based on last modification date (weekly, monthly, yearly)
 - **Flexible content inclusion** - Pages, routes, linkable models, and custom URLs
 - **URL exclusion patterns** - Skip specific URLs or patterns from the sitemap
-- **SEO optimization** - Includes last modification dates and proper XML structure
-
-### Configuration
-
-Enable and configure the sitemap generator in your config file:
-
-```php
-// config/filament-flexible-content-block-pages.php
-'sitemap' => [
-    'enabled' => true,
-    'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
-    'method' => SitemapGeneratorMethod::MANUAL, // MANUAL, CRAWL, or HYBRID
-    'include_pages' => true,
-    'include_link_routes' => true,
-    'include_linkable_models' => true,
-    'exclude_patterns' => [
-        '/admin/*',
-        '/api/*',
-    ],
-    'custom_urls' => [
-        'https://example.com/special-page',
-    ],
-],
-```
-
-### Generation Methods
-
-**Manual** (`SitemapGeneratorMethod::MANUAL`):
-- Generates sitemap based on database content (pages, routes, models)
-- Faster and more predictable
-- Best for most use cases
-
-**Crawl** (`SitemapGeneratorMethod::CRAWL`):
-- Crawls your website to discover URLs
-- May find URLs not in your database
-- Slower but comprehensive
-- Requires chromium
-
-**Hybrid** (`SitemapGeneratorMethod::HYBRID`):
-- Combines both approaches
-- Crawls first, then adds manual entries
-- Most comprehensive but slowest
 
 ### Usage
 
-Generate the sitemap manually:
+Make sure the sitemap is enabled in the [configuration](documentation/configuration.md#sitemap-configuration).
+Generate the sitemap manually by running:
 
 ```bash
 php artisan flexible-content-block-pages:generate-sitemap
@@ -439,76 +368,8 @@ $schedule->command('flexible-content-block-pages:generate-sitemap')
          ->at('03:00');
 ```
 
-### Linkable Models
-
-To include your own models in the sitemap, ensure they implement [the `Linkable` contract and have a `getViewUrl()` method](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable).
-
-You will most likely already have added those models to the menu configuration's `linkable_models` array or 
-[call-to-actions models](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable) then they will automatically be included in the sitemap.
-
-If you do not want your model in menus or call-to-actions, you can extend the [SitemapGeneratorService](src/Services/SitemapGeneratorService.php).
-
-### Extending the SitemapGeneratorService
-
-For full customization power, you can create your own sitemap generator service by extending the base class or completely
-implementing a new service by implementing [GeneratesSitemap](src/Services/Contracts/GeneratesSitemap.php):
-
-```php
-<?php
-
-namespace App\Services;
-
-use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
-
-class CustomSitemapGeneratorService extends SitemapGeneratorService
-{
-    protected function addCustomUrls(): void
-    {
-        parent::addCustomUrls();
-        
-        // Add your custom logic
-        $this->addToSitemap(
-            url: 'https://example.com/dynamic-page',
-            lastModifiedAt: now(),
-            priority: 0.7,
-            frequency: 'weekly'
-        );
-    }
-    
-    protected function getLinkableModels(): array
-    {
-        $models = parent::getLinkableModels();
-        
-        // Add additional models not in menu/CTA config
-        $models[] = \App\Models\BlogPost::class;
-        $models[] = \App\Models\Event::class;
-        
-        return $models;
-    }
-    
-    protected function calculatePriority($page): float
-    {
-        // Custom priority logic
-        if ($page->is_featured) {
-            return 0.9;
-        }
-        
-        return parent::calculatePriority($page);
-    }
-}
-```
-
-Then update your configuration to use your custom service:
-
-```php
-// config/filament-flexible-content-block-pages.php
-'sitemap' => [
-    'generator_service' => \App\Services\CustomSitemapGeneratorService::class,
-    // ... other config
-],
-```
-
-You can override any protected method to customize the sitemap generation behavior, including priority calculation, change frequency, URL filtering, or adding entirely new content types.
+For advanced configuration options, generation methods, linkable models setup, and extending the sitemap generator service, 
+see the [sitemap customisation documentation](documentation/extending-and-customisation.md#sitemap).
 
 ## Authorisation
 
@@ -526,6 +387,8 @@ The package provides extensive configuration options to customize models, resour
 You can modify the published configuration file to match your application's requirements.
 
 For detailed configuration options and examples, see the [configuration documentation](documentation/configuration.md).
+
+If you want to further customise or extend the functionality, have a look [at the options](documentation/extending-and-customisation.md).
 
 ## TODO's
 
