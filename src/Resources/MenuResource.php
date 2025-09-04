@@ -73,7 +73,7 @@ class MenuResource extends Resource
                 ->maxLength(255)
                 ->helperText(flexiblePagesTrans('menus.form.name_help')),
 
-            CodeField::create()
+            CodeField::create(true)
                 ->helperText(flexiblePagesTrans('menus.form.code_help')),
         ];
 
