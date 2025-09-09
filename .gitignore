@@ -34,3 +34,9 @@ testbench.yaml
 # Claude Code Instructions
 CLAUDE.md
 .claude
+
+# TOC temp files:
+*.md.orig.*
+*.md.toc.*
+*/*.md.orig.*
+*/*.md.toc.*

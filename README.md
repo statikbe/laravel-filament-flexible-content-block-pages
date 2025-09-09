@@ -16,7 +16,7 @@ while providing content editors with an intuitive interface for managing pages a
 - **Flexible page management** - Create pages with hero images, flexible content blocks, SEO fields, and publication controls
 - **Hierarchical menu builder** - Drag-and-drop interface for creating navigation menus
 - **Multilingual support** - Full localization with automatic route generation for multiple languages
-- **SEO tools** - Automatic sitemap generation, meta tag management, and URL redirect handling when slugs change
+- **SEO tools** - Automatic sitemap generation, meta tag management, SEO tag pages, and URL redirect handling when slugs change
 - **Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
 - **Developer-friendly** - Extendable models & tables, customizable templates, and comprehensive configuration options
 - **Content organization** - Tag system, hierarchical page structure, and settings management
@@ -33,7 +33,57 @@ while providing content editors with an intuitive interface for managing pages a
 
 ## Table of contents
 
-TODO
+<!--ts-->
+   * [Installation](#installation)
+      * [Laravel Filament Flexible Content Blocks](#laravel-filament-flexible-content-blocks)
+      * [Laravel Localization](#laravel-localization)
+      * [Laravel Tags](#laravel-tags)
+   * [Setup in your project](#setup-in-your-project)
+      * [Translations](#translations)
+      * [Routes](#routes)
+      * [Filament panel](#filament-panel)
+      * [Schedule](#schedule)
+   * [Page management](#page-management)
+      * [Features](#features)
+      * [Creating Pages](#creating-pages)
+      * [Page Hierarchy](#page-hierarchy)
+      * [Publication Controls](#publication-controls)
+      * [Multilingual Support](#multilingual-support)
+      * [Frontend Integration](#frontend-integration)
+   * [Menu builder](#menu-builder)
+      * [Features](#features-1)
+      * [Adding a menu to Blade](#adding-a-menu-to-blade)
+      * [Adding linkable models](#adding-linkable-models)
+      * [Menu seeding](#menu-seeding)
+   * [Settings](#settings)
+      * [Use settings](#use-settings)
+   * [Routing](#routing)
+      * [URL Structure](#url-structure)
+      * [Route Registration](#route-registration)
+      * [Generating URLs](#generating-urls)
+      * [Route Helpers](#route-helpers)
+   * [Redirects](#redirects)
+      * [Configuration](#configuration)
+   * [Sitemap Generator](#sitemap-generator)
+      * [Features](#features-2)
+      * [Usage](#usage)
+      * [Automatic Generation](#automatic-generation)
+   * [Tags and SEO Tag Pages](#tags-and-seo-tag-pages)
+   * [Authorisation](#authorisation)
+   * [Configuration](#configuration-1)
+   * [TODO's](#todos)
+   * [Future work](#future-work)
+   * [Development](#development)
+   * [Changelog](#changelog)
+   * [Contributing](#contributing)
+   * [Security Vulnerabilities](#security-vulnerabilities)
+   * [Credits](#credits)
+   * [License](#license)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: sten, at: Tue Sep  9 23:28:54 CEST 2025 -->
+
+<!--te-->
 
 ## Installation
 
@@ -88,18 +138,21 @@ php artisan flexible-content-block-pages:seed
 
 Further configure the [third-party packages that are used](#credits). Check the installation documentation of the following packages:
 
-### [Laravel Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks)
+### Laravel Filament Flexible Content Blocks
 
 Probably, you will want to tweak the configuration of the Flexible blocks package. Publish the configuration using [the
 installation guide](https://github.com/statikbe/laravel-filament-flexible-content-blocks?tab=readme-ov-file#installation).
 
-### [Laravel Localization](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation):
+### Laravel Localization
 
-Make sure the middlewares are properly set up if you want to use localised routes.
+Follow [the installation](https://github.com/mcamara/laravel-localization?tab=readme-ov-file#installation) 
+and make sure the middlewares are properly set up if you want to use localised routes.
 
-### [Laravel Tags](https://spatie.be/docs/laravel-tags/v4/installation-and-setup):
+### Laravel Tags
 
-Publish the config and change the tag model to the package model:
+Follow [the installation](https://spatie.be/docs/laravel-tags/v4/installation-and-setup) 
+and publish the config and change the tag model to the package model:
+
 ```php 
 [
     'tag_model' => \Statikbe\FilamentFlexibleContentBlockPages\Models\Tag::class,
@@ -156,6 +209,106 @@ Schedule::command('media-library:clean')
 Schedule::command('media-library:regenerate --only-missing')
     ->dailyAt('4:20');
 ```
+
+## Page management
+
+The package provides a comprehensive page management system built on flexible content blocks. 
+
+### Features
+
+- **Flexible content creation** - Rich page editor with hero sections, flexible content blocks, and media integration
+- **Hierarchical organization** - Three-level page structure (parent → child → grandchild) with automatic URL generation
+- **Publication workflow** - Draft/published status with optional scheduling (`publishing_begins_at`/`publishing_ends_at`)
+- **Multilingual support** - Full translation support, including slug localization
+- **SEO optimization** - Built-in meta tags, Open Graph, Twitter cards, and structured data
+- **Author system** - Optional author assignment and attribution
+- **Media management** - Hero images, content images, and SEO images via [Spatie Media Library](https://github.com/spatie/laravel-medialibrary)
+- **Template system** - Custom page templates with fallback support
+- **Protected pages** - Undeletable flag for critical pages
+- **Search & filtering** - Full-text search across page content, ready for [Laravel Scout](https://laravel.com/docs/12.x/scout)
+
+### Creating Pages
+
+TODO screenshot
+
+Create new pages through the Filament admin interface with a multi-tab form:
+
+- **Content Tab** - Title, slug, intro, and flexible content blocks
+- **Hero Tab** - Hero image and call-to-action buttons  
+- **Publication Tab** - Status, scheduling, and author assignment
+- **SEO Tab** - Meta tags, Open Graph, and Twitter card settings
+- **Parent Tab** - Page hierarchy and template selection (if enabled)
+
+Pages use automatic slug generation from the title but can be manually overridden for custom URLs.
+
+### Page Hierarchy
+
+Create organized page structures with automatic URL generation:
+
+```
+Homepage (/)
+├── About (/about)
+│   ├── Team (/about/team)
+│   └── History (/about/history)  
+└── Services (/services)
+    ├── Web Development (/services/web-development)
+    │   └── Laravel (/services/web-development/laravel)
+    └── Consulting (/services/consulting)
+```
+
+You can configure hierarchy support in your [configuration file](documentation/configuration.md#page-resource-configuration).
+In case you need deeper nesting, you can add extra routes.
+
+### Publication Controls
+
+Control page visibility with by setting publishing begin and end dates. So you can achieve the following statuses:
+
+- **Draft** - Page exists but not visible to public users
+- **Published** - Page is live and accessible via URL
+- **Scheduled** - Automatically publish/unpublish at specific times
+
+Use the `published()` scope in your queries to show only published content:
+
+```php
+$pages = Page::published()->get();
+```
+
+### Multilingual Support
+
+When using the `LocalisedPageRouteHelper` ([see configuration](./documentation/configuration.md#route-helper)), pages automatically support multiple languages:
+
+- **Translated content** - All text fields support per-locale content
+- **Localized URLs** - Each language gets its own slug (e.g., `/en/about`, `/nl/over-ons`)  
+- **Content blocks** - Flexible content blocks are fully translatable
+- **SEO per language** - Meta tags and descriptions for each locale
+
+The content can be copied between languages using the built-in "Copy to locales" action in the content blocks editor.
+
+There is also a language switch component, that provides a simple way to navigate to another locale.
+For customisation, publish the views and if needed extend the [LanguageSwitch component](src/Components/LanguageSwitch.php).
+
+### Frontend Integration
+
+Generate URLs for pages in your Blade templates:
+
+```php
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+
+// Generate page URL
+$url = FilamentFlexibleContentBlockPages::getUrl($page);
+
+// Generate URL for specific locale  
+$url = FilamentFlexibleContentBlockPages::getUrl($page, 'en');
+
+// OR there is a shorthand helper:
+flexiblePageUrl($page, 'nl');
+```
+
+You can best publish the views and customise the styling and HTML structure to your project requirements.
+
+For detailed frontend templating, theme customization, and available Blade components, see the [frontend documentation](documentation/frontend.md).
+
+For advanced page customization, extending models, and custom workflows, see the [extending documentation](documentation/extending-and-customisation.md).
 
 ## Menu builder
 
@@ -371,14 +524,19 @@ $schedule->command('flexible-content-block-pages:generate-sitemap')
 For advanced configuration options, generation methods, linkable models setup, and extending the sitemap generator service, 
 see the [sitemap customisation documentation](documentation/extending-and-customisation.md#sitemap).
 
+## Tags and SEO Tag Pages
+
+TODO
+
 ## Authorisation
 
 Authorisation setup is not included in this package. Most projects will use an authorisation strategy project-wide, e.g. via policies.
 
 However authorisation can be easily implemented. There are two easy strategies:
 
-1. Use the panel and implement a simple access rule for the panel on the user model in `canAccessPanel(Panel $panel)`
-2. Use a Filament authorisation library, like [Filament Shield](https://github.com/bezhanSalleh/filament-shield). 
+1. Use the panel and implement a simple access rule for the panel on the user model in `canAccessPanel(Panel $panel)`.
+2. Remove the unwanted resources from the `resources` configuration.  
+3. Use a Filament authorisation library, like [Filament Shield](https://github.com/bezhanSalleh/filament-shield). 
 Shield can automatically generate policies with permissions that you can link to specific roles. 
 
 ## Configuration
@@ -397,13 +555,6 @@ check:
 - Seppe: tailwind config complete? do we need to add flexible content blocks styling?
 - Seppe: menu components ok?
 
-menu:
-- caching tree model + observer to clear cache
-- Menu titels menu items
-
-page:
-- laravel scout
-
 release:
 - policies:
   - note: undeletable pages
@@ -411,10 +562,23 @@ release:
 - documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
 
-future:
-- A simple asset manager (include or not?)
-- Re-usable content blocks
+## Future work
+
+- Caching of the menu data structure.
+- Add menu item for subtitle in menus.
+- A model to store re-usable content blocks, e.g. to create a marketing banner that can be reused on many pages, and edited once.
 - Contact form
+- FAQ model, resource and flexible blocks
+- A component to put on the pages with a quick link to edit this page in Filament
+- A trait for page indexing in Laravel Scout
+
+## Development
+
+To update all table of content sections in the documentation files, run:
+
+```shell
+update_toc.sh
+```
 
 ## Changelog
 

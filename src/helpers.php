@@ -3,6 +3,7 @@
 use Illuminate\Contracts\View\View;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 function flexiblePagesTrans(string $translationKey, array $replace = [], ?string $locale = null): string
 {
@@ -29,4 +30,9 @@ function flexiblePagesPrefix(string $var): string
 function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): View
 {
     return view(flexiblePagesPrefix($viewPath), $data, $mergeData);
+}
+
+function flexiblePageUrl(Page $page, ?string $locale = null): string
+{
+    return FilamentFlexibleContentBlockPages::getUrl($page, $locale);
 }

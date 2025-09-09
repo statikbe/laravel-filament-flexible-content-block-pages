@@ -2,6 +2,38 @@
 
 In this document, we explain all settings available in the [filament-flexible-content-block-pages configuration file](../config/filament-flexible-content-block-pages.php).
 
+## Table of content
+
+<!--ts-->
+   * [Overview](#overview)
+   * [Model Classes](#model-classes)
+   * [Database Table Names](#database-table-names)
+   * [Filament Resources](#filament-resources)
+   * [Page Resource Configuration](#page-resource-configuration)
+      * [Page Resource Options](#page-resource-options)
+   * [CMS Panel Configuration](#cms-panel-configuration)
+   * [Route Helper](#route-helper)
+   * [Theme Configuration](#theme-configuration)
+   * [Page Templates](#page-templates)
+   * [Menu Builder Configuration](#menu-builder-configuration)
+      * [Menu Configuration Options](#menu-configuration-options)
+   * [Sitemap Configuration](#sitemap-configuration)
+      * [Sitemap Generation Methods](#sitemap-generation-methods)
+   * [Redirects Configuration](#redirects-configuration)
+   * [Settings Configuration](#settings-configuration)
+   * [Tags Configuration](#tags-configuration)
+   * [Tag Pages Configuration](#tag-pages-configuration)
+      * [Tag Pages Options](#tag-pages-options)
+   * [Advanced Customization](#advanced-customization)
+      * [Extending Models](#extending-models)
+      * [Custom Route Helpers](#custom-route-helpers)
+      * [Custom Menu Styles](#custom-menu-styles)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: sten, at: Tue Sep  9 23:28:54 CEST 2025 -->
+
+<!--te-->
+
 ## Overview
 
 The Filament Flexible Content Block Pages package provides a comprehensive CMS system with flexible content blocks for Filament. 

@@ -5,7 +5,7 @@
     /* @var Page $page */
 @endphp
 
-<x-flexible-pages-base-layout wide="true">
+<x-flexible-pages-base-layout>
     <header>
         <x-flexible-pages-language-switch/>
     </header>

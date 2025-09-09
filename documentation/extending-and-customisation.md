@@ -2,6 +2,39 @@
 
 In this document, we will explain how you can change behaviour or extend functionalities to match your project requirements.
 
+## Table of content
+
+<!--ts-->
+   * [Settings](#settings)
+   * [Menu Builder](#menu-builder)
+      * [Customizing Menu Styles](#customizing-menu-styles)
+   * [Routes](#routes)
+      * [Custom Route Helpers](#custom-route-helpers)
+         * [Creating Custom Route Helpers](#creating-custom-route-helpers)
+         * [Built-in Route Helpers](#built-in-route-helpers)
+      * [Custom Controllers](#custom-controllers)
+         * [Extending the Page Controller](#extending-the-page-controller)
+         * [Using Custom Controllers with Route Helpers](#using-custom-controllers-with-route-helpers)
+         * [Extending the SEO implementation](#extending-the-seo-implementation)
+      * [Advanced Route Configuration](#advanced-route-configuration)
+         * [Custom Route Middleware](#custom-route-middleware)
+         * [Route Model Binding](#route-model-binding)
+   * [Sitemap](#sitemap)
+      * [Configuration](#configuration)
+      * [Generation Methods](#generation-methods)
+      * [Linkable Models](#linkable-models)
+      * [Extending the SitemapGeneratorService](#extending-the-sitemapgeneratorservice)
+   * [SEO tag pages](#seo-tag-pages)
+      * [Customizing Tag Page Views](#customizing-tag-page-views)
+      * [Extending Tag Page Content](#extending-tag-page-content)
+      * [SEO tag page controller customisation](#seo-tag-page-controller-customisation)
+      * [Advanced Extensions](#advanced-extensions)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: sten, at: Tue Sep  9 23:28:55 CEST 2025 -->
+
+<!--te-->
+
 ## Settings
 
 One of the most likely extensions you will want to do is add your own settings fields.
@@ -388,4 +421,139 @@ You can override any protected method to customize the sitemap generation behavi
 
 ## SEO tag pages
 
-TODO explain how to extend the views & controller
+### Customizing Tag Page Views
+
+Override the default tag page template by publishing the view:
+
+```bash
+php artisan vendor:publish --tag=filament-flexible-content-block-pages-views
+```
+
+Then customize the template at:
+```
+resources/views/vendor/filament-flexible-content-block-pages/tailwind/pages/tag_index.blade.php
+```
+
+You can then adjust the header and item layout.
+Currently, the view does not focus on styling, only on proper HTML structure, because these pages are meant to be read by search engines. 
+
+### Extending Tag Page Content
+
+**Add custom models** to tag pages by updating the configuration:
+
+```php
+// config/filament-flexible-content-block-pages.php
+'tag_pages' => [
+    'models' => [
+        'enabled' => [
+            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            \App\Models\BlogPost::class,
+            \App\Models\Product::class,
+            \App\Models\Event::class,
+        ],
+    ],
+],
+```
+
+**Model requirements:**
+- Must use the `HasTags` trait from spatie/laravel-tags
+- Should implement a `scopePublished()` method for content filtering (or you need to customise the controller)
+- Should have a `getViewUrl()` method for link generation by implementing the `Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable` interface
+
+**Example model setup:**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Tags\HasTags;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
+
+class BlogPost extends Model implements Linkable
+{
+    use HasTags;
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published')
+                    ->where('published_at', '<=', now());
+    }
+
+    public function getViewUrl(?string $locale = null): string
+    {
+        return route('blog.show', $this);
+    }
+
+    public function getPreviewUrl(?string $locale = null): string
+    {
+        return $this->getViewUrl($locale);
+    }
+}
+```
+
+### SEO tag page controller customisation
+
+**Extend the SeoTagController** for custom SEO handling:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Statikbe\FilamentFlexibleContentBlockPages\Http\Controllers\SeoTagController as BaseSeoTagController;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
+use Illuminate\View\View;
+
+class CustomSeoTagController extends BaseSeoTagController
+{
+    public function index(Tag $tag): View
+    {
+        $view = parent::index($tag);
+        
+        // Add custom SEO data
+        SEOTools::opengraph()->addImage($this->getCustomTagImage($tag));
+        SEOTools::twitter()->setImage($this->getCustomTagImage($tag));
+        
+        // Add custom view data
+        $view->with([
+            'customData' => $this->getCustomTagData($tag),
+            'relatedTags' => $this->getRelatedTags($tag),
+        ]);
+        
+        return $view;
+    }
+
+    private function getCustomTagImage(Tag $tag): ?string
+    {
+        // Custom logic for tag images
+        return $tag->tagType->image_url ?? asset('images/default-tag.jpg');
+    }
+
+    private function getCustomTagData(Tag $tag): array
+    {
+        return [
+            'totalViews' => $this->getTagPageViews($tag),
+            'lastUpdated' => $this->getLastContentUpdate($tag),
+        ];
+    }
+}
+```
+
+### Advanced Extensions
+
+**Custom URL patterns** by customising your route helper:
+
+```php
+public function defineSeoTagRoutes(): void
+{
+    Route::get('/topics/{tag:slug}', [CustomSeoTagController::class, 'index'])
+        ->name(static::ROUTE_SEO_TAG_PAGE);
+}
+
+public function getTagPageUrl(Tag $tag, ?string $locale = null): string
+{
+    return route(static::ROUTE_SEO_TAG_PAGE, ['tag' => $tag->slug]);
+}
+```
