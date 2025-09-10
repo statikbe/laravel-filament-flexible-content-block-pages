@@ -1,6 +1,7 @@
 # Menu Seeders
 
-This package provides a powerful and developer-friendly way to seed menus and menu items through the `MenuSeeder` abstract class. This base class offers typed methods with sensible defaults, making it easy to create complex menu structures programmatically.
+This package provides a powerful and developer-friendly way to seed menus and menu items through the `MenuSeeder` abstract class. 
+This base class offers typed methods with sensible defaults, making it easy to create complex menu structures programmatically.
 
 ## Getting Started
 

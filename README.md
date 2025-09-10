@@ -5,31 +5,24 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/statikbe/laravel-filament-flexible-content-block-pages/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/statikbe/laravel-filament-flexible-content-block-pages/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/statikbe/laravel-filament-flexible-content-block-pages.svg?style=flat-square)](https://packagist.org/packages/statikbe/laravel-filament-flexible-content-block-pages)
 
-A CMS solution for Laravel applications built on [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks). 
-This package extends the flexible content block system, into a full page management solution with routing, SEO, menus, and multilingual support.
+Filament Flexible Content Block Pages is a CMS solution for Laravel applications built on [Filament Flexible Content Blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks). 
+This package extends the flexible content block system, into a full page management solution with routing, SEO, menus, tags and multilingual support.
 
-Designed for developers who need a content management system that integrates seamlessly with existing Laravel Filament application, 
+Designed for developers who need a content management system that provides a lot of flexibility to fit requirements, 
 while providing content editors with an intuitive interface for managing pages and content.
 
 ## Key Features
 
-- **Flexible page management** - Create pages with hero images, flexible content blocks, SEO fields, and publication controls
-- **Hierarchical menu builder** - Drag-and-drop interface for creating navigation menus
-- **Multilingual support** - Full localization with automatic route generation for multiple languages
-- **SEO tools** - Automatic sitemap generation, meta tag management, SEO tag pages, and URL redirect handling when slugs change
-- **Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
-- **Developer-friendly** - Extendable models & tables, customizable templates, and comprehensive configuration options
-- **Content organization** - Tag system, hierarchical page structure, and settings management
-- **Works out-of-the-box** - Get the package quickly up and running, while focussing on easy configuration, customisation & extendability.
+- **📄 Flexible page management** - Create pages with hero images, flexible content blocks, SEO fields, and publication controls
+- **🍔 Hierarchical menu builder** - Drag-and-drop interface for creating navigation menus
+- **🌍 Multilingual support** - Full localization with automatic route generation for multiple languages
+- **🔍 SEO tools** - Automatic sitemap generation, meta tag management, SEO tag pages, and URL redirect handling when slugs change
+- **⚡ Ready-to-use admin interface** - Pre-configured Filament panel with all resources and management tools
+- **🛠️ Developer-friendly** - Extendable models & tables, customizable templates, and comprehensive configuration options
+- **🏷️ Content organization** - Tag system, hierarchical page structure, and settings management
+- **🚀 Works out-of-the-box** - Get the package quickly up and running, while focussing on easy configuration, customisation & extendability.
 
-## Additional Features
-
-- Website routing with customizable URL patterns
-- Blade view components and CSS themes
-- Media library integration via Spatie packages
-- Automatic 301 redirects when page URLs change
-- Multiple sitemap generation methods (manual, crawling, hybrid)
-- Configurable content blocks and layouts
+This package makes use of [several great open-source packages](#used-packages) to be able to bundle these features. 
 
 ## Table of contents
 
@@ -42,6 +35,7 @@ while providing content editors with an intuitive interface for managing pages a
       * [Translations](#translations)
       * [Routes](#routes)
       * [Filament panel](#filament-panel)
+      * [Redirects](#redirects)
       * [Schedule](#schedule)
    * [Page management](#page-management)
       * [Features](#features)
@@ -62,15 +56,19 @@ while providing content editors with an intuitive interface for managing pages a
       * [Route Registration](#route-registration)
       * [Generating URLs](#generating-urls)
       * [Route Helpers](#route-helpers)
-   * [Redirects](#redirects)
-      * [Configuration](#configuration)
+   * [Redirects](#redirects-1)
+      * [Redirect middleware configuration](#redirect-middleware-configuration)
    * [Sitemap Generator](#sitemap-generator)
       * [Features](#features-2)
       * [Usage](#usage)
       * [Automatic Generation](#automatic-generation)
    * [Tags and SEO Tag Pages](#tags-and-seo-tag-pages)
+      * [Features](#features-3)
+      * [Tag Management](#tag-management)
+      * [Tag Types](#tag-types)
+      * [SEO Tag Pages](#seo-tag-pages)
    * [Authorisation](#authorisation)
-   * [Configuration](#configuration-1)
+   * [Configuration](#configuration)
    * [TODO's](#todos)
    * [Future work](#future-work)
    * [Development](#development)
@@ -78,10 +76,11 @@ while providing content editors with an intuitive interface for managing pages a
    * [Contributing](#contributing)
    * [Security Vulnerabilities](#security-vulnerabilities)
    * [Credits](#credits)
+      * [Used packages](#used-packages)
    * [License](#license)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Tue Sep  9 23:28:54 CEST 2025 -->
+<!-- Added by: sten, at: Thu Sep 11 00:02:19 CEST 2025 -->
 
 <!--te-->
 
@@ -136,7 +135,7 @@ You can now seed the home page and default settings by running:
 php artisan flexible-content-block-pages:seed
 ```
 
-Further configure the [third-party packages that are used](#credits). Check the installation documentation of the following packages:
+Further configure the [third-party packages that are used](#used-packages). Check the installation documentation of the following packages:
 
 ### Laravel Filament Flexible Content Blocks
 
@@ -173,7 +172,7 @@ php artisan vendor:publish --tag="filament-flexible-content-block-pages-views"
 
 If you want translated content and routes, go through the following steps: 
 
-1. Configure the `supported_locales` in the Filament Flexible Content Blocks configuration or in a service provider
+1. Configure the `supported_locales` in [the Filament Flexible Content Blocks configuration or in a service provider](https://github.com/statikbe/laravel-filament-flexible-content-blocks/blob/main/documentation/configuration.md#supported-locales)
 2. Configure the `route_helper` in [`filament-flexible-content-block-pages.php`](./config/filament-flexible-content-block-pages.php)
 
 ### Routes
@@ -198,6 +197,10 @@ The package contains a pre-configured panel. You can register the panel in the `
 ```
 
 If you want you can build your own panel from the provided resources.
+
+### Redirects
+
+Add the redirect middleware, see [Redirect configuration](#redirect-middleware-configuration)
 
 ### Schedule
 
@@ -261,7 +264,8 @@ In case you need deeper nesting, you can add extra routes.
 
 ### Publication Controls
 
-Control page visibility with by setting publishing begin and end dates. So you can achieve the following statuses:
+Control page visibility with by setting publishing begin and end dates. 
+So you can achieve the following statuses by setting these dates in the past or future:
 
 - **Draft** - Page exists but not visible to public users
 - **Published** - Page is live and accessible via URL
@@ -289,21 +293,6 @@ For customisation, publish the views and if needed extend the [LanguageSwitch co
 
 ### Frontend Integration
 
-Generate URLs for pages in your Blade templates:
-
-```php
-use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-
-// Generate page URL
-$url = FilamentFlexibleContentBlockPages::getUrl($page);
-
-// Generate URL for specific locale  
-$url = FilamentFlexibleContentBlockPages::getUrl($page, 'en');
-
-// OR there is a shorthand helper:
-flexiblePageUrl($page, 'nl');
-```
-
 You can best publish the views and customise the styling and HTML structure to your project requirements.
 
 For detailed frontend templating, theme customization, and available Blade components, see the [frontend documentation](documentation/frontend.md).
@@ -312,7 +301,8 @@ For advanced page customization, extending models, and custom workflows, see the
 
 ## Menu builder
 
-The package includes a powerful hierarchical menu builder with a drag-and-drop interface for creating navigation menus. Menus support multiple types of links and can be easily styled with custom templates.
+The package includes a powerful hierarchical menu builder with a drag-and-drop interface, using [solution-forest/filament-tree](https://github.com/solutionforest/filament-tree). 
+Menus support multiple types of links and can be easily styled with custom templates.
 
 ### Features
 
@@ -326,7 +316,8 @@ The package includes a powerful hierarchical menu builder with a drag-and-drop i
 
 ### Adding a menu to Blade
 
-The package includes a `default` built-in menu style which is developed in a generic way so that you can tweak its styling by passing some attributes without having to publish the corresponding blade templates.
+The package includes a `default` built-in menu style which is developed in a generic way so that you can tweak its styling,
+by passing some attributes without having to publish the corresponding blade templates.
 
 Example usage to have a horizontal menu using tailwind:
 ```blade
@@ -373,7 +364,7 @@ class Product extends Model implements HasMenuLabel
 }
 ```
 
-If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
+**Tip:** If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
 easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrait.php).
 
 ### Menu seeding
@@ -385,7 +376,12 @@ For creating custom menu styles and advanced menu customization, see the [menu c
 
 ## Settings
 
-All settings are stored in one table in one record. The reason is to be able to add spatie medialibrary media as a config value.
+All settings are stored in one table in one record. 
+The reason is to be able to add spatie medialibrary media as a config value.
+By using one record and a new media collection for each media setting, you can more easily add media.
+Furthermore, by manually adding a specific column for a setting, the data types are also correct and castable.
+In contrast, if we would use a key-value or JSON-based solution, not all our requirements could be served.
+
 Each setting is cached and refreshed when the settings change.
 
 ### Use settings
@@ -440,11 +436,14 @@ $url = FilamentFlexibleContentBlockPages::getUrl($page);
 
 // Generate URL for a specific locale
 $url = FilamentFlexibleContentBlockPages::getUrl($page, 'en');
+
+// OR there is a shorthand helper:
+flexiblePageUrl($page, 'nl');
 ```
 
 In Blade templates:
 ```blade
-<a href="{{ \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::getUrl($page) }}">
+<a href="{{ flexiblePageUrl($page) }}">
     {{ $page->title }}
 </a>
 ```
@@ -463,12 +462,12 @@ For advanced routing customization, custom route helpers, and controller extensi
 ## Redirects
 
 The package includes automatic redirect management: when the slug of a page changes, a redirect from the old page 
-to the new page is added. These redirects are stored in the database and are managable with the Filament resource, 
-so you can add your own redirects. For example, you can add handy redirects for marketing campaigns.
+to the new page is added. These redirects are stored in the database and are manageable with the Filament resource, 
+so you can add your own redirects. For example, you can add handy redirects for marketing campaigns or quick links.
 
 We have integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector), so you can easily configure other redirects in the spatie packages config.
 
-### Configuration
+### Redirect middleware configuration
 
 1. Prepend/append the [RedirectsMissingPages.php](src/Http/Middleware/RedirectsMissingPages.php) middleware to your global middleware stack:
 
@@ -526,7 +525,77 @@ see the [sitemap customisation documentation](documentation/extending-and-custom
 
 ## Tags and SEO Tag Pages
 
-TODO
+The package provides a comprehensive tagging system with SEO-optimized tag pages for content organization and search engine visibility.
+We make use of [Laravel Tags](https://github.com/spatie/laravel-tags) so all features of this spatie package are available.
+While spatie uses a string for tag type, we have implemented a TagType model with extra SEO and styling functionality.
+
+### Features
+
+- **Hierarchical tag system** - Tags organized by customizable tag types (categories, topics, etc.)
+- **Multilingual support** - Translatable tag names, slugs, and SEO descriptions
+- **SEO tag pages** - Automatically generated landing pages with all content of a tag for search engine optimization
+- **Visual organization** - Custom colors and icons for tag types
+- **Flexible routing** - Customizable URL patterns for tag pages (default: `/tag/{slug}`)
+
+### Tag Management
+
+Create and manage tags through the Filament admin interface:
+
+- **Tag Types** - Define categories like "Topics", "Industries", or "Technologies"
+- **Tags** - Individual tags within each type with multilingual support
+- **SEO Settings** - Meta descriptions and tags can be enabled to have an SEO tag page
+- **Visual Identity** - Colors and icons for better organization
+
+TODO screenshot
+
+### Tag Types
+
+Tag types provide structure and organization. You can add more specific tag types, e.g. for news articles only.
+
+```php
+// Built-in tag types
+TagType::TYPE_DEFAULT = 'default';  // General purpose tags
+TagType::TYPE_SEO = 'seo';         // SEO-focused tags with landing pages
+```
+
+**Key features:**
+- **Default type** - One tag type can be marked as default for new tags
+- **SEO pages** - Enable `has_seo_pages` to generate landing pages for tags of this type and an SEO description can be filled in that will be shown on the tag page for more context.
+- **Visual styling** - Custom colors and SVG icons for admin interface
+- **Translatable names** - Support for multiple languages
+
+### SEO Tag Pages
+
+When enabled (`has_seo_pages = true` on tag type), the package automatically generates SEO-optimized landing pages.
+The HTML of the tag pages is focused on the data structure for search engines and is not styled. 
+If you also want to use this for other purposes, you can publish the views and style it.
+
+**Content Inclusion:**
+SEO tag pages display content from models configured in [`tag_pages.models.enabled`](documentation/configuration.md#tag-pages-configuration):
+
+```php
+// config/filament-flexible-content-block-pages.php
+'tag_pages' => [
+    'models' => [
+        'enabled' => [
+            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            \App\Models\BlogPost::class,  // Your custom models
+        ],
+    ],
+],
+```
+
+**SEO Benefits:**
+- Automatic meta tags and descriptions
+- Multilingual hreflang tags
+- Content grouping by type or chronologically
+- Pagination for large content sets
+- Search engine friendly HTML structure
+- Tag pages are added to the sitemap
+
+For advanced tag page customization, extending models, custom controllers, and template customization, see the [SEO tag pages documentation](documentation/extending-and-customisation.md#seo-tag-pages).
+
+For tag configuration options, URL patterns, and content inclusion settings, see the [configuration documentation](documentation/configuration.md#tags-configuration).
 
 ## Authorisation
 
@@ -559,7 +628,6 @@ release:
 - policies:
   - note: undeletable pages
 - undeletable page toggle only for permission holder
-- documentation
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
 
 ## Future work
@@ -597,6 +665,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [Sten Govaerts](https://github.com/sten)
 - [All Contributors](../../contributors)
 
+### Used packages
+
 We built this on the shoulders of others by combining several Laravel packages into a cohesive CMS solution, making it opinionated.
 We would like to thank the developers and contributors of the following packages:
 
@@ -606,6 +676,7 @@ We would like to thank the developers and contributors of the following packages
 - [solution-forest/filament-tree](https://github.com/solutionforest/filament-tree)
 - [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector)
 - [spatie/laravel-sitemap](https://github.com/spatie/laravel-sitemap)
+- [spatie/laravel-tags](https://github.com/spatie/laravel-tags)
 
 ## License
 

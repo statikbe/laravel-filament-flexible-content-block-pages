@@ -31,7 +31,7 @@ In this document, we will explain how you can change behaviour or extend functio
       * [Advanced Extensions](#advanced-extensions)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Tue Sep  9 23:28:55 CEST 2025 -->
+<!-- Added by: sten, at: Thu Sep 11 00:02:20 CEST 2025 -->
 
 <!--te-->
 
