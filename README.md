@@ -186,10 +186,10 @@ Best at the bottom of the file, since the pages routes with slugs will catch man
 
 ### Filament panel
 
-The package contains a pre-configured panel. You can register the panel in the `app.php` configuration file.
+The package contains a pre-configured panel. You can register the panel in the `bootstrap\providers.php` configuration file.
 
 ```php
-'providers' => [
+return [
     // ...
     \Statikbe\FilamentFlexibleContentBlockPages\FlexibleContentBlockPagesPanel::class,
     // ...
