@@ -10,7 +10,7 @@ return [
             'general' => 'Général',
             'content' => 'Contenu',
             'seo' => 'SEO',
-            'overview' => 'Vue d'ensemble',
+            'overview' => 'Vue d\'ensemble',
             'advanced' => 'Avancé',
         ],
         'table' => [

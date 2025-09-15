@@ -7,7 +7,6 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class ListTags extends ListRecords
 {
@@ -21,7 +20,8 @@ class ListTags extends ListRecords
     protected function getActions(): array
     {
         return [
-            FlexibleLocaleSwitcher::make(),
+            // we cannot include a language switch because of an incompatibility between spatie/laravel-tags and
+            // spatie/laravel-translatable. See: https://github.com/spatie/laravel-tags/issues/508
             CreateAction::make(),
         ];
     }

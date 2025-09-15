@@ -184,6 +184,9 @@ Best at the bottom of the file, since the pages routes with slugs will catch man
 \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
 ```
 
+**Note:** If you are using mcamara/laravel-localization for other routes, you need to put the above line OUTSIDE of
+the laravel-localization middleware group. The middleware is already included in `FilamentFlexibleContentBlockPages::routes()`.
+
 ### Filament panel
 
 The package contains a pre-configured panel. You can register the panel in the `bootstrap\providers.php` configuration file.
