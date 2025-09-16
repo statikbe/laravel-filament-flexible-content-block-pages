@@ -34,6 +34,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ParentField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\SlugField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\PublishedColumn;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\TitleColumn;
@@ -213,6 +214,7 @@ class PageResource extends Resource
                 EditAction::make(),
                 PublishAction::make(),
                 ViewAction::make(),
+                ReplicateAction::make(),
             ])
             ->bulkActions([
                 LinkedToMenuItemBulkDeleteAction::make(),

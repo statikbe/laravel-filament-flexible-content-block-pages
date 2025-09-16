@@ -8,6 +8,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBl
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Resource\Pages\Actions\CopyContentBlocksToLocalesAction;
 
@@ -27,6 +28,7 @@ class EditPage extends EditRecord
             FlexibleLocaleSwitcher::make(),
             LinkedToMenuItemDeleteAction::make()
                 ->visible(fn (Page $record) => $record->isDeletable()),
+            ReplicateAction::make(),
         ];
     }
 
