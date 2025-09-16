@@ -333,6 +333,14 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig("page_resource.{$modelClass}.enable_undeletable", true);
     }
 
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
+    public function isReplicateActionOnTableEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_replicate_action_on_table", true);
+    }
+
     public function getPageNavigationSort(string $modelClass): ?int
     {
         return $this->packageConfig("page_resource.{$modelClass}.navigation_sort");

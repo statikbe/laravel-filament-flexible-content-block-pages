@@ -215,6 +215,7 @@ class PageResource extends Resource
                 PublishAction::make(),
                 ViewAction::make(),
                 ReplicateAction::make()
+                    ->visible(FilamentFlexibleContentBlockPages::config()->isReplicateActionOnTableEnabled(static::getModel()))
                     ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
             ])
             ->bulkActions([

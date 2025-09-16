@@ -114,6 +114,11 @@ return [
             'enable_undeletable' => true,
 
             /*
+            | Enable the replicate action on the table
+            */
+            'enable_replicate_action_on_table' => false,
+
+            /*
             | The Filament navigation menu sorting order of the page resource
             */
             'navigation_sort' => 5,

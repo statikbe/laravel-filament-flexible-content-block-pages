@@ -113,6 +113,9 @@ Configure various features and options for the page resource. These settings con
         // Enable undeletable flag to protect important pages
         'enable_undeletable' => true,
         
+        // Enable the feature for pages to have a boolean to make them undeletable
+        'enable_replicate_action_on_table' => false,
+        
         // Navigation sorting order in Filament admin
         'navigation_sort' => 5,
     ],
@@ -126,6 +129,7 @@ Configure various features and options for the page resource. These settings con
 - **enable_author**: Allows pages to have an assigned author from the users table
 - **enable_parent**: Enables hierarchical page structure with parent-child relationships
 - **enable_undeletable**: Adds a boolean field to protect important pages from deletion
+- **enable_replicate_action_on_table**: Shows the replicate action in the table
 - **navigation_sort**: Controls the order of the page resource in the Filament navigation menu
 
 ## CMS Panel Configuration

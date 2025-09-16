@@ -231,6 +231,7 @@ The package provides a comprehensive page management system built on flexible co
 - **Media management** - Hero images, content images, and SEO images via [Spatie Media Library](https://github.com/spatie/laravel-medialibrary)
 - **Template system** - Custom page templates with fallback support
 - **Protected pages** - Undeletable flag for critical pages
+- **Replicate pages** - Duplicate a page from the edit page or table (disable in config)
 - **Search & filtering** - Full-text search across page content, ready for [Laravel Scout](https://laravel.com/docs/12.x/scout)
 
 ### Creating Pages
