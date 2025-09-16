@@ -338,7 +338,7 @@ class FilamentFlexibleContentBlockPagesConfig
      */
     public function isReplicateActionOnTableEnabled(string $modelClass): bool
     {
-        return $this->packageConfig("page_resource.{$modelClass}.enable_replicate_action_on_table", true);
+        return $this->packageConfig("page_resource.{$modelClass}.enable_replicate_action_on_table", false);
     }
 
     public function getPageNavigationSort(string $modelClass): ?int
