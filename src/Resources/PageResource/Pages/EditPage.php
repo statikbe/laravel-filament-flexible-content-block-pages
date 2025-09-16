@@ -7,6 +7,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemDeleteAct
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
@@ -28,7 +29,8 @@ class EditPage extends EditRecord
             FlexibleLocaleSwitcher::make(),
             LinkedToMenuItemDeleteAction::make()
                 ->visible(fn (Page $record) => $record->isDeletable()),
-            ReplicateAction::make(),
+            ReplicateAction::make()
+                ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
         ];
     }
 

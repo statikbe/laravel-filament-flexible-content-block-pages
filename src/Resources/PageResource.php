@@ -214,7 +214,8 @@ class PageResource extends Resource
                 EditAction::make(),
                 PublishAction::make(),
                 ViewAction::make(),
-                ReplicateAction::make(),
+                ReplicateAction::make()
+                    ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
             ])
             ->bulkActions([
                 LinkedToMenuItemBulkDeleteAction::make(),
