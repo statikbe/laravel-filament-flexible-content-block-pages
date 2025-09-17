@@ -341,6 +341,14 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig("page_resource.{$modelClass}.enable_replicate_action_on_table", false);
     }
 
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
+    public function getUndeletableGate(string $modelClass): ?string
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.gates.undeletable");
+    }
+
     public function getPageNavigationSort(string $modelClass): ?int
     {
         return $this->packageConfig("page_resource.{$modelClass}.navigation_sort");

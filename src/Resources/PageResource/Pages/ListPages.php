@@ -35,6 +35,7 @@ class ListPages extends ListRecords
     protected function applySearchToTableQuery(Builder $query): Builder
     {
         if (filled($searchQuery = $this->getTableSearch())) {
+            /** @phpstan-ignore-next-line */
             $query->search($searchQuery);
         }
 

@@ -122,6 +122,10 @@ return [
             | The Filament navigation menu sorting order of the page resource
             */
             'navigation_sort' => 5,
+
+            'gates' => [
+                'undeletable' => 'change_undeletable:page',
+            ],
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
     ],

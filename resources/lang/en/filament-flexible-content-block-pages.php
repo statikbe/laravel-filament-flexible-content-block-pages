@@ -63,6 +63,8 @@ return [
         'colour_lbl' => 'Color',
         'seo_description_lbl' => 'SEO description',
         'icon_lbl' => 'Icon',
+        'is_undeletable_lbl' => 'Undeletable',
+        'is_undeletable_helper' => 'Make this page undeletable by enabling this option.',
     ],
     'tag_types' => [
         'navigation_group' => 'Settings',

@@ -1,10 +1,10 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Components;
 
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 
-class LabelField extends TitleField
+class MenuLabelField extends TitleField
 {
     const FIELD = 'label';
 

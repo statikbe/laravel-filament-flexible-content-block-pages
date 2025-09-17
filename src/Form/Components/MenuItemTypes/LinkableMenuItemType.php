@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes;
 
 use Closure;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;

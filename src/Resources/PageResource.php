@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\UndeletableToggle;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
@@ -176,6 +177,10 @@ class PageResource extends Resource
                 ->searchable(['title', 'code', 'slug', 'intro']);
         }
 
+        if ($config->isUndeletableEnabled($modelClass)) {
+            $gridFields[] = UndeletableToggle::create();
+        }
+
         if (! empty($gridFields)) {
             $fields[] = Grid::make()->schema($gridFields);
         }
@@ -261,7 +266,7 @@ class PageResource extends Resource
 
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        return $record->getTranslation('title', app()->getLocale());
+        return method_exists($record, 'getTranslation') ? $record->getTranslation('title', app()->getLocale()) : $record->getAttribute('title');
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array

@@ -63,6 +63,8 @@ return [
         'colour_lbl' => 'Kleur',
         'seo_description_lbl' => 'SEO-beschrijving',
         'icon_lbl' => 'Icoon',
+        'is_undeletable_lbl' => 'Onverwijderbaar',
+        'is_undeletable_helper' => 'Maak de pagina onverwijderbaar door deze optie in te schakelen.',
     ],
     'tag_types' => [
         'navigation_group' => 'Instellingen',

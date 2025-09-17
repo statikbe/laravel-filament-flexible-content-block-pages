@@ -6,6 +6,8 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 
 class NameField extends TitleField
 {
+    const FIELD = 'name';
+
     public static function create(bool $required = false): static
     {
         return parent::create($required)
@@ -14,6 +16,6 @@ class NameField extends TitleField
 
     public static function getFieldName(): string
     {
-        return 'name';
+        return static::FIELD;
     }
 }

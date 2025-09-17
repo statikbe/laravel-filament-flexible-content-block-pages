@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types;
+namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes;
 
 abstract class AbstractMenuItemType
 {

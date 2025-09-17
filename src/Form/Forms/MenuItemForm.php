@@ -11,11 +11,11 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
 use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\LabelField;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\AbstractMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\LinkableMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\RouteMenuItemType;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Fields\Types\UrlMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\AbstractMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\LinkableMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\RouteMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\UrlMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuLabelField;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
@@ -96,7 +96,7 @@ class MenuItemForm
 
     protected static function getLabelField(): TextInput
     {
-        return LabelField::create()
+        return MenuLabelField::create()
             ->required(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->visible(fn (Get $get): bool => ! $get(static::FIELD_USE_MODEL_TITLE))
             ->helperText(flexiblePagesTrans('menu_items.form.label_help'));
