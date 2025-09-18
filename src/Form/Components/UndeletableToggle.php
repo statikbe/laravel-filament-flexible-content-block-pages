@@ -19,7 +19,7 @@ class UndeletableToggle extends Toggle
         return parent::make($field)
             ->label($label ?? flexiblePagesTrans('form_component.is_undeletable_lbl'))
             ->hint(flexiblePagesTrans('form_component.is_undeletable_helper'))
-            ->hintIcon('heroicon-o-backspace')
+            ->hintIcon('heroicon-o-question-mark-circle')
             ->visible(function (Page $livewire, ?Model $record = null) {
                 // Get the model class from record or livewire context
                 $modelClass = $record ? $record::class : $livewire->getModel();
