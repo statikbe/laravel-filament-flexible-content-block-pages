@@ -123,8 +123,15 @@ return [
             */
             'navigation_sort' => 5,
 
+            /*
+            | Authorisation gates for the page resource.
+            */
             'gates' => [
-                'undeletable' => 'change_undeletable:page',
+                /*
+                | The authorisation gate to show the undeletable toggle on the edit page.
+                | The value should be the name of the gate to execute `Gate::allows($gateName, User $user, Page $page)`
+                */
+                'undeletable' => 'change_undeletable',
             ],
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...

@@ -629,9 +629,6 @@ check:
 - Seppe: menu components ok?
 
 release:
-- policies:
-  - note: undeletable pages
-- undeletable page toggle only for permission holder
 - Kristof: screenshots + banner + packagist + slack + filament plugin store
 
 ## Future work

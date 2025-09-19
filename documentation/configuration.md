@@ -101,23 +101,46 @@ Configure various features and options for the page resource. These settings con
 ```php
 'page_resource' => [
     \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class => [
-        // Enable call-to-action buttons in the hero section
+        /*
+        | Enable the feature to have call-to-action buttons in the hero of the page
+        */
         'enable_hero_call_to_actions' => true,
-        
-        // Enable author field for pages
+
+        /*
+        | Enable the feature for pages to have an author
+        */
         'enable_author' => true,
-        
-        // Enable parent page relationships (hierarchical pages)
+
+        /*
+        | Enable the feature for pages to have parent pages.
+        */
         'enable_parent' => true,
-        
-        // Enable undeletable flag to protect important pages
+
+        /*
+        | Enable the feature for pages to have a boolean to make them undeletable.
+        */
         'enable_undeletable' => true,
-        
-        // Enable the feature for pages to have a boolean to make them undeletable
+
+        /*
+        | Enable the replicate action on the table
+        */
         'enable_replicate_action_on_table' => false,
-        
-        // Navigation sorting order in Filament admin
+
+        /*
+        | The Filament navigation menu sorting order of the page resource
+        */
         'navigation_sort' => 5,
+
+        /*
+        | Authorisation gates for the page resource.
+        */
+        'gates' => [
+            /*
+            | The authorisation gate to show the undeletable toggle on the edit page.
+            | The value should be the name of the gate to execute `Gate::allows($gateName, User $user, Page $page)`
+            */
+            'undeletable' => 'change_undeletable',
+        ],
     ],
     // Add extended page resource configurations here...
 ],
@@ -131,6 +154,7 @@ Configure various features and options for the page resource. These settings con
 - **enable_undeletable**: Adds a boolean field to protect important pages from deletion
 - **enable_replicate_action_on_table**: Shows the replicate action in the table
 - **navigation_sort**: Controls the order of the page resource in the Filament navigation menu
+- **gates.undeletable**: The authorisation gate to allow the deletable toggle to be shown on the page edit page.
 
 ## CMS Panel Configuration
 
