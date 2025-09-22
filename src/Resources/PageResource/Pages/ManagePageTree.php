@@ -2,15 +2,20 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
-use SolutionForest\FilamentTree\Resources\Pages\TreePage as BasePage;
+use SolutionForest\FilamentTree\Resources\Pages\TreePage;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 
-class ManagePageTree extends BasePage
+class ManagePageTree extends TreePage
 {
-    protected static string $resource = PageResource::class;
-
     // TODO make page depth configurable
     protected static int $maxDepth = 2;
+
+    public static function getResource(): string
+    {
+        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+    }
 
     protected function getActions(): array
     {

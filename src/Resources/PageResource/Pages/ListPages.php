@@ -27,6 +27,8 @@ class ListPages extends ListRecords
             CreateAction::make(),
             Action::make('page_tree')
                 ->label(flexiblePagesTrans('actions.page_tree_lbl'))
+                ->icon('heroicon-o-arrow-turn-down-right')
+                ->color('gray')
                 ->visible(FilamentFlexibleContentBlockPages::config()->isParentEnabled($this->getModel()))
                 ->url(static::getResource()::getUrl('tree')),
         ];
