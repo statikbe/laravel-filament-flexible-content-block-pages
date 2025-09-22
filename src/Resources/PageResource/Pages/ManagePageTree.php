@@ -5,7 +5,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 
 class ManagePageTree extends TreePage
 {

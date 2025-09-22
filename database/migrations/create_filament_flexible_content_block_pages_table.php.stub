@@ -78,12 +78,9 @@ return new class extends Migration
 
             // Parent-child:
             if(FilamentFlexibleContentBlockPages::config()->isParentEnabled($pageModel)) {
-                $table->unsignedBigInteger('parent_id')
-                    ->nullable();
-                $table->foreign('parent_id')
-                    ->references('id')
-                    ->on($pageTable)
-                    ->onDelete('set null');
+                $table->bigInteger('parent_id')
+                    ->default(\SolutionForest\FilamentTree\Support\Utils::defaultParentId())
+                    ->index();
                 $table->integer('order')
                     ->default(0);
             }

@@ -26,7 +26,7 @@ class ListPages extends ListRecords
             FlexibleLocaleSwitcher::make(),
             CreateAction::make(),
             Action::make('page_tree')
-                ->label(flexiblePagesTrans('actions.page_tree_lbl'))
+                ->label(flexiblePagesTrans('pages.actions.page_tree_lbl'))
                 ->icon('heroicon-o-arrow-turn-down-right')
                 ->color('gray')
                 ->visible(FilamentFlexibleContentBlockPages::config()->isParentEnabled($this->getModel()))
