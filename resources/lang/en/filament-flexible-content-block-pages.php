@@ -27,6 +27,9 @@ return [
             'intro_lbl' => 'Intro',
             'is_published_lbl' => 'Is published?',
         ],
+        'actions' => [
+            'page_tree_lbl' => 'Manage hierarchy',
+        ],
     ],
     'redirects' => [
         'redirects_lbl' => 'redirect',

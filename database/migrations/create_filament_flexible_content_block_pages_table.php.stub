@@ -84,6 +84,8 @@ return new class extends Migration
                     ->references('id')
                     ->on($pageTable)
                     ->onDelete('set null');
+                $table->integer('order')
+                    ->default(0);
             }
 
             // Deletable:

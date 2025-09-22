@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasDatabaseSearchTrait;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasPageTreeTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasTitleMenuLabelTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\PageObserver;
@@ -15,7 +16,6 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasAuthorAttributeTra
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasDefaultContentBlocksTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasHeroCallToActionsTrait;
-use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasParentTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedContentBlocksTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedHeroImageAttributesTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedIntroAttributeTrait;
@@ -46,7 +46,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     use HasDefaultContentBlocksTrait;
     use HasFactory;
     use HasHeroCallToActionsTrait;
-    use HasParentTrait;
+    use HasPageTreeTrait;
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;

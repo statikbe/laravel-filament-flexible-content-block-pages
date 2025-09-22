@@ -21,6 +21,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ManagePageTree;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\CopyContentBlocksToLocalesAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\AuthorField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
@@ -243,11 +244,17 @@ class PageResource extends Resource
 
     public static function getPages(): array
     {
-        return [
+        $pages = [
             'index' => ListPages::route('/'),
             'create' => CreatePage::route('/create'),
             'edit' => EditPage::route('/{record:id}/edit'),
         ];
+
+        if (FilamentFlexibleContentBlockPages::config()->isParentEnabled(static::getModel())) {
+            $pages['tree'] = ManagePageTree::route('/tree');
+        }
+
+        return $pages;
     }
 
     public static function getGloballySearchableAttributes(): array

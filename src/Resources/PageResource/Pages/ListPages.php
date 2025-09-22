@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Concerns\Translatable;
@@ -24,6 +25,10 @@ class ListPages extends ListRecords
         return [
             FlexibleLocaleSwitcher::make(),
             CreateAction::make(),
+            Action::make('page_tree')
+                ->label(flexiblePagesTrans('actions.page_tree_lbl'))
+                ->visible(FilamentFlexibleContentBlockPages::config()->isParentEnabled($this->getModel()))
+                ->url(static::getResource()::getUrl('tree')),
         ];
     }
 

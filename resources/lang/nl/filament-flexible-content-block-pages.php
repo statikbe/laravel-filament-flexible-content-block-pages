@@ -27,6 +27,9 @@ return [
             'intro_lbl' => 'Introductie',
             'is_published_lbl' => 'Is gepubliceerd?',
         ],
+        'actions' => [
+            'page_tree_lbl' => 'Beheer hiërarchie',
+        ],
     ],
     'redirects' => [
         'redirects_lbl' => 'redirect',
