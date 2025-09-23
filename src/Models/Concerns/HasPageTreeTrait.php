@@ -10,6 +10,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 /**
  * @mixin HasParent
  * @mixin Model
+ *
  * @property int|null $parent_id
  */
 trait HasPageTreeTrait
