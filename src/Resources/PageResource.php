@@ -32,7 +32,6 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\OverviewF
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\PublicationSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\SEOFields;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\IntroField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ParentField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\SlugField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
@@ -245,7 +244,7 @@ class PageResource extends Resource
             'edit' => EditPage::route('/{record:id}/edit'),
         ];
 
-        if (FilamentFlexibleContentBlockPages::config()->isParentEnabled(static::getModel())) {
+        if (FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled(static::getModel())) {
             $pages['tree'] = ManagePageTree::route('/tree');
         }
 

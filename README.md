@@ -244,11 +244,13 @@ Create new pages through the Filament admin interface with a multi-tab form:
 - **Hero Tab** - Hero image and call-to-action buttons  
 - **Publication Tab** - Status, scheduling, and author assignment
 - **SEO Tab** - Meta tags, Open Graph, and Twitter card settings
-- **Parent Tab** - Page hierarchy and template selection (if enabled)
+- **Advanced Tab** - Manage the slug, publication dates, page code and undeletable toggle. 
 
 Pages use automatic slug generation from the title but can be manually overridden for custom URLs.
 
 ### Page Hierarchy
+
+TODO screenshot
 
 Create organized page structures with automatic URL generation:
 
@@ -262,6 +264,8 @@ Homepage (/)
     │   └── Laravel (/services/web-development/laravel)
     └── Consulting (/services/consulting)
 ```
+
+On the list page, there is an action to manage the page hierarchy via drag and drop.
 
 You can configure hierarchy support in your [configuration file](documentation/configuration.md#page-resource-configuration).
 In case you need deeper nesting, you can add extra routes.

@@ -114,7 +114,7 @@ Configure various features and options for the page resource. These settings con
         /*
         | Enable the feature for pages to have parent pages.
         */
-        'enable_parent' => true,
+        'enable_page_tree' => true,
 
         /*
         | Enable the feature for pages to have a boolean to make them undeletable.
@@ -141,6 +141,16 @@ Configure various features and options for the page resource. These settings con
             */
             'undeletable' => 'change_undeletable',
         ],
+        
+        /*
+         | If the page tree is enabled with `enable_page_tree`, you can here configure its settings.  
+         */
+        'page_tree' => [
+            /*
+             | The maximum depth of the page tree. 
+             */
+            'max_depth' => 2,
+        ],
     ],
     // Add extended page resource configurations here...
 ],
@@ -150,11 +160,12 @@ Configure various features and options for the page resource. These settings con
 
 - **enable_hero_call_to_actions**: When enabled, pages can have call-to-action buttons in their hero sections
 - **enable_author**: Allows pages to have an assigned author from the users table
-- **enable_parent**: Enables hierarchical page structure with parent-child relationships
+- **enable_page_tree**: Enables hierarchical page structure with parent-child relationships and the tree hierarchy page
 - **enable_undeletable**: Adds a boolean field to protect important pages from deletion
 - **enable_replicate_action_on_table**: Shows the replicate action in the table
 - **navigation_sort**: Controls the order of the page resource in the Filament navigation menu
 - **gates.undeletable**: The authorisation gate to allow the deletable toggle to be shown on the page edit page.
+- **page_tree.max_depth**: The maximum allowed page depth in the tree hierarchy of pages. First, enable the page tree.
 
 ## CMS Panel Configuration
 

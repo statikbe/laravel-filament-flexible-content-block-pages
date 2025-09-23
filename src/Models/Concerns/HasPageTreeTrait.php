@@ -10,6 +10,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasParent;
 /**
  * @mixin HasParent
  * @mixin Model
+ * @property int|null $parent_id
  */
 trait HasPageTreeTrait
 {
@@ -28,11 +29,11 @@ trait HasPageTreeTrait
 
     public function hasParent(): bool
     {
-        return ! is_null($this->parent_id);
+        return ! $this->isRoot();
     }
 
     public function isParentOf(HasParent $child): bool
     {
-        return $this->id === $child->parent_id;
+        return property_exists($child, 'parent_id') && $this->id === $child->parent_id;
     }
 }

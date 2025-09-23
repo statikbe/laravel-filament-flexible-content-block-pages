@@ -2,14 +2,20 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
+use Illuminate\Database\Eloquent\Model;
+use SolutionForest\FilamentTree\Actions\EditAction;
+use SolutionForest\FilamentTree\Actions\ViewAction;
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class ManagePageTree extends TreePage
 {
-    // TODO make page depth configurable
-    protected static int $maxDepth = 2;
+    public static function getMaxDepth(): int
+    {
+        return FilamentFlexibleContentBlockPages::config()->getPageTreeMaximumDepth(static::getResource()::getModel());
+    }
 
     public static function getResource(): string
     {
@@ -33,9 +39,29 @@ class ManagePageTree extends TreePage
         return true;
     }
 
+    protected function configureEditAction(EditAction $action): EditAction
+    {
+        return $action
+            ->iconButton()
+            ->authorize(fn (Model $record): bool => static::getResource()::canEdit($record))
+            ->url(function (Model $record) {
+                return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE]::getUrl('edit', ['record' => $record]);
+            });
+    }
+
     protected function hasViewAction(): bool
     {
-        return false;
+        return true;
+    }
+
+    protected function configureViewAction(ViewAction $action): ViewAction
+    {
+        return $action
+            ->iconButton()
+            ->authorize(fn (Model $record): bool => static::getResource()::canView($record))
+            ->url(function (Linkable $record) {
+                return $record->getPreviewUrl();
+            }, true);
     }
 
     protected function getHeaderWidgets(): array

@@ -29,7 +29,7 @@ class ListPages extends ListRecords
                 ->label(flexiblePagesTrans('pages.actions.page_tree_lbl'))
                 ->icon('heroicon-o-arrow-turn-down-right')
                 ->color('gray')
-                ->visible(FilamentFlexibleContentBlockPages::config()->isParentEnabled($this->getModel()))
+                ->visible(FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled($this->getModel()))
                 ->url(static::getResource()::getUrl('tree')),
         ];
     }

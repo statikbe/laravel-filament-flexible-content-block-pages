@@ -320,9 +320,9 @@ class FilamentFlexibleContentBlockPagesConfig
     /**
      * @param  class-string<Model>  $modelClass
      */
-    public function isParentEnabled(string $modelClass): bool
+    public function isParentAndPageTreeEnabled(string $modelClass): bool
     {
-        return $this->packageConfig("page_resource.{$modelClass}.enable_parent", true);
+        return $this->packageConfig("page_resource.{$modelClass}.enable_page_tree", true);
     }
 
     /**
@@ -347,6 +347,11 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getUndeletableGate(string $modelClass): ?string
     {
         return $this->packageConfig("page_resource.{$modelClass}.gates.undeletable");
+    }
+
+    public function getPageTreeMaximumDepth(string $modelClass): int
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.page_tree.max_depth", 2);
     }
 
     public function getPageNavigationSort(string $modelClass): ?int

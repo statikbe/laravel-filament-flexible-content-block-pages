@@ -106,7 +106,7 @@ return [
             /*
             | Enable the feature for pages to have parent pages.
             */
-            'enable_parent' => true,
+            'enable_page_tree' => true,
 
             /*
             | Enable the feature for pages to have a boolean to make them undeletable.
@@ -132,6 +132,16 @@ return [
                 | The value should be the name of the gate to execute `Gate::allows($gateName, User $user, Page $page)`
                 */
                 'undeletable' => 'change_undeletable',
+            ],
+
+            /*
+             | If the page tree is enabled with `enable_page_tree`, you can here configure its settings.
+             */
+            'page_tree' => [
+                /*
+                 | The maximum depth of the page tree.
+                 */
+                'max_depth' => 2,
             ],
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
