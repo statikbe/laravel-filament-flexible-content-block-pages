@@ -173,11 +173,6 @@ class PageResource extends Resource
             $gridFields[] = AuthorField::create();
         }
 
-        if ($config->isParentEnabled($modelClass)) {
-            $gridFields[] = ParentField::create()
-                ->searchable(['title', 'code', 'slug', 'intro']);
-        }
-
         if ($config->isUndeletableEnabled($modelClass)) {
             $gridFields[] = UndeletableToggle::create();
         }
