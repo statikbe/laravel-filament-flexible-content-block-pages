@@ -8,6 +8,7 @@ use SolutionForest\FilamentTree\Actions\ViewAction;
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasPageAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 class ManagePageTree extends TreePage
@@ -74,9 +75,9 @@ class ManagePageTree extends TreePage
         return [];
     }
 
-    // CUSTOMIZE ICON OF EACH RECORD, CAN DELETE
-    // public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
-    // {
-    //     return null;
-    // }
+    public function getTreeRecordIcon(?Model $record = null): ?string
+    {
+        /** @var HasPageAttributes $record */
+        return $record?->isPublished() ? null : 'heroicon-o-eye-slash' ;
+    }
 }
