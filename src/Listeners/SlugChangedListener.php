@@ -56,7 +56,7 @@ class SlugChangedListener
                             ->where('new_url', $newUrlPath)
                             ->exists();
 
-                        if (!$redirectExists) {
+                        if (! $redirectExists) {
                             $redirect = new Redirect;
                             $redirect->old_url = $oldUrlPath;
                             $redirect->new_url = $newUrlPath;
@@ -65,8 +65,7 @@ class SlugChangedListener
                         }
 
                         DB::commit();
-                    }
-                    catch (\Exception $e) {
+                    } catch (\Exception $e) {
                         report($e);
                         DB::rollBack();
                     }
