@@ -77,7 +77,10 @@ class ManagePageTree extends TreePage
 
     public function getTreeRecordIcon(?Model $record = null): ?string
     {
-        /** @var HasPageAttributes $record */
-        return $record?->isPublished() ? null : 'heroicon-o-eye-slash' ;
+        if ($record instanceof HasPageAttributes) {
+            return $record->isPublished() ? null : 'heroicon-o-eye-slash';
+        }
+
+        return null;
     }
 }
