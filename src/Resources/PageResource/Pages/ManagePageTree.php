@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Actions\ViewAction;
@@ -82,5 +83,19 @@ class ManagePageTree extends TreePage
         }
 
         return null;
+    }
+
+    /**
+     * Overwritten to eager load parent relationship.
+     * {@inheritDoc}
+     */
+    protected function getWithRelationQuery(): Builder
+    {
+        $query = parent::getWithRelationQuery();
+        if (method_exists($this->getModel(), 'parent') && $this->getModel()::has('parent')) {
+            return $query->with('parent');
+        }
+
+        return $query;
     }
 }
