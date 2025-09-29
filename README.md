@@ -663,6 +663,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Sten Govaerts](https://github.com/sten)
+- [Kristof Serré](https://github.com/kristofser)
+- [Aurel Demiri](https://github.com/AurelDemiri)
 - [All Contributors](../../contributors)
 
 ### Used packages
