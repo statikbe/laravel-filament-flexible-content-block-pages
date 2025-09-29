@@ -30,7 +30,7 @@ In this document, we explain all settings available in the [filament-flexible-co
       * [Custom Menu Styles](#custom-menu-styles)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Thu Sep 11 00:02:19 CEST 2025 -->
+<!-- Added by: sten, at: Mon Sep 29 23:52:45 CEST 2025 -->
 
 <!--te-->
 

@@ -25,7 +25,7 @@ This document covers frontend templating, theme customization, and available Bla
       * [Accessibility](#accessibility)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Thu Sep 11 00:02:20 CEST 2025 -->
+<!-- Added by: sten, at: Mon Sep 29 23:52:46 CEST 2025 -->
 
 <!--te-->
 

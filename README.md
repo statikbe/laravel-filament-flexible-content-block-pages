@@ -80,7 +80,7 @@ This package makes use of [several great open-source packages](#used-packages) t
    * [License](#license)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Thu Sep 11 00:02:19 CEST 2025 -->
+<!-- Added by: sten, at: Mon Sep 29 23:52:45 CEST 2025 -->
 
 <!--te-->
 
@@ -218,7 +218,9 @@ Schedule::command('media-library:regenerate --only-missing')
 
 ## Page management
 
-The package provides a comprehensive page management system built on flexible content blocks. 
+The package provides a comprehensive page management system built on flexible content blocks.
+
+<img src="documentation/screenshots/page-blocks.png" alt="Page blocks screenshot" width="100%" />
 
 ### Features
 
@@ -236,7 +238,7 @@ The package provides a comprehensive page management system built on flexible co
 
 ### Creating Pages
 
-TODO screenshot
+<img src="documentation/screenshots/page-general.png" alt="Page general tab screenshot" width="100%" />
 
 Create new pages through the Filament admin interface with a multi-tab form:
 
@@ -250,7 +252,7 @@ Pages use automatic slug generation from the title but can be manually overridde
 
 ### Page Hierarchy
 
-TODO screenshot
+<img src="documentation/screenshots/page-hierarchy.png" alt="Page tree screenshot" width="100%" />
 
 Create organized page structures with automatic URL generation:
 
@@ -321,6 +323,8 @@ Menus support multiple types of links and can be easily styled with custom templ
 - **Conditional visibility** - Show/hide menu items without deleting them
 - **Icon support** - Optional icons for menu items (basic implementation currently)
 - **Dynamic labels** - Use model titles or custom labels for linked content
+
+<img src="documentation/screenshots/menu.png" alt="Menu builder" width="100%" />
 
 ### Adding a menu to Blade
 
@@ -554,7 +558,7 @@ Create and manage tags through the Filament admin interface:
 - **SEO Settings** - Meta descriptions and tags can be enabled to have an SEO tag page
 - **Visual Identity** - Colors and icons for better organization
 
-TODO screenshot
+<img src="documentation/screenshots/tags.png" alt="Tag management" width="100%" />
 
 ### Tag Types
 
@@ -625,16 +629,6 @@ For detailed configuration options and examples, see the [configuration document
 
 If you want to further customise or extend the functionality, have a look [at the options](documentation/extending-and-customisation.md).
 
-## TODO's
-
-check: 
-- do install docs work
-- Seppe: tailwind config complete? do we need to add flexible content blocks styling?
-- Seppe: menu components ok?
-
-release:
-- Kristof: screenshots + banner + packagist + slack + filament plugin store
-
 ## Future work
 
 - Caching of the menu data structure.
@@ -644,6 +638,7 @@ release:
 - FAQ model, resource and flexible blocks
 - A component to put on the pages with a quick link to edit this page in Filament
 - A trait for page indexing in Laravel Scout
+- Improve installation & setup: create an install command
 
 ## Development
 
