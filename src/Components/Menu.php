@@ -2,17 +2,18 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 
 class Menu extends Component
 {
-    public $menu;
+    public ?Menu $menu;
 
-    public $items;
+    public ?Collection $items;
 
-    public $locale;
+    public string $locale;
 
     public string $style;
 
@@ -52,14 +53,14 @@ class Menu extends Component
         return view($defaultTemplate);
     }
 
-    protected function getMenuByCode(string $code)
+    protected function getMenuByCode(string $code): ?Menu
     {
         $menuModel = FilamentFlexibleContentBlockPages::config()->getMenuModel();
 
         return $menuModel::getByCode($code);
     }
 
-    protected function getMenuItems($menu, ?string $locale = null)
+    protected function getMenuItems($menu, ?string $locale = null): Collection
     {
         if (! $menu) {
             return collect();
@@ -78,14 +79,14 @@ class Menu extends Component
 
     protected function buildEagerLoadRelations(int $maxDepth): array
     {
-        $relations = ['linkable'];
+        $relations = ['linkable', 'linkable.parent', 'linkable.parent.parent'];
         $currentPath = '';
         $depth = 1;
 
         while ($depth <= $maxDepth) {
             $currentPath .= $depth === 1 ? 'children' : '.children';
             $relations[$currentPath] = function ($query) {
-                $query->visible()->ordered()->with('linkable');
+                $query->visible()->ordered()->with('linkable', 'linkable.parent', 'linkable.parent.parent');
             };
             $depth++;
         }
