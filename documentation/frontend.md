@@ -212,21 +212,8 @@ You can create custom templates for a specific page. You can use the page code t
 
 ### Tailwind CSS Configuration
 
-Ensure Tailwind CSS includes the package paths in your `tailwind.config.js`:
-
-```javascript
-module.exports = {
-    content: [
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
-        './vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php',
-        './vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php',
-        './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
-        './config/filament-flexible-content-blocks.php',
-    ],
-    // ... rest of config
-}
-```
+Ensure Tailwind CSS includes the required package paths in your `tailwind.config.js` which is used by the front-end.
+See tailwind installation steps in the [main README.md](../README.md)
 
 ## Frontend Best Practices
 
