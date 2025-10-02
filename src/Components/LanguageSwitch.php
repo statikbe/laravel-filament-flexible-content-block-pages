@@ -2,13 +2,22 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 class LanguageSwitch extends Component
 {
+    public ?Page $page;
+
+    public function __construct()
+    {
+        $this->page = $this->getPage();
+    }
+
     public function render()
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
@@ -30,5 +39,17 @@ class LanguageSwitch extends Component
     public function shouldRender(): bool
     {
         return count(LaravelLocalization::getSupportedLocales()) > 1;
+    }
+
+    protected function getPage(): Page
+    {
+        $page = Route::current()->parameter('page');
+        if (! $page) {
+            if (Route::current()->getName() === 'home') {
+                $page = Page::getByCode(Page::HOME_PAGE);
+            }
+        }
+
+        return $page;
     }
 }

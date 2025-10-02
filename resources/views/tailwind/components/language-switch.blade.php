@@ -1,9 +1,3 @@
- @php
-    use Illuminate\Support\Facades\Route;
-
-    $page = Route::current()->parameter('page');
-@endphp
-
 <nav class="relative inline-block text-right">
     <div class="py-1 flex" role="none">
         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
