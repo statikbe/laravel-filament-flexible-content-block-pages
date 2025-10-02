@@ -3,20 +3,20 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
 use Illuminate\View\Component;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\Data\MenuItemData;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
-use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem as MenuItemModel;
 
 class MenuItem extends Component
 {
-    public MenuItemModel $item;
+    public MenuItemData $item;
 
     public string $style;
 
     public ?string $locale;
 
     public function __construct(
-        MenuItemModel $item,
+        MenuItemData $item,
         ?string $style = null,
         ?string $locale = null
     ) {

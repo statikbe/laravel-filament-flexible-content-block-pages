@@ -2,14 +2,18 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Components;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\Data\MenuData;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 
 class Menu extends Component
 {
-    public ?Menu $menu;
+    const CACHE_MENU_KEY = 'menu_%s_%s';
+
+    public ?MenuData $menu;
 
     public ?Collection $items;
 
@@ -22,19 +26,29 @@ class Menu extends Component
         ?string $style = null,
         ?string $locale = null
     ) {
-        $this->menu = $this->getMenuByCode($code);
         $this->locale = $locale ?: app()->getLocale();
+        $this->menu = $this->getMenuData($code);
 
         // Determine the style to use with proper fallback chain
         if ($style) {
             $this->style = $style;
-        } elseif ($this->menu) {
-            $this->style = $this->menu->getEffectiveStyle();
         } else {
-            $this->style = FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle();
+            $this->style = $this->getEffectiveStyle();
         }
 
-        $this->items = $this->menu ? $this->getMenuItems($this->menu, $this->locale) : [];
+        $this->items = $this->menu ? $this->menu->items : collect();
+    }
+
+    public static function getMenuCacheKey(string $code, string $locale): string
+    {
+        return flexiblePagesPrefix(sprintf(self::CACHE_MENU_KEY, $locale, $code));
+    }
+
+    public static function clearMenuCache(string $code): void
+    {
+        foreach (FilamentFlexibleContentBlockPages::config()->getSupportedLocales() as $locale) {
+            Cache::forget(self::getMenuCacheKey($code, $locale));
+        }
     }
 
     public function render()
@@ -53,44 +67,30 @@ class Menu extends Component
         return view($defaultTemplate);
     }
 
-    protected function getMenuByCode(string $code): ?Menu
+    protected function getMenuData(string $code): ?MenuData
     {
-        $menuModel = FilamentFlexibleContentBlockPages::config()->getMenuModel();
+        return Cache::rememberForever(self::getMenuCacheKey($code, $this->locale), function () use ($code) {
+            $menuModel = FilamentFlexibleContentBlockPages::config()->getMenuModel();
+            $menu = $menuModel::getByCode($code);
 
-        return $menuModel::getByCode($code);
+            if (! $menu) {
+                return null;
+            }
+
+            return MenuData::create($menu, $this->locale);
+        });
     }
 
-    protected function getMenuItems($menu, ?string $locale = null): Collection
+    public function getEffectiveStyle(): string
     {
-        if (! $menu) {
-            return collect();
+        // Return the menu's style if set, otherwise fall back to config default
+        if ($this->menu && ! empty($this->menu->style)) {
+            $availableStyles = FilamentFlexibleContentBlockPages::config()->getMenuStyles();
+            if (in_array($this->menu->style, $availableStyles)) {
+                return $this->menu->style;
+            }
         }
 
-        $maxDepth = $menu->getEffectiveMaxDepth();
-        $eagerLoadRelations = $this->buildEagerLoadRelations($maxDepth);
-
-        // Get only top-level menu items with their visible children based on max depth
-        return $menu->menuItems()
-            ->with($eagerLoadRelations)
-            ->visible()
-            ->ordered()
-            ->get();
-    }
-
-    protected function buildEagerLoadRelations(int $maxDepth): array
-    {
-        $relations = ['linkable', 'linkable.parent', 'linkable.parent.parent'];
-        $currentPath = '';
-        $depth = 1;
-
-        while ($depth <= $maxDepth) {
-            $currentPath .= $depth === 1 ? 'children' : '.children';
-            $relations[$currentPath] = function ($query) {
-                $query->visible()->ordered()->with('linkable', 'linkable.parent', 'linkable.parent.parent');
-            };
-            $depth++;
-        }
-
-        return $relations;
+        return FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle();
     }
 }

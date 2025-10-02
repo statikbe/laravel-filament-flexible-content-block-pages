@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use SolutionForest\FilamentTree\Concern\ModelTree;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
+use Statikbe\FilamentFlexibleContentBlockPages\Observers\MenuItemObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
 /**
@@ -31,6 +33,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
  * @property \Illuminate\Database\Eloquent\Model|null $linkable
  * @property Menu $menu
  */
+#[ObservedBy(MenuItemObserver::class)]
 class MenuItem extends Model
 {
     use HasFactory;
@@ -165,6 +168,11 @@ class MenuItem extends Model
         $currentUrl = request()->url();
         $itemUrl = $this->getCompleteUrl();
 
+        return static::urlsMatch($itemUrl, $currentUrl);
+    }
+
+    public static function urlsMatch(string $itemUrl, string $currentUrl): bool
+    {
         // Remove trailing slashes for comparison
         $currentUrl = rtrim($currentUrl, '/');
         $itemUrl = rtrim($itemUrl, '/');

@@ -2,10 +2,12 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Observers\MenuObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 
@@ -21,6 +23,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
  * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $menuItems
  * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $allMenuItems
  */
+#[ObservedBy(MenuObserver::class)]
 class Menu extends Model implements HasCode
 {
     use HasCodeTrait;

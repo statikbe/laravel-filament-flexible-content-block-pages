@@ -1,4 +1,7 @@
 {{-- Default menu template --}}
+@php
+    /** @var \Statikbe\FilamentFlexibleContentBlockPages\Components\Data\MenuData $menu */
+@endphp
 
 @props([
     /* provided by the component */

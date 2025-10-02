@@ -19,9 +19,10 @@
 ])
 
 @php
-    $hasChildren = $item->children && $item->children->isNotEmpty();
+    /** @var \Statikbe\FilamentFlexibleContentBlockPages\Components\Data\MenuItemData $item */
+
     $isCurrent = $item->isCurrentMenuItem();
-    $isActive = $isCurrent || ($hasChildren && $item->hasActiveChildren());
+    $isActive = $isCurrent || ($item->hasChildren() && $item->hasActiveChildren());
 
     $wrapperTag = $isCurrent
         ? 'span'
@@ -31,25 +32,25 @@
 <li @class([
     $itemClass,
     "menu-item--level-{$level}",
-    $itemHasChildrenClass => $hasChildren,
+    $itemHasChildrenClass => $item->hasChildren(),
     $currentItemClass => $isCurrent,
     $activeItemClass => $isActive,
 ])>
     <{{ $wrapperTag }}
-        @if (!$isCurrent) href="{{ $item->getCompleteUrl($locale) }}" @endif
+        @if (!$isCurrent) href="{{ $item->url }}" @endif
         @class([
             $itemLinkClass,
             "menu-item-link--level-{$level}",
             $currentItemLinkClass => $isCurrent,
             $activeItemLinkClass => $isActive,
         ])
-        @if (!$isCurrent && $item->getTarget() !== '_self') target="{{ $item->getTarget() }}" @endif
+        @if (!$isCurrent && $item->target !== '_self') target="{{ $item->target }}" @endif
         @if ($isCurrent) aria-current="page" @endif
     >
-        {{ $item->getDisplayLabel($locale) }}
+        {{ $item->label }}
     </{{ $wrapperTag }}>
 
-    @if ($hasChildren)
+    @if ($item->hasChildren())
         <ul @class([
                 $subMenuClass,
                 "navigation-sub-menu--level-{$level}",
