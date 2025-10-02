@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.0 - 2025-10-02
+
+Add menu caching
+Fix language switch component to make the home page work
+
 ## v0.1.1 - 2025-09-30
 
 Fix eager loading of menu items with linkable model: the parent relationships need to be eager loaded to get the url.
