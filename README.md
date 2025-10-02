@@ -325,6 +325,7 @@ Menus support multiple types of links and can be easily styled with custom templ
 - **Conditional visibility** - Show/hide menu items without deleting them
 - **Icon support** - Optional icons for menu items (basic implementation currently)
 - **Dynamic labels** - Use model titles or custom labels for linked content
+- **Caching** - Menu's are cached for the best performance
 
 <img src="documentation/screenshots/menu.png" alt="Menu builder" width="100%" />
 
@@ -380,6 +381,8 @@ class Product extends Model implements HasMenuLabel
 
 **Tip:** If you are using the Flexible Content Blocks title trait in your model, you can implement `HasMenuLabel` 
 easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrait.php).
+
+**Note:** The menu data is cached for better page load performance. The cache is cleared with model observers, when the menu is updated or deleted.
 
 ### Menu seeding
 
