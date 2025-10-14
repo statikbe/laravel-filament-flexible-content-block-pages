@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.2 - 2025-10-14
+
+Fix bug with disabled page hierarchy on page tree action
+
 ## v0.2.1 - 2025-10-02
 
 Fix lazy loading exception in menu item observer to clear menu cache.
