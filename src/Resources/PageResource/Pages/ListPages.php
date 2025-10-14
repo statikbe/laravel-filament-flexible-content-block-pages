@@ -30,7 +30,7 @@ class ListPages extends ListRecords
                 ->icon('heroicon-o-arrow-turn-down-right')
                 ->color('gray')
                 ->visible(FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled($this->getModel()))
-                ->url(static::getResource()::getUrl('tree')),
+                ->url(fn() => FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled($this->getModel()) ? static::getResource()::getUrl('tree') : null),
         ];
     }
 
