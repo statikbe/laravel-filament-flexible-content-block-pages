@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
+use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\SpatieLaravelTranslatablePlugin;
@@ -33,7 +34,8 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
             ->plugin(FlexibleContentBlockPagesPlugin::make())
             ->plugin(SpatieLaravelTranslatablePlugin::make()
                 ->defaultLocales(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()))
-            ->navigationItems(static::getExtraNavigationItems());
+            ->navigationItems(static::getExtraNavigationItems())
+            ->login(fn() => static::getLoginAction());
     }
 
     /**
@@ -42,5 +44,16 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
     public static function getExtraNavigationItems(): array
     {
         return [];
+    }
+
+    /**
+     * Implements the login screen action that is used by this panel.
+     * You can overwrite this in a subclass.
+     * We assume in this default implementation that your app used multiple panels and
+     * the default panel is used for authentication.
+     */
+    public static function getLoginAction()
+    {
+        return redirect()->to(Filament::getDefaultPanel()->getLoginUrl());
     }
 }
