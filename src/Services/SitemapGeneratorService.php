@@ -215,15 +215,15 @@ class SitemapGeneratorService implements GeneratesSitemap
         return array_unique(array_merge($ctaModels, $menuModels));
     }
 
-    protected function calculatePriority(HasParent&HasCode $page): float
+    protected function calculatePriority(HasParent&HasCode&Model $page): float
     {
         // Homepage gets highest priority
-        if (property_exists($page, 'code') && $page->code === Page::HOME_PAGE) {
+        if ($page->hasAttribute('code') && $page->getAttribute('code') === Page::HOME_PAGE) {
             return 1.0;
         }
 
         // Parent pages get higher priority than children
-        if (property_exists($page, 'parent_id') && ! $page->parent_id) {
+        if ($page->hasAttribute('parent_id') && ! $page->getAttribute('parent_id')) {
             return 0.8;
         }
 

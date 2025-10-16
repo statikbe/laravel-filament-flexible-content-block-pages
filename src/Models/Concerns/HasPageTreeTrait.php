@@ -33,8 +33,8 @@ trait HasPageTreeTrait
         return ! $this->isRoot();
     }
 
-    public function isParentOf(HasParent $child): bool
+    public function isParentOf(HasParent&Model $child): bool
     {
-        return property_exists($child, 'parent_id') && $this->id === $child->parent_id;
+        return $child->hasAttribute('parent_id') && $this->id === $child->getAttribute('parent_id');
     }
 }

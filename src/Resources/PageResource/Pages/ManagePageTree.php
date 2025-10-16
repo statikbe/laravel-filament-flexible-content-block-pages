@@ -93,7 +93,15 @@ class ManagePageTree extends TreePage
     {
         $query = parent::getWithRelationQuery();
         if (method_exists($this->getModel(), 'parent') && $this->getModel()::has('parent')) {
-            return $query->with('parent');
+            $treeDepth = FilamentFlexibleContentBlockPages::config()->getPageTreeMaximumDepth(FilamentFlexibleContentBlockPages::config()->getPageModel());
+            $parentRelations = [];
+            $parentRelation = '';
+            while ($treeDepth-- > 0) {
+                $parentRelation = 'parent'.(empty($parentRelation) ? '' : '.'.$parentRelation);
+                $parentRelations[] = $parentRelation;
+            }
+
+            return $query->with($parentRelations);
         }
 
         return $query;

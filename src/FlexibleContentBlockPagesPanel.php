@@ -35,7 +35,7 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
             ->plugin(SpatieLaravelTranslatablePlugin::make()
                 ->defaultLocales(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()))
             ->navigationItems(static::getExtraNavigationItems())
-            ->login(fn() => static::getLoginAction());
+            ->login(fn () => static::getLoginAction());
     }
 
     /**
