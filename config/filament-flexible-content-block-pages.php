@@ -130,8 +130,12 @@ return [
                 /*
                 | The authorisation gate to show the undeletable toggle on the edit page.
                 | The value should be the name of the gate to execute `Gate::allows($gateName, User $user, Page $page)`
+                |
+                | undeletable: to be able to toggle the undeletable switch after the page is created.
+                | view_unpublished_pages: to be able to view pages on the website that are not published.
                 */
-                'undeletable' => 'change_undeletable',
+                'undeletable' => 'changeUndeletable',
+                'view_unpublished_pages' => 'viewUnpublishedPages',
             ],
 
             /*

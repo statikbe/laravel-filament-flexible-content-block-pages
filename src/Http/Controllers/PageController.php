@@ -6,6 +6,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
@@ -18,7 +19,8 @@ class PageController extends AbstractSeoPageController
     public function index(Page $page)
     {
         // check if page is published:
-        if (! Auth::user() || ! Auth::user()->can('viewUnpublishedPages')) {
+        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($page::class);
+        if (! Auth::user() || !($viewUnpublishedPagesGate && Gate::allows($viewUnpublishedPagesGate, $page))) {
             if (! $page->isPublished()) {
                 SEOMeta::setRobots('noindex');
                 abort(Response::HTTP_GONE);

@@ -282,6 +282,7 @@ So you can achieve the following statuses by setting these dates in the past or 
 - **Draft** - Page exists but not visible to public users
 - **Published** - Page is live and accessible via URL
 - **Scheduled** - Automatically publish/unpublish at specific times
+- **Preview** - Unpublished pages can be previewed, but are shielded by [a configurable authorisation gate](./documentation/configuration.md#page-resource-configuration).
 
 Use the `published()` scope in your queries to show only published content:
 

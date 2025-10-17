@@ -349,11 +349,25 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig("page_resource.{$modelClass}.gates.undeletable");
     }
 
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
+    public function getViewUnpublishedPagesGate(string $modelClass): ?string
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.gates.view_unpublished_pages");
+    }
+
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
     public function getPageTreeMaximumDepth(string $modelClass): int
     {
         return $this->packageConfig("page_resource.{$modelClass}.page_tree.max_depth", 2);
     }
 
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
     public function getPageNavigationSort(string $modelClass): ?int
     {
         return $this->packageConfig("page_resource.{$modelClass}.navigation_sort");

@@ -165,6 +165,7 @@ Configure various features and options for the page resource. These settings con
 - **enable_replicate_action_on_table**: Shows the replicate action in the table
 - **navigation_sort**: Controls the order of the page resource in the Filament navigation menu
 - **gates.undeletable**: The authorisation gate to allow the deletable toggle to be shown on the page edit page.
+- **gates.view_unpublished_pages**: The authorisation gate to allow viewing unpublished pages on the website. This is useful for content editors to preview.
 - **page_tree.max_depth**: The maximum allowed page depth in the tree hierarchy of pages. First, enable the page tree.
 
 ## CMS Panel Configuration
