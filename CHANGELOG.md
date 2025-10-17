@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.4 - 2025-10-17
+
+- Add configurable gate for previewing unpublished pages
+
 ## v0.2.3 - 2025-10-16
 
 - Fix bug in parent pages
