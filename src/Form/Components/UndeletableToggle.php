@@ -37,7 +37,7 @@ class UndeletableToggle extends Toggle
                 $gate = FilamentFlexibleContentBlockPages::config()->getUndeletableGate($modelClass);
 
                 // If no gate set, no authorisation is wanted
-                return (!$gate) || Gate::allows($gate, $record);
+                return (! $gate) || Gate::allows($gate, $record);
             });
     }
 
