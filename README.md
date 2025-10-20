@@ -115,7 +115,6 @@ Configure the Filament tailwind styling of the frontend by adding these view pat
 ```javascript
 content: [
     ...
-    './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
     './vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php',
     './vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php',
     './config/filament-flexible-content-blocks.php',
@@ -127,6 +126,7 @@ In the tailwind config of your filament back-end, add the following lines to the
 ```javascript
 content: [
     ...
+    './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
     './config/filament-flexible-content-blocks.php',
 ]
 ```
