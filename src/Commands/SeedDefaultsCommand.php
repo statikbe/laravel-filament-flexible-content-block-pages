@@ -15,7 +15,10 @@ class SeedDefaultsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'flexible-content-block-pages:seed';
+    protected $signature = 'flexible-content-block-pages:seed
+                                {--only-home-page : Only seed the home page}
+                                {--only-settings : Only seed the settings}
+                                {--only-tag-types : Only seed the tag types}';
 
     /**
      * The console command description.
@@ -31,9 +34,17 @@ class SeedDefaultsCommand extends Command
     {
         $this->info('Seeding default home page and settings...');
 
-        $this->seedHomePage();
-        $this->seedSettings();
-        $this->seedTagTypes();
+        $noOptions = ! $this->hasOption('only-home-page') && ! $this->hasOption('only-settings') && ! $this->hasOption('only-tag-types');
+
+        if ($noOptions || $this->hasOption('only-home-page')) {
+            $this->seedHomePage();
+        }
+        if ($noOptions || $this->hasOption('only-settings')) {
+            $this->seedSettings();
+        }
+        if ($noOptions || $this->hasOption('only-tag-types')) {
+            $this->seedTagTypes();
+        }
 
         $this->info('Default home page and settings seeded successfully!');
     }
