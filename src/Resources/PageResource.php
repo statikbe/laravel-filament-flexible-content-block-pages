@@ -188,8 +188,12 @@ class PageResource extends Resource
         return $table
             ->columns([
                 TitleColumn::create()
-                    ->searchable(query: function ($query, $search) {
+                    ->searchable(query: function ($query, $search, $livewire) {
                         $locale = app()->getLocale();
+                        if (method_exists($livewire, 'getActiveFormsLocale')) {
+                            $locale = $livewire->getActiveFormsLocale();
+                        }
+
                         $search = strtolower($search);
 
                         return $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"]);
