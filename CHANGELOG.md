@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.7 - 2025-10-21
+
+- Fix phpstan errors
+- Fix default data seeder options bug
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.6...0.2.7
+
 ## v0.2.6 - 2025-10-21
 
 - You can now disable the home page route in config, to implement a custom home page.
