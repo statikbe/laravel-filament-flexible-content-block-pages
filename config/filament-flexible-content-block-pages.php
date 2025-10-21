@@ -194,6 +194,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Home route
+    |--------------------------------------------------------------------------
+    |
+    | This package can provide a home page route where the page with code `HOME` is shown.
+    | If you want to implement your own custom home page, you can disable this here.
+    |
+    */
+    'enable_home_route' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Theme
     |--------------------------------------------------------------------------
     |

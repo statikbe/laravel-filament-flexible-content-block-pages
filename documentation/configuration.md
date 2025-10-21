@@ -211,6 +211,15 @@ For non-translatable routes, you can use:
 'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\PageRouteHelper::class,
 ```
 
+### Enable home page route
+
+The package provides a home page route where the page with code `HOME` is rendered.
+If you want to implement your own custom home page, you can disable this:
+
+```php
+'enable_home_route' => false,
+```
+
 ## Theme Configuration
 
 Configure the theme for templates including pages, layouts, menus, and language switch components.

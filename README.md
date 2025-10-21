@@ -442,6 +442,8 @@ Register the package routes in your `web.php` file. Place this at the **bottom**
 \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
 ```
 
+If you want to implement a custom home page route, you can [configure this](./documentation/configuration.md#enable-home-page-route).
+
 ### Generating URLs
 
 Use the facade to generate URLs for pages:

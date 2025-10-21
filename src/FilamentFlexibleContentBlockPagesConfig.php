@@ -238,6 +238,11 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->routeHelper;
     }
 
+    public function isHomePageRouteEnabled(): bool
+    {
+        return $this->packageConfig('enable_home_route', true);
+    }
+
     public function getCustomPageTemplates(): array
     {
         return $this->packageConfig('page_templates', []);

@@ -27,8 +27,10 @@ abstract class AbstractPageRouteHelper implements HandlesPageRoutes
             ->name(static::ROUTE_CHILD_PAGE);
         Route::get('{page}', [PageController::class, 'index'])
             ->name(static::ROUTE_PAGE);
-        Route::get('/', [PageController::class, 'homeIndex'])
-            ->name(static::ROUTE_HOME);
+        if (FilamentFlexibleContentBlockPages::config()->isHomePageRouteEnabled()) {
+            Route::get('/', [PageController::class, 'homeIndex'])
+                ->name(static::ROUTE_HOME);
+        }
     }
 
     public function defineSeoTagRoutes(): void
