@@ -74,6 +74,7 @@ return [
         'tag_type_plural_lbl' => 'tagtypes',
         'tag_type_lbl' => 'tagtype',
         'tag_type_is_default_type_lbl' => 'Is standaard tagtype',
+        'tag_type_has_seo_pages_lbl' => 'Genereer tag-pagina\'s voor SEO',
         'table' => [
             'created_at_col' => 'Aangemaakt op',
             'updated_at_col' => 'Aangepast op',

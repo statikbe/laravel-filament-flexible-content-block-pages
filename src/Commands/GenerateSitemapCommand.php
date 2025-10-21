@@ -42,7 +42,9 @@ class GenerateSitemapCommand extends Command
 
             $this->info('Sitemap generated successfully at: '.public_path('sitemap.xml'));
         } catch (\Exception $e) {
+            report($e);
             $this->error('Failed to generate sitemap: '.$e->getMessage());
+            $this->error($e->getTraceAsString(), 1);
 
             return Command::FAILURE;
         }

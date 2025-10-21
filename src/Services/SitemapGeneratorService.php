@@ -208,7 +208,11 @@ class SitemapGeneratorService implements GeneratesSitemap
 
     protected function getLinkableModels(): array
     {
-        $ctaModels = FilamentFlexibleBlocksConfig::getCallToActionModels(CallToActionBlock::class);
+        $ctaModels = collect(FilamentFlexibleBlocksConfig::getCallToActionModels(CallToActionBlock::class))
+            ->map(function (array|string $model) {
+                return is_array($model) ? $model['model'] : $model;
+            })
+            ->toArray();
         $menuModels = FilamentFlexibleContentBlockPages::config()->getMenuLinkableModels();
 
         // Merge and remove duplicates

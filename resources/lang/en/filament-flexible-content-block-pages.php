@@ -74,6 +74,7 @@ return [
         'tag_type_plural_lbl' => 'tag types',
         'tag_type_lbl' => 'tag type',
         'tag_type_is_default_type_lbl' => 'Is default tag type',
+        'tag_type_has_seo_pages_lbl' => 'Generate tag pages for SEO',
         'table' => [
             'created_at_col' => 'Created at',
             'updated_at_col' => 'Updated at',

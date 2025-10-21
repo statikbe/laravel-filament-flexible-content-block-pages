@@ -177,6 +177,12 @@ If you want translated content and routes, go through the following steps:
 1. Configure the `supported_locales` in [the Filament Flexible Content Blocks configuration or in a service provider](https://github.com/statikbe/laravel-filament-flexible-content-blocks/blob/main/documentation/configuration.md#supported-locales)
 2. Configure the `route_helper` in [`filament-flexible-content-block-pages.php`](./config/filament-flexible-content-block-pages.php)
 
+If you want to translate the labels, please publish the translation files:
+
+```bash
+php artisan vendor:publish --tag="filament-flexible-content-block-pages-translations"
+```
+
 ### Routes
 
 Register the routes in your route file, probably `web.php`. 

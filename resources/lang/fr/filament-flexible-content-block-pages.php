@@ -74,6 +74,7 @@ return [
         'tag_type_plural_lbl' => 'types de tags',
         'tag_type_lbl' => 'type de tag',
         'tag_type_is_default_type_lbl' => 'Type de tag par défaut',
+        'tag_type_has_seo_pages_lbl' => 'Générer des pages de tags pour le SEO',
         'table' => [
             'created_at_col' => 'Créé le',
             'updated_at_col' => 'Modifié le',
