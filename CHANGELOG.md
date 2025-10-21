@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.6 - 2025-10-21
+
+- You can now disable the home page route in config, to implement a custom home page.
+
 ## v0.2.5 - 2025-10-20
 
 - Add options to default seeder command.
