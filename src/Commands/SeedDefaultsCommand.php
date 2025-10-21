@@ -34,15 +34,15 @@ class SeedDefaultsCommand extends Command
     {
         $this->info('Seeding default home page and settings...');
 
-        $noOptions = ! $this->hasOption('only-home-page') && ! $this->hasOption('only-settings') && ! $this->hasOption('only-tag-types');
+        $noOptions = ! $this->option('only-home-page') && ! $this->option('only-settings') && ! $this->option('only-tag-types');
 
-        if ($noOptions || $this->hasOption('only-home-page')) {
+        if ($noOptions || $this->option('only-home-page')) {
             $this->seedHomePage();
         }
-        if ($noOptions || $this->hasOption('only-settings')) {
+        if ($noOptions || $this->option('only-settings')) {
             $this->seedSettings();
         }
-        if ($noOptions || $this->hasOption('only-tag-types')) {
+        if ($noOptions || $this->option('only-tag-types')) {
             $this->seedTagTypes();
         }
 
