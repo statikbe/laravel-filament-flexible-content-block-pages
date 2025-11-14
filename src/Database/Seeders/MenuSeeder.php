@@ -24,6 +24,7 @@ abstract class MenuSeeder extends Seeder
         string $name,
         string $code,
         ?string $description = null,
+        array $title = [],
         ?string $style = null,
         ?int $maxDepth = null
     ): Menu {
@@ -31,6 +32,7 @@ abstract class MenuSeeder extends Seeder
             'name' => $name,
             'code' => $code,
             'description' => $description,
+            'title' => !empty($title) ? $title : null,
             'style' => $style ?? FilamentFlexibleContentBlockPages::config()->getDefaultMenuStyle(),
             'max_depth' => $maxDepth, // null will use config default via getEffectiveMaxDepth()
         ]);

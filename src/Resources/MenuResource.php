@@ -20,14 +20,11 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\Edit
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ListMenus;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\ManageMenuItems;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class MenuResource extends Resource
 {
-    /*
-     * For translating menu item labels
-     * @see ManageMenuItems
-     */
     use Translatable;
 
     protected static ?string $navigationIcon = 'heroicon-o-bars-3';
@@ -69,19 +66,23 @@ class MenuResource extends Resource
         $formFields = [
             TextInput::make('name')
                 ->label(flexiblePagesTrans('menus.form.name_lbl'))
+                ->helperText(flexiblePagesTrans('menus.form.name_help'))
                 ->required()
-                ->maxLength(255)
-                ->helperText(flexiblePagesTrans('menus.form.name_help')),
+                ->maxLength(255),
 
             CodeField::create(true)
                 ->helperText(flexiblePagesTrans('menus.form.code_help')),
-        ];
 
-        $formFields[] = Textarea::make('description')
-            ->label(flexiblePagesTrans('menus.form.description_lbl'))
-            ->rows(3)
-            ->helperText(flexiblePagesTrans('menus.form.description_help'))
-            ->columnSpan(2);
+            Textarea::make('description')
+                ->label(flexiblePagesTrans('menus.form.description_lbl'))
+                ->helperText(flexiblePagesTrans('menus.form.description_help'))
+                ->rows(3)
+                ->columnSpan(2),
+
+            TitleField::create()
+                ->label(flexiblePagesTrans('menus.form.title_lbl'))
+                ->helperText(flexiblePagesTrans('menus.form.title_help')),
+        ];
 
         // Only show style field if there are multiple styles available
         if ($showStyleField) {

@@ -25,7 +25,7 @@
     'activeItemLinkClass' => null,
     'subMenuClass' => null,
 
-    /* optional slots */
+    /* optional slots TODO @Ben */
     'title',
 ])
 

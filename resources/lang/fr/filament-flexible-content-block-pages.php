@@ -102,6 +102,8 @@ return [
             'code_help' => 'Identification unique pour ce menu (par ex. "header", "footer"). Utilisé dans les templates.',
             'description_lbl' => 'Description',
             'description_help' => 'Description optionnelle pour les gestionnaires de contenu. Non visible aux visiteurs du site.',
+            'title_lbl' => 'Titre sur le site web',
+            'title_help' => 'Si vous souhaitez afficher un titre pour ce menu sur le site web.',
             'style_lbl' => 'Style du Menu',
             'style_help' => 'Choisissez le style visuel pour ce menu. Cela affecte la façon dont le menu est affiché sur le frontend.',
             'max_depth_lbl' => 'Profondeur maximale',

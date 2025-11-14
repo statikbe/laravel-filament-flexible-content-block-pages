@@ -106,6 +106,8 @@ return [
             'style_help' => 'Kies de visuele stijl voor dit menu. Dit beïnvloedt hoe het menu wordt weergegeven op de frontend.',
             'max_depth_lbl' => 'Maximale diepte',
             'max_depth_help' => 'Maximaal aantal menu niveaus toegestaan (1-10). Laat leeg om de globale standaard te gebruiken.',
+            'title_lbl' => 'Titel op de website',
+            'title_help' => 'Indien je een titel voor dit menu op de website wil tonen.',
         ],
         'table' => [
             'name_col' => 'Naam',
