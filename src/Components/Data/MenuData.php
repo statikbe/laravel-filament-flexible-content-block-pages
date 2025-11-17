@@ -43,6 +43,11 @@ class MenuData
                 return MenuItemData::create($item, $locale);
             });
 
-        return new self($menu->name, $menu->title, $menu->style, $menuItemsData);
+        return new self(
+            $menu->name,
+            $menu->getDisplayTitle($locale),
+            $menu->style,
+            $menuItemsData,
+        );
     }
 }

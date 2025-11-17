@@ -83,4 +83,13 @@ class Menu extends Model implements HasCode
         // Return the menu's max_depth if set, otherwise fall back to config default
         return $this->max_depth ?? FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
     }
+
+    public function getDisplayTitle(?string $locale = null): ?string
+    {
+        if (isset($this->title) && ! empty($this->title)) {
+            return $this->getTranslation('title', $locale ?: app()->getLocale());
+        }
+
+        return null;
+    }
 }
