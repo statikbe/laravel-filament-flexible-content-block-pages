@@ -4,18 +4,21 @@
 @endphp
 
 @props([
-    /* provided by the component */
+    /* --- provided by the component --- */
     'menu',
     'items',
     'style',
     'locale',
 
-    /* to tweak the display of the menu */
+    /* --- to tweak the display of the menu --- */
     'wrapWithNav' => true,
     'navClass' => 'navigation-menu',
     'ulClass' => 'navigation-menu-list',
+    /* both 'titleClass' and 'titleTag' are only used when the title of the menu itself is shown (so not when a 'title' slot has been provided) */
+    'titleClass' => 'navigation-menu-title',
+    'titleTag' => 'h3',
 
-    /* to tweak the display of the individual menu items */
+    /* --- to tweak the display of the individual menu items --- */
     'itemClass' => null,
     'itemHasChildrenClass' => null,
     'currentItemClass' => null,
@@ -25,8 +28,8 @@
     'activeItemLinkClass' => null,
     'subMenuClass' => null,
 
-    /* optional slots TODO @Ben */
-    'title',
+    /* --- optional slots --- */
+    'title', /* this 'title' slot will override the title field of the menu itself */
 ])
 
 @if($items && $items->isNotEmpty() && $menu)
@@ -35,6 +38,10 @@
     @endif
         @if (isset($title))
             {{ $title }}
+        @elseif (isset($menu->title))
+            <{{ $titleTag }} class="{{ $titleClass }}">
+                {{ $menu->title }}
+            </{{ $titleTag }}>
         @endif
 
         <ul class="{{ $ulClass }}">
