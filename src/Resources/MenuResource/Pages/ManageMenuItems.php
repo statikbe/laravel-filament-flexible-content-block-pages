@@ -105,7 +105,10 @@ class ManageMenuItems extends TreePage
                             ...$record->toArray(),
                             'menu_id' => $this->menu->getKey(),
                         ];
+
+                        // handle translatable fields:
                         $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
+                        $data['url'] = $record->getTranslation('url', $this->getActiveLocale());
 
                         $form->fill($data);
                     }

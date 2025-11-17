@@ -15,6 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\Abs
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\LinkableMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\RouteMenuItemType;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\UrlMenuItemType;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemUrlField;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuLabelField;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
@@ -188,12 +189,8 @@ class MenuItemForm
 
     protected static function getUrlField(): TextInput
     {
-        return TextInput::make(static::FIELD_URL)
-            ->label(flexiblePagesTrans('menu_items.form.url_lbl'))
-            ->url()
-            ->required()
-            ->visible(fn (Get $get): bool => static::isUrlType($get(static::FIELD_LINK_TYPE)))
-            ->helperText(flexiblePagesTrans('menu_items.form.url_help'));
+        return MenuItemUrlField::create()
+            ->visible(fn (Get $get): bool => static::isUrlType($get(static::FIELD_LINK_TYPE)));
     }
 
     protected static function getRouteField(): Select
