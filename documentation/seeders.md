@@ -42,6 +42,7 @@ protected function createMenu(
     string $name,
     string $code,
     ?string $description = null,
+    array $title = [],
     ?string $style = null,
     ?int $maxDepth = null
 ): Menu
@@ -51,6 +52,7 @@ protected function createMenu(
 - `$name` - Display name for content managers (not shown to visitors)
 - `$code` - Unique identifier used in templates (e.g., 'header', 'footer')  
 - `$description` - Optional description for content managers
+- `$title` - An optional title to display with the menu on the website. The title is translatable so an array with locale keys.
 - `$style` - Menu style (defaults to config default if not provided)
 - `$maxDepth` - Maximum nesting levels (defaults to config default if not provided)
 
@@ -60,6 +62,7 @@ $headerMenu = $this->createMenu(
     name: 'Header Navigation',
     code: 'header',
     description: 'Main navigation menu displayed in the header',
+    title: ['en' => 'Menu', 'fr' => 'Menu'],
     style: 'default',
     maxDepth: 3
 );

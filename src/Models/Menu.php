@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\MenuObserver;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasCodeTrait;
@@ -16,6 +17,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
  * @property string $name
  * @property string $code
  * @property string|null $description
+ * @property string|null $title
  * @property string $style
  * @property int|null $max_depth
  * @property \Carbon\Carbon $created_at
@@ -28,6 +30,7 @@ class Menu extends Model implements HasCode
 {
     use HasCodeTrait;
     use HasFactory;
+    use HasTranslations;
 
     protected $fillable = [
         'name',
@@ -36,6 +39,8 @@ class Menu extends Model implements HasCode
         'style',
         'max_depth',
     ];
+
+    protected $translatable = ['title'];
 
     public function getTable()
     {
@@ -77,5 +82,14 @@ class Menu extends Model implements HasCode
     {
         // Return the menu's max_depth if set, otherwise fall back to config default
         return $this->max_depth ?? FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth();
+    }
+
+    public function getDisplayTitle(?string $locale = null): ?string
+    {
+        if (isset($this->title) && ! empty($this->title)) {
+            return $this->getTranslation('title', $locale ?: app()->getLocale());
+        }
+
+        return null;
     }
 }

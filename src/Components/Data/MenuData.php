@@ -10,6 +10,7 @@ class MenuData
 {
     public function __construct(
         public string $name,
+        public ?string $title,
         public ?string $style,
         public Collection $items,
     ) {}
@@ -42,6 +43,11 @@ class MenuData
                 return MenuItemData::create($item, $locale);
             });
 
-        return new self($menu->name, $menu->style, $menuItemsData);
+        return new self(
+            $menu->name,
+            $menu->getDisplayTitle($locale),
+            $menu->style,
+            $menuItemsData,
+        );
     }
 }
