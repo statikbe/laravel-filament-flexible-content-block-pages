@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.9 - 2025-11-17
+
+- add code column to page table, default hidden
+- add code to table search
+
 ## v0.2.8 - 2025-11-17
 
 ### What's Changed
