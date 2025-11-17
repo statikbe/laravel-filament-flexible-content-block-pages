@@ -52,7 +52,7 @@ abstract class MenuSeeder extends Seeder
         /* only for link_type MenuItem::LINK_TYPE_ROUTE */
         ?string $route = null,
         /* only for link_type MenuItem::LINK_TYPE_URL */
-        ?string $url = null,
+        ?array $url = null,
         /* only for link_type 'model' */
         bool $useModelTitle = false,
     ): MenuItem {
@@ -106,7 +106,7 @@ abstract class MenuSeeder extends Seeder
      */
     protected function createMenuItemForUrl(
         Menu|int $menu,
-        string $url,
+        array $url,
         string|array $label,
         bool $isVisible = true,
         string $target = '_blank', // External URLs default to new tab

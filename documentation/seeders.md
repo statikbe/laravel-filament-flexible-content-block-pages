@@ -116,7 +116,7 @@ Creates menu items that link to external URLs:
 ```php
 protected function createMenuItemForUrl(
     Menu|int $menu,
-    string $url,
+    array $url, // translatable url
     string|array $label,
     bool $isVisible = true,
     string $target = '_blank', // Note: defaults to _blank for external links
@@ -127,20 +127,27 @@ protected function createMenuItemForUrl(
 
 **Features:**
 - Defaults to `target='_blank'` for external links
+- Translatable URL's and labels
 
 **Example:**
 ```php
 $github = $this->createMenuItemForUrl(
     menu: $menu,
-    url: 'https://github.com/statikbe/laravel-filament-flexible-content-block-pages',
-    label: 'GitHub',
+    url: [
+        'nl' => 'https://www.vangoghmuseum.nl/nl/kunst-en-verhalen/kunst', 
+        'en' => 'https://www.vangoghmuseum.nl/en/art-and-stories/art',
+    ],
+    label: [
+        'nl' => 'Kunst', 
+        'en' => 'Art',
+    ],
     icon: 'heroicon-o-link'
 );
 
 // Internal URL with custom target
 $admin = $this->createMenuItemForUrl(
     menu: $menu,
-    url: '/admin',
+    url: ['en' => '/admin'],
     label: 'Admin Panel',
     target: '_self'
 );

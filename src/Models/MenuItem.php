@@ -67,7 +67,10 @@ class MenuItem extends Model
         'order' => 'int',
     ];
 
-    public $translatable = ['label'];
+    public $translatable = [
+        'label',
+        'url',
+    ];
 
     /*
      * The filament-tree package iterates over the tree and it is too complicated to implement eager fetching
@@ -108,7 +111,7 @@ class MenuItem extends Model
         }
 
         // Otherwise return the custom URL
-        return $this->url;
+        return $this->translate('url', $locale);
     }
 
     public function getDisplayLabel(?string $locale = null): string
@@ -142,7 +145,7 @@ class MenuItem extends Model
     {
         switch ($this->link_type) {
             case self::LINK_TYPE_URL:
-                return $this->url ?? '#';
+                return $this->translate('url') ?? '#';
 
             case self::LINK_TYPE_ROUTE:
                 try {
