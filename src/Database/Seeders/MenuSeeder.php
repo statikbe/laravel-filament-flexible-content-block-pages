@@ -57,8 +57,8 @@ abstract class MenuSeeder extends Seeder
         bool $useModelTitle = false,
     ): MenuItem {
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
-        $menuId = $menu->id ?? $menu;
-        $parentId = $parent->id ?? $parent;
+        $menuId = $menu->getKey() ?? $menu;
+        $parentId = $parent->getKey() ?? $parent;
 
         return $menuItemModel::create([
             'menu_id' => $menuId,

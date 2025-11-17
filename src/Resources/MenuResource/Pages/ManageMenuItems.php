@@ -44,7 +44,7 @@ class ManageMenuItems extends TreePage
 
     protected function getTreeQuery(): Builder
     {
-        return $this->getModel()::query()->where('menu_id', $this->menu->id);
+        return $this->getModel()::query()->where('menu_id', $this->menu->getKey());
     }
 
     public function getTitle(): string
@@ -68,7 +68,7 @@ class ManageMenuItems extends TreePage
         $breadcrumbs = collect(parent::getBreadcrumbs());
 
         $breadcrumbs->pop();
-        $breadcrumbs->put(MenuResource::getUrl('edit', ['record' => $this->menu->id]), $this->menu->name ?? 'Menu');
+        $breadcrumbs->put(MenuResource::getUrl('edit', ['record' => $this->menu->getKey()]), $this->menu->name ?? 'Menu');
         $breadcrumbs->push(static::getBreadcrumb());
 
         return $breadcrumbs->toArray();
@@ -82,14 +82,14 @@ class ManageMenuItems extends TreePage
                 ->label(flexiblePagesTrans('menu_items.tree.add_item'))
                 ->mountUsing(
                     fn ($arguments, $form) => $form->fill([
-                        'menu_id' => $this->menu->id,
+                        'menu_id' => $this->menu->getKey(),
                         'parent_id' => $arguments['parent_id'] ?? -1,
                         'is_visible' => true,
                         'target' => '_self',
                     ])
                 )
                 ->action(function (array $data): void {
-                    $data['menu_id'] = $this->menu->id;
+                    $data['menu_id'] = $this->menu->getKey();
                     static::getModel()::create($data);
                 }),
         ];
@@ -103,7 +103,7 @@ class ManageMenuItems extends TreePage
                     function ($arguments, $form, $model, MenuItem $record) {
                         $data = [
                             ...$record->toArray(),
-                            'menu_id' => $this->menu->id,
+                            'menu_id' => $this->menu->getKey(),
                         ];
                         $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
 
@@ -123,7 +123,7 @@ class ManageMenuItems extends TreePage
 
     protected function getTreeRecords()
     {
-        return static::getModel()::where('menu_id', $this->menu->id)
+        return static::getModel()::where('menu_id', $this->menu->getKey())
             ->with('linkable')
             ->orderBy('order')
             ->get();

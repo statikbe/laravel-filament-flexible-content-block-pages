@@ -83,7 +83,7 @@ class TagResource extends Resource
 
                             /** @phpstan-ignore-next-line */
                             return $relationship->getModel()->query()
-                                ->where('is_default_type', true)->first()->id ?? null;
+                                ->where('is_default_type', true)->first()->getKey() ?? null;
                         }),
                 ]),
             ]);

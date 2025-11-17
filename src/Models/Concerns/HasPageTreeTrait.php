@@ -35,6 +35,6 @@ trait HasPageTreeTrait
 
     public function isParentOf(HasParent&Model $child): bool
     {
-        return $child->hasAttribute('parent_id') && $this->id === $child->getAttribute('parent_id');
+        return $child->hasAttribute('parent_id') && $this->getKey() === $child->getAttribute('parent_id');
     }
 }

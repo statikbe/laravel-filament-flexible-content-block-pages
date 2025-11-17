@@ -112,8 +112,8 @@ class TagPageService
 
             // Maintain original order from union query
             foreach ($items as $item) {
-                if ($modelInstances->has($item->id)) {
-                    $model = $modelInstances->get($item->id);
+                if ($modelInstances->has($item->getKey())) {
+                    $model = $modelInstances->get($item->getKey());
                     $models->push($model);
                 }
             }
