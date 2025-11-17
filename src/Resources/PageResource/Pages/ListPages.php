@@ -43,7 +43,9 @@ class ListPages extends ListRecords
     {
         if (filled($searchQuery = $this->getTableSearch())) {
             /** @phpstan-ignore-next-line */
-            $query->search($searchQuery);
+            $query->search($searchQuery)
+                // Add search on code. This should not be included in the default search which could be used on the public website:
+                ->orWhereRaw('LOWER(code) LIKE ?', ["%{$searchQuery}%"]);
         }
 
         return $query;

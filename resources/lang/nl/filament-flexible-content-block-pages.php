@@ -16,6 +16,7 @@ return [
         'table' => [
             'created_at_col' => 'Aangemaakt op',
             'updated_at_col' => 'Aangepast op',
+            'code_col' => 'Code',
         ],
         'notifications' => [
             'used_in_menu' => 'Dit wordt in het ":menu" menu gebruikt, in item :menu_item. Gelieve eerst het menu aan te passen en dan dit opnieuw te verwijderen.',

@@ -16,6 +16,7 @@ return [
         'table' => [
             'created_at_col' => 'Créé le',
             'updated_at_col' => 'Modifié le',
+            'code_col' => 'Code',
         ],
         'notifications' => [
             'used_in_menu' => 'Ceci est utilisé dans le menu ":menu", dans l\'élément :menu_item. Veuillez d\'abord modifier le menu puis supprimer à nouveau cet élément.',

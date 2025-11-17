@@ -185,19 +185,10 @@ class PageResource extends Resource
 
     public static function table(Table $table): Table
     {
+        // the search query is handled in ListPages
         return $table
             ->columns([
-                TitleColumn::create()
-                    ->searchable(query: function ($query, $search, $livewire) {
-                        $locale = app()->getLocale();
-                        if (method_exists($livewire, 'getActiveFormsLocale')) {
-                            $locale = $livewire->getActiveFormsLocale();
-                        }
-
-                        $search = strtolower($search);
-
-                        return $query->whereRaw("LOWER(title->>'$.{$locale}') LIKE ?", ["%{$search}%"]);
-                    }),
+                TitleColumn::create(),
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('pages.table.created_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
@@ -206,6 +197,10 @@ class PageResource extends Resource
                 TextColumn::make('updated_at')
                     ->label(flexiblePagesTrans('pages.table.updated_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('code')
+                    ->label(flexiblePagesTrans('pages.table.code_col'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 PublishedColumn::create()
@@ -266,6 +261,7 @@ class PageResource extends Resource
             'seo_keywords',
             'overview_title',
             'overview_description',
+            'code',
         ];
     }
 

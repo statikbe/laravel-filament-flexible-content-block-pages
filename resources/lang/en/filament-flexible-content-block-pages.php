@@ -16,6 +16,7 @@ return [
         'table' => [
             'created_at_col' => 'Created at',
             'updated_at_col' => 'Updated at',
+            'code_col' => 'Code',
         ],
         'notifications' => [
             'used_in_menu' => 'This is used in the ":menu" menu, in item :menu_item. Please update the menu first and then delete this again.',
