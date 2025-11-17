@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.8 - 2025-11-17
+
+### What's Changed
+
+* Add title to menu to display above the menu on the website. by @sten in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/7
+* Make url of menu item translatable
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.7...0.2.8
+
 ## v0.2.7 - 2025-10-21
 
 - Fix phpstan errors
