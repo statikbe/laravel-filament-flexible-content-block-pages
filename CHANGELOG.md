@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.11 - 2025-11-20
+
+Fix bug with translatable urls of menu items.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.10...0.2.11
+
 ## v0.2.10 - 2025-11-20
 
 - fix menu seeder bug.
