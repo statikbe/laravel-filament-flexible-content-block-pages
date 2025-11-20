@@ -144,9 +144,6 @@ class MenuItem extends Model
     public function getCompleteUrl(?string $locale = null): string
     {
         switch ($this->link_type) {
-            case self::LINK_TYPE_URL:
-                return $this->translate('url') ?? '#';
-
             case self::LINK_TYPE_ROUTE:
                 try {
                     $routeName = $this->route ?? '';
