@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.12 - 2025-11-20
+
+- Fix page resource table: make it searchable again
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.11...0.2.12
+
 ## v0.2.11 - 2025-11-20
 
 Fix bug with translatable urls of menu items.
