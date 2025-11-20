@@ -188,7 +188,8 @@ class PageResource extends Resource
         // the search query is handled in ListPages
         return $table
             ->columns([
-                TitleColumn::create(),
+                TitleColumn::create()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('pages.table.created_at_col'))
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
@@ -202,9 +203,11 @@ class PageResource extends Resource
                 TextColumn::make('code')
                     ->label(flexiblePagesTrans('pages.table.code_col'))
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 PublishedColumn::create()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 PublishedFilter::create(),
