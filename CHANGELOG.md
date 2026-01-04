@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.13 - 2026-01-04
+
+### What's Changed
+
+* Fix null pointer error in tag resource.
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/8
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.12...0.2.13
+
 ## v0.2.12 - 2025-11-20
 
 - Fix page resource table: make it searchable again
