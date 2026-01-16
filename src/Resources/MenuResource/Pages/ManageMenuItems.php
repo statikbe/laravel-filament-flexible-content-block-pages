@@ -108,7 +108,9 @@ class ManageMenuItems extends TreePage
 
                         // handle translatable fields:
                         $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
-                        $data['url'] = $record->getTranslation('url', $this->getActiveLocale());
+                        $data['url'] = $record->getRawOriginal('url')
+                            ? $record->getTranslation('url', $this->getActiveLocale())
+                            : null;
 
                         $form->fill($data);
                     }
