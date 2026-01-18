@@ -116,8 +116,12 @@ class ManageMenuItems extends TreePage
                     }
                 )
                 ->mutateFormDataBeforeSaveUsing(function ($data) {
-                    if (! isset($data['label'])) {
+                    if (! array_key_exists('label', $data)) {
                         $data['label'] = null;
+                    }
+
+                    if (! array_key_exists('url', $data)) {
+                        $data['url'] = null;
                     }
 
                     return $data;
