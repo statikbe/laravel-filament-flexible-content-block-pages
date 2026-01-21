@@ -34,15 +34,15 @@
 
 @if($items && $items->isNotEmpty() && $menu)
     @if ($wrapWithNav)
-        <nav class="{{ $navClass }}" aria-label="{{ $menu->name }}">
+        <nav class="{{ $navClass }}" aria-label="{{ $menu->title ?? $menu->name }}">
     @endif
-        @if (isset($title))
-            {{ $title }}
-        @elseif (isset($menu->title))
-            <{{ $titleTag }} class="{{ $titleClass }}">
-                {{ $menu->title }}
-            </{{ $titleTag }}>
-        @endif
+    @if (isset($title))
+        {{ $title }}
+    @elseif (isset($menu->title))
+        <{{ $titleTag }} class="{{ $titleClass }}" @if($wrapWithNav) aria-hidden="true" @endif>
+            {{ $menu->title }}
+        </{{ $titleTag }}>
+    @endif
 
         <ul class="{{ $ulClass }}">
             @foreach ($items as $item)
