@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.14 - 2026-01-21
+
+### What's Changed
+
+* Fix bug where SEO title of home page does not have a suffix.
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/9
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.13...0.2.14
+
 ## v0.2.13 - 2026-01-04
 
 ### What's Changed
