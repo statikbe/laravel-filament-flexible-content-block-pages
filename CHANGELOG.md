@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.15 - 2026-01-21
+
+- Improve a11y aria labels in menu title.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.14...0.2.15
+
 ## v0.2.14 - 2026-01-21
 
 ### What's Changed
