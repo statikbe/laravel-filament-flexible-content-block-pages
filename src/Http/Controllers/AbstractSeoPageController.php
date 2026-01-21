@@ -119,10 +119,6 @@ abstract class AbstractSeoPageController extends Controller
 
     protected function getSEOTitlePostfix(Page $page): string
     {
-        if ($page->isHomePage()) {
-            return '';
-        }
-
         return sprintf(' | %s', flexiblePagesSetting(Settings::SETTING_SITE_TITLE));
     }
 
