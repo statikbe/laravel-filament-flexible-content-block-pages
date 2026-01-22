@@ -87,7 +87,7 @@ abstract class AbstractSeoPageController extends Controller
                         'height' => $image->getHeight(),
                     ];
                 });
-        } catch (CouldNotLoadImage $exception) { // @phpstan-ignore-line
+        } catch (CouldNotLoadImage $exception) {
             return [];
         }
     }
