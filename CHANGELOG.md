@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.17 - 2026-01-22
+
+- Fix undeletable pages in bulk delete
+- Fix SEO description so that when it is not available, the intro is shown in meta tags.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.16...0.2.17
+
 ## v0.2.16 - 2026-01-22
 
 - Add initial support for video url embed in hero + make it configurable. View template is not final yet.
