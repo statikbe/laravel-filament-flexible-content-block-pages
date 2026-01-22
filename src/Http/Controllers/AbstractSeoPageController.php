@@ -94,9 +94,9 @@ abstract class AbstractSeoPageController extends Controller
 
     protected function setBasicSEO(Page $page)
     {
-        $title = $this->getValidTitle($page->seo_title) ?? $this->getValidTitle($page->title) ?? $this->getSettingsTitle();
+        $title = $this->getValidText($page->seo_title) ?? $this->getValidText($page->title) ?? $this->getSettingsTitle();
         SEOTools::setTitle($title.$this->getSEOTitlePostfix($page), false);
-        SEOTools::setDescription(($page->seo_description ?? strip_tags($page->intro)));
+        SEOTools::setDescription(($this->getValidText($page->seo_description) ?? strip_tags($page->intro)));
         SEOTools::opengraph()->setUrl(url()->current());
 
         if ($page->seo_keywords) {
@@ -104,7 +104,7 @@ abstract class AbstractSeoPageController extends Controller
         }
     }
 
-    protected function getValidTitle(?string $title): ?string
+    protected function getValidText(?string $title): ?string
     {
         if (! $title) {
             return null;
