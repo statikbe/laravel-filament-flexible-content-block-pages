@@ -18,6 +18,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasDefaultContentBloc
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasHeroCallToActionsTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedContentBlocksTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedHeroImageAttributesTrait;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedHeroVideoUrlAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedIntroAttributeTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedOverviewAttributesTrait;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Concerns\HasTranslatedPageAttributesTrait;
@@ -27,6 +28,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasContentBlocks;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasHeroCallToActionsAttribute;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasHeroImageAttributes;
+use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasHeroVideoAttribute;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasIntroAttribute;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasMediaAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasOverviewAttributes;
@@ -38,7 +40,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
  * @property bool $is_undeletable
  */
 #[ObservedBy(PageObserver::class)]
-class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActionsAttribute, HasHeroImageAttributes, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
+class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActionsAttribute, HasHeroImageAttributes, HasHeroVideoAttribute, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
 {
     use HasAuthorAttributeTrait;
     use HasCodeTrait;
@@ -50,6 +52,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     use HasTitleMenuLabelTrait;
     use HasTranslatedContentBlocksTrait;
     use HasTranslatedHeroImageAttributesTrait;
+    use HasTranslatedHeroVideoUrlAttributeTrait;
     use HasTranslatedIntroAttributeTrait;
     use HasTranslatedOverviewAttributesTrait;
     use HasTranslatedPageAttributesTrait;

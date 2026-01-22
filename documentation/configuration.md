@@ -105,6 +105,11 @@ Configure various features and options for the page resource. These settings con
         | Enable the feature to have call-to-action buttons in the hero of the page
         */
         'enable_hero_call_to_actions' => true,
+        
+        /*
+        | Enable the feature to have video url to embed in the hero of the page
+        */
+        'enable_hero_video_url' => false,
 
         /*
         | Enable the feature for pages to have an author
@@ -159,6 +164,7 @@ Configure various features and options for the page resource. These settings con
 ### Page Resource Options
 
 - **enable_hero_call_to_actions**: When enabled, pages can have call-to-action buttons in their hero sections
+- **enable_hero_video_url**: When enabled, the hero section also has a video embed url field
 - **enable_author**: Allows pages to have an assigned author from the users table
 - **enable_page_tree**: Enables hierarchical page structure with parent-child relationships and the tree hierarchy page
 - **enable_undeletable**: Adds a boolean field to protect important pages from deletion

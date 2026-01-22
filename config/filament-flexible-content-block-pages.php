@@ -99,6 +99,11 @@ return [
             'enable_hero_call_to_actions' => true,
 
             /*
+            | Enable the feature to have video url to embed in the hero of the page
+            */
+            'enable_hero_video_url' => false,
+
+            /*
             | Enable the feature for pages to have an author
             */
             'enable_author' => true,

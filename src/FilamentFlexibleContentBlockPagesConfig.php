@@ -317,6 +317,14 @@ class FilamentFlexibleContentBlockPagesConfig
     /**
      * @param  class-string<Model>  $modelClass
      */
+    public function isHeroVideoUrlEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_hero_video_url", false);
+    }
+
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
     public function isAuthorEnabled(string $modelClass): bool
     {
         return $this->packageConfig("page_resource.{$modelClass}.enable_author", true);

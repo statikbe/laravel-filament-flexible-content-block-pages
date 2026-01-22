@@ -123,7 +123,7 @@ class PageResource extends Resource
         $fields = [
             TitleField::create(true),
             IntroField::create(),
-            HeroImageSection::create(true),
+            HeroImageSection::create(true, FilamentFlexibleContentBlockPages::config()->isHeroVideoUrlEnabled(static::getModel())),
         ];
 
         if (FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())) {

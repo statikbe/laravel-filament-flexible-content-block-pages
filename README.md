@@ -251,7 +251,7 @@ The package provides a comprehensive page management system built on flexible co
 Create new pages through the Filament admin interface with a multi-tab form:
 
 - **Content Tab** - Title, slug, intro, and flexible content blocks
-- **Hero Tab** - Hero image and call-to-action buttons  
+- **Hero Tab** - Hero image, optional video and call-to-action buttons  
 - **Publication Tab** - Status, scheduling, and author assignment
 - **SEO Tab** - Meta tags, Open Graph, and Twitter card settings
 - **Advanced Tab** - Manage the slug, publication dates, page code and undeletable toggle. 

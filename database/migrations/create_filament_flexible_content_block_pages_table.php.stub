@@ -26,6 +26,10 @@ return new class extends Migration
                 ->nullable();
             $table->json('hero_image_title')
                 ->nullable();
+            if(FilamentFlexibleContentBlockPages::config()->isHeroVideoUrlEnabled($pageModel)) {
+                $table->json('hero_video_url')
+                    ->nullable();
+            }
             if(FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled($pageModel)) {
                 $table->json('hero_call_to_actions')
                     ->nullable();
