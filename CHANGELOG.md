@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.16 - 2026-01-22
+
+- Add initial support for video url embed in hero + make it configurable. View template is not final yet.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.15...0.2.16
+
 ## v0.2.15 - 2026-01-21
 
 - Improve a11y aria labels in menu title.
