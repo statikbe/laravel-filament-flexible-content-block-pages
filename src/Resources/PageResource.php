@@ -2,45 +2,21 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
-use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\UndeletableToggle;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ManagePageTree;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\CopyContentBlocksToLocalesAction;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\AuthorField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ContentBlocksField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroCallToActionSection;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroImageSection;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\OverviewFields;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\PublicationSection;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\SEOFields;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\IntroField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\SlugField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ReplicateAction;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewAction;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\PublishedColumn;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\TitleColumn;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Filters\PublishedFilter;
-use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Schemas\PageFormSchema;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Schemas\PageTableSchema;
 
 class PageResource extends Resource
 {
@@ -93,149 +69,12 @@ class PageResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                Tabs::make(flexiblePagesTrans('pages.tabs.lbl'))
-                    ->columnSpan(2)
-                    ->tabs([
-                        Tab::make(flexiblePagesTrans('pages.tabs.general'))
-                            ->icon('heroicon-m-globe-alt')
-                            ->schema(static::getGeneralTabFields()),
-                        Tab::make(flexiblePagesTrans('pages.tabs.content'))
-                            ->icon('heroicon-o-rectangle-group')
-                            ->schema(static::getContentTabFields()),
-                        Tab::make(flexiblePagesTrans('pages.tabs.overview'))
-                            ->icon('heroicon-o-magnifying-glass')
-                            ->schema(static::getOverviewTabFields()),
-                        Tab::make(flexiblePagesTrans('pages.tabs.seo'))
-                            ->icon('heroicon-o-globe-alt')
-                            ->schema(static::getSEOTabFields()),
-                        Tab::make(flexiblePagesTrans('pages.tabs.advanced'))
-                            ->icon('heroicon-o-wrench-screwdriver')
-                            ->schema(static::getAdvancedTabFields()),
-                    ])
-                    ->persistTabInQueryString(),
-            ]);
-    }
-
-    protected static function getGeneralTabFields(): array
-    {
-        $fields = [
-            TitleField::create(true),
-            IntroField::create(),
-            HeroImageSection::create(true, FilamentFlexibleContentBlockPages::config()->isHeroVideoUrlEnabled(static::getModel())),
-        ];
-
-        if (FilamentFlexibleContentBlockPages::config()->isHeroCallToActionsEnabled(static::getModel())) {
-            $fields[] = HeroCallToActionSection::create();
-        }
-
-        return $fields;
-    }
-
-    protected static function getContentTabFields(): array
-    {
-        return [
-            CopyContentBlocksToLocalesAction::create(),
-            ContentBlocksField::create(),
-        ];
-    }
-
-    protected static function getSEOTabFields(): array
-    {
-        return [
-            SEOFields::create(1, true),
-        ];
-    }
-
-    protected static function getOverviewTabFields(): array
-    {
-        return [
-            OverviewFields::create(1, true),
-        ];
-    }
-
-    protected static function getAdvancedTabFields(): array
-    {
-        $config = FilamentFlexibleContentBlockPages::config();
-        $modelClass = static::getModel();
-
-        $fields = [
-            PublicationSection::create(),
-            CodeField::create(),
-            SlugField::create(false),
-        ];
-
-        $gridFields = [];
-
-        if ($config->isAuthorEnabled($modelClass)) {
-            $gridFields[] = AuthorField::create();
-        }
-
-        if ($config->isUndeletableEnabled($modelClass)) {
-            $gridFields[] = UndeletableToggle::create();
-        }
-
-        if (! empty($gridFields)) {
-            $fields[] = Grid::make()->schema($gridFields);
-        }
-
-        return $fields;
+        return PageFormSchema::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        // the search query is handled in ListPages
-        return $table
-            ->columns([
-                TitleColumn::create()
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->label(flexiblePagesTrans('pages.table.created_at_col'))
-                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label(flexiblePagesTrans('pages.table.updated_at_col'))
-                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('code')
-                    ->label(flexiblePagesTrans('pages.table.code_col'))
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                PublishedColumn::create()
-                    ->sortable()
-                    ->toggleable(),
-            ])
-            ->filters([
-                PublishedFilter::create(),
-            ])
-            ->recordActions([
-                EditAction::make(),
-                PublishAction::make(),
-                ViewAction::make(),
-                ReplicateAction::make()
-                    ->visible(FilamentFlexibleContentBlockPages::config()->isReplicateActionOnTableEnabled(static::getModel()))
-                    ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
-            ])
-            ->toolbarActions([
-                LinkedToMenuItemBulkDeleteAction::make(),
-            ])
-            ->recordUrl(
-                fn ($record): string => static::getUrl('edit', ['record' => $record])
-            )
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['menuItem']);
-            });
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+        return PageTableSchema::configure($table);
     }
 
     public static function getPages(): array

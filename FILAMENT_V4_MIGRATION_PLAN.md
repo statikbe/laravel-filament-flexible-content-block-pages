@@ -13,9 +13,11 @@
 - [x] Started manual updates to Resource pages
 - [x] **Phase 1**: Ran automated Filament v4 upgrade script
 - [x] **Phase 2**: Fixed PHPStan errors and all tests passing
+- [x] **Phase 3**: Refactored all resources to use schema classes
+- [x] Code review and cleanup
 
 ### Pending Work
-- [ ] Manual code review and refactoring for Filament v4 patterns (Phase 3)
+- [ ] Remove local path repository from `composer.json` before merge
 - [ ] Optional directory structure migration (Phase 4)
 
 ---
@@ -103,26 +105,96 @@ Several URL parameters were renamed:
 ### Files to Review
 
 #### Resources
-- [ ] `src/Resources/MenuResource.php`
-- [ ] `src/Resources/MenuItemResource.php` (if exists)
-- [ ] `src/Resources/PageResource.php`
-- [ ] `src/Resources/SettingsResource.php`
-- [ ] `src/Resources/TagResource.php`
-- [ ] `src/Resources/TagTypeResource.php`
-- [ ] `src/Resources/RedirectResource.php`
+- [x] `src/Resources/MenuResource.php`
+- [x] `src/Resources/PageResource.php`
+- [x] `src/Resources/SettingsResource.php`
+- [x] `src/Resources/TagResource.php`
+- [x] `src/Resources/TagTypeResource.php`
+- [x] `src/Resources/RedirectResource.php`
 
 #### Resource Pages
-- [ ] All `CreateX.php` pages
-- [ ] All `EditX.php` pages
-- [ ] All `ListX.php` pages
-- [ ] `ManageMenuItems.php`
+- [x] All `CreateX.php` pages
+- [x] All `EditX.php` pages
+- [x] All `ListX.php` pages
+- [x] `ManageMenuItems.php`
 
 #### Forms & Tables
-- [ ] Review all form schemas for layout changes
-- [ ] Review all table configurations for filter behavior
+- [x] Review all form schemas for layout changes
+- [x] Review all table configurations for filter behavior
 
 #### Custom Components
-- [ ] Review any custom Filament components
+- [x] Review any custom Filament components
+
+---
+
+## Phase 3b: Refactor to Schema Classes
+
+### Pattern
+
+Filament v4 supports extracting form/table schemas into separate classes for better organization.
+
+**Directory Structure:**
+```
+src/Resources/
+├── TagTypeResource.php
+└── TagTypeResource/
+    ├── Pages/
+    │   ├── CreateTagType.php
+    │   ├── EditTagType.php
+    │   └── ListTagTypes.php
+    └── Schemas/              ← NEW
+        └── TagTypeFormSchema.php
+```
+
+**Schema Class Template:**
+```php
+<?php
+
+namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Schemas;
+
+use Filament\Schemas\Schema;
+
+class TagTypeFormSchema
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema->components([
+            // form fields moved here
+        ]);
+    }
+}
+```
+
+**Resource (simplified):**
+```php
+public static function form(Schema $schema): Schema
+{
+    return TagTypeFormSchema::configure($schema);
+}
+```
+
+### Resources to Refactor
+
+| Resource | Form Complexity | Priority |
+|----------|----------------|----------|
+| TagTypeResource | Low | 1 - Start here as template |
+| RedirectResource | Low | 2 |
+| MenuResource | Low | 3 |
+| SettingsResource | Medium | 4 |
+| TagResource | Medium | 5 |
+| PageResource | High (tabs) | 6 - Most complex |
+
+### Completed Checklist
+
+- [x] Create `TagTypeResource/Schemas/TagTypeFormSchema.php` and `TagTypeTableSchema.php`
+- [x] Create `TagResource/Schemas/TagFormSchema.php` and `TagTableSchema.php`
+- [x] Create `RedirectResource/Schemas/RedirectFormSchema.php` and `RedirectTableSchema.php`
+- [x] Create `SettingsResource/Schemas/SettingsFormSchema.php` and `SettingsTableSchema.php`
+- [x] Create `MenuResource/Schemas/MenuFormSchema.php` and `MenuTableSchema.php`
+- [x] Create `PageResource/Schemas/PageFormSchema.php` and `PageTableSchema.php`
+- [x] Update all Resource classes to use schema classes
+- [x] Run tests to verify refactoring
+- [x] Code cleanup (remove empty methods, standardize patterns)
 
 ---
 
@@ -165,6 +237,40 @@ Review the dry-run output before applying.
 - All 67 tests passing
 - PHPStan: No errors
 - Code formatted with Laravel Pint
+
+---
+
+### Session 2026-01-27 (continued)
+
+#### Phase 3: Schema Class Refactoring
+
+Extracted form and table definitions into dedicated schema classes for all resources:
+
+**Created Schema Classes:**
+- `TagTypeResource/Schemas/TagTypeFormSchema.php`
+- `TagTypeResource/Schemas/TagTypeTableSchema.php`
+- `TagResource/Schemas/TagFormSchema.php`
+- `TagResource/Schemas/TagTableSchema.php`
+- `RedirectResource/Schemas/RedirectFormSchema.php`
+- `RedirectResource/Schemas/RedirectTableSchema.php`
+- `SettingsResource/Schemas/SettingsFormSchema.php`
+- `SettingsResource/Schemas/SettingsTableSchema.php`
+- `MenuResource/Schemas/MenuFormSchema.php`
+- `MenuResource/Schemas/MenuTableSchema.php`
+- `PageResource/Schemas/PageFormSchema.php`
+- `PageResource/Schemas/PageTableSchema.php`
+
+**Code Cleanup:**
+- Removed unnecessary `BulkActionGroup` wrapping for single bulk actions
+- Removed empty `getRelations()` methods from resources
+- Removed empty `->filters([])` calls from table schemas
+- Fixed PHPDoc type annotation (`resource` → `Resource`) in `TagPageService.php`
+- Added missing newline at end of this file
+
+#### Results
+- All 67 tests passing
+- PHPStan: No errors (106 files analyzed)
+- Clean, consistent schema class pattern across all resources
 
 ---
 

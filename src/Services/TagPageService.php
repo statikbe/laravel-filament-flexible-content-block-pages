@@ -166,7 +166,7 @@ class TagPageService
                 ->count();
 
             if ($count > 0) {
-                /** @var class-string<resource>|null $resourceClass */
+                /** @var class-string<Resource>|null $resourceClass */
                 $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
                 $label = $resourceClass ? ($count === 1 ? $resourceClass::getModelLabel() : $resourceClass::getPluralModelLabel()) : class_basename($modelClass);
                 $counts[$label] = $count;
