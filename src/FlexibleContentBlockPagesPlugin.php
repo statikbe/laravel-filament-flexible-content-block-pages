@@ -2,9 +2,12 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages;
 
+use Exception;
 use Filament\Contracts\Plugin;
+use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Resources\Resource;
+use Filament\Widgets\Widget;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
 final class FlexibleContentBlockPagesPlugin implements Plugin
@@ -50,7 +53,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
 
         // Check if the instance is of the expected type for phpstan:
         if (! $instance instanceof FlexibleContentBlockPagesPlugin) {
-            throw new \Exception('Expected a FlexibleContentBlocksPagesPlugin instance');
+            throw new Exception('Expected a FlexibleContentBlocksPagesPlugin instance');
         }
 
         self::$instance = $instance;
@@ -69,7 +72,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @return array<class-string<\Filament\Pages\Page>>
+     * @return array<class-string<Page>>
      */
     public static function getPages(): array
     {
@@ -77,7 +80,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @return array<class-string<\Filament\Widgets\Widget>>
+     * @return array<class-string<Widget>>
      */
     public static function getWidgets(): array
     {
@@ -85,7 +88,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param  array<class-string<\Filament\Pages\Page>>  $pages
+     * @param  array<class-string<Page>>  $pages
      */
     public static function pages(array $pages): static
     {
@@ -95,7 +98,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
     }
 
     /**
-     * @param  array<class-string<\Filament\Widgets\Widget>>  $widgets
+     * @param  array<class-string<Widget>>  $widgets
      */
     public static function widgets(array $widgets): static
     {

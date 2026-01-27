@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Image\Enums\Fit;
@@ -29,6 +30,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Enums\ImageFormat;
 #[ObservedBy(SettingsObserver::class)]
 class Settings extends Model implements HasMedia, HasTranslatableMedia
 {
+    use HasFactory;
     use HasMediaAttributesTrait;
     use HasTranslatedMediaTrait;
     use HasTranslations;

@@ -4,12 +4,13 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class ListMenus extends ListRecords
 {
-    use ListRecords\Concerns\Translatable;
+    use Translatable;
 
     protected static string $resource = MenuResource::class;
 

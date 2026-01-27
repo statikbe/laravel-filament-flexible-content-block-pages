@@ -2,18 +2,18 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
+use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\UndeletableToggle;
@@ -46,7 +46,7 @@ class PageResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $recordRouteKeyName = 'id';
 
@@ -81,7 +81,7 @@ class PageResource extends Resource
         return FilamentFlexibleContentBlockPages::config()->getPageNavigationSort(static::getModel());
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery()
             ->with([
@@ -91,10 +91,10 @@ class PageResource extends Resource
         return $query;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make(flexiblePagesTrans('pages.tabs.lbl'))
                     ->columnSpan(2)
                     ->tabs([
@@ -212,7 +212,7 @@ class PageResource extends Resource
             ->filters([
                 PublishedFilter::create(),
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 PublishAction::make(),
                 ViewAction::make(),
@@ -220,7 +220,7 @@ class PageResource extends Resource
                     ->visible(FilamentFlexibleContentBlockPages::config()->isReplicateActionOnTableEnabled(static::getModel()))
                     ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 LinkedToMenuItemBulkDeleteAction::make(),
             ])
             ->recordUrl(

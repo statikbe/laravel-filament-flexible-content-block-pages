@@ -2,25 +2,29 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages\CreateSettings;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages\EditSettings;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages\ListSettings;
 
 class SettingsResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-vertical';
 
     /**
      * @return class-string
@@ -50,10 +54,10 @@ class SettingsResource extends Resource
         return FilamentFlexibleContentBlockPages::config()->getSettingsNavigationSort();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make('Settings')->columnSpan(2)->tabs([
                     Tab::make(flexiblePagesTrans('settings.settings_tab_site_general'))
                         ->schema(static::getGeneralTabFormSchema()),
@@ -69,16 +73,16 @@ class SettingsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make(Settings::SETTING_SITE_TITLE),
+                TextColumn::make(Settings::SETTING_SITE_TITLE),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -92,9 +96,9 @@ class SettingsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSettings::route('/'),
-            'create' => Pages\CreateSettings::route('/create'),
-            'edit' => Pages\EditSettings::route('/{record}/edit'),
+            'index' => ListSettings::route('/'),
+            'create' => CreateSettings::route('/create'),
+            'edit' => EditSettings::route('/{record}/edit'),
         ];
     }
 

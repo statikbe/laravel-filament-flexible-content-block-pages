@@ -2,22 +2,25 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Forms\Components\Section;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Http\Response;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages\CreateRedirect;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages\EditRedirect;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages\ListRedirects;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
 class RedirectResource extends Resource
 {
-    protected static ?string $navigationIcon = 'heroicon-o-bolt';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
 
     public static function getModel(): string
     {
@@ -44,10 +47,10 @@ class RedirectResource extends Resource
         return FilamentFlexibleContentBlockPages::config()->getRedirectNavigationSort();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make()
                     ->columns(2)
                     ->schema([
@@ -74,13 +77,13 @@ class RedirectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('old_url')
+                TextColumn::make('old_url')
                     ->label(flexiblePagesTrans('redirects.redirect_old_url'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('new_url')
+                TextColumn::make('new_url')
                     ->label(flexiblePagesTrans('redirects.redirect_new_url'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status_code')
+                TextColumn::make('status_code')
                     ->label(flexiblePagesTrans('redirects.redirect_status_code')),
                 TextColumn::make('created_at')
                     ->label(flexiblePagesTrans('redirects.table.created_at_col'))
@@ -97,11 +100,11 @@ class RedirectResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -115,9 +118,9 @@ class RedirectResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRedirects::route('/'),
-            'create' => Pages\CreateRedirect::route('/create'),
-            'edit' => Pages\EditRedirect::route('/{record}/edit'),
+            'index' => ListRedirects::route('/'),
+            'create' => CreateRedirect::route('/create'),
+            'edit' => EditRedirect::route('/{record}/edit'),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
+use Exception;
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
@@ -115,7 +116,8 @@ class ManageMenuItems extends TreePage
                         $form->fill($data);
                     }
                 )
-                ->mutateFormDataBeforeSaveUsing(function ($data) {
+                ->using(function (Model $record, array $data): void {
+                    // Ensure translatable fields have null value if not provided
                     if (! array_key_exists('label', $data)) {
                         $data['label'] = null;
                     }
@@ -124,7 +126,7 @@ class ManageMenuItems extends TreePage
                         $data['url'] = null;
                     }
 
-                    return $data;
+                    $record->update($data);
                 }),
             DeleteAction::make(),
         ];
@@ -188,7 +190,7 @@ class ManageMenuItems extends TreePage
         if ($resourceClass) {
             try {
                 return $resourceClass::getModelLabel();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to class basename if resource method fails
             }
         }
@@ -203,7 +205,7 @@ class ManageMenuItems extends TreePage
         if ($resourceClass) {
             try {
                 return $resourceClass::getNavigationIcon();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to null if resource method fails
             }
         }
@@ -215,12 +217,12 @@ class ManageMenuItems extends TreePage
     {
         try {
             return route($routeName);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
 
-    public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
+    public function getTreeRecordIcon(?Model $record = null): ?string
     {
         if (! $record) {
             return null;

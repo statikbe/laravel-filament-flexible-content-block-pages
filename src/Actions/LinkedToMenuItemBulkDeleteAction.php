@@ -3,8 +3,8 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Actions;
 
 use Filament\Actions\Action;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;

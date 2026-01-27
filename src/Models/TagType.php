@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
 class TagType extends Model implements HasCode
 {
     use HasCodeTrait;
+    use HasFactory;
     use HasTranslations;
 
     public const TYPE_DEFAULT = 'default';
@@ -76,7 +78,7 @@ class TagType extends Model implements HasCode
 
     public function tags(): HasMany
     {
-        return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getTagModel()::class, 'code', 'type');
+        return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getTagModel()::class, 'type', 'code');
     }
 
     public function formatColour(): ?string

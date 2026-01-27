@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
@@ -41,7 +42,7 @@ class GenerateSitemapCommand extends Command
             $generator->generate();
 
             $this->info('Sitemap generated successfully at: '.public_path('sitemap.xml'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             report($e);
             $this->error('Failed to generate sitemap: '.$e->getMessage());
             $this->error($e->getTraceAsString(), 1);

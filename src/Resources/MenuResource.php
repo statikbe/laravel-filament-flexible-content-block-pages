@@ -2,18 +2,18 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Forms\Components\Section;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\CreateMenu;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages\EditMenu;
@@ -27,7 +27,7 @@ class MenuResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bars-3';
 
     protected static ?string $recordRouteKeyName = 'id';
 
@@ -58,7 +58,7 @@ class MenuResource extends Resource
         return FilamentFlexibleContentBlockPages::config()->getMenuNavigationSort();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $availableStyles = FilamentFlexibleContentBlockPages::config()->getMenuStyles();
         $showStyleField = count($availableStyles) > 1;
@@ -102,8 +102,8 @@ class MenuResource extends Resource
             ->placeholder((string) FilamentFlexibleContentBlockPages::config()->getMenuMaxDepth())
             ->helperText(flexiblePagesTrans('menus.form.max_depth_help'));
 
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(flexiblePagesTrans('menus.form.general_section'))
                     ->schema($formFields)
                     ->columns(2),
@@ -148,7 +148,7 @@ class MenuResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('manage_items')
                     ->label(flexiblePagesTrans('menus.actions.manage_items'))
                     ->icon('heroicon-o-bars-3')
@@ -156,7 +156,7 @@ class MenuResource extends Resource
                     ->url(fn ($record) => static::getUrl('items', ['record' => $record])),
                 EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 DeleteBulkAction::make(),
             ]);
     }

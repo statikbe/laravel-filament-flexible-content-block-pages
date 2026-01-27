@@ -2,11 +2,13 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Services;
 
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Spatie\Tags\HasTags;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
@@ -144,7 +146,7 @@ class TagPageService
      */
     private function isTaggable(string $modelClass): bool
     {
-        return in_array(\Spatie\Tags\HasTags::class, class_uses_recursive($modelClass));
+        return in_array(HasTags::class, class_uses_recursive($modelClass));
     }
 
     /**
@@ -164,7 +166,7 @@ class TagPageService
                 ->count();
 
             if ($count > 0) {
-                /** @var class-string<\Filament\Resources\Resource>|null $resourceClass */
+                /** @var class-string<resource>|null $resourceClass */
                 $resourceClass = FilamentFlexibleContentBlockPages::getModelResource($modelClass);
                 $label = $resourceClass ? ($count === 1 ? $resourceClass::getModelLabel() : $resourceClass::getPluralModelLabel()) : class_basename($modelClass);
                 $counts[$label] = $count;

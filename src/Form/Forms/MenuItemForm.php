@@ -2,13 +2,14 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Forms;
 
+use Exception;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\MenuItemTypes\AbstractMenuItemType;
@@ -264,7 +265,7 @@ class MenuItemForm
         if ($resourceClass) {
             try {
                 return $resourceClass::getModelLabel();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to class basename if resource method fails
             }
         }

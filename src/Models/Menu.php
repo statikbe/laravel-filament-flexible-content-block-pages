@@ -2,7 +2,9 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,10 +22,10 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasCode;
  * @property string|null $title
  * @property string $style
  * @property int|null $max_depth
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $menuItems
- * @property \Illuminate\Database\Eloquent\Collection<\Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem> $allMenuItems
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Collection<MenuItem> $menuItems
+ * @property Collection<MenuItem> $allMenuItems
  */
 #[ObservedBy(MenuObserver::class)]
 class Menu extends Model implements HasCode

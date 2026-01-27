@@ -15,6 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\Contracts\HandlesPageRoutes;
 use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
 use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
 
 class FilamentFlexibleContentBlockPagesConfig
@@ -273,7 +274,7 @@ class FilamentFlexibleContentBlockPagesConfig
 
     public function getSitemapGeneratorService(): string
     {
-        return $this->packageConfig('sitemap.generator_service', \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class);
+        return $this->packageConfig('sitemap.generator_service', SitemapGeneratorService::class);
     }
 
     public function getSitemapMethod(): SitemapGeneratorMethod
