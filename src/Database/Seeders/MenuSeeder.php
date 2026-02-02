@@ -48,7 +48,7 @@ abstract class MenuSeeder extends Seeder
         bool $isVisible = true,
         string $target = '_self',
         ?string $icon = null,
-        MenuItem|int $parent = -1,
+        MenuItem|int|null $parent = null,
         /* only for link_type MenuItem::LINK_TYPE_ROUTE */
         ?string $route = null,
         /* only for link_type MenuItem::LINK_TYPE_URL */
@@ -56,6 +56,10 @@ abstract class MenuSeeder extends Seeder
         /* only for link_type 'model' */
         bool $useModelTitle = false,
     ): MenuItem {
+        if(is_null($parent)){
+            $parent = \SolutionForest\FilamentTree\Support\Utils::defaultParentId();
+        }
+
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
         $menuId = is_numeric($menu) ? $menu : $menu->getKey();
         $parentId = is_numeric($parent) ? $parent : $parent->getKey();
@@ -85,7 +89,7 @@ abstract class MenuSeeder extends Seeder
         bool $isVisible = true,
         string $target = '_self',
         ?string $icon = null,
-        MenuItem|int $parent = -1
+        MenuItem|int|null $parent = null
     ): MenuItem {
         $this->validateRoute($route);
 
@@ -111,7 +115,7 @@ abstract class MenuSeeder extends Seeder
         bool $isVisible = true,
         string $target = '_blank', // External URLs default to new tab
         ?string $icon = null,
-        MenuItem|int $parent = -1
+        MenuItem|int|null $parent = null
     ): MenuItem {
         return $this->createMenuItem(
             menu: $menu,
@@ -136,7 +140,7 @@ abstract class MenuSeeder extends Seeder
         bool $isVisible = true,
         string $target = '_self',
         ?string $icon = null,
-        MenuItem|int $parent = -1
+        MenuItem|int|null $parent = null
     ): MenuItem {
         $model = $this->getPageModel()::code($pageCode)->first();
 
@@ -167,7 +171,7 @@ abstract class MenuSeeder extends Seeder
         bool $isVisible = true,
         string $target = '_self',
         ?string $icon = null,
-        MenuItem|int $parent = -1
+        MenuItem|int|null $parent = null
     ): MenuItem {
         // If no label provided and useModelTitle is true, try to get model menu label
         if ($label === null && $useModelTitle && $model instanceof HasMenuLabel) {

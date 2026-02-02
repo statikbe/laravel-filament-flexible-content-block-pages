@@ -18,7 +18,7 @@ class PageRouteHelper extends AbstractPageRouteHelper
 
         $page->load('parent.parent');
 
-        if ($page->parent && $page->parent->parent) { /** @phpstan-ignore-line */
+        if (!$page->isRoot() && !$page->parent?->isRoot() && $page->parent?->parent) { /** @phpstan-ignore-line */
             return route(static::ROUTE_GRANDCHILD_PAGE, [
                 'grandparent' => $page->parent->parent,
                 'parent' => $page->parent,
@@ -26,7 +26,7 @@ class PageRouteHelper extends AbstractPageRouteHelper
             ]);
         }
 
-        if ($page->parent) {
+        if (!$page->isRoot() && $page->parent) {
             return route(static::ROUTE_CHILD_PAGE, [
                 'parent' => $page->parent,
                 'page' => $page,
