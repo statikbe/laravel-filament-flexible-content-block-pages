@@ -5,7 +5,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 use Exception;
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
