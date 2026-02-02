@@ -2,8 +2,10 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
+use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemDeleteAction;
+use Statikbe\FilamentFlexibleContentBlockPages\Actions\ViewAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -27,10 +29,18 @@ class EditPage extends EditRecord
         return [
             CopyContentBlocksToLocalesAction::make(),
             FlexibleLocaleSwitcher::make(),
-            LinkedToMenuItemDeleteAction::make()
-                ->visible(fn (Page $record) => $record->isDeletable()),
-            ReplicateAction::make()
-                ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
+            ActionGroup::make([
+                ViewAction::make(),
+                ReplicateAction::make()
+                    ->color('gray')
+                    ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
+                LinkedToMenuItemDeleteAction::make()
+                    ->color('danger')
+                    ->visible(fn (Page $record) => $record->isDeletable()),
+            ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->color('gray')
+                ->button(),
         ];
     }
 
