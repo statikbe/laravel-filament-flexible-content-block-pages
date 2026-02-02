@@ -52,7 +52,7 @@ class Menu extends Model implements HasCode
     public function menuItems(): HasMany
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class)
-            ->where('parent_id', config('filament-tree.default_parent_id', -1))
+            ->where('parent_id', \SolutionForest\FilamentTree\Support\Utils::defaultParentId())
             ->orderBy('order');
     }
 

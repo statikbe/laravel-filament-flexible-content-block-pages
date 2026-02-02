@@ -84,7 +84,7 @@ class ManageMenuItems extends TreePage
                 ->mountUsing(
                     fn ($arguments, $form) => $form->fill([
                         'menu_id' => $this->menu->getKey(),
-                        'parent_id' => $arguments['parent_id'] ?? config('filament-tree.default_parent_id', -1),
+                        'parent_id' => $arguments['parent_id'] ?? \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
                         'is_visible' => true,
                         'target' => '_self',
                     ])

@@ -57,7 +57,7 @@ abstract class MenuSeeder extends Seeder
         bool $useModelTitle = false,
     ): MenuItem {
         if (is_null($parent)) {
-            $parent = config('filament-tree.default_parent_id', -1);
+            $parent = \SolutionForest\FilamentTree\Support\Utils::defaultParentId();
         }
 
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();

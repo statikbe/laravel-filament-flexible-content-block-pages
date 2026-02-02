@@ -23,7 +23,7 @@ class PageFactory extends Factory
             'overview_title' => ['en' => $this->faker->sentence(3), 'es' => $this->faker->sentence(3)],
             'overview_description' => ['en' => $this->faker->paragraph(), 'es' => $this->faker->paragraph()],
             'content_blocks' => [],
-            'parent_id' => config('filament-tree.default_parent_id', -1),
+            'parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
             'order' => 0,
             'is_undeletable' => false,
         ];

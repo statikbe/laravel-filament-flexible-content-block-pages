@@ -117,7 +117,7 @@ it('supports visibility scope', function () {
 
 it('supports tree structure with parent-child relationships', function () {
     $menu = Menu::factory()->create();
-    $parent = MenuItem::factory()->forMenu($menu)->create(['parent_id' => config('filament-tree.default_parent_id', -1)]);
+    $parent = MenuItem::factory()->forMenu($menu)->create(['parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId()]);
     $child = MenuItem::factory()->childOf($parent)->create();
 
     expect($child->parent_id)->toBe($parent->id)

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->boolean('is_visible')->default(true);
             $table->boolean('use_model_title')->default(false);
-            $table->integer('parent_id')->default(config('filament-tree.default_parent_id', -1))->index();
+            $table->integer('parent_id')->default(\SolutionForest\FilamentTree\Support\Utils::defaultParentId())->index();
             $table->integer('order')->default(0);
             $table->timestamps();
 
