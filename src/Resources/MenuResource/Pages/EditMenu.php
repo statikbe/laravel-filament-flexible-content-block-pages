@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 use LaraZeus\SpatieTranslatable\Resources\Pages\EditRecord\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
@@ -21,7 +22,7 @@ class EditMenu extends EditRecord
             FlexibleLocaleSwitcher::make(),
             Action::make('manage_items')
                 ->label(flexiblePagesTrans('menus.actions.manage_items'))
-                ->icon('heroicon-o-bars-3')
+                ->icon(Heroicon::OutlinedBars3)
                 ->color('primary')
                 ->url(fn () => static::getResource()::getUrl('items', ['record' => $this->record])),
             DeleteAction::make(),

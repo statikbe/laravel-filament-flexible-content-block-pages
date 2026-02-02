@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -18,7 +19,7 @@ class MenuResource extends Resource
 {
     use Translatable;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bars-3';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBars3;
 
     protected static ?string $recordRouteKeyName = 'id';
 

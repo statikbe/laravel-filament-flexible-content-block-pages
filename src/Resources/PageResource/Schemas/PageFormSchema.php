@@ -6,6 +6,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\UndeletableToggle;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
@@ -32,19 +33,19 @@ class PageFormSchema
                     ->columnSpan(2)
                     ->tabs([
                         Tab::make(flexiblePagesTrans('pages.tabs.general'))
-                            ->icon('heroicon-m-globe-alt')
+                            ->icon(Heroicon::GlobeAlt)
                             ->schema(static::getGeneralTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.content'))
-                            ->icon('heroicon-o-rectangle-group')
+                            ->icon(Heroicon::OutlinedRectangleGroup)
                             ->schema(static::getContentTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.overview'))
-                            ->icon('heroicon-o-magnifying-glass')
+                            ->icon(Heroicon::OutlinedMagnifyingGlass)
                             ->schema(static::getOverviewTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.seo'))
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->schema(static::getSEOTabFields()),
                         Tab::make(flexiblePagesTrans('pages.tabs.advanced'))
-                            ->icon('heroicon-o-wrench-screwdriver')
+                            ->icon(Heroicon::OutlinedWrenchScrewdriver)
                             ->schema(static::getAdvancedTabFields()),
                     ])
                     ->persistTabInQueryString(),

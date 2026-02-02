@@ -25,7 +25,7 @@ class MenuItemFactory extends Factory
             'icon' => null,
             'is_visible' => true,
             'use_model_title' => false,
-            'parent_id' => -1,
+            'parent_id' => config('filament-tree.default_parent_id', -1),
             'order' => 0,
         ];
     }

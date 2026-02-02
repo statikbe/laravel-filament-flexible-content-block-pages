@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -27,7 +28,7 @@ class ListPages extends ListRecords
             CreateAction::make(),
             Action::make('page_tree')
                 ->label(flexiblePagesTrans('pages.actions.page_tree_lbl'))
-                ->icon('heroicon-o-arrow-turn-down-right')
+                ->icon(Heroicon::OutlinedArrowTurnDownRight)
                 ->color('gray')
                 ->visible(FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled($this->getModel()))
                 ->url(fn () => FilamentFlexibleContentBlockPages::config()->isParentAndPageTreeEnabled($this->getModel()) ? static::getResource()::getUrl('tree') : null),

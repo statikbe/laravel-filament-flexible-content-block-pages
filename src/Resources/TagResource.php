@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -17,7 +18,7 @@ class TagResource extends Resource
 {
     use Translatable;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-tag';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordRouteKeyName = 'id';
 

@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Components;
 
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -19,7 +20,7 @@ class UndeletableToggle extends Toggle
         return parent::make($field)
             ->label($label ?? flexiblePagesTrans('form_component.is_undeletable_lbl'))
             ->hint(flexiblePagesTrans('form_component.is_undeletable_helper'))
-            ->hintIcon('heroicon-o-question-mark-circle')
+            ->hintIcon(Heroicon::OutlinedQuestionMarkCircle)
             ->visible(function (Page $livewire, ?Model $record = null) {
                 // Get the model class from record or livewire context
                 $modelClass = $record ? $record::class : $livewire->getModel();

@@ -27,7 +27,7 @@ it('retrieves menu by code', function () {
 
 it('returns top-level menu items only via menuItems relationship', function () {
     $menu = Menu::factory()->create();
-    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => -1]);
+    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => config('filament-tree.default_parent_id', -1)]);
     $childItem = MenuItem::factory()->childOf($topLevelItem)->create();
 
     $menuItems = $menu->menuItems;
@@ -38,7 +38,7 @@ it('returns top-level menu items only via menuItems relationship', function () {
 
 it('returns all menu items via allMenuItems relationship', function () {
     $menu = Menu::factory()->create();
-    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => -1]);
+    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => config('filament-tree.default_parent_id', -1)]);
     $childItem = MenuItem::factory()->childOf($topLevelItem)->create();
 
     $allMenuItems = $menu->allMenuItems;

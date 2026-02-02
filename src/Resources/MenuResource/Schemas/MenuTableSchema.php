@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Sche
 use Filament\Actions\Action;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
@@ -51,7 +52,7 @@ class MenuTableSchema
             ->recordActions([
                 Action::make('manage_items')
                     ->label(flexiblePagesTrans('menus.actions.manage_items'))
-                    ->icon('heroicon-o-bars-3')
+                    ->icon(Heroicon::OutlinedBars3)
                     ->color('secondary')
                     ->url(fn ($record) => MenuResource::getUrl('items', ['record' => $record])),
                 EditAction::make(),

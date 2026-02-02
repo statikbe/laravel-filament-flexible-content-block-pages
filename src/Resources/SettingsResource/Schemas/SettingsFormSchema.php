@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 
 class SettingsFormSchema
@@ -36,7 +37,7 @@ class SettingsFormSchema
             TextInput::make(Settings::SETTING_FOOTER_COPYRIGHT)
                 ->label(flexiblePagesTrans('settings.settings_footer_copyright'))
                 ->hint(flexiblePagesTrans('settings.translatable_field_hint'))
-                ->hintIcon('heroicon-m-language')
+                ->hintIcon(Heroicon::Language)
                 ->required(),
             RichEditor::make(Settings::SETTING_CONTACT_INFO)
                 ->label(flexiblePagesTrans('settings.settings_contact_info'))

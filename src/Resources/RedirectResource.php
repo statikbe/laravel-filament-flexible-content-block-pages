@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Pages\CreateRedirect;
@@ -14,7 +15,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource\Schema
 
 class RedirectResource extends Resource
 {
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
 
     public static function getModel(): string
     {
