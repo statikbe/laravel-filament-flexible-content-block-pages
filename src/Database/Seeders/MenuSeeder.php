@@ -56,7 +56,7 @@ abstract class MenuSeeder extends Seeder
         /* only for link_type 'model' */
         bool $useModelTitle = false,
     ): MenuItem {
-        if(is_null($parent)){
+        if (is_null($parent)) {
             $parent = \SolutionForest\FilamentTree\Support\Utils::defaultParentId();
         }
 
