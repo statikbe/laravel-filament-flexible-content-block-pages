@@ -44,15 +44,17 @@ abstract class AbstractSeoPageController extends Controller
 
             // 3. try the default SEO image in the settings
             if (! $seoMedia || ! $seoUrl) {
-                /** @var Settings $settings */
+                /** @var Settings|null $settings */
                 $settings = FilamentFlexibleContentBlockPages::config()->getSettingsModel()::getSettings();
 
-                /** @var Media|null $firstSettingsMedia */
-                $firstSettingsMedia = $settings->defaultSeoImage()->first();
-                $seoMedia = $settings->getFallbackImageMedia($firstSettingsMedia, $settings::COLLECTION_DEFAULT_SEO);
-                if ($seoMedia) {
-                    $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
-                    $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
+                if ($settings) {
+                    /** @var Media|null $firstSettingsMedia */
+                    $firstSettingsMedia = $settings->defaultSeoImage()->first();
+                    $seoMedia = $settings->getFallbackImageMedia($firstSettingsMedia, $settings::COLLECTION_DEFAULT_SEO);
+                    if ($seoMedia) {
+                        $seoUrl = $seoMedia->getUrl($settings::CONVERSION_DEFAULT_SEO);
+                        $imageDimensions = $this->getSEOImageDimensions($seoMedia, $settings::CONVERSION_DEFAULT_SEO);
+                    }
                 }
             }
         }
