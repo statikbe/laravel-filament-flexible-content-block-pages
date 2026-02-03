@@ -5,7 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemDeleteAction;
-use Statikbe\FilamentFlexibleContentBlockPages\Actions\ViewAction;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewPageAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -30,7 +30,7 @@ class EditPage extends EditRecord
             CopyContentBlocksToLocalesAction::make(),
             FlexibleLocaleSwitcher::make(),
             ActionGroup::make([
-                ViewAction::make(),
+                ViewPageAction::make(),
                 ReplicateAction::make()
                     ->color('gray')
                     ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
