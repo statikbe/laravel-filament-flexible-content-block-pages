@@ -19,7 +19,10 @@ class PageController extends AbstractSeoPageController
     public function index(Page $page)
     {
         // check if page is published:
-        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($page::class);
+        /** @var class-string|null $pageModel */
+        $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
+        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($pageModel);
+
         if (! Auth::user() || ! ($viewUnpublishedPagesGate && Gate::allows($viewUnpublishedPagesGate, $page))) {
             if (! $page->isPublished()) {
                 SEOMeta::setRobots('noindex');
@@ -39,7 +42,7 @@ class PageController extends AbstractSeoPageController
 
     public function homeIndex()
     {
-        $page = Page::code(Page::HOME_PAGE)
+        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::code(Page::HOME_PAGE)
             ->firstOrFail();
 
         return $this->index($page);

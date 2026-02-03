@@ -82,4 +82,24 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
     {
         return flexiblePagesPrefix('tag');
     }
+
+    /**
+     * Resolve the route binding to use the configured Tag model.
+     * This allows projects to extend the Tag model and have route model binding
+     * return the correct model class instance.
+     *
+     * {@inheritDoc}
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $configuredModel = FilamentFlexibleContentBlockPages::config()->getTagModel();
+
+        // If the configured model is different from this class, delegate to it
+        if (get_class($configuredModel) !== static::class) {
+            return $configuredModel->resolveRouteBinding($value, $field);
+        }
+
+        // Use the default resolution (searches translated slugs)
+        return $this->resolveRouteBindingQuery($this->newQuery(), $value, $field)->first();
+    }
 }
