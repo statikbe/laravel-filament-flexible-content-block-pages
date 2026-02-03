@@ -39,7 +39,7 @@ class PageController extends AbstractSeoPageController
 
     public function homeIndex()
     {
-        $page = Page::code(Page::HOME_PAGE)
+        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::code(Page::HOME_PAGE)
             ->firstOrFail();
 
         return $this->index($page);

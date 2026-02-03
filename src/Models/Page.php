@@ -104,4 +104,26 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     {
         return flexiblePagesPrefix('page');
     }
+
+    /**
+     * Resolve the route binding to use the configured Page model.
+     * This allows projects to extend the Page model and have route model binding
+     * return the correct model class instance.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $configuredModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
+
+        // If the configured model is different from this class, delegate to it
+        if (get_class($configuredModel) !== static::class) {
+            return $configuredModel->resolveRouteBinding($value, $field);
+        }
+
+        // Use the default resolution from the trait (searches translated slugs)
+        return $this->resolveRouteBindingQuery($this->newQuery(), $value, $field)->first();
+    }
 }
