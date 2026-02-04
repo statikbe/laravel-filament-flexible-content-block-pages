@@ -39,6 +39,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ReplicateActio
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\PublishedColumn;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\TitleColumn;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Filters\CodeFilter;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Filters\PublishedFilter;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
 
@@ -211,6 +212,7 @@ class PageResource extends Resource
             ])
             ->filters([
                 PublishedFilter::create(),
+                CodeFilter::create(),
             ])
             ->actions([
                 EditAction::make(),

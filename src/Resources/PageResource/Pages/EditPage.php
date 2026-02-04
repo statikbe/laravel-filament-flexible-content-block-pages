@@ -43,9 +43,4 @@ class EditPage extends EditRecord
                 ->button(),
         ];
     }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('edit', ['record' => $this->getRecord()]);
-    }
 }
