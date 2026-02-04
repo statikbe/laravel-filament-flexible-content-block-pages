@@ -5,7 +5,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemDeleteAction;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewPageAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -14,6 +13,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitch
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Resource\Pages\Actions\CopyContentBlocksToLocalesAction;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewPageAction;
 
 class EditPage extends EditRecord
 {
