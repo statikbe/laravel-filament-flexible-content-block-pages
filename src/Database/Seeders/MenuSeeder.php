@@ -7,7 +7,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
