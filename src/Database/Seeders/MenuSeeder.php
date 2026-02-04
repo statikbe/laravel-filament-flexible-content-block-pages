@@ -148,7 +148,7 @@ abstract class MenuSeeder extends Seeder
             menu: $menu,
             model: $model,
             label: $label,
-            link_type: FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX.'::page',
+            link_type: FilamentFlexibleContentBlockPages::config()->getPageModel()->getMorphClass(),
             useModelTitle: $useModelTitle,
             isVisible: $isVisible,
             target: $target,
