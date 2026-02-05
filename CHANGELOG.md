@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v0.2.20 - 2026-02-05
+
+### What's Changed
+
+* View page action on edit page by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/10
+* Code filter and code columns added to page table
+
+### New Contributors
+
+* @lukasdewijn made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/10
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.19...0.2.20
+
 ## v0.2.19 - 2026-02-04
 
 * Fix menu seeder to use the correct morph class from the configured page model for menu items with page link
