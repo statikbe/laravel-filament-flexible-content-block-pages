@@ -38,6 +38,7 @@ class Menu extends Model implements HasCode
         'name',
         'code',
         'description',
+        'title',
         'style',
         'max_depth',
     ];
