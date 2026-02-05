@@ -30,6 +30,7 @@ return [
         ],
         'actions' => [
             'page_tree_lbl' => 'Gérer la hiérarchie',
+            'back_to_list' => 'Retour à la liste',
         ],
     ],
     'redirects' => [

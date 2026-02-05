@@ -30,6 +30,7 @@ return [
         ],
         'actions' => [
             'page_tree_lbl' => 'Beheer hiërarchie',
+            'back_to_list' => 'Terug naar lijst',
         ],
     ],
     'redirects' => [
