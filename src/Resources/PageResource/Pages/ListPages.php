@@ -25,7 +25,8 @@ class ListPages extends ListRecords
     {
         return [
             FlexibleLocaleSwitcher::make(),
-            CreateAction::make(),
+            CreateAction::make()
+                ->icon(Heroicon::Plus),
             Action::make('page_tree')
                 ->label(flexiblePagesTrans('pages.actions.page_tree_lbl'))
                 ->icon(Heroicon::OutlinedArrowTurnDownRight)
