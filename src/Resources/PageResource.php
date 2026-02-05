@@ -37,6 +37,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewAction;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\CodeColumn;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\PublishedColumn;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Columns\TitleColumn;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Filters\CodeFilter;
@@ -201,11 +202,7 @@ class PageResource extends Resource
                     ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('code')
-                    ->label(flexiblePagesTrans('pages.table.code_col'))
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                CodeColumn::create(),
                 PublishedColumn::create()
                     ->sortable()
                     ->toggleable(),
