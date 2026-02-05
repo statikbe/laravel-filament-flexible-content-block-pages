@@ -210,6 +210,9 @@ return [
                 'route' => 'Interne route',
             ],
         ],
+        'actions' => [
+            'edit_menu' => 'Menu bewerken',
+        ],
     ],
     'panel' => [
         'navigation_items' => [
