@@ -64,7 +64,7 @@ class PageTableSchema
                 fn ($record): string => PageResource::getUrl('edit', ['record' => $record])
             )
             ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['menuItem']);
+                $query->with(['menuItem', 'parent.parent']);
             });
     }
 }
