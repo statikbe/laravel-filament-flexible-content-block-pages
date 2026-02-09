@@ -87,8 +87,9 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     public static function getUrl(string $code, ?string $locale = null): ?string
     {
         $cacheTag = static::getCacheTag($code);
+
         return Cache::tags([$cacheTag])
-            ->rememberForever($cacheTag . '_url_' . $locale, function() use ($code, $locale) {
+            ->rememberForever($cacheTag.'_url_'.$locale, function () use ($code, $locale) {
                 return static::code($code)
                     ->first()
                     ?->getViewUrl($locale);
@@ -97,7 +98,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
 
     public static function getCacheTag(string $code): string
     {
-        return flexiblePagesPrefix('page__code:' . $code);
+        return flexiblePagesPrefix('page__code:'.$code);
     }
 
     /**
@@ -108,7 +109,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
         $cacheTag = static::getCacheTag($code);
 
         return Cache::tags([$cacheTag])
-            ->rememberForever($cacheTag . '_model', function() use ($code) {
+            ->rememberForever($cacheTag.'_model', function () use ($code) {
                 return static::getByCodeFromDatabase($code);
             });
     }
@@ -159,7 +160,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
      */
     public function clearCache(): void
     {
-        if($this->code) {
+        if ($this->code) {
             Cache::tags([static::getCacheTag($this->code)])
                 ->flush();
         }
