@@ -45,7 +45,7 @@ class GenerateSitemapCommand extends Command
         } catch (Exception $e) {
             report($e);
             $this->error('Failed to generate sitemap: '.$e->getMessage());
-            $this->error($e->getTraceAsString(), 1);
+            $this->error($e->getTraceAsString(), 'v');
 
             return Command::FAILURE;
         }
