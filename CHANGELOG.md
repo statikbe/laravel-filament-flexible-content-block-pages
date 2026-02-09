@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## 0.2.22 - 2026-02-09
+
+- Add page caching for urls and models based on page code.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.21...0.2.22
+
 ## v0.2.20 - 2026-02-05
 
 ### What's Changed
