@@ -90,9 +90,9 @@ class ManageMenuItems extends TreePage
                 ->label(flexiblePagesTrans('menu_items.tree.add_item'))
                 ->schema($this->getFormSchema())
                 ->icon(Heroicon::Plus)
-                ->fillForm([
+                ->fillForm(fn ($arguments) => [
                     'menu_id' => $this->menu->getKey(),
-                    'parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
+                    'parent_id' => $arguments['parent_id'] ?? \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
                     'is_visible' => true,
                     'target' => '_self',
                 ])
