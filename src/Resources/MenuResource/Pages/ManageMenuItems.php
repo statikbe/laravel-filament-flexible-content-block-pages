@@ -211,9 +211,8 @@ class ManageMenuItems extends TreePage
             try {
                 $icon = $resourceClass::getNavigationIcon();
 
-                // Filament v4 returns Heroicon object, convert to string
-                if (is_object($icon) && method_exists($icon, 'getName')) {
-                    return $icon->getName();
+                if ($icon instanceof \BackedEnum) {
+                    return 'heroicon-'.$icon->value;
                 }
 
                 return is_string($icon) ? $icon : null;
