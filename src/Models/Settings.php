@@ -85,7 +85,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
             $locale = app()->getLocale();
         }
 
-        $cacheKey = static::CACHE_TAG_SETTINGS."::setting__{$settingField}_{$locale}";
+        $cacheKey = static::getCacheKey($settingField, $locale);
         $settingValue = TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
             $cacheKey,
@@ -109,6 +109,11 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
         return $settingValue;
     }
 
+    public static function getCacheKey(string $settingField, ?string $locale = null): string
+    {
+        return static::CACHE_TAG_SETTINGS."::{$settingField}__{$locale}";
+    }
+
     public static function imageHtml(string $imageCollection, ?string $imageConversion = null, array $attributes = [], ?string $title = null): ?HtmlableMedia
     {
         $locale = app()->getLocale();
@@ -116,7 +121,7 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
         $imageMedia = TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
-            static::CACHE_TAG_SETTINGS."::image_media__{$imageCollection}__{$locale}",
+            static::getCacheKey("image_media__{$imageCollection}", $locale),
             function () use ($imageCollection): ?Media {
                 return static::getSettings()->getImageMedia($imageCollection);
             });
@@ -140,10 +145,9 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
 
     public static function imageUrl(string $imageCollection, ?string $imageConversion = null): ?string
     {
-
         return TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
-            static::CACHE_TAG_SETTINGS."::image_url__{$imageCollection}__{$imageConversion}",
+            static::getCacheKey("image_url__{$imageCollection}__{$imageConversion}", app()->getLocale()),
             function () use ($imageCollection, $imageConversion) {
                 return static::getSettings()->getImageUrl($imageCollection, $imageConversion);
             });
