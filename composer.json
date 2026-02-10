@@ -15,21 +15,33 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-packages-sample-project/packages/laravel-filament-flexible-content-blocks",
+            "options": {
+                "versions": {
+                    "statikbe/laravel-filament-flexible-content-blocks": "dev-feature/filament-v4-upgrade"
+                }
+            }
+        }
+    ],
     "require": {
         "php": "^8.2",
         "artesaos/seotools": "^1.3",
-        "filament/spatie-laravel-tags-plugin": "^3.2",
-        "guava/filament-icon-picker": "^2.0",
+        "filament/spatie-laravel-tags-plugin": "^4.0",
+        "guava/filament-icon-picker": "^3.1",
         "illuminate/contracts": "^11.0||^12.0",
         "mcamara/laravel-localization": "^2.3",
-        "solution-forest/filament-tree": "^2.1",
+        "solution-forest/filament-tree": "^3.0",
         "spatie/laravel-missing-page-redirector": "^2.11",
         "spatie/laravel-package-tools": "^1.16",
         "spatie/laravel-sitemap": "^7.3",
-        "statikbe/laravel-filament-flexible-content-blocks": "^2.8.2"
+        "statikbe/laravel-filament-flexible-content-blocks": "dev-feature/filament-v4-upgrade"
     },
     "require-dev": {
         "larastan/larastan": "^2.9||^3.0",
+        "laravel/boost": "^2.0",
         "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.1.1",
         "orchestra/testbench": "^10.0.0",
