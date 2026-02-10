@@ -42,7 +42,7 @@ class PageController extends AbstractSeoPageController
         // fetch cached home page:
         $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::getByCode(Page::HOME_PAGE);
 
-        if(! $page) {
+        if (! $page) {
             abort(Response::HTTP_NOT_FOUND);
         }
 
