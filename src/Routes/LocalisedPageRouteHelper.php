@@ -38,6 +38,8 @@ class LocalisedPageRouteHelper extends AbstractPageRouteHelper
             return LaravelLocalization::getLocalizedUrl($locale, static::ROUTE_HOME);
         }
 
+        $page->loadMissing('parent.parent');
+
         $ancestorSlugs = [];
         $locale = $locale ?? app()->getLocale();
 

@@ -18,6 +18,52 @@ class PageController extends AbstractSeoPageController
 
     public function index(Page $page)
     {
+        if ($page->hasParent()) {
+            return redirect($page->getViewUrl(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        return $this->renderPage($page);
+    }
+
+    public function homeIndex()
+    {
+        // fetch cached home page:
+        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::getByCode(Page::HOME_PAGE);
+
+        if (! $page) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->renderPage($page);
+    }
+
+    public function childIndex(Page $parent, Page $page)
+    {
+        // check if the page is a child of the parent
+        if (! $parent->isParentOf($page)) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        // redirect to canonical URL if the parent has a parent (page is a grandchild)
+        if ($parent->hasParent()) {
+            return redirect($page->getViewUrl(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        return $this->renderPage($page);
+    }
+
+    public function grandchildIndex(Page $grandparent, Page $parent, Page $page)
+    {
+        // check if the page is a child of the parent
+        if (! $parent->isParentOf($page) || ! $grandparent->isParentOf($parent)) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->renderPage($page);
+    }
+
+    private function renderPage(Page $page)
+    {
         // check if page is published:
         /** @var class-string|null $pageModel */
         $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
@@ -38,40 +84,6 @@ class PageController extends AbstractSeoPageController
         return view($this->getTemplatePath($page), [
             'page' => $page,
         ]);
-    }
-
-    public function homeIndex()
-    {
-        // fetch cached home page:
-        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::getByCode(Page::HOME_PAGE);
-
-        if (! $page) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
-
-        return $this->index($page);
-    }
-
-    public function childIndex(Page $parent, Page $page)
-    {
-        // check if the page is a child of the parent
-        if (! $parent->isParentOf($page)) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
-
-        // render the page with the regular page index function of the controller, or invoke the correct controller here:
-        return $this->index($page);
-    }
-
-    public function grandchildIndex(Page $grandparent, Page $parent, Page $page)
-    {
-        // check if the page is a child of the parent
-        if (! $parent->isParentOf($page) || ! $grandparent->isParentOf($parent)) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
-
-        // render the page with the regular page index function of the controller, or invoke the correct controller here:
-        return $this->index($page);
     }
 
     private function getTemplatePath(Page $page)
