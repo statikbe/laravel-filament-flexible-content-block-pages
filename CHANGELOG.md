@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.0.0 - 2026-02-12
+
+- Filament v4 & v5 compatibility
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.0...4.0.0
+
 ## v3.0.0 - 2026-02-12
 
 - Bump semver to match Filament versions
