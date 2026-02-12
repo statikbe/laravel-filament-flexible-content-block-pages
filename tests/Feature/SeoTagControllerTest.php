@@ -1,58 +1,147 @@
 <?php
 
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures\CustomTag;
 
-it('tag model has resolveRouteBinding method', function () {
-    $tag = new Tag;
+it('resolves default tag model via route binding', function () {
+    $tagType = TagType::factory()->create();
 
-    expect(method_exists($tag, 'resolveRouteBinding'))->toBeTrue();
+    // Create tag with specific name - Spatie's HasSlug trait auto-generates slug from name
+    $tag = Tag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Technology', 'es' => 'Tecnologia'],
+    ]);
+
+    // Slug is auto-generated as 'technology'
+    $resolvedTag = (new Tag)->resolveRouteBinding('technology');
+
+    expect($resolvedTag)->toBeInstanceOf(Tag::class)
+        ->and($resolvedTag->id)->toBe($tag->id);
 });
 
-it('resolveRouteBinding delegates to configured tag model when different', function () {
+it('resolves tag by translated slug in any locale', function () {
+    $tagType = TagType::factory()->create();
+
+    $tag = Tag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'News', 'es' => 'Noticias'],
+    ]);
+
+    // Slugs are auto-generated from names
+    $resolvedEnglish = (new Tag)->resolveRouteBinding('news');
+    $resolvedSpanish = (new Tag)->resolveRouteBinding('noticias');
+
+    expect($resolvedEnglish->id)->toBe($tag->id)
+        ->and($resolvedSpanish->id)->toBe($tag->id);
+});
+
+it('returns null when tag slug not found', function () {
+    $tagType = TagType::factory()->create();
+
+    Tag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Existing Tag'],
+    ]);
+
+    $resolved = (new Tag)->resolveRouteBinding('non-existent-slug');
+
+    expect($resolved)->toBeNull();
+});
+
+it('resolves custom tag model when configured', function () {
+    $tagType = TagType::factory()->create();
+
     // Configure custom tag model
     config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
 
     // Clear the cached config instance to pick up the new model
     app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
 
-    $tag = new Tag;
+    $tag = CustomTag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Custom Tag', 'es' => 'Etiqueta Personalizada'],
+    ]);
 
-    // Get the configured model
-    $configuredModel = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getTagModel();
+    // When resolving through the package's Tag model, it should delegate to CustomTag
+    // Slug is auto-generated as 'custom-tag'
+    $resolvedTag = (new Tag)->resolveRouteBinding('custom-tag');
 
-    // Verify the configured model is CustomTag
-    expect($configuredModel)->toBeInstanceOf(CustomTag::class);
-
-    // Verify the delegation logic exists (checking the method checks the configured model)
-    expect(get_class($configuredModel))->not->toBe(Tag::class);
+    expect($resolvedTag)->toBeInstanceOf(CustomTag::class)
+        ->and($resolvedTag->id)->toBe($tag->id)
+        ->and($resolvedTag->isCustomTag())->toBeTrue();
 });
 
-it('resolveRouteBinding uses self when no custom tag model configured', function () {
-    // Ensure default tag model is configured
-    config()->set('filament-flexible-content-block-pages.models.tags', Tag::class);
+it('returns correct morph class for custom tag model', function () {
+    $tagType = TagType::factory()->create();
 
-    // Clear the cached config instance
+    config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
     app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
 
-    $tag = new Tag;
+    $tag = CustomTag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Test Morph Tag'],
+    ]);
 
-    // Get the configured model
-    $configuredModel = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getTagModel();
+    // Slug is auto-generated as 'test-morph-tag'
+    $resolvedTag = (new Tag)->resolveRouteBinding('test-morph-tag');
 
-    // Verify the configured model is the default Tag
-    expect($configuredModel)->toBeInstanceOf(Tag::class)
-        ->and(get_class($configuredModel))->toBe(Tag::class);
+    expect($resolvedTag->getMorphClass())->toBe('custom-tag');
 });
 
-it('custom tag model has correct morph class', function () {
-    $customTag = new CustomTag;
+it('resolves tag with tag type relationship intact', function () {
+    $tagType = TagType::factory()->create([
+        'code' => 'category',
+        'name' => ['en' => 'Category'],
+    ]);
 
-    expect($customTag->getMorphClass())->toBe('custom-tag');
+    $tag = Tag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'My Category'],
+    ]);
+
+    // Slug is auto-generated as 'my-category'
+    $resolvedTag = (new Tag)->resolveRouteBinding('my-category');
+
+    expect($resolvedTag)->toBeInstanceOf(Tag::class)
+        ->and($resolvedTag->tagType)->toBeInstanceOf(TagType::class)
+        ->and($resolvedTag->tagType->code)->toBe('category');
 });
 
-it('custom tag model can identify itself', function () {
-    $customTag = new CustomTag;
+it('resolves custom tag with tag type relationship intact', function () {
+    config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
+    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
 
-    expect($customTag->isCustomTag())->toBeTrue();
+    $tagType = TagType::factory()->create([
+        'code' => 'topic',
+        'name' => ['en' => 'Topic'],
+    ]);
+
+    $tag = CustomTag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Custom Topic'],
+    ]);
+
+    // Slug is auto-generated as 'custom-topic'
+    $resolvedTag = (new Tag)->resolveRouteBinding('custom-topic');
+
+    expect($resolvedTag)->toBeInstanceOf(CustomTag::class)
+        ->and($resolvedTag->tagType)->toBeInstanceOf(TagType::class)
+        ->and($resolvedTag->tagType->code)->toBe('topic')
+        ->and($resolvedTag->isCustomTag())->toBeTrue();
+});
+
+it('does not affect other tags when custom model is configured', function () {
+    $tagType = TagType::factory()->create();
+
+    // Create a tag with the default model
+    $defaultTag = Tag::factory()->forTagType($tagType)->create([
+        'name' => ['en' => 'Default Tag'],
+    ]);
+
+    // Now configure custom model
+    config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
+    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+
+    // The tag created with default model should still be found
+    // but returned as CustomTag instance
+    // Slug is auto-generated as 'default-tag'
+    $resolved = (new Tag)->resolveRouteBinding('default-tag');
+
+    // It finds the tag but returns it as CustomTag
+    expect($resolved)->toBeInstanceOf(CustomTag::class)
+        ->and($resolved->id)->toBe($defaultTag->id);
 });

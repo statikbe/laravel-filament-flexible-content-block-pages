@@ -2,6 +2,7 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Listeners;
 
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -65,7 +66,7 @@ class SlugChangedListener
                         }
 
                         DB::commit();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         report($e);
                         DB::rollBack();
                     }

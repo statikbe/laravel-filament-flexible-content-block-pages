@@ -2,7 +2,9 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,8 +31,8 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
  * @property bool $use_model_title
  * @property int $order
  * @property int $parent_id
- * @property \Illuminate\Database\Eloquent\Collection<int, MenuItem> $children
- * @property \Illuminate\Database\Eloquent\Model|null $linkable
+ * @property Collection<int, MenuItem> $children
+ * @property Model|null $linkable
  * @property Menu $menu
  */
 #[ObservedBy(MenuItemObserver::class)]
@@ -155,7 +157,7 @@ class MenuItem extends Model
 
                     return route($routeName, $parameters);
 
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     return '#';
                 }
             default:

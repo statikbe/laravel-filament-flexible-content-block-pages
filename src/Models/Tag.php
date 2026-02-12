@@ -88,9 +88,7 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
      * This allows projects to extend the Tag model and have route model binding
      * return the correct model class instance.
      *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * {@inheritDoc}
      */
     public function resolveRouteBinding($value, $field = null)
     {

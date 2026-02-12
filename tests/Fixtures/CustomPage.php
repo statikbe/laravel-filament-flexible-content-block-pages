@@ -2,6 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 /**
@@ -10,6 +12,8 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
  */
 class CustomPage extends Page
 {
+    use HasFactory;
+
     /**
      * Override the morph class to use a custom identifier.
      * This is a common pattern when extending package models.
@@ -25,5 +29,13 @@ class CustomPage extends Page
     public function isCustomPage(): bool
     {
         return true;
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return CustomPageFactory::new();
     }
 }

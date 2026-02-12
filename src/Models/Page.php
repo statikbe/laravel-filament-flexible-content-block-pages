@@ -138,9 +138,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
      * This allows projects to extend the Page model and have route model binding
      * return the correct model class instance.
      *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * {@inheritDoc}
      */
     public function resolveRouteBinding($value, $field = null)
     {

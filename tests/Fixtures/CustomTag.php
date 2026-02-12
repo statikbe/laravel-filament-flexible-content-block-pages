@@ -2,6 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 
 /**
@@ -10,6 +12,8 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
  */
 class CustomTag extends Tag
 {
+    use HasFactory;
+
     /**
      * Override the morph class to use a custom identifier.
      * This is a common pattern when extending package models.
@@ -25,5 +29,13 @@ class CustomTag extends Tag
     public function isCustomTag(): bool
     {
         return true;
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return CustomTagFactory::new();
     }
 }

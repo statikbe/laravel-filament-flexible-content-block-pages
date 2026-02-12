@@ -2,35 +2,24 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\ColorColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Guava\FilamentIconPicker\Forms\IconPicker;
-use Guava\FilamentIconPicker\Tables\IconColumn;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
-use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\NameField;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\CreateTagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\EditTagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Pages\ListTagTypes;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
-use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleBlocksConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Schemas\TagTypeFormSchema;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\Schemas\TagTypeTableSchema;
 
 class TagTypeResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-hashtag';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedHashtag;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -72,63 +61,14 @@ class TagTypeResource extends Resource
         return 3;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Section::make([
-                    NameField::create(true),
-                    CodeField::create(true),
-                    Toggle::make('is_default_type')
-                        ->label(flexiblePagesTrans('tag_types.tag_type_is_default_type_lbl'))
-                        ->default(false),
-                    Toggle::make('has_seo_pages')
-                        ->label(flexiblePagesTrans('tag_types.tag_type_has_seo_pages_lbl'))
-                        ->default(false),
-                    ColorPicker::make('colour')
-                        ->label(flexiblePagesTrans('form_component.colour_lbl'))
-                        ->regex('/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\b$/')
-                        ->required(true),
-                    IconPicker::make('icon')
-                        ->label(flexiblePagesTrans('form_component.icon_lbl')),
-                ]),
-            ]);
+        return TagTypeFormSchema::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('name')
-                    ->label(flexiblePagesTrans('form_component.name_lbl')),
-                ColorColumn::make('colour')
-                    ->label(flexiblePagesTrans('form_component.colour_lbl')),
-                ToggleColumn::make('is_default_type')
-                    ->label(flexiblePagesTrans('tag_types.tag_type_is_default_type_lbl')),
-                IconColumn::make('icon')
-                    ->label(flexiblePagesTrans('form_component.icon_lbl')),
-                TextColumn::make('created_at')
-                    ->label(flexiblePagesTrans('menu_items.table.created_at_col'))
-                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label(flexiblePagesTrans('menu_items.table.updated_at_col'))
-                    ->dateTime(FilamentFlexibleBlocksConfig::getPublishingDateFormatting())
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                EditAction::make(),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+        return TagTypeTableSchema::configure($table);
     }
 
     public static function getPages(): array

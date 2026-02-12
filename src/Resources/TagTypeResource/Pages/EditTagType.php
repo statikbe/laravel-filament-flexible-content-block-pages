@@ -4,13 +4,14 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource\P
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use LaraZeus\SpatieTranslatable\Resources\Pages\EditRecord\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class EditTagType extends EditRecord
 {
-    use EditRecord\Concerns\Translatable;
+    use Translatable;
 
     public static function getResource(): string
     {

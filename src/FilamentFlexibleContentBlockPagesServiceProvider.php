@@ -14,8 +14,10 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Listeners\SlugChangedListener;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
 use Statikbe\FilamentFlexibleContentBlocks\Events\SlugChanged;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocks;
 
@@ -53,7 +55,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
     public function packageBooted()
     {
         // add morph map
-        Relation::morphMap(\Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()->getMorphMap());
+        Relation::morphMap(FilamentFlexibleContentBlockPages::config()->getMorphMap());
 
         $configName = $this->package->shortName();
         $this->mergeConfigFrom(__DIR__.'/../config/'.$configName.'.php', $configName);
@@ -69,7 +71,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         // Bind sitemap generator interface to the configured implementation
         $this->app->bind(
             GeneratesSitemap::class,
-            config('filament-flexible-content-block-pages.sitemap.generator_service', \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class)
+            config('filament-flexible-content-block-pages.sitemap.generator_service', SitemapGeneratorService::class)
         );
 
         // register slug changed listener

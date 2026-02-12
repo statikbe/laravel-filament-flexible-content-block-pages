@@ -5,7 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\SpatieLaravelTranslatablePlugin;
+use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 
 class FlexibleContentBlockPagesPanel extends PanelProvider
@@ -32,7 +32,7 @@ class FlexibleContentBlockPagesPanel extends PanelProvider
             ->authMiddleware(FilamentFlexibleContentBlockPages::config()->getPanelAuthMiddleware())
             ->resources(FilamentFlexibleContentBlockPages::config()->getResources())
             ->plugin(FlexibleContentBlockPagesPlugin::make())
-            ->plugin(SpatieLaravelTranslatablePlugin::make()
+            ->plugin(SpatieTranslatablePlugin::make()
                 ->defaultLocales(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()))
             ->navigationItems(static::getExtraNavigationItems())
             ->login(fn () => static::getLoginAction());
