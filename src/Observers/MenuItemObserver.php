@@ -10,6 +10,12 @@ use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
  */
 class MenuItemObserver
 {
+    public function created(MenuItem $menuItem): void
+    {
+        $menuItem->load('menu');
+        MenuComponent::clearMenuCache($menuItem->menu->code);
+    }
+
     public function updated(MenuItem $menuItem): void
     {
         $menuItem->load('menu');

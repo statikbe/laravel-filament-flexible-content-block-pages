@@ -47,6 +47,9 @@
         @if (!$isCurrent && $item->target !== '_self') target="{{ $item->target }}" @endif
         @if ($isCurrent) aria-current="page" @endif
     >
+        @if ($item->icon)
+            <x-filament::icon :icon="$item->icon" class="menu-item-icon h-5 w-5" />
+        @endif
         {{ $item->label }}
     </{{ $wrapperTag }}>
 
