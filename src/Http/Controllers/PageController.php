@@ -42,8 +42,12 @@ class PageController extends AbstractSeoPageController
 
     public function homeIndex()
     {
-        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::code(Page::HOME_PAGE)
-            ->firstOrFail();
+        // fetch cached home page:
+        $page = FilamentFlexibleContentBlockPages::config()->getPageModel()::getByCode(Page::HOME_PAGE);
+
+        if (! $page) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
 
         return $this->index($page);
     }

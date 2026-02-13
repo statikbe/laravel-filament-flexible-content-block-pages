@@ -103,6 +103,140 @@ it('returns correct morph class', function () {
     expect($page->getMorphClass())->toBe('filament-flexible-content-block-pages::page');
 });
 
+it('getUrl returns cached URL by code', function () {
+    $page = Page::factory()->withCode('ABOUT')->create([
+        'slug' => ['en' => 'about-us', 'es' => 'sobre-nosotros'],
+    ]);
+
+    $url = Page::getUrl('ABOUT', 'en');
+
+    expect($url)->toContain('about-us');
+});
+
+it('getUrl returns null for non-existent code', function () {
+    $url = Page::getUrl('NON_EXISTENT', 'en');
+
+    expect($url)->toBeNull();
+});
+
+it('getUrl returns cached result on subsequent calls', function () {
+    Page::factory()->withCode('CACHED')->create([
+        'slug' => ['en' => 'cached-page'],
+    ]);
+
+    $url1 = Page::getUrl('CACHED', 'en');
+
+    // Delete the page from the database directly (bypass observer)
+    Page::query()->where('code', 'CACHED')->delete();
+
+    // Should still return the cached URL
+    $url2 = Page::getUrl('CACHED', 'en');
+
+    expect($url1)->toBe($url2);
+});
+
+it('getUrl returns different URLs per locale', function () {
+    Page::factory()->withCode('LOCALIZED')->create([
+        'slug' => ['en' => 'english-page', 'es' => 'pagina-espanol'],
+    ]);
+
+    $enUrl = Page::getUrl('LOCALIZED', 'en');
+    $esUrl = Page::getUrl('LOCALIZED', 'es');
+
+    expect($enUrl)->toContain('english-page')
+        ->and($esUrl)->toContain('pagina-espanol');
+});
+
+it('getByCode returns cached page model', function () {
+    $page = Page::factory()->withCode('CONTACT')->create([
+        'title' => ['en' => 'Contact Us'],
+    ]);
+
+    $found = Page::getByCode('CONTACT');
+
+    expect($found)->not->toBeNull()
+        ->and($found->id)->toBe($page->id)
+        ->and($found->title)->toBe('Contact Us');
+});
+
+it('getByCode returns null for non-existent code', function () {
+    $found = Page::getByCode('NON_EXISTENT');
+
+    expect($found)->toBeNull();
+});
+
+it('getByCode returns cached result on subsequent calls', function () {
+    $page = Page::factory()->withCode('CACHED_MODEL')->create();
+
+    $found1 = Page::getByCode('CACHED_MODEL');
+
+    // Delete the page directly (bypass observer)
+    Page::query()->where('code', 'CACHED_MODEL')->delete();
+
+    // Should still return the cached model
+    $found2 = Page::getByCode('CACHED_MODEL');
+
+    expect($found1->id)->toBe($found2->id);
+});
+
+it('clearCache invalidates getUrl cache', function () {
+    $page = Page::factory()->withCode('CLEAR_URL')->create([
+        'slug' => ['en' => 'original-slug'],
+    ]);
+
+    // Prime the cache
+    $originalUrl = Page::getUrl('CLEAR_URL', 'en');
+    expect($originalUrl)->toContain('original-slug');
+
+    // Update slug directly in DB (bypassing observer to control cache clearing manually)
+    Page::query()->where('id', $page->id)->update(['slug' => json_encode(['en' => 'updated-slug'])]);
+
+    // Cache should still return old URL
+    $cachedUrl = Page::getUrl('CLEAR_URL', 'en');
+    expect($cachedUrl)->toContain('original-slug');
+
+    // Clear cache manually
+    $page->clearCache();
+
+    // Should now fetch fresh URL
+    $newUrl = Page::getUrl('CLEAR_URL', 'en');
+    expect($newUrl)->toContain('updated-slug');
+});
+
+it('clearCache invalidates getByCode cache', function () {
+    $page = Page::factory()->withCode('CLEAR_MODEL')->create([
+        'title' => ['en' => 'Original Title'],
+    ]);
+
+    // Prime the cache
+    $original = Page::getByCode('CLEAR_MODEL');
+    expect($original->title)->toBe('Original Title');
+
+    // Clear cache and update
+    $page->clearCache();
+    $page->update(['title' => ['en' => 'Updated Title']]);
+
+    // Should fetch fresh model
+    $updated = Page::getByCode('CLEAR_MODEL');
+    expect($updated->title)->toBe('Updated Title');
+});
+
+it('observer clears cache on page update', function () {
+    $page = Page::factory()->withCode('OBSERVER_UPDATE')->create([
+        'title' => ['en' => 'Before Update'],
+    ]);
+
+    // Prime the cache
+    Page::getByCode('OBSERVER_UPDATE');
+
+    // Update via model (triggers observer)
+    $page->update(['title' => ['en' => 'After Update']]);
+
+    // Cache should be invalidated by observer
+    $found = Page::getByCode('OBSERVER_UPDATE');
+    expect($found->title)->toBe('After Update');
+});
+
 it('can check if page is published', function () {
     $published = Page::factory()->create([
         'publishing_begins_at' => now()->subDay(),

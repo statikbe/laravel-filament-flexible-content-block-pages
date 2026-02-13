@@ -110,25 +110,21 @@ php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServicePr
 php artisan migrate
 ```
 
-Configure the Filament tailwind styling of the frontend by adding these view paths to `content` array of `tailwind.config.js`:
+Configure the CSS styling of the frontend by adding these lines to the CSS file of your frontend:
 
-```javascript
-content: [
-    ...
-    './vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php',
-    './vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php',
-    './config/filament-flexible-content-blocks.php',
-]
+```css
+@source "../../vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php";
+@source "../../vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php";
+@source "../../config/filament-flexible-content-blocks.php";
 ```
 
-In the tailwind config of your filament back-end, add the following lines to the `content` array:
+In the tailwind CSS of your filament back-end (probably `resources/css/filament/admin/theme.css`, add the following lines:
 
-```javascript
-content: [
-    ...
-    './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
-    './config/filament-flexible-content-blocks.php',
-]
+```css
+@source "../../vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php";
+@source "../../vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php";
+@source "../../config/filament-flexible-content-blocks.php";
+@source "../../vendor/solution-forest/filament-tree/resources/**/*.blade.php";
 ```
 
 You can now seed the home page and default settings by running:

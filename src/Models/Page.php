@@ -5,6 +5,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasDatabaseSearchTrait;
@@ -43,7 +44,9 @@ use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasSEOAttributes;
 class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActionsAttribute, HasHeroImageAttributes, HasHeroVideoAttribute, HasIntroAttribute, HasMedia, HasMediaAttributes, HasMenuLabel, HasOverviewAttributes, HasPageAttributes, HasParent, HasSEOAttributes
 {
     use HasAuthorAttributeTrait;
-    use HasCodeTrait;
+    use HasCodeTrait {
+        getByCode as getByCodeFromDatabase;
+    }
     use HasDatabaseSearchTrait;
     use HasDefaultContentBlocksTrait;
     use HasFactory;
@@ -78,11 +81,37 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
         return $this->getViewUrl($locale);
     }
 
+    /**
+     * Get the URL of this page. Cached!
+     */
     public static function getUrl(string $code, ?string $locale = null): ?string
     {
-        return static::code($code)
-            ->first()
-            ?->getViewUrl($locale);
+        $cacheTag = static::getCacheTag($code);
+
+        return Cache::tags([$cacheTag])
+            ->rememberForever($cacheTag.'_url_'.$locale, function () use ($code, $locale) {
+                return static::code($code)
+                    ->first()
+                    ?->getViewUrl($locale);
+            });
+    }
+
+    public static function getCacheTag(string $code): string
+    {
+        return flexiblePagesPrefix('page__code:'.$code);
+    }
+
+    /**
+     * Retrieve this page by code. The response is cached.
+     */
+    public static function getByCode(string $code): ?static
+    {
+        $cacheTag = static::getCacheTag($code);
+
+        return Cache::tags([$cacheTag])
+            ->rememberForever($cacheTag.'_model', function () use ($code) {
+                return static::getByCodeFromDatabase($code);
+            });
     }
 
     public function isHomePage(): bool
@@ -96,7 +125,6 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
             return true;
         }
 
-        // TODO improve once the authorisation is implemented:
         return ! $this->is_undeletable;
     }
 
@@ -123,5 +151,16 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
 
         // Use the default resolution from the trait (searches translated slugs)
         return $this->resolveRouteBindingQuery($this->newQuery(), $value, $field)->first();
+    }
+
+    /**
+     * Clear cache of this page for all cache items with a tag.
+     */
+    public function clearCache(): void
+    {
+        if ($this->code) {
+            Cache::tags([static::getCacheTag($this->code)])
+                ->flush();
+        }
     }
 }
