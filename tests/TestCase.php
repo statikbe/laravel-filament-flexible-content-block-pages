@@ -79,6 +79,12 @@ class TestCase extends Orchestra
 
         // Enable home route for URL generation
         config()->set('filament-flexible-content-block-pages.enable_home_route', true);
+
+        // Register laravel-localization middleware aliases for HTTP tests
+        $app['router']->aliasMiddleware('localize', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class);
+        $app['router']->aliasMiddleware('localizationRedirect', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class);
+        $app['router']->aliasMiddleware('localeSessionRedirect', \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class);
+        $app['router']->aliasMiddleware('localeViewPath', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class);
     }
 
     protected function defineDatabaseMigrations()
@@ -88,11 +94,16 @@ class TestCase extends Orchestra
 
     protected function defineRoutes($router)
     {
-        // Use the package's route helper to define routes
-        \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
+        \Illuminate\Support\Facades\Route::middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class)->group(function () use ($router) {
+            // Additional test routes - must be BEFORE package routes (which are catch-all)
+            $router->get('/test-page', fn () => 'test')->name('test.page');
+            $router->get('/test-route', fn () => 'test')->name('test.route');
+        });
 
-        // Additional test routes for MenuItem tests
-        $router->get('/test-page', fn () => 'test')->name('test.page');
-        $router->get('/test-route', fn () => 'test')->name('test.route');
+        // Use the package's route helper to define routes
+        // SubstituteBindings is added explicitly since tests don't use the 'web' middleware group
+        \Illuminate\Support\Facades\Route::middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class)->group(function () {
+            \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
+        });
     }
 }

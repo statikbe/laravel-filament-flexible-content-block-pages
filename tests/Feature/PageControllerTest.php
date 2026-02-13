@@ -147,3 +147,74 @@ it('homeIndex returns custom model with correct morph class', function () {
 
     expect($foundPage->getMorphClass())->toBe('custom-page');
 });
+
+it('redirects child page accessed at root level to parent/child URL', function () {
+    $parent = Page::factory()->create([
+        'slug' => ['en' => 'services', 'es' => 'servicios'],
+    ]);
+
+    Page::factory()->childOf($parent)->create([
+        'slug' => ['en' => 'web-development', 'es' => 'desarrollo-web'],
+    ]);
+
+    $response = $this->get('/web-development');
+
+    $response->assertStatus(301);
+    expect($response->headers->get('Location'))->toContain('/services/web-development');
+});
+
+it('redirects grandchild page accessed at root level to grandparent/parent/grandchild URL', function () {
+    $grandparent = Page::factory()->create([
+        'slug' => ['en' => 'services', 'es' => 'servicios'],
+    ]);
+
+    $parent = Page::factory()->childOf($grandparent)->create([
+        'slug' => ['en' => 'development', 'es' => 'desarrollo'],
+    ]);
+
+    Page::factory()->childOf($parent)->create([
+        'slug' => ['en' => 'laravel', 'es' => 'laravel-es'],
+    ]);
+
+    $response = $this->get('/laravel');
+
+    $response->assertStatus(301);
+    expect($response->headers->get('Location'))->toContain('/services/development/laravel');
+});
+
+it('redirects grandchild page accessed at child level to grandparent/parent/grandchild URL', function () {
+    $grandparent = Page::factory()->create([
+        'slug' => ['en' => 'services', 'es' => 'servicios'],
+    ]);
+
+    $parent = Page::factory()->childOf($grandparent)->create([
+        'slug' => ['en' => 'development', 'es' => 'desarrollo'],
+    ]);
+
+    Page::factory()->childOf($parent)->create([
+        'slug' => ['en' => 'laravel', 'es' => 'laravel-es'],
+    ]);
+
+    $response = $this->get('/development/laravel');
+
+    $response->assertStatus(301);
+    expect($response->headers->get('Location'))->toContain('/services/development/laravel');
+});
+
+it('returns 404 when child page has wrong parent in URL', function () {
+    $parent = Page::factory()->create([
+        'slug' => ['en' => 'services', 'es' => 'servicios'],
+    ]);
+
+    Page::factory()->create([
+        'slug' => ['en' => 'about', 'es' => 'acerca'],
+    ]);
+
+    Page::factory()->childOf($parent)->create([
+        'slug' => ['en' => 'web-development', 'es' => 'desarrollo-web'],
+    ]);
+
+    $response = $this->get('/about/web-development');
+
+    $response->assertStatus(404);
+});
