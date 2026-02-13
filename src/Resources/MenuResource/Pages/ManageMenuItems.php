@@ -6,6 +6,8 @@ use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
+use Filament\Support\Contracts\ScalableIcon;
+use Filament\Support\Enums\IconSize;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -210,9 +212,8 @@ class ManageMenuItems extends TreePage
         if ($resourceClass) {
             try {
                 $icon = $resourceClass::getNavigationIcon();
-
-                if ($icon instanceof \BackedEnum) {
-                    return 'heroicon-'.$icon->value;
+                if ($icon instanceof ScalableIcon) {
+                    return $icon->getIconForSize(IconSize::Medium);
                 }
 
                 return is_string($icon) ? $icon : null;
