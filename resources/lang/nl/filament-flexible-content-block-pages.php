@@ -30,6 +30,7 @@ return [
         ],
         'actions' => [
             'page_tree_lbl' => 'Beheer hiërarchie',
+            'back_to_list' => 'Terug naar lijst',
         ],
     ],
     'redirects' => [
@@ -209,6 +210,9 @@ return [
                 'url' => 'Externe URL',
                 'route' => 'Interne route',
             ],
+        ],
+        'actions' => [
+            'edit_menu' => 'Menu bewerken',
         ],
     ],
     'panel' => [

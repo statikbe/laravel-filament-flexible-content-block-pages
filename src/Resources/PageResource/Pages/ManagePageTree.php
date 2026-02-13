@@ -2,6 +2,8 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages;
 
+use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use SolutionForest\FilamentTree\Actions\EditAction;
@@ -27,7 +29,13 @@ class ManagePageTree extends TreePage
     protected function getActions(): array
     {
         return [
-            $this->getCreateAction(),
+            Action::make('back_to_list')
+                ->label(flexiblePagesTrans('pages.actions.back_to_list'))
+                ->icon(Heroicon::ListBullet)
+                ->color('gray')
+                ->url(fn () => static::getResource()::getUrl('index')),
+            $this->getCreateAction()
+                ->icon(Heroicon::Plus),
         ];
     }
 

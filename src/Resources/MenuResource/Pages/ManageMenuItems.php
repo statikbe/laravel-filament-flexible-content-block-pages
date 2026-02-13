@@ -3,8 +3,12 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Pages;
 
 use Exception;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
+use Filament\Support\Contracts\ScalableIcon;
+use Filament\Support\Enums\IconSize;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
@@ -79,16 +83,21 @@ class ManageMenuItems extends TreePage
     {
         return [
             FlexibleLocaleSwitcher::make(),
+            Action::make('edit_menu')
+                ->label(flexiblePagesTrans('menu_items.actions.edit_menu'))
+                ->icon(Heroicon::PencilSquare)
+                ->color('gray')
+                ->url(fn () => MenuResource::getUrl('edit', ['record' => $this->menu])),
             CreateAction::make()
                 ->label(flexiblePagesTrans('menu_items.tree.add_item'))
-                ->mountUsing(
-                    fn ($arguments, $form) => $form->fill([
-                        'menu_id' => $this->menu->getKey(),
-                        'parent_id' => $arguments['parent_id'] ?? \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
-                        'is_visible' => true,
-                        'target' => '_self',
-                    ])
-                )
+                ->schema($this->getFormSchema())
+                ->icon(Heroicon::Plus)
+                ->fillForm(fn ($arguments) => [
+                    'menu_id' => $this->menu->getKey(),
+                    'parent_id' => $arguments['parent_id'] ?? \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
+                    'is_visible' => true,
+                    'target' => '_self',
+                ])
                 ->action(function (array $data): void {
                     $data['menu_id'] = $this->menu->getKey();
                     static::getModel()::create($data);
@@ -100,23 +109,21 @@ class ManageMenuItems extends TreePage
     {
         return [
             EditAction::make()
-                ->mountUsing(
-                    function ($arguments, $form, $model, MenuItem $record) {
-                        $data = [
-                            ...$record->toArray(),
-                            'menu_id' => $this->menu->getKey(),
-                        ];
+                ->fillForm(function (MenuItem $record): array {
+                    $data = [
+                        ...$record->toArray(),
+                        'menu_id' => $this->menu->getKey(),
+                    ];
 
-                        // handle translatable fields:
-                        $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
-                        $data['url'] = $record->getRawOriginal('url')
-                            ? $record->getTranslation('url', $this->getActiveLocale())
-                            : null;
+                    // handle translatable fields:
+                    $data['label'] = $record->getTranslation('label', $this->getActiveLocale());
+                    $data['url'] = $record->getRawOriginal('url')
+                        ? $record->getTranslation('url', $this->getActiveLocale())
+                        : null;
 
-                        $form->fill($data);
-                    }
-                )
-                ->using(function (Model $record, array $data): void {
+                    return $data;
+                })
+                ->action(function (Model $record, array $data): void {
                     // Ensure translatable fields have null value if not provided
                     if (! array_key_exists('label', $data)) {
                         $data['label'] = null;
@@ -204,7 +211,12 @@ class ManageMenuItems extends TreePage
 
         if ($resourceClass) {
             try {
-                return $resourceClass::getNavigationIcon();
+                $icon = $resourceClass::getNavigationIcon();
+                if ($icon instanceof ScalableIcon) {
+                    return $icon->getIconForSize(IconSize::Medium);
+                }
+
+                return is_string($icon) ? $icon : null;
             } catch (Exception $e) {
                 // Fallback to null if resource method fails
             }

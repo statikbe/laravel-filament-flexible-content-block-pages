@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource\Page
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
@@ -18,7 +19,8 @@ class ListMenus extends ListRecords
     {
         return [
             FlexibleLocaleSwitcher::make(),
-            CreateAction::make(),
+            CreateAction::make()
+                ->icon(Heroicon::Plus),
         ];
     }
 }
