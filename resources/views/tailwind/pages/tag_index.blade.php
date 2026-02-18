@@ -52,13 +52,13 @@
 
                             <h2 class="text-xl font-semibold mb-2">
                                 <a href="{{ $item->getViewUrl() }}" class="hover:text-blue-600">
-                                    {{ $item->title }}
+                                    {{ $item->getTitle() }}
                                 </a>
                             </h2>
 
-                            @if(method_exists($item, 'intro') && $item->intro)
+                            @if(method_exists($item, 'intro') && $item->getIntro())
                                 <p class="text-gray-600 mb-3">
-                                    {{ Str::limit(strip_tags($item->intro), 400) }}
+                                    {{ Str::limit(strip_tags($item->getIntro()), 400) }}
                                 </p>
                             @endif
 

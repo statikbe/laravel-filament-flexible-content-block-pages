@@ -466,7 +466,7 @@ flexiblePageUrl($page, 'nl');
 In Blade templates:
 ```blade
 <a href="{{ flexiblePageUrl($page) }}">
-    {{ $page->title }}
+    {{ $page->getTitle() }}
 </a>
 ```
 

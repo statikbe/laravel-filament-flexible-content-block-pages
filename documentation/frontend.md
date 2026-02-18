@@ -239,7 +239,7 @@ We have tried to optimise the flexible content block templates for accessibility
 ```blade
 <article role="main" aria-labelledby="page-title">
     <header>
-        <h1 id="page-title">{{ $page->title }}</h1>
+        <h1 id="page-title">{{ $page->getTitle() }}</h1>
         @if($page->publishing_begins_at)
             <time datetime="{{ $page->publishing_begins_at->toISOString() }}">
                 {{ $page->publishing_begins_at->format('F j, Y') }}
