@@ -21,9 +21,9 @@ trait HasBasicSeoSupport
      */
     protected function setBasicSEO(HasSEOAttributes&HasPageAttributes&HasIntroAttribute $page): void
     {
-        $title = $this->getValidText($page->getSEOTitle()) ?? $this->getValidText($page->title) ?? $this->getSettingsTitle();
+        $title = $this->getValidText($page->getSEOTitle()) ?? $this->getValidText($page->getTitle()) ?? $this->getSettingsTitle();
         SEOTools::setTitle($title.$this->getSEOTitlePostfix(), false);
-        SEOTools::setDescription(($this->getValidText($page->getSEODescription()) ?? strip_tags($page->intro)));
+        SEOTools::setDescription(($this->getValidText($page->getSEODescription()) ?? strip_tags($page->getIntro())));
         SEOTools::opengraph()->setUrl(url()->current());
 
         if ($page->seo_keywords) {
