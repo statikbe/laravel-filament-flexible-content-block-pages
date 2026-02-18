@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## 4.0.1 - 2026-02-18
+
+### What's Changed
+
+* Use new getters from blocks package to include the parameters replacer for title, intro and seo fields of a page.
+* Improve menu resource by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/13
+* Fix lazy loading violation on page tree and add canonical URL redirects by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/12
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.0...4.0.1
+
 ## v3.0.1 - 2026-02-18
 
 - Use new getters from blocks package to include the parameters replacer in title, intro & seo fields of the page
