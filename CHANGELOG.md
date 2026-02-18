@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v3.0.1 - 2026-02-18
+
+- Use new getters from blocks package to include the parameters replacer in title, intro & seo fields of the page
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.0...3.0.1
+
 ## v4.0.0 - 2026-02-12
 
 - Filament v4 & v5 compatibility
