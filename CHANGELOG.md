@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## 3.0.2 - 2026-02-19
+
+- Add conditional cache tag support: uses native `Cache::tags()` when the driver supports it (Redis, Memcached), falls back to manual key-index tracking otherwise.
+- Route all `Page` model cache calls through `TaggableCache` for driver-agnostic caching.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.1...3.0.2
+
 ## 4.0.2 - 2026-02-19
 
 - Add conditional cache tag support: uses native `Cache::tags()` when the driver supports it (Redis, Memcached), falls back to manual key-index tracking otherwise.
