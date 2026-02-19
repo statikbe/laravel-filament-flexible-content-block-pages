@@ -5,8 +5,8 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Models;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
+use Statikbe\FilamentFlexibleContentBlockPages\Cache\TaggableCache;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasDatabaseSearchTrait;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Concerns\HasPageTreeTrait;
@@ -88,12 +88,11 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     {
         $cacheTag = static::getCacheTag($code);
 
-        return Cache::tags([$cacheTag])
-            ->rememberForever($cacheTag.'_url_'.$locale, function () use ($code, $locale) {
-                return static::code($code)
-                    ->first()
-                    ?->getViewUrl($locale);
-            });
+        return TaggableCache::rememberForeverWithTag($cacheTag, $cacheTag.'_url_'.$locale, function () use ($code, $locale) {
+            return static::code($code)
+                ->first()
+                ?->getViewUrl($locale);
+        });
     }
 
     public static function getCacheTag(string $code): string
@@ -108,10 +107,9 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     {
         $cacheTag = static::getCacheTag($code);
 
-        return Cache::tags([$cacheTag])
-            ->rememberForever($cacheTag.'_model', function () use ($code) {
-                return static::getByCodeFromDatabase($code);
-            });
+        return TaggableCache::rememberForeverWithTag($cacheTag, $cacheTag.'_model', function () use ($code) {
+            return static::getByCodeFromDatabase($code);
+        });
     }
 
     public function isHomePage(): bool
@@ -161,8 +159,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     public function clearCache(): void
     {
         if ($this->code) {
-            Cache::tags([static::getCacheTag($this->code)])
-                ->flush();
+            TaggableCache::flushTag(static::getCacheTag($this->code));
         }
     }
 }
