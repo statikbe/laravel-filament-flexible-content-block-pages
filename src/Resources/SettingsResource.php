@@ -2,7 +2,6 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Resources;
 
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
@@ -13,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\DescriptionField;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Pages;
 
@@ -121,11 +121,8 @@ class SettingsResource extends Resource
                 ->hint(flexiblePagesTrans('settings.translatable_field_hint'))
                 ->hintIcon('heroicon-m-language')
                 ->required(),
-            RichEditor::make(Settings::SETTING_CONTACT_INFO)
-                ->label(flexiblePagesTrans('settings.settings_contact_info'))
-                ->disableToolbarButtons([
-                    'attachFiles',
-                ]),
+            DescriptionField::create(Settings::SETTING_CONTACT_INFO)
+                ->label(flexiblePagesTrans('settings.settings_contact_info')),
         ];
     }
 

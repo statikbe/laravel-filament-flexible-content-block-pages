@@ -2,23 +2,16 @@
 
 namespace Statikbe\FilamentFlexibleContentBlockPages\Form\Components;
 
-use Filament\Forms\Components\RichEditor;
-use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Concerns\HasTranslatableHint;
+use Filament\Forms\Components\Field;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\FlexibleRichEditorField;
 
-class DescriptionField extends RichEditor
+class DescriptionField
 {
-    use HasTranslatableHint;
-
-    public static function create(string $field, bool $required = false): static
+    public static function create(string $field, bool $required = false): Field
     {
-        return static::make($field)
+        return FlexibleRichEditorField::createTranslatable($field)
             ->label(flexiblePagesTrans("form_component.{$field}_lbl"))
-            ->maxLength(255)
             ->live()
-            ->addsTranslatableHint()
-            ->required($required)
-            ->disableToolbarButtons([
-                'attachFiles',
-            ]);
+            ->required($required);
     }
 }
