@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v3.1.2 - 2026-02-24
+
+* Fix page getUrl cache key to make it translatable.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.1.0...3.1.2
+
 ## v3.1.1 - 2026-02-24
 
 * Fix page getUrl cache key to make it translatable.
