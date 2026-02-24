@@ -87,6 +87,7 @@ class Page extends Model implements HasCode, HasContentBlocks, HasHeroCallToActi
     public static function getUrl(string $code, ?string $locale = null): ?string
     {
         $cacheTag = static::getCacheTag($code);
+        $locale = $locale ?? app()->getLocale();
 
         return TaggableCache::rememberForeverWithTag($cacheTag, $cacheTag.'_url_'.$locale, function () use ($code, $locale) {
             return static::code($code)
