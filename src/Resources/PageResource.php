@@ -26,6 +26,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\CopyContentBloc
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\AuthorField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ContentBlocksField;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ParentField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroCallToActionSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\HeroImageSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\OverviewFields;
@@ -167,6 +168,10 @@ class PageResource extends Resource
             CodeField::create(),
             SlugField::create(false),
         ];
+
+        if ($config->isParentAndPageTreeEnabled($modelClass)) {
+            $fields[] = ParentField::create();
+        }
 
         $gridFields = [];
 
