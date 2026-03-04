@@ -1,8 +1,8 @@
-# Extending and customisation 
+# Extending and Customisation
 
 In this document, we will explain how you can change behaviour or extend functionalities to match your project requirements.
 
-## Table of content
+## Table of Contents
 
 <!--ts-->
    * [Settings](#settings)
