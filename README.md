@@ -26,6 +26,8 @@ while providing content editors with an intuitive interface for managing pages a
 
 This package makes use of [several great open-source packages](#used-packages) to be able to bundle these features. 
 
+<div class="filament-hidden">
+
 ## Table of contents
 
 <!--ts-->
@@ -85,6 +87,8 @@ This package makes use of [several great open-source packages](#used-packages) t
 <!-- Added by: sten, at: Mon Sep 29 23:52:45 CEST 2025 -->
 
 <!--te-->
+
+</div>
 
 ## Installation
 
@@ -645,7 +649,6 @@ If you want to further customise or extend the functionality, have a look [at th
 
 ## Future work
 
-- Caching of the menu data structure.
 - Add menu item for subtitle in menus.
 - A model to store re-usable content blocks, e.g. to create a marketing banner that can be reused on many pages, and edited once.
 - Contact form
@@ -653,6 +656,8 @@ If you want to further customise or extend the functionality, have a look [at th
 - A component to put on the pages with a quick link to edit this page in Filament
 - A trait for page indexing in Laravel Scout
 - Improve installation & setup: create an install command
+
+<div class="filament-hidden">
 
 ## Development
 
@@ -673,6 +678,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Security Vulnerabilities
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+
+</div>
 
 ## Credits
 
