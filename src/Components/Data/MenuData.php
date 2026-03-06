@@ -33,10 +33,9 @@ class MenuData
         }
 
         // Get only top-level menu items with their visible children based on max depth
-        /** @phpstan-ignore-next-line method.notFound */
         $menuItemsData = $menu->menuItems()
             ->with($relations)
-            ->visible()
+            ->visible() /** @phpstan-ignore method.notFound */
             ->ordered()
             ->get()
             ->map(function (MenuItem $item) use ($locale) {
