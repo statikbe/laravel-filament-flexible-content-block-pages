@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v3.1.3 - 2026-03-06
+
+### What's Changed
+
+* Redirect to child url by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/14
+* Add more checks on page controller to validate if hierarchical pages are published, so the parent slug is not leaked.
+* Fix phpstan errors in menu item.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.1.2...3.1.3
+
 ## v3.1.2 - 2026-02-24
 
 * Fix page getUrl cache key to make it translatable.
