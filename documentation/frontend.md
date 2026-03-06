@@ -29,7 +29,7 @@ This document covers frontend templating, theme customization, and available Bla
 
 <!--te-->
 
-## General remark
+## General Remark
 
 This package provides only Blade templates. These templates are only a starting point to start implementing your own 
 project requirements. The idea is that the backend is flexible and easily extendable, while the frontend requirements 

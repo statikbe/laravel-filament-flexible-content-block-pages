@@ -127,7 +127,7 @@ protected function createMenuItemForUrl(
 
 **Features:**
 - Defaults to `target='_blank'` for external links
-- Translatable URL's and labels
+- Translatable URLs and labels
 
 **Example:**
 ```php
