@@ -21,6 +21,9 @@ class PageController extends AbstractSeoPageController
     {
         // If the page has a parent, it should be accessed via the parent or grandparent route instead.
         if ($page->hasParent()) {
+            // check if page is published:
+            $this->abortIfUnpublished($page);
+
             return redirect($page->getViewUrl(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
@@ -48,6 +51,9 @@ class PageController extends AbstractSeoPageController
 
         // redirect to canonical URL if the parent has a parent (page is a grandchild)
         if ($parent->hasParent()) {
+            // check if page is published:
+            $this->abortIfUnpublished($page);
+
             return redirect($page->getViewUrl(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
@@ -81,7 +87,9 @@ class PageController extends AbstractSeoPageController
 
     protected function abortIfUnpublished(HasPageAttributes $page)
     {
-        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($page::class);
+        /** @var class-string|null $pageModel */
+        $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
+        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($pageModel);
 
         if (! Auth::user() || ! ($viewUnpublishedPagesGate && Gate::allows($viewUnpublishedPagesGate, $page))) {
             if (! $page->isPublished()) {
