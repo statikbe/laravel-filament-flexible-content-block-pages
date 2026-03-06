@@ -32,6 +32,7 @@ use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\OverviewF
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\PublicationSection;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\Groups\SEOFields;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\IntroField;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\ParentField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\SlugField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\TitleField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
@@ -167,6 +168,10 @@ class PageResource extends Resource
             CodeField::create(),
             SlugField::create(false),
         ];
+
+        if ($config->isParentAndPageTreeEnabled($modelClass)) {
+            $fields[] = ParentField::create();
+        }
 
         $gridFields = [];
 
