@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.0.5 - 2026-03-18
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/16
+* Fix incorrect order to drop tables in tags table migration by @ferdbold in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/15
+
+### New Contributors
+
+* @ferdbold made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/15
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.4...4.0.5
+
 ## v4.0.4 - 2026-03-06
 
 * Redirect to child url by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/14
