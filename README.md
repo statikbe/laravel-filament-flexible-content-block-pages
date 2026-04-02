@@ -98,6 +98,8 @@ You can install the package via composer:
 composer require statikbe/laravel-filament-flexible-content-block-pages
 ```
 
+**Note:** AI agents are quite good with interpreting the installation instructions below ;-).
+
 Publish the config file with:
 
 ```bash
