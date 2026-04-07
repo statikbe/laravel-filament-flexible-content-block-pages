@@ -1,0 +1,22 @@
+--- a/src/Commands/MakeTreePageCommand.php
++++ b/src/Commands/MakeTreePageCommand.php
+@@ -73,7 +73,7 @@ class MakeTreePageCommand extends Command
+
+     public static bool $shouldCheckModelsForSoftDeletes = true;
+
+-    protected function configure()
++    protected function configure(): void
+     {
+         $this->addArgument(
+             name: 'name',
+--- a/src/Commands/MakeTreeWidgetCommand.php
++++ b/src/Commands/MakeTreeWidgetCommand.php
+@@ -64,7 +64,7 @@ class MakeTreeWidgetCommand extends Command
+
+     protected string $widgetsDirectory;
+
+-    protected function configure()
++    protected function configure(): void
+     {
+         $this->addArgument(
+             name: 'name',

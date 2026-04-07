@@ -19,6 +19,7 @@
     "require": {
         "php": "^8.2",
         "artesaos/seotools": "^1.3",
+        "cweagans/composer-patches": "^1.7",
         "filament/spatie-laravel-tags-plugin": "^4.0|^5.0",
         "guava/filament-icon-picker": "^3.1|^4.0",
         "illuminate/contracts": "^11.0|^12.0|^13.0",
@@ -68,12 +69,19 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
+            "cweagans/composer-patches": true,
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true,
             "php-http/discovery": true
         }
     },
     "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patches": {
+            "solution-forest/filament-tree": {
+                "Fix configure() return type for Symfony 8 compatibility": "patches/solution-forest-filament-tree-configure-void-return-type.patch"
+            }
+        },
         "laravel": {
             "providers": [
                 "Statikbe\\FilamentFlexibleContentBlockPages\\FilamentFlexibleContentBlockPagesServiceProvider"
