@@ -2,6 +2,21 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.0 - 2026-04-13
+
+### What's Changed
+
+* Laravel 13 support by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/19
+* filament-tree upgrade to v4 by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/20
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/17
+* feat: add Laravel 13 compatibility by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/18
+
+### New Contributors
+
+* @vanneszias made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/18
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.5...4.1.0
+
 ## v4.0.5 - 2026-03-18
 
 ### What's Changed
