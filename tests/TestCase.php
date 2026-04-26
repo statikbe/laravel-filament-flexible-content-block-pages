@@ -3,8 +3,18 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath;
+use Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\MediaLibrary\MediaLibraryServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
 
 class TestCase extends Orchestra
@@ -21,8 +31,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-            \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+            LaravelLocalizationServiceProvider::class,
+            MediaLibraryServiceProvider::class,
             FilamentFlexibleContentBlocksServiceProvider::class,
             FilamentFlexibleContentBlockPagesServiceProvider::class,
         ];
@@ -67,7 +77,7 @@ class TestCase extends Orchestra
 
         // Tag pages config
         config()->set('filament-flexible-content-block-pages.tag_pages.models.enabled', [
-            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            Page::class,
         ]);
         config()->set('filament-flexible-content-block-pages.tag_pages.pagination.item_count', 12);
 
@@ -81,10 +91,10 @@ class TestCase extends Orchestra
         config()->set('filament-flexible-content-block-pages.enable_home_route', true);
 
         // Register laravel-localization middleware aliases for HTTP tests
-        $app['router']->aliasMiddleware('localize', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class);
-        $app['router']->aliasMiddleware('localizationRedirect', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class);
-        $app['router']->aliasMiddleware('localeSessionRedirect', \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class);
-        $app['router']->aliasMiddleware('localeViewPath', \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class);
+        $app['router']->aliasMiddleware('localize', LaravelLocalizationRoutes::class);
+        $app['router']->aliasMiddleware('localizationRedirect', LaravelLocalizationRedirectFilter::class);
+        $app['router']->aliasMiddleware('localeSessionRedirect', LocaleSessionRedirect::class);
+        $app['router']->aliasMiddleware('localeViewPath', LaravelLocalizationViewPath::class);
     }
 
     protected function defineDatabaseMigrations()
@@ -94,7 +104,7 @@ class TestCase extends Orchestra
 
     protected function defineRoutes($router)
     {
-        \Illuminate\Support\Facades\Route::middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class)->group(function () use ($router) {
+        Route::middleware(SubstituteBindings::class)->group(function () use ($router) {
             // Additional test routes - must be BEFORE package routes (which are catch-all)
             $router->get('/test-page', fn () => 'test')->name('test.page');
             $router->get('/test-route', fn () => 'test')->name('test.route');
@@ -102,8 +112,8 @@ class TestCase extends Orchestra
 
         // Use the package's route helper to define routes
         // SubstituteBindings is added explicitly since tests don't use the 'web' middleware group
-        \Illuminate\Support\Facades\Route::middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class)->group(function () {
-            \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
+        Route::middleware(SubstituteBindings::class)->group(function () {
+            FilamentFlexibleContentBlockPages::routes();
         });
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Contracts\HasMenuLabel;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
@@ -56,7 +57,7 @@ abstract class MenuSeeder extends Seeder
         bool $useModelTitle = false,
     ): MenuItem {
         if (is_null($parent)) {
-            $parent = \SolutionForest\FilamentTree\Support\Utils::defaultParentId();
+            $parent = Utils::defaultParentId();
         }
 
         $menuItemModel = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
