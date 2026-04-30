@@ -11,7 +11,23 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource;
+use Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\DatabaseAndConfigRedirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Enum\SitemapGeneratorMethod;
+use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,13 +49,13 @@ return [
     | necessary interfaces and traits.
     */
     'models' => [
-        FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => \Statikbe\FilamentFlexibleContentBlockPages\Models\Redirect::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => \Statikbe\FilamentFlexibleContentBlockPages\Models\Tag::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => \Statikbe\FilamentFlexibleContentBlockPages\Models\TagType::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => \Statikbe\FilamentFlexibleContentBlockPages\Models\Menu::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU_ITEM => \Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => Page::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => Redirect::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => Settings::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => Tag::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => TagType::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => Menu::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU_ITEM => MenuItem::class,
     ],
 
     /*
@@ -73,12 +89,12 @@ return [
     |
     */
     'resources' => [
-        FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => \Statikbe\FilamentFlexibleContentBlockPages\Resources\RedirectResource::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => \Statikbe\FilamentFlexibleContentBlockPages\Resources\TagResource::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => \Statikbe\FilamentFlexibleContentBlockPages\Resources\TagTypeResource::class,
-        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => \Statikbe\FilamentFlexibleContentBlockPages\Resources\MenuResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE => PageResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_SETTINGS => SettingsResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_REDIRECT => RedirectResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG => TagResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_TAG_TYPE => TagTypeResource::class,
+        FilamentFlexibleContentBlockPagesConfig::TYPE_MENU => MenuResource::class,
     ],
 
     /*
@@ -92,7 +108,7 @@ return [
     |
     */
     'page_resource' => [
-        \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class => [
+        Page::class => [
             /*
             | Enable the feature to have call-to-action buttons in the hero of the page
             */
@@ -202,7 +218,7 @@ return [
     | Use the PageRouteHelper for non-translatable routes.
     |
     */
-    'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
+    'route_helper' => LocalisedPageRouteHelper::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -278,7 +294,7 @@ return [
         | the HasMenuLabel interface to provide a label for menu display, and the Linkable interface to get a url of the model.
         */
         'linkable_models' => [
-            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            Page::class,
 
             // Add your own models here:
             // \App\Models\Category::class,
@@ -326,7 +342,7 @@ return [
         | The service class responsible for generating the sitemap.
         | You can extend or replace this with your own implementation by implementing the GeneratesSitemap interface.
         */
-        'generator_service' => \Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService::class,
+        'generator_service' => SitemapGeneratorService::class,
 
         /*
         | Sitemap generation method. MANUAL requires calling the artisan command,
@@ -388,7 +404,7 @@ return [
         | To avoid manual configuration of this custom redirector in the spatie-package's config, we set the default here.
         | In case you would like to customise this, please change the redirector here and not in the spatie package.
         */
-        'redirector' => \Statikbe\FilamentFlexibleContentBlockPages\Services\DatabaseAndConfigRedirector::class,
+        'redirector' => DatabaseAndConfigRedirector::class,
     ],
 
     /*
@@ -430,7 +446,7 @@ return [
             | These models must use the HasTags trait from spatie/laravel-tags.
             */
             'enabled' => [
-                \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+                Page::class,
                 // Add your own taggable models here:
                 // \App\Models\Article::class,
                 // \App\Models\Product::class,

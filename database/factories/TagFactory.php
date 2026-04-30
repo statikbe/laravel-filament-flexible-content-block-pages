@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 
@@ -16,7 +17,7 @@ class TagFactory extends Factory
 
         return [
             'name' => ['en' => $name, 'es' => $this->faker->words(2, true)],
-            'slug' => ['en' => \Illuminate\Support\Str::slug($name), 'es' => \Illuminate\Support\Str::slug($this->faker->words(2, true))],
+            'slug' => ['en' => Str::slug($name), 'es' => Str::slug($this->faker->words(2, true))],
             'seo_description' => ['en' => $this->faker->sentence(10), 'es' => $this->faker->sentence(10)],
             'type' => null,
             'order_column' => 0,
@@ -38,7 +39,7 @@ class TagFactory extends Factory
 
             return [
                 'name' => $names,
-                'slug' => array_map(fn ($n) => \Illuminate\Support\Str::slug($n), $names),
+                'slug' => array_map(fn ($n) => Str::slug($n), $names),
             ];
         });
     }

@@ -3,8 +3,12 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\MediaLibrary\MediaLibraryServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlocks\FilamentFlexibleContentBlocksServiceProvider;
 
 class TestCase extends Orchestra
@@ -21,8 +25,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-            \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+            LaravelLocalizationServiceProvider::class,
+            MediaLibraryServiceProvider::class,
             FilamentFlexibleContentBlocksServiceProvider::class,
             FilamentFlexibleContentBlockPagesServiceProvider::class,
         ];
@@ -67,7 +71,7 @@ class TestCase extends Orchestra
 
         // Tag pages config
         config()->set('filament-flexible-content-block-pages.tag_pages.models.enabled', [
-            \Statikbe\FilamentFlexibleContentBlockPages\Models\Page::class,
+            Page::class,
         ]);
         config()->set('filament-flexible-content-block-pages.tag_pages.pagination.item_count', 12);
 
@@ -89,7 +93,7 @@ class TestCase extends Orchestra
     protected function defineRoutes($router)
     {
         // Use the package's route helper to define routes
-        \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::routes();
+        FilamentFlexibleContentBlockPages::routes();
 
         // Additional test routes for MenuItem tests
         $router->get('/test-page', fn () => 'test')->name('test.page');
