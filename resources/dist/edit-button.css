@@ -1,0 +1,33 @@
+.flexible-pages-edit-button {
+    --fp-edit-button-bg: #1e293b;
+    --fp-edit-button-bg-hover: #334155;
+    --fp-edit-button-fg: #f8fafc;
+    --fp-edit-button-z: 6000000;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: var(--fp-edit-button-z);
+    box-sizing: border-box;
+    display: inline-flex;
+    width: 41px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    background: var(--fp-edit-button-bg);
+    color: var(--fp-edit-button-fg);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.flexible-pages-edit-button:hover {
+    background: var(--fp-edit-button-bg-hover);
+    color: var(--fp-edit-button-fg);
+}
+
+.flexible-pages-edit-button svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+

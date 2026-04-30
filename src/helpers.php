@@ -27,6 +27,17 @@ function flexiblePagesPrefix(string $var): string
     return "{$package}::{$var}";
 }
 
+function flexiblePagesAssetUrl(string $filename): string
+{
+    $package = FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
+    $relative = 'vendor/'.$package.'/'.$filename;
+    if (is_file(public_path($relative))) {
+        return asset($relative);
+    }
+
+    return route('filament-flexible-content-block-pages.asset', ['filename' => $filename]);
+}
+
 function flexiblePagesView(string $viewPath, $data = [], $mergeData = []): View
 {
     return view(flexiblePagesPrefix($viewPath), $data, $mergeData);

@@ -124,6 +124,11 @@ return [
             'enable_replicate_action_on_table' => false,
 
             /*
+            | Enable or disable the frontend edit button.
+            */
+            'enable_edit_button' => true,
+
+            /*
             | The Filament navigation menu sorting order of the page resource
             */
             'navigation_sort' => 5,
@@ -138,9 +143,11 @@ return [
                 |
                 | undeletable: to be able to toggle the undeletable switch after the page is created.
                 | view_unpublished_pages: to be able to view pages on the website that are not published.
+                | edit_button: to be able to see the frontend edit button.
                 */
                 'undeletable' => 'changeUndeletable',
                 'view_unpublished_pages' => 'viewUnpublishedPages',
+                'edit_button' => 'update_page',
             ],
 
             /*

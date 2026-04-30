@@ -358,6 +358,14 @@ class FilamentFlexibleContentBlockPagesConfig
     /**
      * @param  class-string<Model>  $modelClass
      */
+    public function isEditButtonEnabled(string $modelClass): bool
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.enable_edit_button", true);
+    }
+
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
     public function getUndeletableGate(string $modelClass): ?string
     {
         return $this->packageConfig("page_resource.{$modelClass}.gates.undeletable");
@@ -369,6 +377,14 @@ class FilamentFlexibleContentBlockPagesConfig
     public function getViewUnpublishedPagesGate(string $modelClass): ?string
     {
         return $this->packageConfig("page_resource.{$modelClass}.gates.view_unpublished_pages");
+    }
+
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
+    public function getEditButtonGate(string $modelClass): ?string
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.gates.edit_button");
     }
 
     /**

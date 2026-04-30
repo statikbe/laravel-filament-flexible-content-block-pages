@@ -12,8 +12,7 @@
         {
             "name": "Sten Govaerts",
             "email": "sten.govaerts@gmail.com",
-            "role": "Developer",
-            "homepage": "https://github.com/sten"
+            "role": "Developer"
         }
     ],
     "require": {
@@ -84,5 +83,14 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-filament-flexible-content-blocks",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }

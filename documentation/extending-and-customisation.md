@@ -1,34 +1,45 @@
-# Extending and customisation 
+# Extending and customisation
 
 In this document, we will explain how you can change behaviour or extend functionalities to match your project requirements.
 
 ## Table of content
 
 <!--ts-->
-   * [Settings](#settings)
-   * [Menu Builder](#menu-builder)
-      * [Customizing Menu Styles](#customizing-menu-styles)
-   * [Routes](#routes)
-      * [Custom Route Helpers](#custom-route-helpers)
-         * [Creating Custom Route Helpers](#creating-custom-route-helpers)
-         * [Built-in Route Helpers](#built-in-route-helpers)
-      * [Custom Controllers](#custom-controllers)
-         * [Extending the Page Controller](#extending-the-page-controller)
-         * [Using Custom Controllers with Route Helpers](#using-custom-controllers-with-route-helpers)
-         * [Extending the SEO implementation](#extending-the-seo-implementation)
-      * [Advanced Route Configuration](#advanced-route-configuration)
-         * [Custom Route Middleware](#custom-route-middleware)
-         * [Route Model Binding](#route-model-binding)
-   * [Sitemap](#sitemap)
-      * [Configuration](#configuration)
-      * [Generation Methods](#generation-methods)
-      * [Linkable Models](#linkable-models)
-      * [Extending the SitemapGeneratorService](#extending-the-sitemapgeneratorservice)
-   * [SEO tag pages](#seo-tag-pages)
-      * [Customizing Tag Page Views](#customizing-tag-page-views)
-      * [Extending Tag Page Content](#extending-tag-page-content)
-      * [SEO tag page controller customisation](#seo-tag-page-controller-customisation)
-      * [Advanced Extensions](#advanced-extensions)
+
+- [Extending and customisation](#extending-and-customisation)
+  - [Table of content](#table-of-content)
+  - [Settings](#settings)
+  - [Custom Page Types](#custom-page-types)
+    - [Overview](#overview)
+    - [Step 1: Create the Migration](#step-1-create-the-migration)
+    - [Step 2: Create the Model](#step-2-create-the-model)
+    - [Step 3: Register the Morph Map](#step-3-register-the-morph-map)
+    - [Step 4: Create the Filament Resource](#step-4-create-the-filament-resource)
+    - [Step 5: Create the Resource Page Classes](#step-5-create-the-resource-page-classes)
+    - [Step 6: Configure the Page Resource](#step-6-configure-the-page-resource)
+  - [Menu Builder](#menu-builder)
+    - [Customizing Menu Styles](#customizing-menu-styles)
+  - [Routes](#routes)
+    - [Custom Route Helpers](#custom-route-helpers)
+      - [Creating Custom Route Helpers](#creating-custom-route-helpers)
+      - [Built-in Route Helpers](#built-in-route-helpers)
+    - [Custom Controllers](#custom-controllers)
+      - [Extending the Page Controller](#extending-the-page-controller)
+      - [Using Custom Controllers with Route Helpers](#using-custom-controllers-with-route-helpers)
+      - [Extending the SEO implementation](#extending-the-seo-implementation)
+    - [Advanced Route Configuration](#advanced-route-configuration)
+      - [Custom Route Middleware](#custom-route-middleware)
+      - [Route Model Binding](#route-model-binding)
+  - [Sitemap](#sitemap)
+    - [Configuration](#configuration)
+    - [Generation Methods](#generation-methods)
+    - [Linkable Models](#linkable-models)
+    - [Extending the SitemapGeneratorService](#extending-the-sitemapgeneratorservice)
+  - [SEO tag pages](#seo-tag-pages)
+    - [Customizing Tag Page Views](#customizing-tag-page-views)
+    - [Extending Tag Page Content](#extending-tag-page-content)
+    - [SEO tag page controller customisation](#seo-tag-page-controller-customisation)
+    - [Advanced Extensions](#advanced-extensions)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: sten, at: Mon Sep 29 23:52:46 CEST 2025 -->
@@ -42,6 +53,7 @@ One of the most likely extensions you will want to do is add your own settings f
 Here is a step by step guide to add custom settings fields:
 
 1. **Create a migration** to add new columns:
+
 ```php
 Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), function (Blueprint $table) {
     $table->string('custom_field')->nullable();
@@ -49,12 +61,13 @@ Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), f
 });
 ```
 
-2. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed:
+1. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed:
+
 ```php
 class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings
 {
     const SETTING_CUSTOM_FIELD = 'custom_field';
-    
+
     protected $translatable = [
         parent::SETTING_FOOTER_COPYRIGHT,
         parent::SETTING_CONTACT_INFO,
@@ -63,7 +76,8 @@ class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\
 }
 ```
 
-3. **Extend the SettingsResource** by overriding `getExtraFormTabs()`:
+1. **Extend the SettingsResource** by overriding `getExtraFormTabs()`:
+
 ```php
 class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource
 {
@@ -80,7 +94,8 @@ class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages
 }
 ```
 
-4. **Configure the extended model and resource** in your config file:
+1. **Configure the extended model and resource** in your config file:
+
 ```php
 // config/filament-flexible-content-block-pages.php
 'models' => [
@@ -94,6 +109,181 @@ class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages
 ],
 ```
 
+## Custom Page Types
+
+### Overview
+
+Beyond the default `Page` model, you can create entirely separate page types that each have their own database table, model, Filament resource, and content blocks — while still reusing all the infrastructure the package provides.
+
+This is useful when you need a distinct set of pages with different content blocks, different routing logic, or different admin panel behaviour.
+
+The high-level steps:
+
+1. Create a dedicated database table (migration)
+2. Create a model extending the package's `Page` model
+3. Register a morph map entry for the new model
+4. Create a Filament resource extending `PageResource`
+5. Create the resource page classes (List, Create, Edit)
+6. Add `page_resource` configuration for the new model
+
+### Step 1: Create the Migration
+
+Create a migration for a new table (e.g. `pages_report`). The schema should mirror the columns you need from the default pages table. Refer to the [default pages migration](../database/migrations/create_pages_table.php.stub) for the full column list — include the translatable JSON columns (`title`, `slug`, `content_blocks`, etc.) and any optional columns (SEO, overview, hero, author, parent) that your page type needs.
+
+> **Note:** All JSON columns are translatable via Spatie's laravel-translatable. If your page type uses the parent-child feature, make sure the `parent_id` foreign key references your own table, not the default `pages` table.
+
+### Step 2: Create the Model
+
+Create a model extending the package's `Page` model. There are several critical overrides:
+
+```php
+class ReportPage extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Page
+{
+    public function getTable()
+    {
+        return 'pages_report';
+    }
+
+    public function getMorphClass()
+    {
+        return 'pages_report';
+    }
+
+    public static function registerContentBlocks(): array
+    {
+        return [
+            TextImageBlock::class,
+            // your content blocks
+        ];
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->resolveRouteBindingQuery($this->newQuery(), $value, $field)->first();
+    }
+
+    public function getViewUrl(?string $locale = null): string
+    {
+        // your URL generation logic
+    }
+
+    public function getPreviewUrl(?string $locale = null): string
+    {
+        return $this->getViewUrl($locale);
+    }
+}
+```
+
+Key points:
+
+- **`getTable()`** — must point to your custom table, not the default pages table.
+- **`getMorphClass()`** — must return a **unique** string. The base `Page` model returns `flexiblePagesPrefix('page')`. If your custom page type inherits that same morph class, polymorphic relations (media library, menus, etc.) will conflict between page types. This value must match the morph map key in step 3.
+- **`registerContentBlocks()`** — defines which content blocks are available for this page type, overriding the defaults.
+- **`resolveRouteBinding()`** — override to ensure Laravel resolves route bindings from your table, not the default pages table.
+- **`getViewUrl()` / `getPreviewUrl()`** — implement URL generation for your page type's routing.
+
+### Step 3: Register the Morph Map
+
+Laravel's [enforced morph map](https://laravel.com/docs/eloquent-relationships#custom-polymorphic-types) must include your custom page type. Without this, you will get a `ClassMorphViolationException` when the model is used in polymorphic relations (media, menus, content blocks, etc.).
+
+In your `AppServiceProvider::boot()`:
+
+```php
+Relation::enforceMorphMap([
+    // ... your other models
+    'pages_report' => \App\Models\ReportPage::class,
+]);
+```
+
+The key (`'pages_report'`) **must** match what `getMorphClass()` returns on your model.
+
+### Step 4: Create the Filament Resource
+
+Create a new Filament resource extending `PageResource`. The critical override is `getModel()`:
+
+```php
+class ReportPageResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource
+{
+    public static function getModel(): string
+    {
+        return \App\Models\ReportPage::class;
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListReportPages::route('/'),
+            'create' => CreateReportPage::route('/create'),
+            'edit' => EditReportPage::route('/{record:id}/edit'),
+        ];
+    }
+}
+```
+
+You can optionally override navigation methods (`getNavigationGroup()`, `getNavigationLabel()`, `getNavigationSort()`) and the `form()` method. When overriding the form, the parent resource provides helper methods you can reuse: `static::getGeneralTabFields()`, `static::getContentTabFields()`, `static::getOverviewTabFields()`, `static::getSEOTabFields()`, `static::getAdvancedTabFields()`.
+
+### Step 5: Create the Resource Page Classes
+
+Each Filament resource needs List, Create, and Edit page classes. These extend the package's base page classes and point back to your custom resource via `getResource()`.
+
+The **List** and **Create** pages only need the `getResource()` override:
+
+```php
+class ListReportPages extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ListPages
+{
+    public static function getResource(): string
+    {
+        return ReportPageResource::class;
+    }
+}
+```
+
+The **Edit** page additionally needs `getRecord()` and `getModel()` overrides to ensure Filament resolves the correct model class instead of the default Page:
+
+```php
+class EditReportPage extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\EditPage
+{
+    public static function getResource(): string
+    {
+        return ReportPageResource::class;
+    }
+
+    public function getRecord(): Model
+    {
+        return \App\Models\ReportPage::find($this->record->id);
+    }
+
+    public function getModel(): string
+    {
+        return \App\Models\ReportPage::class;
+    }
+}
+```
+
+### Step 6: Configure the Page Resource
+
+Add a `page_resource` configuration entry keyed by your model class. This controls which features are enabled in the admin panel for this page type:
+
+```php
+// config/filament-flexible-content-block-pages.php
+'page_resource' => [
+    \App\Models\Page::class => [ /* ... */ ],
+
+    \App\Models\ReportPage::class => [
+        'enable_hero_call_to_actions' => false,
+        'enable_hero_video_url' => false,
+        'enable_author' => false,
+        'enable_page_tree' => false,
+        'enable_undeletable' => true,
+        // ... see default page config for all available options
+    ],
+],
+```
+
+The package reads these settings to determine which form fields, table columns, and actions to show for each page type. This is how a single `PageResource` base class can serve multiple page types with different feature sets.
+
+> **Note:** You do _not_ need to add your custom page type to the top-level `models` or `resources` config arrays — those are for the _default_ page type used by the package's routing and URL generation. Your custom resource is registered as a standalone Filament resource.
+
 ## Menu Builder
 
 ### Customizing Menu Styles
@@ -101,6 +291,7 @@ class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages
 If needed, you can easily add your own menu styles in addition to the `default` style, e.g. the 'mega' menu style:
 
 1. **Add new styles to config:**
+
 ```php
 // config/filament-flexible-content-block-pages.php
 'menu' => [
@@ -110,18 +301,21 @@ If needed, you can easily add your own menu styles in addition to the `default` 
     ],
 ],
 ```
+
 **Tip:** Add translations if you want UX-friendly style dropdowns.
 
-2. **Create the template files:**
+1. **Create the template files:**
+
 ```bash
 # Main menu template
 resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega.blade.php
 
-# Menu item template  
+# Menu item template
 resources/views/vendor/filament-flexible-content-block-pages/tailwind/components/menu/mega-item.blade.php
 ```
 
-3. **Use in your templates:**
+1. **Use in your templates:**
+
 ```blade
 <x-flexible-pages-menu code="HEADER" style="mega" />
 ```
@@ -186,11 +380,13 @@ Then update your configuration:
 #### Built-in Route Helpers
 
 **PageRouteHelper** (non-multilingual):
+
 ```php
 'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\PageRouteHelper::class,
 ```
 
 **LocalisedPageRouteHelper** (multilingual):
+
 ```php
 'route_helper' => \Statikbe\FilamentFlexibleContentBlockPages\Routes\LocalisedPageRouteHelper::class,
 ```
@@ -216,15 +412,15 @@ class CustomPageController extends BasePageController
     public function show(Request $request, ...$slugs): View
     {
         $page = $this->getPageFromSlugs($slugs);
-        
+
         // Add your custom logic here
         $customData = $this->getCustomData($page);
-        
+
         return $this->renderPage($page, [
             'customData' => $customData,
         ]);
     }
-    
+
     protected function getCustomData(Page $page): array
     {
         // Your custom data logic
@@ -267,7 +463,7 @@ class CustomSeoController extends PageController
         // Custom meta title logic
         return $pageTitle . ' | ' . config('app.name');
     }
-    
+
     protected function getMetaDescription(?string $description): ?string
     {
         // Custom meta description logic
@@ -333,17 +529,20 @@ Enable and configure the sitemap generator in your config file:
 ### Generation Methods
 
 **Manual** (`SitemapGeneratorMethod::MANUAL`):
+
 - Generates sitemap based on database content (pages, routes, models)
 - Faster and more predictable
 - Best for most use cases
 
 **Crawl** (`SitemapGeneratorMethod::CRAWL`):
+
 - Crawls your website to discover URLs
 - May find URLs not in your database
 - Slower but comprehensive
 - Requires chromium
 
 **Hybrid** (`SitemapGeneratorMethod::HYBRID`):
+
 - Combines both approaches
 - Crawls first, then adds manual entries
 - Most comprehensive but slowest
@@ -352,7 +551,7 @@ Enable and configure the sitemap generator in your config file:
 
 To include your own models in the sitemap, ensure they implement [the `Linkable` contract and have a `getViewUrl()` method](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable).
 
-You will most likely already have added those models to the menu configuration's `linkable_models` array or 
+You will most likely already have added those models to the menu configuration's `linkable_models` array or
 [call-to-actions models](https://github.com/statikbe/laravel-filament-flexible-content-blocks#linkable) then they will automatically be included in the sitemap.
 
 If you do not want your model in menus or call-to-actions, you can extend the [SitemapGeneratorService](../src/Services/SitemapGeneratorService.php).
@@ -374,7 +573,7 @@ class CustomSitemapGeneratorService extends SitemapGeneratorService
     protected function addCustomUrls(): void
     {
         parent::addCustomUrls();
-        
+
         // Add your custom logic
         $this->addToSitemap(
             url: 'https://example.com/dynamic-page',
@@ -383,25 +582,25 @@ class CustomSitemapGeneratorService extends SitemapGeneratorService
             frequency: 'weekly'
         );
     }
-    
+
     protected function getLinkableModels(): array
     {
         $models = parent::getLinkableModels();
-        
+
         // Add additional models not in menu/CTA config
         $models[] = \App\Models\BlogPost::class;
         $models[] = \App\Models\Event::class;
-        
+
         return $models;
     }
-    
+
     protected function calculatePriority($page): float
     {
         // Custom priority logic
         if ($page->is_featured) {
             return 0.9;
         }
-        
+
         return parent::calculatePriority($page);
     }
 }
@@ -430,12 +629,13 @@ php artisan vendor:publish --tag=filament-flexible-content-block-pages-views
 ```
 
 Then customize the template at:
+
 ```
 resources/views/vendor/filament-flexible-content-block-pages/tailwind/pages/tag_index.blade.php
 ```
 
 You can then adjust the header and item layout.
-Currently, the view does not focus on styling, only on proper HTML structure, because these pages are meant to be read by search engines. 
+Currently, the view does not focus on styling, only on proper HTML structure, because these pages are meant to be read by search engines.
 
 ### Extending Tag Page Content
 
@@ -456,6 +656,7 @@ Currently, the view does not focus on styling, only on proper HTML structure, be
 ```
 
 **Model requirements:**
+
 - Must use the `HasTags` trait from spatie/laravel-tags
 - Should implement a `scopePublished()` method for content filtering (or you need to customise the controller)
 - Should have a `getViewUrl()` method for link generation by implementing the `Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable` interface
@@ -511,17 +712,17 @@ class CustomSeoTagController extends BaseSeoTagController
     public function index(Tag $tag): View
     {
         $view = parent::index($tag);
-        
+
         // Add custom SEO data
         SEOTools::opengraph()->addImage($this->getCustomTagImage($tag));
         SEOTools::twitter()->setImage($this->getCustomTagImage($tag));
-        
+
         // Add custom view data
         $view->with([
             'customData' => $this->getCustomTagData($tag),
             'relatedTags' => $this->getRelatedTags($tag),
         ]);
-        
+
         return $view;
     }
 

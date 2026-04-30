@@ -4,6 +4,7 @@ namespace Statikbe\FilamentFlexibleContentBlockPages;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -11,6 +12,7 @@ use Spatie\MissingPageRedirector\Redirector\Redirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\EditButton;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
@@ -31,6 +33,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
             ->name('laravel-'.self::PACKAGE_PREFIX)
             ->hasConfigFile()
             ->hasViews()
+            ->hasAssets()
             ->hasMigrations([
                 'create_filament_flexible_content_block_pages_table',
                 'create_filament_flexible_content_block_pages_redirects_table',
@@ -49,6 +52,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 BaseLayout::class,
                 Menu::class,
                 MenuItem::class,
+                EditButton::class,
             );
     }
 
@@ -64,6 +68,33 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
 
         // Override spatie/laravel-missing-page-redirector's redirector - this runs after all packages are registered
         $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
+
+        $this->registerPackagePublicAssetsRoute();
+    }
+
+    protected function registerPackagePublicAssetsRoute(): void
+    {
+        Route::get('flexible-pages/asset/{filename}', function (string $filename) {
+            $allowed = [
+                'edit-button.css' => 'text/css; charset=UTF-8',
+                'edit-button.js' => 'application/javascript; charset=UTF-8',
+            ];
+            if (! array_key_exists($filename, $allowed)) {
+                abort(404);
+            }
+
+            $path = dirname(__DIR__).'/resources/dist/'.$filename;
+            if (! is_file($path)) {
+                abort(404);
+            }
+
+            return response()->file($path, [
+                'Content-Type' => $allowed[$filename],
+                'Cache-Control' => 'public, max-age=604800',
+            ]);
+        })
+            ->where('filename', '[a-z0-9._-]+')
+            ->name('filament-flexible-content-block-pages.asset');
     }
 
     public function packageRegistered()

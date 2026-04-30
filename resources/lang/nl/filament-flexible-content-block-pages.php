@@ -32,6 +32,9 @@ return [
             'page_tree_lbl' => 'Beheer hiërarchie',
             'back_to_list' => 'Terug naar lijst',
         ],
+        'toolbar' => [
+            'edit_page' => 'Pagina bewerken',
+        ],
     ],
     'redirects' => [
         'redirects_lbl' => 'redirect',
