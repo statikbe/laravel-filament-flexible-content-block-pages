@@ -14,6 +14,22 @@
     var bodyObserver = null;
     var bodyObserverTimeout = null;
 
+    if (!tryAttachDebugbar()) {
+        bodyObserver = new MutationObserver(function () {
+            tryAttachDebugbar();
+        });
+        bodyObserver.observe(document.body, { childList: true, subtree: true });
+        bodyObserverTimeout = window.setTimeout(function () {
+            if (bodyObserver) {
+                bodyObserver.disconnect();
+                bodyObserver = null;
+            }
+            bodyObserverTimeout = null;
+        }, 30000);
+    }
+
+    window.addEventListener('resize', reposition);
+
     function reposition() {
         var debugbar = document.querySelector('div.phpdebugbar');
         if (!debugbar) {
@@ -27,6 +43,25 @@
         } else {
             btn.style.bottom = '';
         }
+    }
+
+    function tryAttachDebugbar() {
+        var debugbar = document.querySelector('div.phpdebugbar');
+        if (!debugbar) {
+            return false;
+        }
+
+        if (bodyObserver) {
+            bodyObserver.disconnect();
+            bodyObserver = null;
+        }
+        if (bodyObserverTimeout !== null) {
+            clearTimeout(bodyObserverTimeout);
+            bodyObserverTimeout = null;
+        }
+
+        watchDebugbar(debugbar);
+        return true;
     }
 
     function watchDebugbar(debugbar) {
@@ -46,40 +81,4 @@
         });
         reposition();
     }
-
-    function tryAttachDebugbar() {
-        var debugbar = document.querySelector('div.phpdebugbar');
-        if (!debugbar)
-            return false;
-        }
-
-        if (bodyObserver) {
-            bodyObserver.disconnect();
-            bodyObserver = null;
-        }
-        if (bodyObserverTimeout !== null) {
-            clearTimeout(bodyObserverTimeout);
-            bodyObserverTimeout = null;
-        }
-
-        watchDebugbar(debugbar);
-        return true;
-    }
-
-    if (!tryAttachDebugbar()) {
-        bodyObserver = new MutationObserver(function () {
-            tryAttachDebugbar();
-        });
-        bodyObserver.observe(document.body, { childList: true, subtree: true });
-        bodyObserverTimeout = window.setTimeout(function () {
-            if (bodyObserver) {
-                bodyObserver.disconnect();
-                bodyObserver = null;
-            }
-            bodyObserverTimeout = null;
-        }, 30000);
-    }
-
-    window.addEventListener('resize', reposition);
 })();
-

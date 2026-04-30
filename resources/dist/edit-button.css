@@ -1,6 +1,6 @@
 .flexible-pages-edit-button {
-    --fp-edit-button-bg: #1e293b;
-    --fp-edit-button-bg-hover: #334155;
+    --fp-edit-button-bg: #00b800;
+    --fp-edit-button-bg-hover: #009900;
     --fp-edit-button-fg: #f8fafc;
     --fp-edit-button-z: 6000000;
 
@@ -30,4 +30,3 @@
     height: 16px;
     flex-shrink: 0;
 }
-
