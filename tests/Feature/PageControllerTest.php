@@ -1,5 +1,7 @@
 <?php
 
+use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures\CustomPage;
 
@@ -41,7 +43,7 @@ it('resolves custom page model when configured', function () {
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
 
     // Clear the cached config instance to pick up the new model
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $page = CustomPage::factory()->create([
         'slug' => ['en' => 'custom-page', 'es' => 'pagina-personalizada'],
@@ -57,7 +59,7 @@ it('resolves custom page model when configured', function () {
 
 it('returns correct morph class for custom page model', function () {
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $page = CustomPage::factory()->create([
         'slug' => ['en' => 'test-morph'],
@@ -70,7 +72,7 @@ it('returns correct morph class for custom page model', function () {
 
 it('handles parent and child page resolution with custom model', function () {
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $parent = CustomPage::factory()->create([
         'slug' => ['en' => 'parent-page'],
@@ -96,7 +98,7 @@ it('does not resolve when using default model but custom is configured', functio
 
     // Now configure custom model
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     // The page created with default model should still be found
     // but returned as CustomPage instance
@@ -110,7 +112,7 @@ it('does not resolve when using default model but custom is configured', functio
 it('homeIndex finds home page with default model', function () {
     $homePage = Page::factory()->homePage()->create();
 
-    $foundPage = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()
+    $foundPage = FilamentFlexibleContentBlockPages::config()
         ->getPageModel()::code(Page::HOME_PAGE)
         ->first();
 
@@ -121,11 +123,11 @@ it('homeIndex finds home page with default model', function () {
 
 it('homeIndex finds home page with custom model configured', function () {
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $homePage = CustomPage::factory()->homePage()->create();
 
-    $foundPage = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()
+    $foundPage = FilamentFlexibleContentBlockPages::config()
         ->getPageModel()::code(Page::HOME_PAGE)
         ->first();
 
@@ -137,11 +139,11 @@ it('homeIndex finds home page with custom model configured', function () {
 
 it('homeIndex returns custom model with correct morph class', function () {
     config()->set('filament-flexible-content-block-pages.models.pages', CustomPage::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     CustomPage::factory()->homePage()->create();
 
-    $foundPage = \Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages::config()
+    $foundPage = FilamentFlexibleContentBlockPages::config()
         ->getPageModel()::code(Page::HOME_PAGE)
         ->first();
 

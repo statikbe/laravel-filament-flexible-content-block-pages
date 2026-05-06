@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
 class PageFactory extends Factory
@@ -23,7 +24,7 @@ class PageFactory extends Factory
             'overview_title' => ['en' => $this->faker->sentence(3), 'es' => $this->faker->sentence(3)],
             'overview_description' => ['en' => $this->faker->paragraph(), 'es' => $this->faker->paragraph()],
             'content_blocks' => [],
-            'parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
+            'parent_id' => Utils::defaultParentId(),
             'order' => 0,
             'is_undeletable' => false,
         ];

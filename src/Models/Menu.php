@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use SolutionForest\FilamentTree\Support\Utils;
 use Spatie\Translatable\HasTranslations;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Observers\MenuObserver;
@@ -53,7 +54,7 @@ class Menu extends Model implements HasCode
     public function menuItems(): HasMany
     {
         return $this->hasMany(FilamentFlexibleContentBlockPages::config()->getMenuItemModel()::class)
-            ->where('parent_id', \SolutionForest\FilamentTree\Support\Utils::defaultParentId())
+            ->where('parent_id', Utils::defaultParentId())
             ->orderBy('order');
     }
 

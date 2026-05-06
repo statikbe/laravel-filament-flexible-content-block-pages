@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use SolutionForest\FilamentTree\Support\Utils;
 
 return new class extends Migration
 {
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->boolean('is_visible')->default(true);
             $table->boolean('use_model_title')->default(false);
-            $table->integer('parent_id')->default(\SolutionForest\FilamentTree\Support\Utils::defaultParentId())->index();
+            $table->integer('parent_id')->default(Utils::defaultParentId())->index();
             $table->integer('order')->default(0);
             $table->timestamps();
 

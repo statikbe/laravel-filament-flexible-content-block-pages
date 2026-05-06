@@ -1,5 +1,6 @@
 <?php
 
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Tag;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\TagType;
 use Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures\CustomTag;
@@ -53,7 +54,7 @@ it('resolves custom tag model when configured', function () {
     config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
 
     // Clear the cached config instance to pick up the new model
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $tag = CustomTag::factory()->forTagType($tagType)->create([
         'name' => ['en' => 'Custom Tag', 'es' => 'Etiqueta Personalizada'],
@@ -72,7 +73,7 @@ it('returns correct morph class for custom tag model', function () {
     $tagType = TagType::factory()->create();
 
     config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $tag = CustomTag::factory()->forTagType($tagType)->create([
         'name' => ['en' => 'Test Morph Tag'],
@@ -104,7 +105,7 @@ it('resolves tag with tag type relationship intact', function () {
 
 it('resolves custom tag with tag type relationship intact', function () {
     config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     $tagType = TagType::factory()->create([
         'code' => 'topic',
@@ -134,7 +135,7 @@ it('does not affect other tags when custom model is configured', function () {
 
     // Now configure custom model
     config()->set('filament-flexible-content-block-pages.models.tags', CustomTag::class);
-    app()->forgetInstance(\Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
 
     // The tag created with default model should still be found
     // but returned as CustomTag instance

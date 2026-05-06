@@ -3,6 +3,7 @@
 namespace Statikbe\FilamentFlexibleContentBlockPages\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -25,7 +26,7 @@ class MenuItemFactory extends Factory
             'icon' => null,
             'is_visible' => true,
             'use_model_title' => false,
-            'parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
+            'parent_id' => Utils::defaultParentId(),
             'order' => 0,
         ];
     }

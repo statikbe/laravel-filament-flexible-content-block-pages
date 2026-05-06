@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 
 it('retrieves settings singleton', function () {
@@ -57,7 +58,7 @@ it('caches setting values', function () {
     $first = Settings::setting(Settings::SETTING_SITE_TITLE);
 
     // Update directly in DB (bypassing model)
-    \Illuminate\Support\Facades\DB::table('fcbp_settings')->update(['site_title' => 'Updated Title']);
+    DB::table('fcbp_settings')->update(['site_title' => 'Updated Title']);
 
     // Second call should return cached value
     $second = Settings::setting(Settings::SETTING_SITE_TITLE);

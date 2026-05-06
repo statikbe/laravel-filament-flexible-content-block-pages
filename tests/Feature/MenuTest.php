@@ -1,5 +1,6 @@
 <?php
 
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 
@@ -27,7 +28,7 @@ it('retrieves menu by code', function () {
 
 it('returns top-level menu items only via menuItems relationship', function () {
     $menu = Menu::factory()->create();
-    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId()]);
+    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => Utils::defaultParentId()]);
     $childItem = MenuItem::factory()->childOf($topLevelItem)->create();
 
     $menuItems = $menu->menuItems;
@@ -38,7 +39,7 @@ it('returns top-level menu items only via menuItems relationship', function () {
 
 it('returns all menu items via allMenuItems relationship', function () {
     $menu = Menu::factory()->create();
-    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId()]);
+    $topLevelItem = MenuItem::factory()->forMenu($menu)->create(['parent_id' => Utils::defaultParentId()]);
     $childItem = MenuItem::factory()->childOf($topLevelItem)->create();
 
     $allMenuItems = $menu->allMenuItems;

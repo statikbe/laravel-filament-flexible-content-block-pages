@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use SolutionForest\FilamentTree\Support\Utils;
 
 return new class extends Migration
 {
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->json('content_blocks')->nullable();
             $table->json('slug')->nullable();
             $table->string('code')->nullable()->unique();
-            $table->bigInteger('parent_id')->default(\SolutionForest\FilamentTree\Support\Utils::defaultParentId())->index();
+            $table->bigInteger('parent_id')->default(Utils::defaultParentId())->index();
             $table->integer('order')->default(0);
             $table->boolean('is_undeletable')->default(false);
             $table->timestamps();

@@ -1,5 +1,6 @@
 <?php
 
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -117,7 +118,7 @@ it('supports visibility scope', function () {
 
 it('supports tree structure with parent-child relationships', function () {
     $menu = Menu::factory()->create();
-    $parent = MenuItem::factory()->forMenu($menu)->create(['parent_id' => \SolutionForest\FilamentTree\Support\Utils::defaultParentId()]);
+    $parent = MenuItem::factory()->forMenu($menu)->create(['parent_id' => Utils::defaultParentId()]);
     $child = MenuItem::factory()->childOf($parent)->create();
 
     expect($child->parent_id)->toBe($parent->id)

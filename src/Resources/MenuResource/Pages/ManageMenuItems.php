@@ -16,6 +16,7 @@ use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Concern\TreeRecords\Translatable;
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
+use SolutionForest\FilamentTree\Support\Utils;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Forms\MenuItemForm;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\MenuItem;
@@ -94,7 +95,7 @@ class ManageMenuItems extends TreePage
                 ->icon(Heroicon::Plus)
                 ->fillForm(fn ($arguments) => [
                     'menu_id' => $this->menu->getKey(),
-                    'parent_id' => $arguments['parent_id'] ?? \SolutionForest\FilamentTree\Support\Utils::defaultParentId(),
+                    'parent_id' => $arguments['parent_id'] ?? Utils::defaultParentId(),
                     'is_visible' => true,
                     'target' => '_self',
                 ])
