@@ -2,6 +2,124 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.0 - 2026-04-13
+
+### What's Changed
+
+* Laravel 13 support by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/19
+* filament-tree upgrade to v4 by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/20
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/17
+* feat: add Laravel 13 compatibility by @vanneszias in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/18
+
+### New Contributors
+
+* @vanneszias made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/18
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.5...4.1.0
+
+## v4.0.5 - 2026-03-18
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/16
+* Fix incorrect order to drop tables in tags table migration by @ferdbold in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/15
+
+### New Contributors
+
+* @ferdbold made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/15
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.4...4.0.5
+
+## v4.0.4 - 2026-03-06
+
+* Redirect to child url by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/14
+* Add more checks on page controller to validate if hierarchical pages are published, so the parent slug is not leaked.
+* Fix phpstan errors in menu item.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.3...4.0.4
+
+## v3.1.3 - 2026-03-06
+
+### What's Changed
+
+* Redirect to child url by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/14
+* Add more checks on page controller to validate if hierarchical pages are published, so the parent slug is not leaked.
+* Fix phpstan errors in menu item.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.1.2...3.1.3
+
+## v3.1.2 - 2026-02-24
+
+* Fix page getUrl cache key to make it translatable.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.1.0...3.1.2
+
+## v3.1.1 - 2026-02-24
+
+* Fix page getUrl cache key to make it translatable.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.3...3.1.1
+
+## v4.0.3 - 2026-02-24
+
+* Fix page getUrl cache key to make it translatable.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.2...4.0.3
+
+## 3.1.0 - 2026-02-23
+
+* Add configurable rich text editor
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.1...3.1.0
+
+## 3.0.2 - 2026-02-19
+
+- Add conditional cache tag support: uses native `Cache::tags()` when the driver supports it (Redis, Memcached), falls back to manual key-index tracking otherwise.
+- Route all `Page` model cache calls through `TaggableCache` for driver-agnostic caching.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.1...3.0.2
+
+## 4.0.2 - 2026-02-19
+
+- Add conditional cache tag support: uses native `Cache::tags()` when the driver supports it (Redis, Memcached), falls back to manual key-index tracking otherwise.
+- Route all `Page` model cache calls through `TaggableCache` for driver-agnostic caching.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.1...4.0.2
+
+## 4.0.1 - 2026-02-18
+
+### What's Changed
+
+* Use new getters from blocks package to include the parameters replacer for title, intro and seo fields of a page.
+* Improve menu resource by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/13
+* Fix lazy loading violation on page tree and add canonical URL redirects by @lukasdewijn in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/12
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.0.0...4.0.1
+
+## v3.0.1 - 2026-02-18
+
+- Use new getters from blocks package to include the parameters replacer in title, intro & seo fields of the page
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.0...3.0.1
+
+## v4.0.0 - 2026-02-12
+
+- Filament v4 & v5 compatibility
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/3.0.0...4.0.0
+
+## v3.0.0 - 2026-02-12
+
+- Bump semver to match Filament versions
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.21...3.0.0
+
+## 0.2.22 - 2026-02-09
+
+- Add page caching for urls and models based on page code.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/0.2.21...0.2.22
+
 ## v0.2.20 - 2026-02-05
 
 ### What's Changed

@@ -56,8 +56,8 @@ return new class extends Migration
 
     public function down(): void
     {
+        Schema::dropIfExists(FilamentFlexibleContentBlockPages::config()->getTaggablesTable());
         Schema::dropIfExists(FilamentFlexibleContentBlockPages::config()->getTagsTable());
         Schema::dropIfExists(FilamentFlexibleContentBlockPages::config()->getTagTypesTable());
-        Schema::dropIfExists(FilamentFlexibleContentBlockPages::config()->getTaggablesTable());
     }
 };

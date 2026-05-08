@@ -2,7 +2,7 @@
 
 In this document, we explain all settings available in the [filament-flexible-content-block-pages configuration file](../config/filament-flexible-content-block-pages.php).
 
-## Table of content
+## Table of Contents
 
 <!--ts-->
    * [Overview](#overview)

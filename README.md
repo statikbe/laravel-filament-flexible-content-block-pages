@@ -26,6 +26,8 @@ while providing content editors with an intuitive interface for managing pages a
 
 This package makes use of [several great open-source packages](#used-packages) to be able to bundle these features. 
 
+<div class="filament-hidden">
+
 ## Table of contents
 
 <!--ts-->
@@ -86,6 +88,8 @@ This package makes use of [several great open-source packages](#used-packages) t
 
 <!--te-->
 
+</div>
+
 ## Installation
 
 You can install the package via composer:
@@ -93,6 +97,8 @@ You can install the package via composer:
 ```bash
 composer require statikbe/laravel-filament-flexible-content-block-pages
 ```
+
+**Note:** AI agents are quite good with interpreting the installation instructions below ;-).
 
 Publish the config file with:
 
@@ -118,7 +124,7 @@ Configure the CSS styling of the frontend by adding these lines to the CSS file 
 @source "../../config/filament-flexible-content-blocks.php";
 ```
 
-In the tailwind CSS of your filament back-end (probably `resources/css/filament/admin/theme.css`, add the following lines:
+In the Tailwind CSS of your Filament back-end (probably `resources/css/filament/admin/theme.css`), add the following lines:
 
 ```css
 @source "../../vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php";
@@ -328,7 +334,7 @@ Menus support multiple types of links and can be easily styled with custom templ
 - **Conditional visibility** - Show/hide menu items without deleting them
 - **Icon support** - Optional icons for menu items (basic implementation currently)
 - **Dynamic labels** - Use model titles or custom labels for linked content
-- **Caching** - Menu's are cached for the best performance
+- **Caching** - Menus are cached for the best performance
 
 <img src="documentation/screenshots/menu.png" alt="Menu builder" width="100%" />
 
@@ -389,7 +395,7 @@ easily with [`HasTitleMenuLabelTrait`](src/Models/Concerns/HasTitleMenuLabelTrai
 
 ### Menu seeding
 
-It makes a lot of sense to create most of the menu's in seeders, so they can be automatically synced over different environments.
+It makes a lot of sense to create most of the menus in seeders, so they can be automatically synced over different environments.
 See the [menu seeding documentation](documentation/seeders.md) for programmatic menu creation.
 
 For creating custom menu styles and advanced menu customization, see the [menu customization documentation](documentation/extending-and-customisation.md#menu).
@@ -466,7 +472,7 @@ flexiblePageUrl($page, 'nl');
 In Blade templates:
 ```blade
 <a href="{{ flexiblePageUrl($page) }}">
-    {{ $page->title }}
+    {{ $page->getTitle() }}
 </a>
 ```
 
@@ -487,7 +493,7 @@ The package includes automatic redirect management: when the slug of a page chan
 to the new page is added. These redirects are stored in the database and are manageable with the Filament resource, 
 so you can add your own redirects. For example, you can add handy redirects for marketing campaigns or quick links.
 
-We have integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector), so you can easily configure other redirects in the spatie packages config.
+We have integrated [spatie/laravel-missing-page-redirector](https://github.com/spatie/laravel-missing-page-redirector), so you can easily configure other redirects in the Spatie package's config.
 
 ### Redirect middleware configuration
 
@@ -623,7 +629,7 @@ For tag configuration options, URL patterns, and content inclusion settings, see
 
 Authorisation setup is not included in this package. Most projects will use an authorisation strategy project-wide, e.g. via policies.
 
-However authorisation can be easily implemented. There are two easy strategies:
+However, authorisation can be easily implemented. There are two easy strategies:
 
 1. Use the panel and implement a simple access rule for the panel on the user model in `canAccessPanel(Panel $panel)`.
 2. Remove the unwanted resources from the `resources` configuration.  
@@ -641,7 +647,6 @@ If you want to further customise or extend the functionality, have a look [at th
 
 ## Future work
 
-- Caching of the menu data structure.
 - Add menu item for subtitle in menus.
 - A model to store re-usable content blocks, e.g. to create a marketing banner that can be reused on many pages, and edited once.
 - Contact form
@@ -649,6 +654,8 @@ If you want to further customise or extend the functionality, have a look [at th
 - A component to put on the pages with a quick link to edit this page in Filament
 - A trait for page indexing in Laravel Scout
 - Improve installation & setup: create an install command
+
+<div class="filament-hidden">
 
 ## Development
 
@@ -669,6 +676,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Security Vulnerabilities
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+
+</div>
 
 ## Credits
 
