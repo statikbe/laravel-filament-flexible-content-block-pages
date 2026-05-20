@@ -12,7 +12,8 @@
         {
             "name": "Sten Govaerts",
             "email": "sten.govaerts@gmail.com",
-            "role": "Developer"
+            "role": "Developer",
+            "homepage": "https://github.com/sten"
         }
     ],
     "require": {
