@@ -10,7 +10,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPages
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
-class EditButton extends Component
+class EditPageButton extends Component
 {
     public string $editUrl;
 
@@ -29,11 +29,11 @@ class EditButton extends Component
             return false;
         }
 
-        if (! FilamentFlexibleContentBlockPages::config()->isEditButtonEnabled($this->page::class)) {
+        if (! FilamentFlexibleContentBlockPages::config()->isEditPageButtonEnabled($this->page::class)) {
             return false;
         }
 
-        $gate = FilamentFlexibleContentBlockPages::config()->getEditButtonGate($this->page::class);
+        $gate = FilamentFlexibleContentBlockPages::config()->getEditPageButtonGate($this->page::class);
 
         if (! $gate) {
             return false;
@@ -46,14 +46,14 @@ class EditButton extends Component
     {
         $theme = FilamentFlexibleContentBlockPages::config()->getTheme();
         $package = FilamentFlexibleContentBlockPagesServiceProvider::PACKAGE_PREFIX;
-        $template = "{$package}::{$theme}.components.edit-button";
+        $template = "{$package}::{$theme}.components.edit-page-button";
 
         if (view()->exists($template)) {
             return view($template);
         }
 
         /** @var view-string $fallbackTemplate */
-        $fallbackTemplate = "{$package}::tailwind.components.edit-button";
+        $fallbackTemplate = "{$package}::tailwind.components.edit-page-button";
 
         return view($fallbackTemplate);
     }

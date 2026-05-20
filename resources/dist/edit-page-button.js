@@ -3,7 +3,7 @@
  * when both are shown.
  */
 (function () {
-    var btn = document.getElementById('flexible-pages-edit-button');
+    var btn = document.getElementById('flexible-pages_edit-page-button');
 
     if (!btn) {
         return;

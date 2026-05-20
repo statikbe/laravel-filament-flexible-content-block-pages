@@ -358,9 +358,9 @@ class FilamentFlexibleContentBlockPagesConfig
     /**
      * @param  class-string<Model>  $modelClass
      */
-    public function isEditButtonEnabled(string $modelClass): bool
+    public function isEditPageButtonEnabled(string $modelClass): bool
     {
-        return $this->packageConfig("page_resource.{$modelClass}.enable_edit_button", true);
+        return $this->packageConfig("page_resource.{$modelClass}.enable_edit_page_button", true);
     }
 
     /**
@@ -382,9 +382,9 @@ class FilamentFlexibleContentBlockPagesConfig
     /**
      * @param  class-string<Model>  $modelClass
      */
-    public function getEditButtonGate(string $modelClass): ?string
+    public function getEditPageButtonGate(string $modelClass): ?string
     {
-        return $this->packageConfig("page_resource.{$modelClass}.gates.edit_button");
+        return $this->packageConfig("page_resource.{$modelClass}.gates.edit_page_button");
     }
 
     /**

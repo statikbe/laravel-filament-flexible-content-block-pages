@@ -12,7 +12,7 @@ use Spatie\MissingPageRedirector\Redirector\Redirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\BaseLayout;
-use Statikbe\FilamentFlexibleContentBlockPages\Components\EditButton;
+use Statikbe\FilamentFlexibleContentBlockPages\Components\EditPageButton;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\LanguageSwitch;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
@@ -52,7 +52,7 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
                 BaseLayout::class,
                 Menu::class,
                 MenuItem::class,
-                EditButton::class,
+                EditPageButton::class,
             );
     }
 
@@ -76,8 +76,8 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
     {
         Route::get('flexible-pages/asset/{filename}', function (string $filename) {
             $allowed = [
-                'edit-button.css' => 'text/css; charset=UTF-8',
-                'edit-button.js' => 'application/javascript; charset=UTF-8',
+                'edit-page-button.css' => 'text/css; charset=UTF-8',
+                'edit-page-button.js' => 'application/javascript; charset=UTF-8',
             ];
             if (! array_key_exists($filename, $allowed)) {
                 abort(404);

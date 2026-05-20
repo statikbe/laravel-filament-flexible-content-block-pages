@@ -6,7 +6,7 @@
 @endphp
 
 <x-flexible-pages-base-layout>
-    <x-flexible-pages-edit-button :page="$page"/>
+    <x-flexible-pages-edit-page-button :page="$page"/>
 
     <header>
         <x-flexible-pages-language-switch/>
