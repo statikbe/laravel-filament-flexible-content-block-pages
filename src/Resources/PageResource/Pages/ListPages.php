@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
+use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 
 class ListPages extends ListRecords
@@ -41,10 +42,12 @@ class ListPages extends ListRecords
         return true;
     }
 
+    /**
+     * @param  Builder<Page>  $query
+     */
     protected function applySearchToTableQuery(Builder $query): Builder
     {
         if (filled($searchQuery = $this->getTableSearch())) {
-            /** @phpstan-ignore-next-line */
             $query->search($searchQuery)
                 // Add search on code. This should not be included in the default search which could be used on the public website:
                 ->orWhereRaw('LOWER(code) LIKE ?', ["%{$searchQuery}%"]);
