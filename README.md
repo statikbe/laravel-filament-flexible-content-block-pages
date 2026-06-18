@@ -127,10 +127,10 @@ Configure the CSS styling of the frontend by adding these lines to the CSS file 
 In the Tailwind CSS of your Filament back-end (probably `resources/css/filament/admin/theme.css`), add the following lines:
 
 ```css
-@source "../../vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php";
-@source "../../vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php";
-@source "../../config/filament-flexible-content-blocks.php";
-@source "../../vendor/solution-forest/filament-tree/resources/**/*.blade.php";
+@source "../../../../vendor/statikbe/laravel-filament-flexible-content-block-pages/**/*.blade.php";
+@source "../../../../vendor/statikbe/laravel-filament-flexible-content-blocks/**/*.blade.php";
+@source "../../../../config/filament-flexible-content-blocks.php";
+@source "../../../../vendor/solution-forest/filament-tree/resources/**/*.blade.php";
 ```
 
 You can now seed the home page and default settings by running:
