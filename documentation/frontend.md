@@ -172,7 +172,7 @@ For example, you can implement a custom page like this:
 
 ### Edit Page Button
 
-A convenience button for page admins to navigate to the EditPage url of the active page.
+A convenience button, which is shown in the actual web application (so not in the filament admin), for page admins to easily navigate to the EditPage admin url of the active page.
 When enabled AND in case the logged-in user has sufficient permission, this button will appear in the lower-left corner within the default page layout.
 
 **1. The edit-page-button component can be included in the page layout (pages/index.blade.php) like this:**
