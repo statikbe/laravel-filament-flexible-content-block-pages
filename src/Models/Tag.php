@@ -45,7 +45,9 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
 
     /**
      * This method is overwritten to make filament resolve the model with a translated slug key.
-     * {@inheritDoc}
+     *
+     * @param  Builder<self>  $query
+     *                                {@inheritDoc}
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
@@ -55,13 +57,11 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
             return parent::resolveRouteBindingQuery($query, $value, $field);
         }
 
-        return $query->where(function (Builder $query) use ($field, $value) {
-            foreach (array_keys(LaravelLocalization::getSupportedLocales()) as $locale) {
-                $query->orWhere("{$field}->{$locale}", $value);
-            }
-
-            return $query;
-        });
+        return $query->whereJsonContainsLocales(
+            $field,
+            array_keys(LaravelLocalization::getSupportedLocales()),
+            $value,
+        );
     }
 
     public function getViewUrl(?string $locale = null): string

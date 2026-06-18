@@ -9,7 +9,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\CreatePage;
@@ -18,10 +17,12 @@ use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\List
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Pages\ManagePageTree;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Schemas\PageFormSchema;
 use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Schemas\PageTableSchema;
+use Statikbe\FilamentFlexibleContentBlocks\Facades\FilamentFlexibleContentBlocks;
+use Statikbe\FilamentFlexibleContentBlocks\Filament\Resource\Concerns\FlexibleContentBlocksTranslatable;
 
 class PageResource extends Resource
 {
-    use Translatable;
+    use FlexibleContentBlocksTranslatable;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
@@ -125,5 +126,10 @@ class PageResource extends Resource
             flexiblePagesTrans('pages.search.intro_lbl') => Str::limit(strip_tags($record->getIntro())),
             flexiblePagesTrans('pages.search.is_published_lbl') => $published,
         ];
+    }
+
+    public static function getTranslatableLocales(): array
+    {
+        return ! empty(FilamentFlexibleContentBlockPages::config()->getSupportedLocales()) ? FilamentFlexibleContentBlockPages::config()->getSupportedLocales() : FilamentFlexibleContentBlocks::getLocales();
     }
 }

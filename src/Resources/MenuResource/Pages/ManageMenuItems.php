@@ -100,8 +100,10 @@ class ManageMenuItems extends TreePage
                     'target' => '_self',
                 ])
                 ->action(function (array $data): void {
-                    $data['menu_id'] = $this->menu->getKey();
-                    static::getModel()::create($data);
+                    $menuItem = FilamentFlexibleContentBlockPages::config()->getMenuItemModel();
+                    $menuItem->fill($data);
+                    $menuItem->menu_id = $this->menu->getKey();
+                    $menuItem->save();
                 }),
         ];
     }
@@ -124,17 +126,14 @@ class ManageMenuItems extends TreePage
 
                     return $data;
                 })
-                ->action(function (Model $record, array $data): void {
-                    // Ensure translatable fields have null value if not provided
-                    if (! array_key_exists('label', $data)) {
-                        $data['label'] = null;
-                    }
+                ->action(function (MenuItem $record, array $data): void {
+                    $record->fill($data);
 
-                    if (! array_key_exists('url', $data)) {
-                        $data['url'] = null;
-                    }
+                    // Ensure translatable fields are reset to null when omitted from the form:
+                    $record->label = $data['label'] ?? null;
+                    $record->url = $data['url'] ?? null;
 
-                    $record->update($data);
+                    $record->save();
                 }),
             DeleteAction::make(),
         ];
