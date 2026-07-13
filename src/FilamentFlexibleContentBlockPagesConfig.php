@@ -38,6 +38,16 @@ class FilamentFlexibleContentBlockPagesConfig
 
     const TYPE_MENU_ITEM = 'menu_items';
 
+    const DEFAULT_INTRO_TOOLBAR_BUTTONS = [
+        'bold',
+        'italic',
+        'link',
+        'bulletList',
+        'orderedList',
+        'undo',
+        'redo',
+    ];
+
     private string $pageModel;
 
     private string $redirectModel;
@@ -361,6 +371,14 @@ class FilamentFlexibleContentBlockPagesConfig
     public function isEditPageButtonEnabled(string $modelClass): bool
     {
         return $this->packageConfig("page_resource.{$modelClass}.enable_edit_page_button", true);
+    }
+
+    /**
+     * @param  class-string<Model>  $modelClass
+     */
+    public function getIntroToolbarButtons(string $modelClass): array
+    {
+        return $this->packageConfig("page_resource.{$modelClass}.intro_toolbar_buttons", static::DEFAULT_INTRO_TOOLBAR_BUTTONS);
     }
 
     /**

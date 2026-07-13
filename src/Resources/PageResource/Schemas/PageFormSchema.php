@@ -58,7 +58,7 @@ class PageFormSchema
 
         $fields = [
             TitleField::create(true),
-            IntroField::create(),
+            static::getPageIntroField(),
             HeroImageSection::create(true, FilamentFlexibleContentBlockPages::config()->isHeroVideoUrlEnabled($modelClass)),
         ];
 
@@ -117,5 +117,17 @@ class PageFormSchema
         }
 
         return $fields;
+    }
+
+    public static function getPageIntroField(): IntroField
+    {
+        return IntroField::create()
+            ->helperText(flexiblePagesTrans('pages.fields.intro_help'))
+            ->toolbarButtons(static::getIntroToolbarButtons());
+    }
+
+    private static function getIntroToolbarButtons(): array
+    {
+        return FilamentFlexibleContentBlockPages::config()->getIntroToolbarButtons(PageResource::getModel());
     }
 }
