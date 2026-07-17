@@ -15,10 +15,16 @@ class EditPageButton extends Component
     public string $editUrl;
 
     public function __construct(
-        public Page $page,
+        public ?Page $page,
+        ?string $editUrl = null,
     ) {
-        $pageResource = FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
-        $this->editUrl = $pageResource::getUrl('edit', ['record' => $this->page]);
+        if ($editUrl) {
+            $this->editUrl = $editUrl;
+        }
+        else {
+            $pageResource = FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+            $this->editUrl = $pageResource::getUrl('edit', ['record' => $this->page]);
+        }
     }
 
     public function shouldRender(): bool
