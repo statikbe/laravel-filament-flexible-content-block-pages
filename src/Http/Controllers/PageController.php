@@ -92,7 +92,7 @@ class PageController extends AbstractSeoPageController
     {
         /** @var class-string|null $pageModel */
         $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
-        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($pageModel);
+        $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($pageModel::class);
 
         if (! Auth::user() || ! ($viewUnpublishedPagesGate && Gate::allows($viewUnpublishedPagesGate, $page))) {
             if (! $page->isPublished()) {
