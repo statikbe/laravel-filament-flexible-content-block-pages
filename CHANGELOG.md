@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.1 - 2026-07-16
+
+### What's Changed
+
+* New edit page button to set on a frontend rendered page to navigate quickly to the Filament edit page by @bverbist in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/23
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/22
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/24
+
+### New Contributors
+
+* @bverbist made their first contribution in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/23
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.0...4.1.1
+
 ## v4.1.0 - 2026-04-13
 
 ### What's Changed

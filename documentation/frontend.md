@@ -170,6 +170,50 @@ For example, you can implement a custom page like this:
 </x-flexible-pages-base-layout>
 ```
 
+### Edit Page Button
+
+A convenience button, which is shown in the actual web application (so not in the filament admin), for page admins to easily navigate to the EditPage admin url of the active page.
+When enabled AND in case the logged-in user has sufficient permission, this button will appear in the lower-left corner within the default page layout.
+
+**1. The edit-page-button component can be included in the page layout (pages/index.blade.php) like this:**
+
+```blade
+<x-flexible-pages-base-layout>
+    <x-flexible-pages-edit-page-button :page="$page"/>
+    
+    {{-- other page layout elements like the <header>, <main> and <footer> --}}
+</x-flexible-pages-base-layout>
+```
+
+**2. To enable the edit-page button in the configuration:**
+```php
+// config/filament-flexible-content-block-pages.php
+'page_resource' => [
+    Page::class => [
+        /*
+        | Enable or disable the front-end button that will open the current page for editing.
+        */
+        'enable_edit_page_button' => true,
+    ],
+],
+```
+
+**3. Configuring the permission required for a user to be able to see the button:**
+
+```php
+// config/filament-flexible-content-block-pages.php
+'page_resource' => [
+    Page::class => [
+        /*
+        | Authorisation gates for the page resource.
+        */
+        'gates' => [
+            'edit_page_button' => 'update_page',
+        ],
+    ],
+],
+```
+
 ## Page Templates
 
 ### Custom Page Templates
