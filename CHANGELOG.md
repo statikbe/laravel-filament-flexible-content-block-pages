@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.2 - 2026-07-17
+
+### What's Changed
+
+* Fix abort if unpublished gate check: the permission to view unpublished pages was not fetched correctly from config.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.1...4.1.2
+
 ## v4.1.1 - 2026-07-16
 
 ### What's Changed
