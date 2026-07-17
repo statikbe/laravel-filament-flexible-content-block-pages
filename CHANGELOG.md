@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.3 - 2026-07-17
+
+- Make the page edit button re-usable for other models than Page.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.2...4.1.3
+
 ## v4.1.2 - 2026-07-17
 
 ### What's Changed
