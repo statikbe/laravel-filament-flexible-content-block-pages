@@ -8,6 +8,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Wait a few days after a release before opening update PRs, reducing exposure
+    # to compromised releases (supply-chain attack window).
+    cooldown:
+      default-days: 7
     labels:
       - "dependencies"
 
@@ -15,5 +19,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Wait a few days after a release before opening update PRs, reducing exposure
+    # to compromised releases (supply-chain attack window).
+    cooldown:
+      default-days: 7
     labels:
       - "dependencies"
