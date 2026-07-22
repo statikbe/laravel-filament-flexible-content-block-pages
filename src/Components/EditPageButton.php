@@ -20,8 +20,7 @@ class EditPageButton extends Component
     ) {
         if ($editUrl) {
             $this->editUrl = $editUrl;
-        }
-        else {
+        } else {
             $pageResource = FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
             $this->editUrl = $pageResource::getUrl('edit', ['record' => $this->page]);
         }
