@@ -42,7 +42,6 @@ class PageTableSchema
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 PublishedColumn::create()
-                    ->sortable()
                     ->toggleable(),
             ])
             ->filters([
