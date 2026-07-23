@@ -77,7 +77,6 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         Route::get('flexible-pages/asset/{filename}', function (string $filename) {
             $allowed = [
                 'edit-page-button.css' => 'text/css; charset=UTF-8',
-                'edit-page-button.js' => 'application/javascript; charset=UTF-8',
             ];
             if (! array_key_exists($filename, $allowed)) {
                 abort(404);

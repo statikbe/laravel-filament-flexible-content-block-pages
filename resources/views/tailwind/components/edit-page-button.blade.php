@@ -5,11 +5,9 @@
 <a id="flexible-pages_edit-page-button"
    class="flexible-pages_edit-page-button"
    href="{{ $editUrl }}"
+   target="_blank"
    aria-label="{{ flexiblePagesTrans('pages.toolbar.edit_page') }}">
-    @svg('heroicon-o-pencil-square')
+    @svg('heroicon-s-pencil')
+
+    <span>{{ flexiblePagesTrans('pages.toolbar.edit_page') }}</span>
 </a>
-
-@once
-    <script src="{{ flexiblePagesAssetUrl('edit-page-button.js') }}" defer></script>
-@endonce
-
