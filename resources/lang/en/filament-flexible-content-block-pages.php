@@ -13,6 +13,9 @@ return [
             'overview' => 'Overview',
             'advanced' => 'Advanced',
         ],
+        'fields' => [
+            'intro_help' => 'Optional short introduction/description of the page. Extensive page content, on the other hand, can be managed in the "Content" tab.',
+        ],
         'table' => [
             'created_at_col' => 'Created at',
             'updated_at_col' => 'Updated at',
