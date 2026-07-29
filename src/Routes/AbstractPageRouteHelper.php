@@ -21,12 +21,17 @@ abstract class AbstractPageRouteHelper implements HandlesPageRoutes
 
     public function definePageRoutes(): void
     {
+        // The page routes are catch-alls that match any 1-3 segment URL.
+        // Marking them as fallback lets host-app routes take precedence even if those routes are themselves fallback.
         Route::get('{grandparent}/{parent}/{page}', [PageController::class, 'grandchildIndex'])
-            ->name(static::ROUTE_GRANDCHILD_PAGE);
+            ->name(static::ROUTE_GRANDCHILD_PAGE)
+            ->fallback();
         Route::get('{parent}/{page}', [PageController::class, 'childIndex'])
-            ->name(static::ROUTE_CHILD_PAGE);
+            ->name(static::ROUTE_CHILD_PAGE)
+            ->fallback();
         Route::get('{page}', [PageController::class, 'index'])
-            ->name(static::ROUTE_PAGE);
+            ->name(static::ROUTE_PAGE)
+            ->fallback();
         if (FilamentFlexibleContentBlockPages::config()->isHomePageRouteEnabled()) {
             Route::get('/', [PageController::class, 'homeIndex'])
                 ->name(static::ROUTE_HOME);

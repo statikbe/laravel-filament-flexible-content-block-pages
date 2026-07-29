@@ -90,7 +90,6 @@ class PageController extends AbstractSeoPageController
 
     protected function abortIfUnpublished(HasPageAttributes $page)
     {
-        /** @var class-string|null $pageModel */
         $pageModel = FilamentFlexibleContentBlockPages::config()->getPageModel();
         $viewUnpublishedPagesGate = FilamentFlexibleContentBlockPages::config()->getViewUnpublishedPagesGate($pageModel::class);
 
