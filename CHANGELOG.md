@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.5 - 2026-07-29
+
+- Fix wrapper section width of forms to full page width
+- Fix page routes as fallback urls so they do not collide with more precise routes and route ordering
+- Fix phpstan errors
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.4...4.1.5
+
 ## v4.1.4 - 2026-07-22
 
 * Fix security repo warning from plumbphp
