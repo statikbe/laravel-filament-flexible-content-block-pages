@@ -1,28 +1,38 @@
 .flexible-pages_edit-page-button {
-    --fp-edit-page-button-bg: #00b800;
-    --fp-edit-page-button-bg-hover: #009900;
-    --fp-edit-page-button-fg: #f8fafc;
+    --fp-edit-page-button-bg: #55b3c8;
+    --fp-edit-page-button-fg: #FFFFFF;
     --fp-edit-page-button-z: 6000000;
+    --fp-edit-page-button-radius-left: 1rem;
 
     position: fixed;
-    bottom: 0;
-    left: 0;
+    top: 6rem;
+    right: 0;
     z-index: var(--fp-edit-page-button-z);
     box-sizing: border-box;
+
     display: inline-flex;
-    width: 41px;
-    height: 32px;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+
+    white-space: nowrap;
+    translate: calc(100% - 2.5rem) 0;
+    padding: 0.5rem 1rem;
+    border-top-left-radius: var(--fp-edit-page-button-radius-left);
+    border-bottom-left-radius: var(--fp-edit-page-button-radius-left);
+
     background: var(--fp-edit-page-button-bg);
     color: var(--fp-edit-page-button-fg);
     text-decoration: none;
     cursor: pointer;
+
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 400ms;
 }
 
 .flexible-pages_edit-page-button:hover {
-    background: var(--fp-edit-page-button-bg-hover);
-    color: var(--fp-edit-page-button-fg);
+    translate: 0 0;
 }
 
 .flexible-pages_edit-page-button svg {
