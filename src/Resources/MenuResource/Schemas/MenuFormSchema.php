@@ -61,6 +61,7 @@ class MenuFormSchema
             ->components([
                 Section::make(flexiblePagesTrans('menus.form.general_section'))
                     ->schema($formFields)
+                    ->columnSpanFull()
                     ->columns(2),
             ]);
     }

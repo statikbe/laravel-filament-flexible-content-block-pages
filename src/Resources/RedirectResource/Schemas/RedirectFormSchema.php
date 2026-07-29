@@ -16,6 +16,7 @@ class RedirectFormSchema
             ->components([
                 Section::make()
                     ->columns(2)
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('old_url')
                             ->label(flexiblePagesTrans('redirects.redirect_old_url'))
