@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Component;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
 
@@ -21,7 +20,7 @@ class EditPageButton extends Component
         if ($editUrl) {
             $this->editUrl = $editUrl;
         } else {
-            $pageResource = FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+            $pageResource = FilamentFlexibleContentBlockPages::config()->getPageResource();
             $this->editUrl = $pageResource::getUrl('edit', ['record' => $this->page]);
         }
     }

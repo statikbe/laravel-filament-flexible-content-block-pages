@@ -210,6 +210,24 @@ class FilamentFlexibleContentBlockPagesConfig
         return $this->packageConfig('resources');
     }
 
+    /**
+     * Returns the configured resource class for the given type, which may be overwritten by the app.
+     *
+     * @return class-string<resource>
+     */
+    public function getResource(string $type): string
+    {
+        return $this->getResources()[$type];
+    }
+
+    /**
+     * @return class-string<resource>
+     */
+    public function getPageResource(): string
+    {
+        return $this->getResource(static::TYPE_PAGE);
+    }
+
     public function getPanelPath(): string
     {
         return $this->packageConfig('panel.path', 'content');

@@ -4,7 +4,6 @@ namespace Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource\Page
 
 use Filament\Resources\Pages\CreateRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\CreateRecord\Concerns\TranslatableWithMedia;
 
@@ -14,7 +13,7 @@ class CreatePage extends CreateRecord
 
     public static function getResource(): string
     {
-        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+        return FilamentFlexibleContentBlockPages::config()->getPageResource();
     }
 
     protected function getActions(): array

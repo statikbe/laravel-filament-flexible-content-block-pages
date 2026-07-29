@@ -9,7 +9,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Form\Components\UndeletableToggle;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\CopyContentBlocksToLocalesAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\AuthorField;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Fields\CodeField;
@@ -54,7 +53,7 @@ class PageFormSchema
 
     public static function getGeneralTabFields(): array
     {
-        $modelClass = PageResource::getModel();
+        $modelClass = FilamentFlexibleContentBlockPages::config()->getPageModel()::class;
 
         $fields = [
             TitleField::create(true),
@@ -94,7 +93,7 @@ class PageFormSchema
     public static function getAdvancedTabFields(): array
     {
         $config = FilamentFlexibleContentBlockPages::config();
-        $modelClass = PageResource::getModel();
+        $modelClass = $config->getPageModel()::class;
 
         $fields = [
             PublicationSection::create(),

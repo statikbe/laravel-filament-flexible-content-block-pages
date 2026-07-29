@@ -6,9 +6,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\EditRecord;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Actions\FlexibleLocaleSwitcher;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Form\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Pages\EditRecord\Concerns\TranslatableWithMedia;
@@ -21,7 +19,7 @@ class EditPage extends EditRecord
 
     public static function getResource(): string
     {
-        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+        return FilamentFlexibleContentBlockPages::config()->getPageResource();
     }
 
     protected function getActions(): array
@@ -33,7 +31,9 @@ class EditPage extends EditRecord
                 ViewPageAction::make(),
                 ReplicateAction::make()
                     ->color('gray')
-                    ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
+                    ->successRedirectUrl(function (ReplicateAction $action) {
+                        return static::getResource()::getUrl('edit', ['record' => $action->getReplica()]);
+                    }),
                 LinkedToMenuItemDeleteAction::make()
                     ->color('danger')
                     ->visible(fn (Page $record) => $record->isDeletable()),

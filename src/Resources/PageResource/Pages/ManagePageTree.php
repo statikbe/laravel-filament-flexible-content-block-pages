@@ -10,7 +10,6 @@ use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Actions\ViewAction;
 use SolutionForest\FilamentTree\Resources\Pages\TreePage;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\HasPageAttributes;
 use Statikbe\FilamentFlexibleContentBlocks\Models\Contracts\Linkable;
 
@@ -23,7 +22,7 @@ class ManagePageTree extends TreePage
 
     public static function getResource(): string
     {
-        return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE];
+        return FilamentFlexibleContentBlockPages::config()->getPageResource();
     }
 
     protected function getActions(): array
@@ -55,7 +54,7 @@ class ManagePageTree extends TreePage
             ->iconButton()
             ->authorize(fn (Model $record): bool => static::getResource()::canEdit($record))
             ->url(function (Model $record) {
-                return FilamentFlexibleContentBlockPages::config()->getResources()[FilamentFlexibleContentBlockPagesConfig::TYPE_PAGE]::getUrl('edit', ['record' => $record]);
+                return static::getResource()::getUrl('edit', ['record' => $record]);
             });
     }
 

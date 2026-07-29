@@ -8,7 +8,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Statikbe\FilamentFlexibleContentBlockPages\Actions\LinkedToMenuItemBulkDeleteAction;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
-use Statikbe\FilamentFlexibleContentBlockPages\Resources\PageResource;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\PublishAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ReplicateAction;
 use Statikbe\FilamentFlexibleContentBlocks\Filament\Table\Actions\ViewAction;
@@ -22,6 +21,9 @@ class PageTableSchema
 {
     public static function configure(Table $table): Table
     {
+        $config = FilamentFlexibleContentBlockPages::config();
+        $pageResource = $config->getPageResource();
+
         return $table
             ->columns([
                 TitleColumn::create()
@@ -53,14 +55,14 @@ class PageTableSchema
                 PublishAction::make(),
                 ViewAction::make(),
                 ReplicateAction::make()
-                    ->visible(FilamentFlexibleContentBlockPages::config()->isReplicateActionOnTableEnabled(PageResource::getModel()))
-                    ->successRedirectUrl(fn (ReplicateAction $action) => PageResource::getUrl('edit', ['record' => $action->getReplica()])),
+                    ->visible($config->isReplicateActionOnTableEnabled($config->getPageModel()::class))
+                    ->successRedirectUrl(fn (ReplicateAction $action) => $pageResource::getUrl('edit', ['record' => $action->getReplica()])),
             ])
             ->toolbarActions([
                 LinkedToMenuItemBulkDeleteAction::make(),
             ])
             ->recordUrl(
-                fn ($record): string => PageResource::getUrl('edit', ['record' => $record])
+                fn ($record): string => $pageResource::getUrl('edit', ['record' => $record])
             )
             ->modifyQueryUsing(function (Builder $query) {
                 $query->with(['menuItem', 'parent.parent']);
