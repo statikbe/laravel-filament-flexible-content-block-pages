@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.1.6 - 2026-07-29
+
+- fix hardcoded references to PageResource: use the configured resource so it can be extended.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.5...4.1.6
+
 ## v4.1.5 - 2026-07-29
 
 - Fix wrapper section width of forms to full page width
