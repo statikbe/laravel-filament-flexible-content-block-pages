@@ -46,8 +46,8 @@ class Tag extends \Spatie\Tags\Tag implements Linkable, LocalizedUrlRoutable
     /**
      * This method is overwritten to make filament resolve the model with a translated slug key.
      *
-     * @param  Builder<self>  $query
-     *                                {@inheritDoc}
+     * @param  Builder<static>  $query
+     *                                  {@inheritDoc}
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
