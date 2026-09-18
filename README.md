@@ -408,7 +408,7 @@ By using one record and a new media collection for each media setting, you can m
 Furthermore, by manually adding a specific column for a setting, the data types are also correct and castable.
 In contrast, if we would use a key-value or JSON-based solution, not all our requirements could be served.
 
-Each setting is cached and refreshed when the settings change.
+Each setting is cached per locale and refreshed when the settings or their media change.
 
 ### Use settings
 
@@ -429,6 +429,7 @@ $settings = Settings::getSettings();
 ```
 
 To add custom settings fields and extend the settings functionality, see the [settings extension documentation](documentation/extending-and-customisation.md#settings).
+If your project uses [Laravel Boost](https://laravel.com/docs/boost), the `add-flexible-pages-setting` skill of this package guides your AI agent through adding a setting field.
 
 ## Routing
 

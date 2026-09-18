@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MissingPageRedirector\Redirector\Redirector;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\GenerateSitemapCommand;
 use Statikbe\FilamentFlexibleContentBlockPages\Commands\SeedDefaultsCommand;
@@ -18,6 +19,7 @@ use Statikbe\FilamentFlexibleContentBlockPages\Components\Menu;
 use Statikbe\FilamentFlexibleContentBlockPages\Components\MenuItem;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\Listeners\SlugChangedListener;
+use Statikbe\FilamentFlexibleContentBlockPages\Observers\SettingsMediaObserver;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\Contracts\GeneratesSitemap;
 use Statikbe\FilamentFlexibleContentBlockPages\Services\SitemapGeneratorService;
 use Statikbe\FilamentFlexibleContentBlocks\Events\SlugChanged;
@@ -70,6 +72,10 @@ class FilamentFlexibleContentBlockPagesServiceProvider extends PackageServicePro
         $this->app->bind(Redirector::class, config('filament-flexible-content-block-pages.redirects.redirector'));
 
         $this->registerPackagePublicAssetsRoute();
+
+        // flush the settings cache when the settings media changes:
+        $mediaModel = config('media-library.media_model', Media::class);
+        $mediaModel::observe(SettingsMediaObserver::class);
     }
 
     protected function registerPackagePublicAssetsRoute(): void

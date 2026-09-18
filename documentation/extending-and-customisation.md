@@ -6,6 +6,8 @@ In this document, we will explain how you can change behaviour or extend functio
 
 <!--ts-->
    * [Settings](#settings)
+      * [Image settings](#image-settings)
+      * [Caching of settings](#caching-of-settings)
    * [Menu Builder](#menu-builder)
       * [Customizing Menu Styles](#customizing-menu-styles)
    * [Routes](#routes)
@@ -39,9 +41,13 @@ In this document, we will explain how you can change behaviour or extend functio
 
 One of the most likely extensions you will want to do is add your own settings fields.
 
+All settings are stored in one row, with one column per setting, so each value keeps its own type
+and can be cast. Image settings are not columns, but a media library collection each.
+
 Here is a step by step guide to add custom settings fields:
 
-1. **Create a migration** to add new columns:
+1. **Create a migration** to add new columns. New columns must be nullable or have a default,
+   because the settings record already exists. Translatable fields need a `json` column:
 ```php
 Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), function (Blueprint $table) {
     $table->string('custom_field')->nullable();
@@ -49,38 +55,66 @@ Schema::table(FilamentFlexibleContentBlockPages::config()->getSettingsTable(), f
 });
 ```
 
-2. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed:
+2. **Extend the Settings model** by adding constants for easy referral and updating `$translatable`, if needed.
+   Note that `$translatable` replaces the list of the parent model, so repeat its fields:
 ```php
 class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings
 {
     const SETTING_CUSTOM_FIELD = 'custom_field';
-    
+
     protected $translatable = [
         parent::SETTING_FOOTER_COPYRIGHT,
         parent::SETTING_CONTACT_INFO,
         self::SETTING_CUSTOM_FIELD, // if translatable
     ];
+
+    protected $casts = [
+        'items_per_page' => 'integer',
+    ];
 }
 ```
 
-3. **Extend the SettingsResource** by overriding `getExtraFormTabs()`:
+3. **Extend the form schema** to add your fields. The settings form is built by
+   `SettingsResource\Schemas\SettingsFormSchema`, so extend that class and not the resource.
+   Override `getGeneralTabFormSchema()` or `getSeoTabFormSchema()` to add fields to an existing tab,
+   and `getExtraFormTabs()` to append new tabs:
 ```php
-class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource
+class CustomSettingsFormSchema extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource\Schemas\SettingsFormSchema
 {
-    protected static function getExtraFormTabs(): array
+    public static function getGeneralTabFormSchema(): array
+    {
+        return array_merge(parent::getGeneralTabFormSchema(), [
+            TextInput::make(CustomSettings::SETTING_CUSTOM_FIELD)
+                ->label(__('cms.settings.custom_field'))
+                // translatable fields should show the translation hint:
+                ->hint(flexiblePagesTrans('settings.translatable_field_hint'))
+                ->hintIcon(Heroicon::Language),
+        ]);
+    }
+
+    public static function getExtraFormTabs(): array
     {
         return [
-            Tab::make('Custom Tab')->schema([
-                TextInput::make(CustomSettings::SETTING_CUSTOM_FIELD)
-                    ->label('Custom Field')
-                    ->required(),
+            Tab::make(__('cms.settings.custom_tab'))->schema([
+                //...
             ]),
         ];
     }
 }
 ```
 
-4. **Configure the extended model and resource** in your config file:
+4. **Extend the SettingsResource** and let it use your form schema:
+```php
+class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages\Resources\SettingsResource
+{
+    public static function form(Schema $schema): Schema
+    {
+        return CustomSettingsFormSchema::configure($schema);
+    }
+}
+```
+
+5. **Configure the extended model and resource** in your config file:
 ```php
 // config/filament-flexible-content-block-pages.php
 'models' => [
@@ -93,6 +127,50 @@ class CustomSettingsResource extends \Statikbe\FilamentFlexibleContentBlockPages
     'settings' => \App\Resources\CustomSettingsResource::class,
 ],
 ```
+
+### Image settings
+
+An image setting is a media library collection. Add it by overriding `registerExtraMediaCollections()`
+and **not** `registerMediaCollections()`, so the media collections of the package keep working:
+
+```php
+class CustomSettings extends \Statikbe\FilamentFlexibleContentBlockPages\Models\Settings
+{
+    const COLLECTION_LOGO = 'logo';
+
+    const CONVERSION_LOGO = 'logo';
+
+    protected function registerExtraMediaCollections(): void
+    {
+        $this->addMediaCollection(static::COLLECTION_LOGO)
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion(static::CONVERSION_THUMB)
+                    ->fit(Fit::Contain, 400, 400);
+                $this->addMediaConversion(static::CONVERSION_LOGO)
+                    ->fit(Fit::Contain, 300, 300);
+            });
+    }
+}
+```
+
+Add the upload field to the form schema with the thumbnail conversion as preview:
+
+```php
+SpatieMediaLibraryFileUpload::make(CustomSettings::COLLECTION_LOGO)
+    ->label(__('cms.settings.logo'))
+    ->collection(CustomSettings::COLLECTION_LOGO)
+    ->conversion(CustomSettings::CONVERSION_THUMB)
+    ->maxFiles(1),
+```
+
+When you add a conversion to a collection that already has images, run
+`php artisan media-library:regenerate`.
+
+### Caching of settings
+
+Setting values are cached forever, per locale. The cache is flushed automatically when the settings
+record is saved and when its media is added, changed or deleted.
 
 ## Menu Builder
 

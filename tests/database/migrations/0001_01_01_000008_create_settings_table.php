@@ -13,6 +13,10 @@ return new class extends Migration
             $table->string('site_title');
             $table->json('contact_info')->nullable();
             $table->json('footer_copyright')->nullable();
+            // columns used by the CustomSettings fixture to test extending the settings model:
+            $table->json('intro')->nullable();
+            $table->json('social_links')->nullable();
+            $table->unsignedInteger('items_per_page')->nullable();
             $table->timestamps();
         });
     }

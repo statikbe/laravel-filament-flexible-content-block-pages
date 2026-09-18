@@ -79,36 +79,48 @@ class Settings extends Model implements HasMedia, HasTranslatableMedia
                     ->format(ImageFormat::WEBP->value)
                     ->fit(Fit::Crop, 1200, 630);
             });
+
+        $this->registerExtraMediaCollections();
     }
 
-    public static function setting(string $settingField, ?string $locale = null): string|bool|null
+    /**
+     * Override this to add media collections of your own, instead of overriding registerMediaCollections(),
+     * so the media collections of the package are always registered.
+     */
+    protected function registerExtraMediaCollections(): void {}
+
+    /**
+     * Returns the value of the given setting field, cached per locale.
+     * Translatable fields are returned for the given locale, or the current locale if none is given.
+     * Other fields are returned with the type of their cast, e.g. an array, integer or boolean.
+     */
+    public static function setting(string $settingField, ?string $locale = null): string|int|float|bool|array|null
     {
         if (! $locale) {
             $locale = app()->getLocale();
         }
 
         $cacheKey = static::getCacheKey($settingField, $locale);
-        $settingValue = TaggableCache::rememberForeverWithTag(
+
+        return TaggableCache::rememberForeverWithTag(
             static::CACHE_TAG_SETTINGS,
             $cacheKey,
-            function () use ($settingField) {
-                $setting = static::getSettings()?->getAttribute($settingField);
+            function () use ($settingField, $locale) {
+                $settings = static::getSettings();
 
-                // replace text params in settings if it is a text field (based on $translatable fields):
-                if (in_array($settingField, app(static::class)->translatable)) {
-                    $setting = FilamentFlexibleContentBlocks::replaceParameters($setting);
+                if (! $settings) {
+                    return null;
                 }
 
-                return $setting;
+                if ($settings->isTranslatableAttribute($settingField)) {
+                    // replace text params in translatable text fields:
+                    return FilamentFlexibleContentBlocks::replaceParameters(
+                        $settings->getTranslation($settingField, $locale)
+                    );
+                }
+
+                return $settings->getAttribute($settingField);
             });
-
-        // get translated value if exists:
-        if (is_array($settingValue)) {
-            // if no translation is available, return the first value:
-            return $settingValue[app()->getLocale()] ?? reset($settingValue);
-        }
-
-        return $settingValue;
     }
 
     public static function getCacheKey(string $settingField, ?string $locale = null): string
