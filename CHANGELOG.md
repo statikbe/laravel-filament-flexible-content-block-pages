@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.2.2 - 2026-09-18
+
+Improve boost skills
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.2.1...4.2.2
+
 ## v4.2.1 - 2026-09-18
 
 Add general boost guideline
