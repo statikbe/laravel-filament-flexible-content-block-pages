@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.2.1 - 2026-09-18
+
+Add general boost guideline
+Add 2 more boost skills:
+
+- add flexible page linkable model
+- setup flexible pages package
+
 ## v4.2.0 - 2026-09-18
 
 add Boost skill for adding settings fields, and fix settings extension issues
