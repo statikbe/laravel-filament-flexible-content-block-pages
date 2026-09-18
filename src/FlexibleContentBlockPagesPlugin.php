@@ -49,7 +49,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
             return self::$instance;
         }
 
-        $instance = filament(app(static::class)->getId());
+        $instance = filament(app(self::class)->getId());
 
         // Check if the instance is of the expected type for phpstan:
         if (! $instance instanceof FlexibleContentBlockPagesPlugin) {
@@ -66,9 +66,9 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function getResources(): array
     {
-        static::$resources ??= FilamentFlexibleContentBlockPages::config()->getResources();
+        self::$resources ??= FilamentFlexibleContentBlockPages::config()->getResources();
 
-        return static::$resources;
+        return self::$resources;
     }
 
     /**
@@ -76,7 +76,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function getPages(): array
     {
-        return static::$pages;
+        return self::$pages;
     }
 
     /**
@@ -84,7 +84,7 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function getWidgets(): array
     {
-        return static::$widgets;
+        return self::$widgets;
     }
 
     /**
@@ -92,9 +92,9 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function pages(array $pages): static
     {
-        static::$pages = $pages;
+        self::$pages = $pages;
 
-        return new static;
+        return new self;
     }
 
     /**
@@ -102,9 +102,9 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function widgets(array $widgets): static
     {
-        static::$widgets = $widgets;
+        self::$widgets = $widgets;
 
-        return new static;
+        return new self;
     }
 
     /**
@@ -112,8 +112,8 @@ final class FlexibleContentBlockPagesPlugin implements Plugin
      */
     public static function resources(array $resources): static
     {
-        static::$resources = $resources;
+        self::$resources = $resources;
 
-        return new static;
+        return new self;
     }
 }
