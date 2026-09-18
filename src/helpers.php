@@ -10,7 +10,7 @@ function flexiblePagesTrans(string $translationKey, array $replace = [], ?string
     return trans("filament-flexible-content-block-pages::filament-flexible-content-block-pages.$translationKey", $replace, $locale);
 }
 
-function flexiblePagesSetting(string $settingField, ?string $locale = null, $default = null): string|bool|null
+function flexiblePagesSetting(string $settingField, ?string $locale = null, $default = null): string|int|float|bool|array|null
 {
     return FilamentFlexibleContentBlockPages::config()->getSettingsModel()::setting($settingField, $locale) ?? $default;
 }

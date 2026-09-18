@@ -214,6 +214,8 @@ In `config/filament-flexible-content-block-pages.php`:
 ```
 
 Without this the package keeps using its own model and resource, and nothing you added shows up.
+`flexiblePagesSetting()` resolves the **configured** model, so until the model is registered its
+casts and translatable fields are ignored and you get the raw column value back.
 
 ### 6. Read the setting
 

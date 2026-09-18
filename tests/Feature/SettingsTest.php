@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesConfig;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Settings;
 use Statikbe\FilamentFlexibleContentBlockPages\Tests\Fixtures\CustomSettings;
 
@@ -97,6 +98,25 @@ it('returns a non translatable array setting as is', function () {
 
     expect(CustomSettings::setting(CustomSettings::SETTING_SOCIAL_LINKS))
         ->toBe(['en' => 'https://example.com/en', 'facebook' => 'https://facebook.com/statik']);
+});
+
+it('returns a non string setting through the helper function', function () {
+    // the helper resolves the configured settings model, so casts only apply once it is registered:
+    config()->set('filament-flexible-content-block-pages.models.settings', CustomSettings::class);
+    app()->forgetInstance(FilamentFlexibleContentBlockPagesConfig::class);
+
+    CustomSettings::create([
+        'site_title' => 'Test Site',
+        'items_per_page' => 12,
+        'social_links' => ['facebook' => 'https://facebook.com/statik'],
+    ]);
+
+    Cache::flush();
+
+    expect(flexiblePagesSetting(CustomSettings::SETTING_ITEMS_PER_PAGE))->toBe(12)
+        ->and(flexiblePagesSetting(CustomSettings::SETTING_SOCIAL_LINKS))
+        ->toBe(['facebook' => 'https://facebook.com/statik'])
+        ->and(flexiblePagesSetting('unknown_setting', default: 'fallback'))->toBe('fallback');
 });
 
 it('returns a non string setting with its cast type', function () {
