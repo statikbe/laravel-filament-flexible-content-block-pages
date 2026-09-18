@@ -2,6 +2,21 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.2.0 - 2026-09-18
+
+add Boost skill for adding settings fields, and fix settings extension issues
+
+Adds resources/boost/skills/add-flexible-pages-setting so Laravel Boost can guide agents through adding a CMS setting field, and fixes the issues found while documenting that path:
+
+- Settings::setting() returns string|int|float|bool|array|null, so cast columns (integer, array) keep their type instead of hitting the string|bool|null hint.
+- Settings::setting() resolves translations with isTranslatableAttribute() instead of is_array(), so a non-translatable array setting is no longer mistaken for a translation set.
+- Settings::setting() honours its $locale argument. Spatie resolves translatable attributes to the current app locale, so setting($field, 'fr') returned the current locale's value and cached it under the 'fr' key.
+- Add Settings::registerExtraMediaCollections() so extending models add media collections without dropping the package's own via a missing parent:: call.
+- Add SettingsMediaObserver to flush the settings cache when settings media is saved or deleted. Filament's media upload field is dehydrated(false), so a media-only save leaves the model clean, fires no updated event, and left cached image URLs stale forever.
+- Fix the settings extension docs: the getExtraFormTabs() example lived on the resource, while the method is public static on SettingsFormSchema, so the documented fields never appeared.
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.1.6...4.2.0
+
 ## v4.1.6 - 2026-07-29
 
 - fix hardcoded references to PageResource: use the configured resource so it can be extended.
