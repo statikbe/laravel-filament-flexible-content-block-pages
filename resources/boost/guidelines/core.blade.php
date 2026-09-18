@@ -69,3 +69,23 @@ $morphAlias = flexiblePagesPrefix('page'); // filament-flexible-content-block-pa
   `<x-filament::badge>`, form components, actions, notifications) instead of custom HTML or CSS.
 - Package translations live in `resources/lang/vendor/filament-flexible-content-block-pages`, your
   own labels in your app's translation files. Never hardcode UI labels.
+
+### Content blocks belong to the parent package
+
+The page content itself is built with `statikbe/laravel-filament-flexible-content-blocks`. A block
+type that this CMS does not ship is a **custom block of the parent package**, not something to build
+inside a page template or a Blade view. Use the `filament-flexible-content-blocks-custom-block`
+skill, which ships with that package, and never extend
+`AbstractFilamentFlexibleContentBlock` outside of the package.
+
+The blocks available on a page, the image conversions and the block styles are configured in
+`config/filament-flexible-content-blocks.php`, not in this package's config.
+
+### Related skills
+
+- `add-flexible-pages-setting` - add a CMS setting field.
+- `add-flexible-pages-linkable-model` - make a project model linkable in menus and the sitemap.
+- `setup-flexible-pages` - install and wire up this CMS.
+- `filament-flexible-content-blocks-custom-block` (parent package) - write a custom content block.
+- `filament-flexible-content-blocks-setup` (parent package) - put content blocks on your own
+  models, next to the CMS pages.

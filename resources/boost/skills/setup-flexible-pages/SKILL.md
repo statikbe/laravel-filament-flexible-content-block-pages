@@ -12,7 +12,8 @@ panel or the frontend page routes do not work yet, or when the user asks to "set
 "install the pages package" or "add the CMS to this project".
 
 For a project where the CMS already runs, use the task specific skills instead (adding a setting,
-a page template, a linkable model).
+a page template, a linkable model, or `filament-flexible-content-blocks-custom-block` for a new
+block type).
 
 ## Before you start
 
@@ -159,4 +160,7 @@ Published views are no longer updated with the package, so do not publish them "
 - Changing table names after migrating requires new migrations, not a config change.
 - The package extends `statikbe/laravel-filament-flexible-content-blocks`: its config
   (`filament-flexible-content-blocks.php`) usually needs publishing and tweaking too, for the
-  content blocks, locales and image conversions.
+  content blocks, locales and image conversions. Use the
+  `filament-flexible-content-blocks-setup` skill of that package to put content blocks on the
+  project's own models, and `filament-flexible-content-blocks-custom-block` to add a block type
+  that neither package ships.

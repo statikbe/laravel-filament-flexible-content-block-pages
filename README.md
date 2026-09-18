@@ -72,8 +72,8 @@ This package makes use of [several great open-source packages](#used-packages) t
       * [Tag Types](#tag-types)
       * [SEO Tag Pages](#seo-tag-pages)
    * [Authorisation](#authorisation)
+   * [AI coding agents](#ai-coding-agents)
    * [Configuration](#configuration)
-   * [TODO's](#todos)
    * [Future work](#future-work)
    * [Development](#development)
    * [Changelog](#changelog)
@@ -84,7 +84,7 @@ This package makes use of [several great open-source packages](#used-packages) t
    * [License](#license)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Mon Sep 29 23:52:45 CEST 2025 -->
+<!-- Added by: sten, at: Fri Sep 18 15:36:32 CEST 2026 -->
 
 <!--te-->
 
@@ -636,6 +636,33 @@ However, authorisation can be easily implemented. There are two easy strategies:
 2. Remove the unwanted resources from the `resources` configuration.  
 3. Use a Filament authorisation library, like [Filament Shield](https://github.com/bezhanSalleh/filament-shield). 
 Shield can automatically generate policies with permissions that you can link to specific roles. 
+
+## AI coding agents
+
+This package ships [Laravel Boost](https://laravel.com/framework/docs/boost) guidelines and agent skills,
+so AI coding agents know how to work with this CMS. If your project has Boost installed, run
+`php artisan boost:install` (or `php artisan boost:update --discover`) and the following are installed
+for the agents you selected:
+
+- __AI guidelines__: a short overview of the package, loaded upfront. It explains the models, the
+  extend-and-register pattern, the helper functions and the conventions of the package.
+- __`setup-flexible-pages` skill__: installing and wiring up the CMS - publishing the config and
+  migrations, registering the Filament panel and the frontend routes, localisation, tags, redirects,
+  Tailwind sources and seeding the first pages.
+- __`add-flexible-pages-setting` skill__: adding a CMS setting field - the migration, the extended
+  `Settings` model, the Filament form field and reading the value on the frontend.
+- __`add-flexible-pages-linkable-model` skill__: making one of your own models linkable in the menu
+  builder, in call to action blocks and in the sitemap, by implementing `HasMenuLabel`.
+
+Because this package builds on [statikbe/laravel-filament-flexible-content-blocks](https://github.com/statikbe/laravel-filament-flexible-content-blocks),
+Boost also installs the skills of that package, which handle the content blocks themselves:
+
+- __`filament-flexible-content-blocks-custom-block` skill__: writing a custom content block, for a block
+  type that neither package ships.
+- __`filament-flexible-content-blocks-setup` skill__: putting content blocks on your own models, next to
+  the CMS pages.
+
+The sources live in [`resources/boost`](resources%2Fboost).
 
 ## Configuration
 

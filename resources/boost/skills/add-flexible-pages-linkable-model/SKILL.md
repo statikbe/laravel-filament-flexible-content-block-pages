@@ -120,7 +120,8 @@ Relation::morphMap([
 
 Linking from CTA blocks is configured in the **parent package**, in the `call_to_action_models` key
 of `config/filament-flexible-content-blocks.php`. The sitemap merges those models with
-`menu.linkable_models`.
+`menu.linkable_models`. A custom block that links to the model uses the same `Linkable` contract,
+see the `filament-flexible-content-blocks-custom-block` skill of the parent package.
 
 ### 5. Verify
 

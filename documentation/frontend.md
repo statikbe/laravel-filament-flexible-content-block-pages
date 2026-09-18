@@ -5,7 +5,7 @@ This document covers frontend templating, theme customization, and available Bla
 ## Table of Contents
 
 <!--ts-->
-   * [General remark](#general-remark)
+   * [General Remark](#general-remark)
       * [Publishing Views](#publishing-views)
       * [View Structure](#view-structure)
       * [Theme](#theme)
@@ -16,6 +16,7 @@ This document covers frontend templating, theme customization, and available Bla
          * [&lt;x-flexible-pages-language-switch&gt;](#x-flexible-pages-language-switch)
       * [Base page Layout](#base-page-layout)
          * [&lt;x-flexible-pages-base-layout&gt;](#x-flexible-pages-base-layout)
+      * [Edit Page Button](#edit-page-button)
    * [Page Templates](#page-templates)
       * [Custom Page Templates](#custom-page-templates)
    * [Styling Integration](#styling-integration)
@@ -25,7 +26,7 @@ This document covers frontend templating, theme customization, and available Bla
       * [Accessibility](#accessibility)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Mon Sep 29 23:52:46 CEST 2025 -->
+<!-- Added by: sten, at: Fri Sep 18 15:36:34 CEST 2026 -->
 
 <!--te-->
 

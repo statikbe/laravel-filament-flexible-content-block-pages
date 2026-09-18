@@ -13,6 +13,7 @@ In this document, we explain all settings available in the [filament-flexible-co
       * [Page Resource Options](#page-resource-options)
    * [CMS Panel Configuration](#cms-panel-configuration)
    * [Route Helper](#route-helper)
+      * [Enable home page route](#enable-home-page-route)
    * [Theme Configuration](#theme-configuration)
    * [Page Templates](#page-templates)
    * [Menu Builder Configuration](#menu-builder-configuration)
@@ -30,7 +31,7 @@ In this document, we explain all settings available in the [filament-flexible-co
       * [Custom Menu Styles](#custom-menu-styles)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: sten, at: Mon Sep 29 23:52:45 CEST 2025 -->
+<!-- Added by: sten, at: Fri Sep 18 15:36:33 CEST 2026 -->
 
 <!--te-->
 
