@@ -13,6 +13,9 @@ return [
             'overview' => 'Vue d\'ensemble',
             'advanced' => 'Avancé',
         ],
+        'fields' => [
+            'intro_help' => 'Brève introduction/description facultative de la page. Le contenu détaillé de la page, quant à lui, peut être géré dans l\'onglet "Contenu".',
+        ],
         'table' => [
             'created_at_col' => 'Créé le',
             'updated_at_col' => 'Modifié le',

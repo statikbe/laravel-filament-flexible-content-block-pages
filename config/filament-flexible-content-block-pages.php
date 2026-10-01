@@ -175,6 +175,20 @@ return [
                  */
                 'max_depth' => 2,
             ],
+
+            /*
+             | The toolbar buttons to enable for the 'intro' field of a page.
+             | When not configured, a limited set of buttons will be enabled by default.
+             */
+            'intro_toolbar_buttons' => [
+                'bold',
+                'italic',
+                'link',
+                'bulletList',
+                'orderedList',
+                'undo',
+                'redo',
+            ],
         ],
         // If you extend PageResource and want to use your own model, you can add your the extended page resource config for your own model here...
     ],
