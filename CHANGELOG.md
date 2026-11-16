@@ -7,6 +7,12 @@ All notable changes to `laravel-filament-flexible-content-block-pages` will be d
 - Require `statikbe/laravel-filament-flexible-content-blocks` ^4.3, which adds support for `spatie/laravel-sluggable` v4, v5 and v6. See the [blocks package v4.3 upgrade notes](https://github.com/statikbe/laravel-filament-flexible-content-blocks/blob/main/UPGRADE.md#v43) for the impact on your own models.
 - Register the sluggable service provider in the test case, which sluggable v4+ needs for its action config.
 
+## v4.2.2 - 2026-09-18
+
+Improve boost skills
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.2.1...4.2.2
+
 ## v4.2.1 - 2026-09-18
 
 Add general boost guideline
