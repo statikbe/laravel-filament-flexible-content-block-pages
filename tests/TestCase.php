@@ -12,6 +12,7 @@ use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath;
 use Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\MediaLibrary\MediaLibraryServiceProvider;
+use Spatie\Sluggable\SluggableServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Facades\FilamentFlexibleContentBlockPages;
 use Statikbe\FilamentFlexibleContentBlockPages\FilamentFlexibleContentBlockPagesServiceProvider;
 use Statikbe\FilamentFlexibleContentBlockPages\Models\Page;
@@ -30,12 +31,19 @@ class TestCase extends Orchestra
 
     protected function getPackageProviders($app)
     {
-        return [
+        $providers = [
             LaravelLocalizationServiceProvider::class,
             MediaLibraryServiceProvider::class,
             FilamentFlexibleContentBlocksServiceProvider::class,
             FilamentFlexibleContentBlockPagesServiceProvider::class,
         ];
+
+        // spatie/laravel-sluggable v4+ ships a service provider that registers its action config.
+        if (class_exists(SluggableServiceProvider::class)) {
+            $providers[] = SluggableServiceProvider::class;
+        }
+
+        return $providers;
     }
 
     protected function getEnvironmentSetUp($app)
