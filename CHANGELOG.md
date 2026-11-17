@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-filament-flexible-content-block-pages` will be documented in this file.
 
+## v4.3.1 - 2026-11-17
+
+### What's Changed
+
+* Fix PHP requirement: allow laravel-sitemap v7 on PHP 8.3 by @sten in https://github.com/statikbe/laravel-filament-flexible-content-block-pages/pull/30
+* drop support for PHP 8.2 due to dependencies
+
+**Full Changelog**: https://github.com/statikbe/laravel-filament-flexible-content-block-pages/compare/4.3.0...4.3.1
+
 ## v4.3.0 - 2026-11-16
 
 - Require `statikbe/laravel-filament-flexible-content-blocks` ^4.3, which adds support for `spatie/laravel-sluggable` v4, v5 and v6. See the [blocks package v4.3 upgrade notes](https://github.com/statikbe/laravel-filament-flexible-content-blocks/blob/main/UPGRADE.md#v43) for the impact on your own models.
