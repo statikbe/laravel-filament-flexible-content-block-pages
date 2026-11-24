@@ -13,6 +13,9 @@ return [
             'overview' => 'Overzicht',
             'advanced' => 'Geavanceerd',
         ],
+        'fields' => [
+            'intro_help' => 'Optionele korte introductie/beschrijving van de pagina. Uitgebreide pagina-inhoud daarentegen kan worden beheerd in de "Inhoud" tab.',
+        ],
         'table' => [
             'created_at_col' => 'Aangemaakt op',
             'updated_at_col' => 'Aangepast op',
